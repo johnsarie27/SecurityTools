@@ -1,2 +1,2 @@
-# PSSecurityTools
-Security functions used in reporting and management of IT resources.
+# SecurityTools
+A PowerShell module for System Center reporting tools
