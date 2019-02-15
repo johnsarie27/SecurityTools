@@ -1,7 +1,7 @@
 # ==============================================================================
 # Updated:      2019-02-14
 # Created by:   Justin Johns
-# Filename:     PSSecurityTools.psm1
+# Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/PowerShell-Modules/SecurityTools
 # ==============================================================================
 
