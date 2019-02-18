@@ -1,5 +1,5 @@
 # ==============================================================================
-# Updated:      2019-02-14
+# Updated:      2019-02-18
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/PowerShell-Modules/SecurityTools
@@ -23,6 +23,64 @@
 . $PSScriptRoot\Invoke-SDelete.ps1
 
 # FUNCTIONS
+function Confirm-CMResource {
+    <# =========================================================================
+    .SYNOPSIS
+        Short description
+    .DESCRIPTION
+        Long description
+    .PARAMETER abc
+        Parameter description (if any)
+    .INPUTS
+        Inputs (if any)
+    .OUTPUTS
+        Output (if any)
+    .EXAMPLE
+        PS C:\> <example usage>
+        Explanation of what the example does
+    .NOTES
+        General notes
+    ========================================================================= #>
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory, ParameterSetName = 'drive', HelpMessage = 'PS Drive name')]
+        [string] $PSDrive,
+    
+        [Parameter(Mandatory, ParameterSetName = 'device', HelpMessage = 'Device name')]
+        [string] $Device, # DeviceName
+
+        [Parameter(Mandatory, ParameterSetName = 'collection', HelpMessage = 'Collection name')]
+        [string] $Collection, # CollectionName
+
+        [Parameter(Mandatory, ParameterSetName = 'update', HelpMessage = 'Update group name')]
+        [string] $UpdateGroupName
+    )
+
+    # IMPORT SCCM MODULE
+    Import-Module (Join-Path -Path (Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
+
+    # INITIALIZE RETURN VALUE
+    $Return = $false
+
+    switch ($PSBoundParameters.Keys) {
+        PSDrive {
+            if ( (Get-PSDrive -PSProvider CMSite).Name -contains $PSBoundParameters.Values ) { $Return = $true }
+        }
+        Device {
+            if ( (Get-CMDevice).Name -contains $PSBoundParameters.Values ) { $Return = $true }
+        }
+        Collection {
+            if ( (Get-CMCollection).Name -contains $PSBoundParameters.Values ) { $Return = $true }
+        }
+        UpdateGroupName {
+            if ( (Get-CMSoftwareUpdateGroup).LocalizedDisplayName -contains $PSBoundParameters.Values ) { $Return = $true }
+        }
+    }
+
+    # RETURN
+    $Return
+}
+
 function Get-RemoteBitLocker {
     <# =========================================================================
     .SYNOPSIS
