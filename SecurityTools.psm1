@@ -10,6 +10,7 @@
 . $PSScriptRoot\New-PatchDeployment.ps1
 . $PSScriptRoot\New-UpdateGroup.ps1
 . $PSScriptRoot\Get-DeviceCollections.ps1
+. $PSScriptRoot\Confirm-CMResource.ps1
 
 # IMPORT SCANNING AND REPORTING FUNCTIONS
 . $PSScriptRoot\ConvertTo-DbScanReport.ps1
@@ -23,75 +24,6 @@
 . $PSScriptRoot\Invoke-SDelete.ps1
 
 # FUNCTIONS
-function Confirm-CMResource {
-    <# =========================================================================
-    .SYNOPSIS
-        Validate existence of specified CM resource
-    .DESCRIPTION
-        Validate CM resource by checking for its existence in the given CM Site.
-    .PARAMETER abc
-        Parameter description (if any)
-    .INPUTS
-        Inputs (if any)
-    .OUTPUTS
-        Output (if any)
-    .EXAMPLE
-        PS C:\> <example usage>
-        Explanation of what the example does
-    .NOTES
-        1. Test $PSBoundParameters.Keys & $PSBoundParameters.Values
-        2. Decide on $Collection or $CollectionName
-        3. 
-    ========================================================================= #>
-    [CmdletBinding()]
-    Param(
-        [Parameter(Mandatory, ParameterSetName = 'drive', HelpMessage = 'PS Drive name')]
-        [ValidateScript({ $_ -NotMatch ':' })]
-        [string] $PSDrive,
-    
-        [Parameter(Mandatory, ParameterSetName = 'device', HelpMessage = 'Device name')]
-        [string] $Device, # DeviceName
-
-        [Parameter(Mandatory, ParameterSetName = 'collection', HelpMessage = 'Collection name')]
-        [string] $Collection, # CollectionName
-
-        [Parameter(Mandatory, ParameterSetName = 'update', HelpMessage = 'Update group name')]
-        [string] $UpdateGroupName
-    )
-
-    # IMPORT SCCM MODULE
-    Import-Module (Join-Path -Path (Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
-
-    # VALIDATE $PSDrive
-    if ( !$PSBoundParameters.Contains('PSDrive') ) {
-        if ( $PSDrive -match '[a-z0-9]+:' ) { Push-Location $PSDrive } else { Push-Location ($PSDrive + ':') }
-    }
-    # FIX THE LOGIC HERE. PSDRIVE WILL ALWAYS NEED TO BE PROVIDED AS IT IS REQUIRED TO VALIDATE ALL OTHER
-    # PARAMETERS. NEEDS TO BE FIXED IN THE PARAMS AND BELOW IN THE SWITCH?
-
-    # INITIALIZE RETURN VALUE
-    $Return = $false
-
-    switch ($PSBoundParameters.Keys) {
-        PSDrive {
-            if ( (Get-PSDrive -PSProvider CMSite).Name -contains $PSBoundParameters.Values ) { $Return = $true }
-        }
-        Device {
-            if ( (Get-CMDevice).Name -contains $PSBoundParameters.Values ) { $Return = $true }
-        }
-        Collection {
-            if ( (Get-CMCollection).Name -contains $PSBoundParameters.Values ) { $Return = $true }
-        }
-        UpdateGroupName {
-            if ( (Get-CMSoftwareUpdateGroup).LocalizedDisplayName -contains $PSBoundParameters.Values ) { $Return = $true }
-        }
-    }
-
-    # RETURN
-    Pop-Location
-    $Return
-}
-
 function Get-RemoteBitLocker {
     <# =========================================================================
     .SYNOPSIS
