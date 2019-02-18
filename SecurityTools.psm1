@@ -26,9 +26,9 @@
 function Confirm-CMResource {
     <# =========================================================================
     .SYNOPSIS
-        Short description
+        Validate existence of specified CM resource
     .DESCRIPTION
-        Long description
+        Validate CM resource by checking for its existence in the given CM Site.
     .PARAMETER abc
         Parameter description (if any)
     .INPUTS
@@ -39,11 +39,14 @@ function Confirm-CMResource {
         PS C:\> <example usage>
         Explanation of what the example does
     .NOTES
-        General notes
+        1. Test $PSBoundParameters.Keys & $PSBoundParameters.Values
+        2. Decide on $Collection or $CollectionName
+        3. 
     ========================================================================= #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ParameterSetName = 'drive', HelpMessage = 'PS Drive name')]
+        [ValidateScript({ $_ -NotMatch ':' })]
         [string] $PSDrive,
     
         [Parameter(Mandatory, ParameterSetName = 'device', HelpMessage = 'Device name')]
@@ -58,6 +61,13 @@ function Confirm-CMResource {
 
     # IMPORT SCCM MODULE
     Import-Module (Join-Path -Path (Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
+
+    # VALIDATE $PSDrive
+    if ( !$PSBoundParameters.Contains('PSDrive') ) {
+        if ( $PSDrive -match '[a-z0-9]+:' ) { Push-Location $PSDrive } else { Push-Location ($PSDrive + ':') }
+    }
+    # FIX THE LOGIC HERE. PSDRIVE WILL ALWAYS NEED TO BE PROVIDED AS IT IS REQUIRED TO VALIDATE ALL OTHER
+    # PARAMETERS. NEEDS TO BE FIXED IN THE PARAMS AND BELOW IN THE SWITCH?
 
     # INITIALIZE RETURN VALUE
     $Return = $false
@@ -78,6 +88,7 @@ function Confirm-CMResource {
     }
 
     # RETURN
+    Pop-Location
     $Return
 }
 
