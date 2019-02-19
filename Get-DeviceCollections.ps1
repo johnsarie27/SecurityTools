@@ -26,7 +26,7 @@ function Get-DeviceCollections {
         [Alias('Name', 'ComputerName')]
         [string] $DeviceName,
 
-        [Parameter(ValueFromPipeline, HelpMessage = 'PSDriver for Configuration Manager')]
+        [Parameter(HelpMessage = 'PSDrive for Configuration Manager')]
         [ValidateScript({ Confirm-CMResource -PSDrive $_ })]
         [Alias('Drive', 'DriveName', 'CMDrive')]
         [string] $PSDrive

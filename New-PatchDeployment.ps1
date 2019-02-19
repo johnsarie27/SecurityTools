@@ -31,18 +31,18 @@ function New-PatchDeployment {
     ========================================================================= #>
     [CmdletBinding(DefaultParameterSetName='one')]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'PSDriver for Configuration Manager')]
-        [ValidateScript({ (Get-PSDrive -PSProvider CMSite).Name -contains $_ })]
+        [Parameter(HelpMessage = 'PSDrive for Configuration Manager')]
+        [ValidateScript({ Confirm-CMResource -PSDrive $_ })]
         [Alias('Drive', 'DriveName', 'CMDrive')]
         [string] $PSDrive,
 
         [Parameter(Mandatory, HelpMessage='CM Software Update Group name')]
-        [ValidateScript({ (Get-CMSoftwareUpdateGroup).LocalizedDisplayName -contains $_ })]
+        [ValidateScript({ Confirm-CMResource -UpdateGroupName $_ })]
         [Alias('SoftwareUpdateGroup', 'UGN', 'SUGN')]
         [string] $UpdateGroupName,
 
         [Parameter(Mandatory, ParameterSetName='one', HelpMessage='CM Collection Name')]
-        [ValidateScript({ (Get-CMCollection).Name -contains $_ })]
+        [ValidateScript({ Confirm-CMResource -CollectionName $_ })]
         [Alias('Collection', 'DeviceCollection')]
         [string] $CollectionName,
 
@@ -58,11 +58,15 @@ function New-PatchDeployment {
     )
 
     Begin {
-        # THIS SHOULD ALREADY BE IMPORTED BY THE SCRIPT CALLING THIS FUNCTION
+        # IMPORT SCCM MODULE AND CD TO SITE
         Import-Module (Join-Path -Path $(Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
 
-        # VALIDATE $PSDrive IS PROPERLY FORMATTED
-        if ( $PSDrive -match '[a-z0-9]+:' ) { Push-Location $PSDrive } else { Push-Location ($PSDrive + ':') }
+        if ( !$PSBoundParameters.ContainsKey('PSDrive') ) {
+            $Site = (Get-PSDrive -PSProvider CMSite).Name
+            if ( !$Site ) { Write-Error "No drives from PSProvider CMSite available."; Pop-Location; Break }
+            elseif ( $Site.Count -gt 1 ) { Write-Error "Please specify CMSite."; Pop-Location; Break }
+            else { Push-Location -Path ('{0}:' -f $Site) }
+        } else { Push-Location -Path ('{0}:' -f $PSDrive) }
         
         # SETUP SPLAT TABLE
         $Splat = @{

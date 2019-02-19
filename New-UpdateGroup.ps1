@@ -19,16 +19,21 @@ function New-UpdateGroup {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'PSDriver for Configuration Manager')]
-        [ValidateScript({ (Get-PSDrive -PSProvider CMSite).Name -contains $_ })]
+        [Parameter(HelpMessage = 'PSDrive for Configuration Manager')]
+        [ValidateScript({ Confirm-CMResource -PSDrive $_ })]
         [Alias('Drive', 'DriveName', 'CMDrive')]
         [string] $PSDrive
     )
 
-    # THIS SHOULD ALREADY BE IMPORTED BY THE SCRIPT CALLING THIS FUNCTION
+    # IMPORT SCCM MODULE AND CD TO SITE
     Import-Module (Join-Path -Path $(Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
 
-    Push-Location -Path ('{0}:' -f $PSDrive)
+    if ( !$PSBoundParameters.ContainsKey('PSDrive') ) {
+        $Site = (Get-PSDrive -PSProvider CMSite).Name
+        if ( !$Site ) { Write-Error "No drives from PSProvider CMSite available."; Pop-Location; Break }
+        elseif ( $Site.Count -gt 1 ) { Write-Error "Please specify CMSite."; Pop-Location; Break }
+        else { Push-Location -Path ('{0}:' -f $Site) }
+    } else { Push-Location -Path ('{0}:' -f $PSDrive) }
 
     # CREATE LIST OF UPDATES FOR NEW UPDATE GROUP
     $Pattern = '(Critical\sUpdates|Feature\sPacks|Security\sUpdates|Service\sPacks|Tools|Update\sRollups|Updates|Upgrades)'
