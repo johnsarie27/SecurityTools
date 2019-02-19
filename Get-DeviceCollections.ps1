@@ -22,20 +22,25 @@ function Get-DeviceCollections {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, HelpMessage = 'Device name')]
-        [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
+        [ValidateScript({ Confirm-CMResource -DeviceName $_ })]
         [Alias('Name', 'ComputerName')]
         [string] $DeviceName,
 
-        [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'PSDriver for Configuration Manager')]
-        [ValidateScript({ (Get-PSDrive -PSProvider CMSite).Name -contains $_ })]
+        [Parameter(ValueFromPipeline, HelpMessage = 'PSDriver for Configuration Manager')]
+        [ValidateScript({ Confirm-CMResource -PSDrive $_ })]
         [Alias('Drive', 'DriveName', 'CMDrive')]
         [string] $PSDrive
     )
 
+    # IMPORT SCCM MODULE AND CD TO SITE
     Import-Module (Join-Path -Path $(Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
 
-    # VALIDATE $PSDrive IS PROPERLY FORMATTED
-    if ( $PSDrive -match '[a-z0-9]+:' ) { Push-Location $PSDrive } else { Push-Location ($PSDrive + ':') }
+    if ( !$PSBoundParameters.ContainsKey('PSDrive') ) {
+        $Site = (Get-PSDrive -PSProvider CMSite).Name
+        if ( !$Site ) { Write-Error "No drives from PSProvider CMSite available."; Pop-Location; Break }
+        elseif ( $Site.Count -gt 1 ) { Write-Error "Please specify CMSite."; Pop-Location; Break }
+        else { Push-Location -Path ('{0}:' -f $Site) }
+    } else { Push-Location -Path ('{0}:' -f $PSDrive) }
 
     # FIND ALL COLLECTIONS WHERE GIVEN DEVICE IS A MEMBER
     $CollectionList = @()
