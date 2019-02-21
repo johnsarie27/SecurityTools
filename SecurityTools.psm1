@@ -1,8 +1,8 @@
 # ==============================================================================
-# Updated:      2019-02-18
+# Updated:      2019-02-21
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
-# Link:         https://github.com/johnsarie27/PowerShell-Modules/SecurityTools
+# Link:         https://github.com/johnsarie27/SecurityTools
 # ==============================================================================
 
 # IMPORT SYSTEM CENTER FUNCTIONS
