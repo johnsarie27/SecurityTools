@@ -468,6 +468,8 @@ function Get-ADUserStatus {
     Get-ADUser -Identity $SearchName -Properties *, "msDS-UserPasswordExpiryTimeComputed" | Select-Object $Properties
 }
 
+# VARIABLES
+$EventTable = Get-Content -Raw -Path (Join-Path -Path $PSScriptRoot -ChildPath "EventTable.json") | ConvertFrom-Json
 
 # EXPORT MEMBERS
 # THESE ARE SPECIFIED IN THE MODULE MANIFEST AND THEREFORE DON'T NEED TO BE LISTED HERE

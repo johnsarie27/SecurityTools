@@ -30,7 +30,7 @@ function Get-WinLogs {
         [Parameter(Mandatory, HelpMessage = 'Event Table Id', ParameterSetName = 'events')]
         [ValidateScript( { $EventTable.Id -contains $_ })]
         [Alias('Event', 'EventId', 'EventTableId')]
-        [string] $Id,
+        [int] $Id,
 
         [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = 'events')]
         [ValidateScript( { Test-NetConnection -ComputerName $_ })]
