@@ -113,7 +113,7 @@ function New-SummaryReport {
         Freeze    = $true
     }
     if ( $PSBoundParameters.ContainsKey('ExistingReport') ) { $Splat.Path = $ExistingReport }
-    else { $Splat.SavePath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Scan-Summary-Report_{1}.xlsx' -f (Get-Date -F "yyyy-MM")) }
+    else { $Splat.SavePath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Scan-Summary-Report_{0}.xlsx' -f (Get-Date -F "yyyy-MM")) }
 
     # EXPORT TO EXCEL
     $ScanObjects | Select-Object -Property $Properties | Export-ExcelBook @Splat
