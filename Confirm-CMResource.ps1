@@ -26,7 +26,7 @@ function Confirm-CMDrive {
     Import-Module (Join-Path -Path (Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
 
     # VALIDATE PSDRIVE
-    if ( (Get-PSDrive -PSProvider CMSite).Name ) { $Result = $true }
+    if ( (Get-PSDrive -PSProvider CMSite).Name -contains $PSDrive ) { $Result = $true }
     else { $Result = $false }
 
     # RETURN
@@ -48,7 +48,7 @@ function Confirm-CMResource {
     .PARAMETER UpdateGroupName
         Name of UpdateGroup to validate
     .INPUTS
-        System.String.
+        None
     .OUTPUTS
         System.ValueType.Boolean
     .EXAMPLE
@@ -59,11 +59,8 @@ function Confirm-CMResource {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, ParameterSetName = 'drive', HelpMessage = 'PS Drive name')]
-        [Parameter(ParameterSetName = 'device',     HelpMessage = 'PS Drive name')]
-        [Parameter(ParameterSetName = 'collection', HelpMessage = 'PS Drive name')]
-        [Parameter(ParameterSetName = 'update',     HelpMessage = 'PS Drive name')]
-        #[ValidateScript( { $_ -NotMatch ':' })]
+        [Parameter(HelpMessage = 'PS Drive name')]
+        [ValidateScript({ Confirm-CMDrive -PSDrive $_ })]
         [string] $PSDrive,
     
         [Parameter(Mandatory, ParameterSetName = 'device', HelpMessage = 'Device name')]
@@ -77,23 +74,20 @@ function Confirm-CMResource {
     )
 
     # INITIALIZE RETURN VALUE
-    $Return = $false # $PSBoundParameters.PSDrive
+    $Return = $false
 
     # IMPORT SCCM MODULE
     Import-Module (Join-Path -Path (Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
 
-    # VALIDATE AND CHANGE PSDRIVE TO SCCM SITE
-    $Site = (Get-PSDrive -PSProvider CMSite).Name
-
-    if ( $PSBoundParameters.ContainsKey('PSDrive') ) {
-        if ( $Site -contains $PSDrive ) { Push-Location -Path ('{0}:' -f $PSDrive); $Return = $true }
-        else { Write-Verbose ('Unable to validate drive "{0}"' -f $PSDrive); $Return; Pop-Location; Break }
-    } else {
-        if ( !$Site ) { Write-Error "No drives from PSProvider CMSite available."; Pop-Location; Break }
-        elseif ( $Site.Count -gt 1 ) { Write-Error "Please specify CMSite."; Pop-Location; Break }
-        else { Push-Location -Path ('{0}:' -f $Site) }
+    # CHANGE LOCATION TO CMSITE
+    if ( !$PSBoundParameters.ContainsKey('PSDrive') ) {
+        $Site = (Get-PSDrive -PSProvider CMSite).Name
+        if ( !$Site ) { Write-Error "No drives from PSProvider CMSite available."; Break }
+        elseif ( $Site.Count -gt 1 ) { Write-Error "Please specify CMSite."; Break }
+        else { $PSDrive = $Site }
     }
-    
+    Push-Location -Path ('{0}:' -f $PSDrive)
+
     # VALIDATE OTHER RESOURCES
     $Param = $PSBoundParameters.Keys | Where-Object { $_ -ne 'PSDrive' }
     if ( !$Param ) { $Return; Pop-Location; Break }
@@ -110,7 +104,7 @@ function Confirm-CMResource {
         UpdateGroupName {
             if ( (Get-CMSoftwareUpdateGroup).LocalizedDisplayName -contains $Arg ) { $true }
         }
-        #Default {}
+        Default { $false }
     }
 
     # RETURN
