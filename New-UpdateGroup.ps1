@@ -20,7 +20,7 @@ function New-UpdateGroup {
     [CmdletBinding()]
     Param(
         [Parameter(HelpMessage = 'PSDrive for Configuration Manager')]
-        [ValidateScript({ Confirm-CMResource -PSDrive $_ })]
+        [ValidateScript({ Confirm-CMDrive -PSDrive $_ })]
         [Alias('Drive', 'DriveName', 'CMDrive')]
         [string] $PSDrive
     )

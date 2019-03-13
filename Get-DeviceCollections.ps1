@@ -22,7 +22,7 @@ function Get-DeviceCollections {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, HelpMessage = 'Device name')]
-        [ValidateScript({ Confirm-CMResource -DeviceName $_ })]
+        [ValidateScript({ Confirm-CMDrive -DeviceName $_ })]
         [Alias('Name', 'ComputerName')]
         [string] $DeviceName,
 

@@ -1,3 +1,38 @@
+function Confirm-CMDrive {
+    <# =========================================================================
+    .SYNOPSIS
+        Validate PSDrive
+    .DESCRIPTION
+        Validate PSDrive
+    .PARAMETER PSDrive
+        PSDrive object for Configuration Manager
+    .INPUTS
+        None
+    .OUTPUTS
+        System.Boolean
+    .EXAMPLE
+        PS C:\> Confirm-CMDrive -PSDrive 764
+        Returns true if PSDrive 764 exists and is of type CMSite. Returns false
+        otherwise
+    .NOTES
+        General notes
+    ========================================================================= #>
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory, HelpMessage = 'PS Drive name')]
+        [string] $PSDrive
+    )
+    # IMPORT SCCM MODULE
+    Import-Module (Join-Path -Path (Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
+
+    # VALIDATE PSDRIVE
+    if ( (Get-PSDrive -PSProvider CMSite).Name ) { $Result = $true }
+    else { $Result = $false }
+
+    # RETURN
+    return $Result
+}
+
 function Confirm-CMResource {
     <# =========================================================================
     .SYNOPSIS
