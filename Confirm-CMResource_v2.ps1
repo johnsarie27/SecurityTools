@@ -1,3 +1,11 @@
+<# =============================================================================
+.NOTES
+    This concept of having an individual function to validate each data type
+    doesn't quite work unless you pass the PSDrive for the CMSite to each
+    function. This is less efficient and more time consuming to code for and
+    validate. Therefore, I am not currently using this file in the module.
+============================================================================= #>
+
 function Confirm-CMDevice {
     <# =========================================================================
     .SYNOPSIS
