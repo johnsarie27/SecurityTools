@@ -71,10 +71,13 @@ function New-AggregateReport {
     # GET SAVE FOLDER
     #$Outdir = Get-Folder -Description "Save location"
     $Outdir = "$HOME\Desktop"
-    $File = Join-Path -Path $Outdir -ChildPath ('Aggregate-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
+    #$File = Join-Path -Path $Outdir -ChildPath ('Aggregate-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
 
     # STAGE SPLATTER TABLE
-    $Splat = @{ Freeze = $true }
+    $Splat = @{
+        Freeze = $true
+        Path   = Join-Path -Path $Outdir -ChildPath ('Aggregate-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
+    }
     if ( $PSCmdlet.ParameterSetName -ne 'db' ) { $Splat.SuppressOpen = $true }
 
     # PROCESS DB SCAN DATA
@@ -82,10 +85,8 @@ function New-AggregateReport {
         $DbCsv = Import-Csv -Path $DatabaseScan
         $DbCsv | ForEach-Object -Process { $_ | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Database Scan' }
 
-        $Splat.SheetName = 'DBScan'
-        $Splat.SavePath = $File
-
-        $DbCsv | Select-Object -ExcludeProperty Source | Export-ExcelBook @Splat
+        # EXPORT DB DATA TO EXCEL
+        $DbCsv | Select-Object -ExcludeProperty Source | Export-ExcelBook @Splat -SheetName 'DBScan'
     }
         
     # PROCESS WEB SCAN DATA
@@ -93,13 +94,10 @@ function New-AggregateReport {
         $WebCsv = Import-Csv -Path $WebScan
         $WebCsv | ForEach-Object -Process { $_ | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
         
-        $Splat.SheetName = 'WebScan'
-        if ( $Splat.SavePath ) { $Splat.Path = $File; $Splat.Remove('SavePath') }
-        else { $Splat.SavePath = $File }
-        
+        # EXPORT WEB DATA TO EXCEL
         $WebCsv | Where-Object {
             $_.'Active or inactive' -ne 'Global inactive' -and $_.Severity -ne 'Informational'
-        } | Select-Object -Property $Properties | Export-ExcelBook @Splat
+        } | Select-Object -Property $Properties | Export-ExcelBook @Splat -SheetName 'WebScan'
         
         # INACTIVE OR INFO
         $InactiveWeb = $WebCsv | Where-Object {
@@ -112,14 +110,13 @@ function New-AggregateReport {
         $SystemCsv = Import-Csv -Path $SystemScan
         $SystemCsv | ForEach-Object -Process { $_ | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'System Scan' }
         
+        # ADD SYSTEM SPECIFIC PROPERTIES
         $Properties += @("Detected OS", "CVE")
-        $Splat.SheetName = 'SystemScan'
-        if ( $Splat.SavePath ) { $Splat.Path = $File; $Splat.Remove('SavePath') }
-        else { $Splat.SavePath = $File }
         
+        # EXPORT SYSTEM DATA TO EXCEL
         $SystemCsv | Where-Object {
             $_.'Active or inactive' -ne 'Global inactive' -and $_.Severity -ne 'Informational'
-        } | Select-Object -Property $Properties | Export-ExcelBook @Splat
+        } | Select-Object -Property $Properties | Export-ExcelBook @Splat -SheetName 'SystemScan'
         
         # INACTIVE OR INFO
         $InactiveSystem = $SystemCsv | Where-Object {
@@ -129,12 +126,17 @@ function New-AggregateReport {
 
     # ADD INACTIVE OR INFORMATIONAL TAB
     if ( $PSCmdlet.ParameterSetName -ne 'db' ) {
+
+        # CHECK FOR INACTIVE OBJECT ARRAYS AND COMBINE INTO SINGEL ARRAY
         if ( $InactiveWeb -and $InactiveSystem ) { $AllInactive = $InactiveWeb + $InactiveSystem }
         elseif ( $InactiveWeb ) { $AllInactive = $InactiveWeb }
         elseif ( $InactiveSystem ) { $AllInactive = $InactiveSystem }
+        
+        # ADD SOURCE TO PROPERTIES AND REMOVE SUPPRESS OPEN
         $Properties += "Source"
-        $Splat.SheetName = 'Inactive' ; $Splat.Remove('SuppressOpen')
-        if ( $Splat.SavePath ) { $Splat.Path = $File; $Splat.Remove('SavePath') }
-        $AllInactive | Select-Object -Property $Properties | Export-ExcelBook @Splat
+        $Splat.Remove('SuppressOpen')
+        
+        # EXPORT ALL INACTIVE DATA TO EXCEL
+        $AllInactive | Select-Object -Property $Properties | Export-ExcelBook @Splat -SheetName 'Inactive'
     }
 }
