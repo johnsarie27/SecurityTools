@@ -61,24 +61,42 @@
     },
     {
         "Id": "11",
+        "Name": "Antimalware Scan Started",
+        "Log": "System",
+        "EventId": "1000"
+    },
+    {
+        "Id": "12",
+        "Name": "Antimalware Scan Completed",
+        "Log": "System",
+        "EventId": "1001"
+    },
+    {
+        "Id": "13",
+        "Name": "Antimalware Signature Version Update",
+        "Log": "System",
+        "EventId": "2000"
+    },
+    {
+        "Id": "14",
         "Name": "Task Scheduler Task Completed",
         "Log": "Microsoft-Windows-TaskScheduler",
         "EventId": "102"
     },
     {
-        "Id": "12",
+        "Id": "15",
         "Name": "Task Scheduler Action Completed",
         "Log": "Microsoft-Windows-TaskScheduler",
         "EventId": "201"
     },
     {
-        "Id": "13",
+        "Id": "16",
         "Name": "Task Scheduler Action Startd",
         "Log": "Microsoft-Windows-TaskScheduler",
         "EventId": "200"
     },
     {
-        "Id": "14",
+        "Id": "17",
         "Name": "Task Scheduler Created Task Process",
         "Log": "Microsoft-Windows-TaskScheduler",
         "EventId": "129"
