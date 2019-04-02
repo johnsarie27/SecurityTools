@@ -79,24 +79,42 @@
     },
     {
         "Id": "14",
+        "Name": "Malware Detected",
+        "Log": "System",
+        "EventId": "1116"
+    },
+    {
+        "Id": "15",
+        "Name": "Antimalware Action Taken",
+        "Log": "System",
+        "EventId": "1117"
+    },
+    {
+        "Id": "16",
+        "Name": "Antimalware Deleted Item from Quarantine",
+        "Log": "System",
+        "EventId": "1011"
+    },
+    {
+        "Id": "17",
         "Name": "Task Scheduler Task Completed",
         "Log": "Microsoft-Windows-TaskScheduler",
         "EventId": "102"
     },
     {
-        "Id": "15",
+        "Id": "18",
         "Name": "Task Scheduler Action Completed",
         "Log": "Microsoft-Windows-TaskScheduler",
         "EventId": "201"
     },
     {
-        "Id": "16",
+        "Id": "19",
         "Name": "Task Scheduler Action Startd",
         "Log": "Microsoft-Windows-TaskScheduler",
         "EventId": "200"
     },
     {
-        "Id": "17",
+        "Id": "20",
         "Name": "Task Scheduler Created Task Process",
         "Log": "Microsoft-Windows-TaskScheduler",
         "EventId": "129"
