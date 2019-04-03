@@ -14,8 +14,7 @@ function Get-WinLogs {
     .PARAMETER Results
         Number of results to return.
     .INPUTS
-        System.String.
-        System.Int.
+        None.
     .OUTPUTS
         System.Object.
     .EXAMPLE
@@ -28,45 +27,56 @@ function Get-WinLogs {
         [switch] $List,
 
         [Parameter(Mandatory, HelpMessage = 'Event Table Id', ParameterSetName = 'events')]
-        [ValidateScript( { $EventTable.Id -contains $_ })]
+        [ValidateScript({ $EventTable.Id -contains $_ })]
         [Alias('Event', 'EventId', 'EventTableId')]
         [int] $Id,
 
         [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = 'events')]
-        [ValidateScript( { Test-NetConnection -ComputerName $_ })]
+        [ValidateScript({ Test-NetConnection -ComputerName $_ })]
         [Alias('Name', 'Computer', 'CN')]
         [string] $ComputerName,
 
         [Parameter(HelpMessage = 'Number of results to return', ParameterSetName = 'events')]
-        [ValidateRange(1, 5000)]
         [int] $Results = 10
     )
 
-    # IMPORT EVENTS AND CREATE LOG LIST
-    $EventTable = Get-Content -Raw -Path $PSScriptRoot\EventTable.json | ConvertFrom-Json
-    $EventLogList = @('Application', 'Security', 'Setup', 'System')
+    Begin {
+        # IMPORT EVENTS AND CREATE LOG LIST
+        $EventTable = Get-Content -Raw -Path $PSScriptRoot\EventTable.json | ConvertFrom-Json
+        $EventLogList = @('Application', 'Security', 'Setup', 'System')
 
-    if ( $PSBoundParameters.ContainsKey('List') ) { $EventTable | Select-Object -Property Id, Name }
-    else {
-        $E = $EventTable | Where-Object Id -EQ $Id
-        if ( $E.Log -in $EventLogList ) {
-            if ( $PSBoundParameters.ContainsKey('ComputerName') ) {
-                Get-EventLog -LogName $E.Log -ComputerName $ComputerName |
-                    Where-Object EventID -EQ $E.EventId | Select-Object -First $Results
-            }
-            else {
-                Get-EventLog -LogName $E.Log | Where-Object EventID -EQ $E.EventId |
-                    Select-Object -First $Results
-            }
+        # SET INITIAL SPLATTER TABLE
+        if ( $PSBoundParameters.ContainsKey('ComputerName') ) {
+            $Params = @{ ComputerName = $ComputerName }
+        } else {
+            $Params = @{}
         }
-        elseif ( $E.Log -notin $EventLogList ) {
-            if ( $PSBoundParameters.ContainsKey('ComputerName') ) {
-                Get-WinEvent -ProviderName $E.Log -ComputerName $ComputerName |
-                    Where-Object Id -EQ $E.EventId |
-                    Select-Object -First $Results -Property TimeCreated, Message
+
+        # GET EVENT ID
+        if ( $PSBoundParameters.ContainsKey('Id') ) { $E = $EventTable | Where-Object Id -EQ $Id }
+    }
+
+    Process {
+        # CHECK FOR LIST PARAM
+        if ( $PSBoundParameters.ContainsKey('List') ) { $EventTable | Select-Object -Property Id, Name }
+        else {
+
+            # CHECK FOR EVENT LOG TYPE
+            if ( $E.Log -in $EventLogList ) {
+
+                # ADD PARAMS
+                $Params += @{ LogName = $E.Log ; InstanceId = $E.EventId }
+
+                # GET EVENT LOGS
+                Get-EventLog @Params | Select-Object -First $Results
             }
             else {
-                Get-WinEvent -ProviderName $E.Log | Where-Object Id -EQ $E.EventId |
+
+                # CREATE AND ADD FILTER
+                $Params.FilterHash = @{ ProviderName = $E.Log }
+
+                # GET WINDOWS EVENT
+                Get-WinEvent @Params | Where-Object Id -EQ $E.EventId |
                     Select-Object -First $Results -Property TimeCreated, Message
             }
         }
