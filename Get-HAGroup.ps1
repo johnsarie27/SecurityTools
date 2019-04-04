@@ -26,15 +26,15 @@ function Get-HAGroup {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'PSDriver for Configuration Manager')]
-        [ValidateScript( { (Get-PSDrive -PSProvider CMSite).Name -contains $_ })]
+        [Parameter(HelpMessage = 'PSDrive for Configuration Manager')]
+        [ValidateScript({ Confirm-CMDrive -PSDrive $_ })]
         [Alias('Drive', 'DriveName', 'CMDrive')]
         [string] $PSDrive,
 
-        [Parameter(Mandatory, HelpMessage = 'Array of CM Collection Names')]
-        [ValidateScript( { $_ -in (Get-CMCollection).Name })]
-        [Alias('Collections', 'GroupNames')]
-        [string[]] $CollectionNames,
+        [Parameter(Mandatory, HelpMessage = 'CM Collection Name')]
+        [ValidateScript({ Confirm-CMResource -CollectionName $_ })]
+        [Alias('Collection', 'DeviceCollection')]
+        [string[]] $CollectionName,
 
         [Parameter(HelpMessage = 'Primary or secondary HA group')]
         [ValidateSet('primary', 'secondary')]
@@ -47,16 +47,40 @@ function Get-HAGroup {
         [string] $ServerType
     )
 
-    Import-Module (Join-Path -Path $(Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
+    Begin {
+        # IMPORT REQUIRED MODULES
+        Import-Module (Join-Path -Path $(Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
 
-    # VALIDATE $PSDrive IS PROPERLY FORMATTED
-    if ( $PSDrive -match '[a-z0-9]+:' ) { Push-Location $PSDrive } else { Push-Location ($PSDrive + ':') }
+        # CHANGE DIRECTORY TO CMSITE PSDRIVE
+        if ( !$PSBoundParameters.ContainsKey('PSDrive') ) {
+            $Site = (Get-PSDrive -PSProvider CMSite).Name
+            if ( !$Site ) { Write-Error "No drives from PSProvider CMSite available."; Pop-Location; Break }
+            elseif ( $Site.Count -gt 1 ) { Write-Error "Please specify CMSite."; Pop-Location; Break }
+            else { Push-Location -Path ('{0}:' -f $Site) }
+        } else { Push-Location -Path ('{0}:' -f $PSDrive) }
 
-    $CollectionNames = $CollectionNames | Where-Object { $_ -match "$ServerType" -and $_ -match "$Station" }
+        # SET RESULTS VAR
+        $Results = @()
+    }
 
-    $Results = @()
-    $CollectionNames | ForEach-Object -Process { $Results += Get-CMCollectionMember -CollectionName $_ }
+    Process {
+        # LOOP ALL COLLECTIONNAMES
+        foreach ( $Name in $CollectionName ) {
 
-    $Results | Select-Object -ExpandProperty Name
-    Pop-Location
+            # GET COLLECTIONS THAT MATCH THE GIVEN STATION AND SERVER TYPE
+            if ( $Name -match $ServerType -AND $Name -match $Station ) {
+
+                # ADD DEVICES TO RESULTS
+                $Results += Get-CMCollectionMember -CollectionName $Name
+            }
+        }
+    }
+
+    End {
+        # RETURN RESULTS
+        $Results | Select-Object -ExpandProperty Name
+
+        # RESET LOCATION
+        Pop-Location
+    }
 }
