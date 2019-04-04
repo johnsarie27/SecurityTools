@@ -14,15 +14,14 @@ function Get-HAGroup {
     .PARAMETER ServerType
         Primary function of server (app or data)
     .INPUTS
-        System.String. Get-HAGroup accepts string values for all parameters
+        System.String[].
     .OUTPUTS
-        System.String. Get-HAGroup returns an array of strings for servers that
-        match the arguments provided.
+        System.String.
     .EXAMPLE
         PS C:\> Get-HAGroup -PSDrive MySite -CollectionName $Col -Station primary
         Returns all "primary" servers in collection $Col from MySite
     .NOTES
-        Need the ability to select data or app
+        General notes
     ========================================================================= #>
     [CmdletBinding()]
     Param(
