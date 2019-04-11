@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# New-UpdateGroup
+# New-SoftwarePatchGroup
 
 ## SYNOPSIS
 {{Fill in the Synopsis}}
@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-New-UpdateGroup [[-PSDrive] <String>] [<CommonParameters>]
+New-SoftwarePatchGroup [[-PSDrive] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

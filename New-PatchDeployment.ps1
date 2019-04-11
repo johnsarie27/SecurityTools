@@ -54,7 +54,7 @@ function New-PatchDeployment {
         [Parameter(Mandatory, ParameterSetName='many', HelpMessage='PSCustomObject with values Name and UTC')]
         [ValidateScript({ $_.CollectionName -in (Get-CMCollection).Name -and [System.DateTime]::Parse($_.UTC) })]
         [Alias('Collections', 'Groups')]
-        [PSObject[]] $PatchTimes
+        [PSObject[]] $PatchTime
     )
 
     Begin {
@@ -98,7 +98,7 @@ function New-PatchDeployment {
     Process {
         if ($PSBoundParameters.ContainsKey('PatchTimes') ) {
             # ITERATE THROUGH ARRAY OF OBJECTS AND CREATE NEW DEPLOYMENT FOR EACH
-            $PatchTimes | ForEach-Object -Process {
+            $PatchTime | ForEach-Object -Process {
                 $Splat.CollectionName = $_.CollectionName
                 $Splat.Deadline       = [DateTime] $_.UTC
                 New-CMSoftwareUpdateDeployment @Splat

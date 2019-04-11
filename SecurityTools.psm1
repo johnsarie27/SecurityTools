@@ -1,21 +1,21 @@
 # ==============================================================================
-# Updated:      2019-03-26
+# Updated:      2019-04-11
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/SecurityTools
 # ==============================================================================
 
 # IMPORT SYSTEM CENTER FUNCTIONS
-. $PSScriptRoot\New-DeploymentGroup.ps1
+. $PSScriptRoot\New-CollectionPatchTime.ps1
 . $PSScriptRoot\New-PatchDeployment.ps1
-. $PSScriptRoot\New-UpdateGroup.ps1
+. $PSScriptRoot\New-SoftwarePatchGroup.ps1
 . $PSScriptRoot\Get-DeviceCollections.ps1
 . $PSScriptRoot\Confirm-CMResource.ps1
 
 # IMPORT SCANNING AND REPORTING FUNCTIONS
 . $PSScriptRoot\ConvertTo-DbScanReport.ps1
-. $PSScriptRoot\New-AggregateReport.ps1
-. $PSScriptRoot\New-SummaryReport.ps1
+. $PSScriptRoot\New-AggregateScanReport.ps1
+. $PSScriptRoot\New-SummaryScanReport.ps1
 . $PSScriptRoot\New-ADUserReport.ps1
 
 # IMPORT WINDOWS FUNCTIONS

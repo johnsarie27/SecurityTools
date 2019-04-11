@@ -5,46 +5,21 @@ online version:
 schema: 2.0.0
 ---
 
-# New-AggregateReport
+# New-CollectionPatchTime
 
 ## SYNOPSIS
 {{Fill in the Synopsis}}
 
 ## SYNTAX
 
-### all
+### start
 ```
-New-AggregateReport -SystemScan <String> -WebScan <String> -DatabaseScan <String> [<CommonParameters>]
-```
-
-### sysdb
-```
-New-AggregateReport -SystemScan <String> -DatabaseScan <String> [<CommonParameters>]
+New-CollectionPatchTime -StartTime <String> [-TimeZone <String>] -CollectionName <String[]> [<CommonParameters>]
 ```
 
-### sysweb
+### end
 ```
-New-AggregateReport -SystemScan <String> -WebScan <String> [<CommonParameters>]
-```
-
-### sys
-```
-New-AggregateReport -SystemScan <String> [<CommonParameters>]
-```
-
-### webdb
-```
-New-AggregateReport -WebScan <String> -DatabaseScan <String> [<CommonParameters>]
-```
-
-### web
-```
-New-AggregateReport -WebScan <String> [<CommonParameters>]
-```
-
-### db
-```
-New-AggregateReport -DatabaseScan <String> [<CommonParameters>]
+New-CollectionPatchTime -EndTime <String> [-TimeZone <String>] -CollectionName <String[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -61,13 +36,28 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -DatabaseScan
-{{Fill DatabaseScan Description}}
+### -CollectionName
+Collection name
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases: CN
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -EndTime
+End time for last collection
 
 ```yaml
 Type: String
-Parameter Sets: all, sysdb, webdb, db
-Aliases: DbPath, DbFile, DataBase, D
+Parameter Sets: end
+Aliases: ET
 
 Required: True
 Position: Named
@@ -76,13 +66,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SystemScan
-{{Fill SystemScan Description}}
+### -StartTime
+Start time for first collection
 
 ```yaml
 Type: String
-Parameter Sets: all, sysdb, sysweb, sys
-Aliases: SystemPath, SystemFile, System
+Parameter Sets: start
+Aliases: ST
 
 Required: True
 Position: Named
@@ -91,15 +81,16 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -WebScan
-{{Fill WebScan Description}}
+### -TimeZone
+Time zone for start time
 
 ```yaml
 Type: String
-Parameter Sets: all, sysweb, webdb, web
-Aliases: WebPath, WebFile, Web
+Parameter Sets: (All)
+Aliases: TZ
+Accepted values: Eastern, Pacific, UTC
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -112,7 +103,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## INPUTS
 
-### None
+### System.String[]
 
 ## OUTPUTS
 

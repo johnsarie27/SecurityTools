@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# New-SummaryReport
+# New-SummaryScanReport
 
 ## SYNOPSIS
 {{Fill in the Synopsis}}
@@ -14,28 +14,28 @@ schema: 2.0.0
 
 ### sys
 ```
-New-SummaryReport -SystemScan <String> [-ExistingReport <String>] [<CommonParameters>]
+New-SummaryScanReport -SystemScan <String> [-ExistingReport <String>] [<CommonParameters>]
 ```
 
 ### sysweb
 ```
-New-SummaryReport -SystemScan <String> -WebScan <String> [-ExistingReport <String>] [<CommonParameters>]
+New-SummaryScanReport -SystemScan <String> -WebScan <String> [-ExistingReport <String>] [<CommonParameters>]
 ```
 
 ### all
 ```
-New-SummaryReport -SystemScan <String> -WebScan <String> -DatabaseScan <String> [-ExistingReport <String>]
+New-SummaryScanReport -SystemScan <String> -WebScan <String> -DatabaseScan <String> [-ExistingReport <String>]
  [<CommonParameters>]
 ```
 
 ### web
 ```
-New-SummaryReport -WebScan <String> [-ExistingReport <String>] [<CommonParameters>]
+New-SummaryScanReport -WebScan <String> [-ExistingReport <String>] [<CommonParameters>]
 ```
 
 ### db
 ```
-New-SummaryReport -DatabaseScan <String> [-ExistingReport <String>] [<CommonParameters>]
+New-SummaryScanReport -DatabaseScan <String> [-ExistingReport <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
