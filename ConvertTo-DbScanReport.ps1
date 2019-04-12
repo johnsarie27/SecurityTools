@@ -53,7 +53,7 @@ function ConvertTo-DbScanReport {
 
                 # CREATE NEW OBJECT
                 $New = @{
-                    Database = (Split-Path -Path $File -Leaf) -Replace '^([a-z0-9]+).+', '$1'
+                    Database = (Split-Path -Path $File -Leaf) -Replace '^([a-z0-9-]+)_.+', '$1'
                     RuleId = $find.RuleId
                     Finding = $find.Status
                     #QueryResults = $find.QueryResults       # THIS APPEARS TO BE MULTIPLE STRINGS AND THEREFORE AN ARRAY OBJECT
