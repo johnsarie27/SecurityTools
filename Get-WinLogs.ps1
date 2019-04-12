@@ -60,10 +60,8 @@ function Get-WinLogs {
         # CHECK FOR LIST PARAM
         if ( $PSBoundParameters.ContainsKey('List') ) { $EventTable | Select-Object -Property Id, Name }
         else {
-
             # CHECK FOR EVENT LOG TYPE
             if ( $E.Log -in $EventLogList ) {
-
                 # ADD PARAMS
                 $Params += @{ LogName = $E.Log ; InstanceId = $E.EventId }
 
@@ -71,9 +69,21 @@ function Get-WinLogs {
                 Get-EventLog @Params | Select-Object -First $Results
             }
             else {
-
                 # CREATE AND ADD FILTER
                 $Params.FilterHash = @{ ProviderName = $E.Log }
+
+                <# $FilterHashtable = @{
+                    ProviderName = $E.Log
+                    ID           = $E.EventId
+                    LogName      = <String[]>
+                    #Path         = <String[]>
+                    #Keywords     = <Long[]>
+                    #Level        = <Int32[]>
+                    #StartTime    = <DateTime>
+                    #EndTime      = <DataTime>
+                    #UserID       = <SID>
+                    #Data         = <String[]>
+                } #>
 
                 # GET WINDOWS EVENT
                 Get-WinEvent @Params | Where-Object Id -EQ $E.EventId |
