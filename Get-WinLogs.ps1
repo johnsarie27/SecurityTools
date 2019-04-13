@@ -64,7 +64,7 @@ function Get-WinLogs {
         }
 
         <# # CREATE VAR FOR RESULTS
-        $Result = @()
+        $Return = @()
 
         # SELECT SPECIFIC PROPERTIES
         $Properties = @('TimeCreated', 'Message') #>
@@ -110,6 +110,6 @@ function Get-WinLogs {
 
     End {
         <# # RETURN RESULTS
-        $Results | Select-Object -Property $Properties -First $Results #>
+        $Return | Select-Object -Property $Properties -First $Results #>
     }
 }
