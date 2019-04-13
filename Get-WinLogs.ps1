@@ -45,15 +45,23 @@ function Get-WinLogs {
         $EventTable = Get-Content -Raw -Path $PSScriptRoot\EventTable.json | ConvertFrom-Json
         $EventLogList = @('Application', 'Security', 'Setup', 'System')
 
-        # SET INITIAL SPLATTER TABLE
-        if ( $PSBoundParameters.ContainsKey('ComputerName') ) {
-            $Params = @{ ComputerName = $ComputerName }
-        } else {
-            $Params = @{}
-        }
+        <# # CREATE VAR FOR RESULTS
+        $Result = @() #>
 
-        # GET EVENT ID
-        if ( $PSBoundParameters.ContainsKey('Id') ) { $E = $EventTable | Where-Object Id -EQ $Id }
+        # CREATE SPLATTER TABLE FOR COMMON PARAMETERS
+        $Params = @{}
+
+        # ADD COMPUTERNAME IF PROVIDED
+        if ( $PSBoundParameters.ContainsKey('ComputerName') ) { $Params['ComputerName'] = $ComputerName }
+
+        # IF ID WAS PROVIDED AS AN ARGUMENT
+        if ( $PSBoundParameters.ContainsKey('Id') ) {
+            # FIND ID CORRESPONDING TO PROVIDED PARAMETER
+            $E = $EventTable | Where-Object Id -EQ $Id
+
+            # SET ID IN FILTERHASH
+            $FilterHashtable = @{ ID = $E.EventId }
+        }
     }
 
     Process {
@@ -62,15 +70,18 @@ function Get-WinLogs {
         else {
             # CHECK FOR EVENT LOG TYPE
             if ( $E.Log -in $EventLogList ) {
-                # ADD PARAMS
+                # ADD TO FILTERHASH
+                $FilterHashtable['LogName'] = $E.Log
+                
+                <# # ADD PARAMS
                 $Params += @{ LogName = $E.Log ; InstanceId = $E.EventId }
 
                 # GET EVENT LOGS
-                Get-EventLog @Params | Select-Object -First $Results
+                Get-EventLog @Params | Select-Object -First $Results #>
             }
             else {
                 # CREATE AND ADD FILTER
-                $Params.FilterHash = @{ ProviderName = $E.Log }
+                $FilterHashtable['ProviderName'] = $E.Log
 
                 <# $FilterHashtable = @{
                     ProviderName = $E.Log
@@ -84,11 +95,11 @@ function Get-WinLogs {
                     #UserID       = <SID>
                     #Data         = <String[]>
                 } #>
-
-                # GET WINDOWS EVENT
-                Get-WinEvent @Params | Where-Object Id -EQ $E.EventId |
-                    Select-Object -First $Results -Property TimeCreated, Message
             }
+
+            # GET WINDOWS EVENT
+            Get-WinEvent @Params -FilterHashtable $FilterHashtable |
+                Select-Object -First $Results -Property TimeCreated, Message
         }
     }
 }
