@@ -45,11 +45,11 @@ function Get-WinLogs {
         $EventTable = Get-Content -Raw -Path $PSScriptRoot\EventTable.json | ConvertFrom-Json
         $EventLogList = @('Application', 'Security', 'Setup', 'System')
 
-        <# # CREATE VAR FOR RESULTS
-        $Result = @() #>
-
         # CREATE SPLATTER TABLE FOR COMMON PARAMETERS
         $Params = @{}
+
+        # ADD PARAM FOR MAX EVENTS
+        if ( $PSBoundParameters.ContainsKey('Results') ) { $Params['MaxEvents'] = $Results }
 
         # ADD COMPUTERNAME IF PROVIDED
         if ( $PSBoundParameters.ContainsKey('ComputerName') ) { $Params['ComputerName'] = $ComputerName }
@@ -62,6 +62,12 @@ function Get-WinLogs {
             # SET ID IN FILTERHASH
             $FilterHashtable = @{ ID = $E.EventId }
         }
+
+        <# # CREATE VAR FOR RESULTS
+        $Result = @()
+
+        # SELECT SPECIFIC PROPERTIES
+        $Properties = @('TimeCreated', 'Message') #>
     }
 
     Process {
@@ -72,7 +78,7 @@ function Get-WinLogs {
             if ( $E.Log -in $EventLogList ) {
                 # ADD TO FILTERHASH
                 $FilterHashtable['LogName'] = $E.Log
-                
+
                 <# # ADD PARAMS
                 $Params += @{ LogName = $E.Log ; InstanceId = $E.EventId }
 
@@ -98,8 +104,12 @@ function Get-WinLogs {
             }
 
             # GET WINDOWS EVENT
-            Get-WinEvent @Params -FilterHashtable $FilterHashtable |
-                Select-Object -First $Results -Property TimeCreated, Message
+            Get-WinEvent @Params -FilterHashtable $FilterHashtable
         }
+    }
+
+    End {
+        <# # RETURN RESULTS
+        $Results | Select-Object -Property $Properties -First $Results #>
     }
 }
