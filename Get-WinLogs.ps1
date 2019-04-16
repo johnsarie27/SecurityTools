@@ -32,7 +32,7 @@ function Get-WinLogs {
         [int] $Id,
 
         [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = 'events')]
-        [ValidateScript({ Test-NetConnection -ComputerName $_ })]
+        [ValidateScript({ Test-Connection -ComputerName $_ -Count 1 -Quiet })]
         [Alias('Name', 'Computer', 'CN')]
         [string] $ComputerName,
 
