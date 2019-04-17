@@ -6,102 +6,80 @@ function Invoke-SDelete {
         Clean disk and overwrite free space using SDelete from sysinternals
     .PARAMETER Disk
         Disk object(s) to be securely deleted
-    .PARAMETER LogPath
-        Path to log folder
-    .PARAMETER ExistingDisks
-        Number of existing disks attached to system
     .PARAMETER Path
         Full path to SDelete64.exe
+    .PARAMETER LogPath
+        Path to log folder
     .INPUTS
         Microsoft.Management.Infrastructure.CimInstance.
-        System.Int.
-        System.String.
     .OUTPUTS
+        System.String.
     .EXAMPLE
-        PS C:\> Invoke-SDelete.ps1 -ExistingDisks 1 -LogPath "C:\Temp"
+        PS C:\> Get-Disk -Number 4 | Invoke-SDelete -LogPath "C:\Temp"
+        SDelete disk 4 and log actions to temp directory on C:\Temp
+    .NOTES
+        General notes
     ========================================================================= #>
-    [CmdletBinding(DefaultParameterSetName = 'targeted', SupportsShouldProcess)]
+    [CmdletBinding()]
     Param(
-        [Parameter(
-            ParameterSetName = 'targeted',
-            Mandatory,
-            ValueFromPipeline,
-            HelpMessage = 'Disk object to be cleaned'
-        )]
+        [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Disk object to be cleaned')]
         [ValidateScript( { $_.Number -notcontains 0 })] ## add custom error message
         [Microsoft.Management.Infrastructure.CimInstance[]] $Disk,
 
         [Parameter(HelpMessage = 'Path to folder where logs will be written')]
         [ValidateScript( { Test-Path -Path (Split-Path -Path $_) -PathType Container })]
+        [Alias('Log', 'LogFile')]
         [String] $LogPath = 'C:\TEMP\SDeleteLogs',
-
-        [Parameter(
-            ParameterSetName = 'all',
-            Mandatory,
-            HelpMessage = 'Number of existing disks that need to be kept'
-        )]
-        [ValidateRange(1, 5)]
-        [int] $ExistingDisks,
 
         [Parameter(HelpMessage = 'Path to SDelete64.exe')]
         [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.exe" })]
-        [Alias('Executable', 'FilePath')]
+        [Alias('Executable', 'FilePath', 'SDelete')]
         [string] $Path = "C:\TEMP\SDelete\sdelete64.exe"
     )
 
     Begin {
-        # GET ALL DISKS ATTACHED TO THE SYSTEM GREATER THAN X
-        if ( $PSBoundParameters.ContainsKey('ExistingDisks') ) {
-            $Disk = @(Get-Disk | Where-Object Number -GT ($ExistingDisks - 1))
-        }
-
+        # CONFIRM PATH EXISTENCE
+        if ( !(Test-Path -Path $Path) ) { Write-Error "SDelete not found"; Break }
+        
         # CREATE LOG FOLDER IF NOT EXIST
-        if ( -not (Test-Path $LogPath) ) { New-Item -Path $LogPath -ItemType Directory -Force }
+        if ( !(Test-Path -Path $LogPath) ) { New-Item -Path $LogPath -ItemType Directory -Force }
 
         # GET SDELETE DIRECTORY AND INITIALIZE SDELETE
         $Splat = @{
+            FilePath     = $Path
             ArgumentList = "-accepteula"
             Wait         = $true
             NoNewWindow  = $true
         }
 
-        if ( $PSBoundParameters.ContainsKey('Path') ) { $Splat.FilePath = $Path }
-        else {
-            if ( Test-Path -Path $Path ) { $Splat.FilePath = $Path }
-            else { Write-Warning "SDelete not found"; break }
-        }
-
+        # ACCEPT SDELETE EULA
         Start-Process @Splat
 
-        # SET NO WAIT FOR EACH EXECUTION
-        $Splat.Wait = $false
-        # ADD SOME LOGIC TO CHECK FOR SDELETE64.EXE BEFORE EXITING THE SCRIPT
+        # REMOVE WAIT PARAM
+        $Splat.Remove('Wait')
     }
 
     Process {
         # PERFORM FORMAT AND DELETE
-        $Disk | ForEach-Object -Process {
+        foreach ( $D in $Disk ) {
 
             # BRING DISK ONLINE AND FORMAT
-            $_ | Set-Disk -IsOffline $false
-            $_ | Set-Disk -IsReadOnly $false
-            $_ | Clear-Disk -RemoveData -Confirm:$false
+            $D | Set-Disk -IsOffline $false
+            $D | Set-Disk -IsReadOnly $false
+            $D | Clear-Disk -RemoveData -Confirm:$false
 
             # SET COMMAND ARGUMENTS AND LOGGING
-            $Splat.ArgumentList = @("-p", "3", "-z", $_.Number)
-            $Expression = '{0} -p 3 -z {1}' -f $Path, $_.Number
-            $LogName = 'SDelete_{1}_{0}.log' -f (Get-Date).ToString('yyMMddTHHmmss'), $_.SerialNumber
+            $Splat['ArgumentList'] = @("-p", 3, "-z", $D.Number)
+            #$Command = '{0} -p 3 -z {1}' -f $Path, $D.Number
+            
+            # ADD LOG FILE
+            $LogName = 'SDelete_{1}_{0}.log' -f (Get-Date -F 'yyMMddTHHmmss'), $D.SerialNumber
             $LogFile = Join-Path -Path $LogPath -ChildPath $LogName
-
-            if ( $LogPath ) {
-                $Splat.RedirectStandardOutput = $LogFile
-                #Start-Process @Splat
-                Start-Job -ScriptBlock { Invoke-Expression -Command $Expression | Tee-Object -FilePath $LogFile }
-            }
-            else {
-                #Start-Process @Splat
-                Start-Job -ScriptBlock { Invoke-Expression -Command $Expression }
-            }
+            $Splat['RedirectStandardOutput'] = $LogFile
+            
+            # START SDELETE
+            Start-Process @Splat
+            #Start-Job -ScriptBlock { Invoke-Expression -Command $Command | Tee-Object -FilePath $LogFile }
         }
     }
 
