@@ -123,13 +123,13 @@
         "Id": "21",
         "Name": "Windows Defender Scan Started",
         "Log": "Microsoft-Windows-Windows Defender",
-        "EventId": "1001"
+        "EventId": "1000"
     },
     {
         "Id": "22",
         "Name": "Windows Defender Scan Completed",
         "Log": "Microsoft-Windows-Windows Defender",
-        "EventId": "1002"
+        "EventId": "1001"
     },
     {
         "Id": "23",
