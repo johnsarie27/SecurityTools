@@ -118,5 +118,23 @@
         "Name": "Task Scheduler Created Task Process",
         "Log": "Microsoft-Windows-TaskScheduler",
         "EventId": "129"
+    },
+    {
+        "Id": "21",
+        "Name": "Windows Defender Scan Started",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": "1001"
+    },
+    {
+        "Id": "22",
+        "Name": "Windows Defender Scan Completed",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": "1002"
+    },
+    {
+        "Id": "23",
+        "Name": "Windows Defender Malware Detected",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": "1006"
     }
 ]
