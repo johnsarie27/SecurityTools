@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-ActiveGWUsers
+# Get-ActiveGWUser
 
 ## SYNOPSIS
 {{Fill in the Synopsis}}
@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-ActiveGWUsers [-ComputerName] <String> [<CommonParameters>]
+Get-ActiveGWUser [-ComputerName] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

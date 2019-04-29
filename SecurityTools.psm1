@@ -1,5 +1,5 @@
 # ==============================================================================
-# Updated:      2019-04-11
+# Updated:      2019-04-29
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/SecurityTools
@@ -20,7 +20,7 @@
 
 # IMPORT WINDOWS FUNCTIONS
 . $PSScriptRoot\Get-WinLogs.ps1
-. $PSScriptRoot\Get-ActiveGWUsers.ps1
+. $PSScriptRoot\Get-ActiveGWUser.ps1
 . $PSScriptRoot\Get-ADUserStatus.ps1
 . $PSScriptRoot\Get-RemoteBitLocker.ps1
 . $PSScriptRoot\Deploy-Script.ps1

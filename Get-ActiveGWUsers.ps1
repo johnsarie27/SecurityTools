@@ -1,4 +1,4 @@
-function Get-ActiveGWUsers {
+function Get-ActiveGWUser {
     <# =========================================================================
     .SYNOPSIS
         Get users actively connected to the remote desktop gateway
@@ -12,44 +12,52 @@ function Get-ActiveGWUsers {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Get-ActiveGWUsers -CompuaterName Gateway
+        PS C:\> Get-ActiveGWUser -CompuaterName Gateway
         Get all users connected through the RDGW "Gateway"
     .NOTES
-        Some properties are derived from the data provided by WMI
+        General notes
     ========================================================================= #>
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSObject])]
+
     Param(
         [Parameter(Mandatory, HelpMessage = 'Remote desktop gateway server' )]
-        [ValidateScript( { Test-Connection -ComputerName $_ -Quiet -Count 2 })]
+        [ValidateScript( { Test-Connection -ComputerName $_ -Quiet -Count 1 })]
         [ValidateNotNullOrEmpty()]
         [Alias('Name', 'CN', 'Computer', 'System', 'Target')]
         [string] $ComputerName
     )
 
-    $ParamHash = @{
-        Class          = "Win32_TSGatewayConnection"
-        Namespace      = "root\cimv2\TerminalServices"
-        ComputerName   = $ComputerName
-        Authentication = 6
+    Begin {
+        # SET QUERY PARAMS
+        $ParamHash = @{
+            Class        = "Win32_TSGatewayConnection"
+            Namespace    = "root\cimv2\TerminalServices"
+            ComputerName = $ComputerName
+            #Authentication = 6
+        }
+
+        # SET REGEX VARS
+        $ConnTime = @('^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\.[\d-]+$', '$1-$2-$3 $4:$5:$6')
+        $ConnDur = @('^\d{8}(\d{2})(\d{2})(\d{2})\.[\d:]+$', '$1:$2:$3')
+
+        # SET PROPERTIES TO RETURN
+        $PropertyList = @(
+            'UserName'
+            'ClientAddress'
+            @{N = 'ConnectionTime'; E = { Get-Date ($_.ConnectedTime -Replace $ConnTime) } }
+            @{N = 'ElapsedTime'; E = { ($_.ConnectionDuration -Replace $ConnDur) } }
+            'ConnectedResource'
+        )
     }
 
-    $PropertyList = @(
-        'UserName'
-        'ClientAddress'
-        @{N = 'ConnectionTime'; E = {Get-Date ($_.ConnectedTime.Substring(0, 4) + '-' + $_.ConnectedTime.Substring(4, 2) + `
-                        '-' + $_.ConnectedTime.Substring(6, 2) + ' ' + $_.ConnectedTime.Substring(8, 2) + ':' + `
-                        $_.ConnectedTime.Substring(10, 2) + ':' + $_.ConnectedTime.Substring(12, 2))}
-        }
-        #'{0}-{1}-{2} {3}:{4}:{5}' -f $_.ConnectedTime.Substring(0,4), $_.ConnectedTime.Substring(4,2), $_.ConnectedTime.Substring(6,2),
-        #$_.ConnectedTime.Substring(8,2), $_.ConnectedTime.Substring(10,2), $_.ConnectedTime.Substring(12,2)
-        # (Select-String -InputObject $_ -Pattern 'day,\s(\w{4,12})\s').Matches.Groups[1].Value
-        @{N = 'ElapsedTime'; E = {($_.ConnectionDuration.Substring(8, 2) + ':' + $_.ConnectionDuration.Substring(10, 2) + `
-                        ':' + $_.ConnectionDuration.Substring(12, 2) )}
-        }
-        'ConnectedResource'
-    )
+    Process {
+        # GET DATA
+        $Users = Get-CimInstance @ParamHash
+    }
 
-    $Users = Get-WmiObject @ParamHash | Select-Object $PropertyList
-
-    $Users
+    End {
+        # RETURN RESULTS WITH SELECTED PROPERTIES
+        $Users | Select-Object -Property $PropertyList
+    }
 }
