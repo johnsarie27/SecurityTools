@@ -32,7 +32,7 @@ function Deploy-Script {
         [ValidateScript( { Test-Connection -ComputerName $_ -Count 1 -Quiet })]
         [Alias('CN', 'Target', 'Host')]
         [string[]] $ComputerName,
-        
+
         [Parameter(Mandatory, HelpMessage = 'Script to execute on remote system')]
         [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Filter *.ps1 })]
         [Alias('FilePath', 'File', 'Script', 'Path')]

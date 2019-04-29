@@ -9,7 +9,7 @@
 . $PSScriptRoot\New-CollectionPatchTime.ps1
 . $PSScriptRoot\New-PatchDeployment.ps1
 . $PSScriptRoot\New-SoftwarePatchGroup.ps1
-. $PSScriptRoot\Get-DeviceCollections.ps1
+. $PSScriptRoot\Get-DeviceCollection.ps1
 . $PSScriptRoot\Confirm-CMResource.ps1
 
 # IMPORT SCANNING AND REPORTING FUNCTIONS
@@ -24,7 +24,7 @@
 . $PSScriptRoot\Get-ADUserStatus.ps1
 . $PSScriptRoot\Get-RemoteBitLocker.ps1
 . $PSScriptRoot\Deploy-Script.ps1
-. $PSScriptRoot\Get-ServiceAccounts.ps1
+. $PSScriptRoot\Get-ServiceAccount.ps1
 
 # IMPORT OTHER FUNCTIONS
 . $PSScriptRoot\Invoke-SDelete.ps1

@@ -84,7 +84,7 @@ function New-AggregateScanReport {
         }
         if ( $PSCmdlet.ParameterSetName -ne 'db' ) { $Splat.SuppressOpen = $true }
     }
-    
+
     Process {
         # PROCESS DB SCAN DATA
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
@@ -94,16 +94,16 @@ function New-AggregateScanReport {
             # EXPORT DB DATA TO EXCEL
             $DbCsv | Select-Object -ExcludeProperty Source | Export-ExcelBook @Splat -SheetName 'DBScan'
         }
-            
+
         # PROCESS WEB SCAN DATA
         if ( $PSBoundParameters.ContainsKey('WebScan') ) {
             $WebCsv = Import-Csv -Path $WebScan
             $WebCsv | ForEach-Object -Process { $_ | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
-            
+
             # EXPORT WEB DATA TO EXCEL
             $WebCsv | Where-Object $ActiveWhere | Select-Object -Property $Properties |
                 Export-ExcelBook @Splat -SheetName 'WebScan'
-            
+
             # INACTIVE OR INFO
             $InactiveWeb = $WebCsv | Where-Object $InactiveWhere
         }
@@ -112,19 +112,19 @@ function New-AggregateScanReport {
         if ( $PSBoundParameters.ContainsKey('SystemScan') ) {
             $SystemCsv = Import-Csv -Path $SystemScan
             $SystemCsv | ForEach-Object -Process { $_ | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'System Scan' }
-            
+
             # ADD SYSTEM SPECIFIC PROPERTIES
             $Properties += @("Detected OS", "CVE")
-            
+
             # EXPORT SYSTEM DATA TO EXCEL
             $SystemCsv | Where-Object $ActiveWhere | Select-Object -Property $Properties |
                 Export-ExcelBook @Splat -SheetName 'SystemScan'
-            
+
             # INACTIVE OR INFO
             $InactiveSystem = $SystemCsv | Where-Object $InactiveWhere
         }
     }
-    
+
     End {
         # ADD INACTIVE OR INFORMATIONAL TAB
         if ( $PSCmdlet.ParameterSetName -ne 'db' ) {
@@ -133,11 +133,11 @@ function New-AggregateScanReport {
             if ( $InactiveWeb -and $InactiveSystem ) { $AllInactive = $InactiveWeb + $InactiveSystem }
             elseif ( $InactiveWeb ) { $AllInactive = $InactiveWeb }
             elseif ( $InactiveSystem ) { $AllInactive = $InactiveSystem }
-            
+
             # ADD SOURCE TO PROPERTIES AND REMOVE SUPPRESS OPEN
             $Properties += "Source"
             $Splat.Remove('SuppressOpen')
-            
+
             # EXPORT ALL INACTIVE DATA TO EXCEL
             $AllInactive | Select-Object -Property $Properties | Export-ExcelBook @Splat -SheetName 'Inactive'
         }

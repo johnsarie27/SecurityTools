@@ -21,7 +21,7 @@ function New-SummaryScanReport {
     .EXAMPLE
         PS C:\> New-SummaryScanReport -SystemScan $Sys -WebScan $Web
         Merge and aggregate data from $Sys and $Web scans and return an Excel
-        spreadsheet file. 
+        spreadsheet file.
     ========================================================================= #>
     [CmdletBinding()]
     Param(

@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-DeviceCollections
+# Get-DeviceCollection
 
 ## SYNOPSIS
 {{Fill in the Synopsis}}
@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-DeviceCollections [-DeviceName] <String> [[-PSDrive] <String>] [<CommonParameters>]
+Get-DeviceCollection [-DeviceName] <String> [[-PSDrive] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

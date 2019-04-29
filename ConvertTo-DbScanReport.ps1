@@ -44,10 +44,10 @@ function ConvertTo-DbScanReport {
     Process {
         # LOOP THROUGH FILES
         foreach ( $File in $ReportPath ) {
-            
+
             # CONVERT FILE TO JSON
             $DBReport = Get-Content -Path $File | ConvertFrom-Json
-        
+
             # LOOP THROUGH FINDINGS
             foreach ( $find in ($DBReport.Scans.Results | Where-Object Status -EQ 'Finding') ) {
 
@@ -77,7 +77,7 @@ function ConvertTo-DbScanReport {
                     $New.Baseline = ($Baseline | Where-Object ID -EQ $RuleId).'Baseline Justification'
                 } else {
                     $New.Status = 'Active'
-                    $New.Baseline = ''    
+                    $New.Baseline = ''
                 }
 
                 # ADD TO LIST

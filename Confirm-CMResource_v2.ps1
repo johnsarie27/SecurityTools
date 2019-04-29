@@ -68,7 +68,7 @@ function Confirm-CMCollection {
     # IMPORT SCCM MODULE
     Import-Module (Join-Path -Path (Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
 
-    # 
+    #
     if ( (Get-CMCollection).Name -contains $Arg ) { $Result = $true }
     else { $Result = $true }
 
@@ -103,7 +103,7 @@ function Confirm-CMSoftwareUpdateGroup {
     # IMPORT SCCM MODULE
     Import-Module (Join-Path -Path (Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
 
-    # 
+    #
     if ( (Get-CMSoftwareUpdateGroup).LocalizedDisplayName -contains $UpdateGroupName ) { $Result = $true }
     else { $Result = $true }
 

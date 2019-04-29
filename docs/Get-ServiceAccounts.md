@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-ServiceAccounts
+# Get-ServiceAccount
 
 ## SYNOPSIS
 {{Fill in the Synopsis}}
@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-ServiceAccounts [-Environment] <String> [-Agency] <String> [-DomainName] <String>
+Get-ServiceAccount [-Environment] <String> [-Agency] <String> [-DomainName] <String>
  [-ConfigurationData] <String> [<CommonParameters>]
 ```
 

@@ -40,7 +40,7 @@ function Invoke-SDelete {
     Begin {
         # CONFIRM PATH EXISTENCE
         if ( !(Test-Path -Path $Path) ) { Write-Error "SDelete not found"; Break }
-        
+
         # CREATE LOG FOLDER IF NOT EXIST
         if ( !(Test-Path -Path $LogPath) ) { New-Item -Path $LogPath -ItemType Directory -Force }
 
@@ -71,12 +71,12 @@ function Invoke-SDelete {
             # SET COMMAND ARGUMENTS AND LOGGING
             $Splat['ArgumentList'] = @("-p", 3, "-z", $D.Number)
             #$Command = '{0} -p 3 -z {1}' -f $Path, $D.Number
-            
+
             # ADD LOG FILE
             $LogName = 'SDelete_{1}_{0}.log' -f (Get-Date -F 'yyMMddTHHmmss'), $D.SerialNumber
             $LogFile = Join-Path -Path $LogPath -ChildPath $LogName
             $Splat['RedirectStandardOutput'] = $LogFile
-            
+
             # START SDELETE
             Start-Process @Splat
             #Start-Job -ScriptBlock { Invoke-Expression -Command $Command | Tee-Object -FilePath $LogFile }

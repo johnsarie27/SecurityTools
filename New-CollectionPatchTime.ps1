@@ -21,7 +21,7 @@ function New-CollectionPatchTime {
         PS C:\> New-CollectionPatchTime -EndTime "02/13/2019 2:00 PM" -TimeZone Eastern -CN $Collections.Name
         Create new deployment group objects for Reference starting at 2:00 PM Eastern on 02/13/2019
     .NOTES
-        General notes 
+        General notes
     ========================================================================= #>
     [CmdletBinding()]
     Param(
@@ -62,7 +62,7 @@ function New-CollectionPatchTime {
 
             if ( $PSBoundParameters.ContainsKey('StartTime') ) { $Time = (Get-Date -Date $StartTime).AddHours($n) }
             elseif ( $PSBoundParameters.ContainsKey('EndTime') ) { $Time = (Get-Date -Date $EndTime).AddHours($n) }
-            
+
             $UTCTime = (Convert-TimeZone -Time $Time -Source $TimeZone -Target UTC).UTC
 
             $New = @{ CollectionName = $_ }
@@ -71,7 +71,7 @@ function New-CollectionPatchTime {
             } else {
                 $New.UTC = $UTCTime
             }
-            
+
             $Group += [PSCustomObject] $New
             $n++
         }

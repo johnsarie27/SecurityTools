@@ -18,6 +18,8 @@ function Confirm-CMDrive {
         General notes
     ========================================================================= #>
     [CmdletBinding()]
+    [OutputType(Boolean)]
+
     Param(
         [Parameter(Mandatory, HelpMessage = 'PS Drive name')]
         [string] $PSDrive
@@ -55,14 +57,16 @@ function Confirm-CMResource {
         PS C:\> Confirm-CMResource -DevinceName MyServer
         Validate that device "MyServer" exists within SCCM
     .NOTES
-        1. 
+        1.
     ========================================================================= #>
     [CmdletBinding()]
+    [OutputType(Boolean)]
+    
     Param(
         [Parameter(HelpMessage = 'PS Drive name')]
         [ValidateScript({ Confirm-CMDrive -PSDrive $_ })]
         [string] $PSDrive,
-    
+
         [Parameter(Mandatory, ParameterSetName = 'device', HelpMessage = 'Device name')]
         [string] $DeviceName,
 
@@ -93,7 +97,7 @@ function Confirm-CMResource {
     if ( !$Param ) { $Return; Pop-Location; Break }
     else { $Arg = $PSBoundParameters.$Param }
     Write-Verbose $Param
-    
+
     $Return = switch ( $Param ) { # CHANGED FROM $PSBoundParameters.Keys TO $Param
         DeviceName {
             if ( (Get-CMDevice).Name -contains $Arg ) { $true } # CHANGED FROM $PSBoundParameters.Values TO $Arg

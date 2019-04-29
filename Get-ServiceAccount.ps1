@@ -1,4 +1,4 @@
-function Get-ServiceAccounts {
+function Get-ServiceAccount {
     <# =========================================================================
     .SYNOPSIS
     .DESCRIPTION
@@ -13,12 +13,12 @@ function Get-ServiceAccounts {
     .PARAMETER ConfigurationData
         Path to configuration data file
     .INPUTS
-        System.String. Get-ServiceAccounts accepts string values for all parameters
+        System.String. Get-ServiceAccount accepts string values for all parameters
     .OUTPUTS
-        System.Object.CimInstance. Get-ServiceAccounts returns a list of CimInstance
+        System.Object.CimInstance. Get-ServiceAccount returns a list of CimInstance
         Service objects.
     .EXAMPLE
-        PS C:\> Get-ServiceAccounts -Environment STG -Agency $Ag -DomainName $DN -ConfigFile $ConfigFile
+        PS C:\> Get-ServiceAccount -Environment STG -Agency $Ag -DomainName $DN -ConfigFile $ConfigFile
         This returns all services and identities of those services for all
         systems in the staging environment for a give customer
     .NOTES

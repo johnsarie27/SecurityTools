@@ -67,7 +67,7 @@ function New-PatchDeployment {
             elseif ( $Site.Count -gt 1 ) { Write-Error "Please specify CMSite."; Pop-Location; Break }
             else { Push-Location -Path ('{0}:' -f $Site) }
         } else { Push-Location -Path ('{0}:' -f $PSDrive) }
-        
+
         # SETUP SPLAT TABLE
         $Splat = @{
             SoftwareUpdateGroupName         = $UpdateGroupName # "2018-11 Update Rollup"
@@ -94,7 +94,7 @@ function New-PatchDeployment {
             AcceptEula                      = $true
         }
     }
-    
+
     Process {
         if ($PSBoundParameters.ContainsKey('PatchTimes') ) {
             # ITERATE THROUGH ARRAY OF OBJECTS AND CREATE NEW DEPLOYMENT FOR EACH

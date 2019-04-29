@@ -80,6 +80,6 @@ function New-SoftwarePatchGroup {
             #Write-Ouput ('Update group [{0}] created successfully and patches downloaded' -f $NewUpdateGroup.LocalizedDisplayName)
         }
         Pop-Location
-    }   
+    }
 }
 
