@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# New-ADUserReport
+# Export-ADUserReport
 
 ## SYNOPSIS
 {{Fill in the Synopsis}}
@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-New-ADUserReport [[-SavePath] <String>] [<CommonParameters>]
+Export-ADUserReport [[-SavePath] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

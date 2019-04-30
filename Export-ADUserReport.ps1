@@ -1,4 +1,4 @@
-function New-ADUserReport {
+function Export-ADUserReport {
     <# =========================================================================
     .SYNOPSIS
         Generate new Active Directory report
@@ -12,16 +12,18 @@ function New-ADUserReport {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> New-ADUserReport
+        PS C:\> Export-ADUserReport
         Get report of Active Directory users
     .EXAMPLE
-        PS C:\> New-ADUserReport -Path $HOME\Desktop
+        PS C:\> Export-ADUserReport -Path $HOME\Desktop
         Get report of Active Directory users and save to desktop
     .NOTES
         $List = Get-ADUser -Filter {Name -eq 'Justin Johns'} -Properties * | select -exp MemberOf
         foreach ( $item in $List ) { $item -split ',' | select -First 1 }
     ========================================================================= #>
     [CmdletBinding()]
+    [Alias('New-ADUserReport')]
+    
     Param(
         [Parameter(HelpMessage = 'Directory to save the CSV report')]
         [ValidateScript( { Test-Path -Path $_ -PathType Container })]

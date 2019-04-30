@@ -1,5 +1,5 @@
 # ==============================================================================
-# Updated:      2019-04-29
+# Updated:      2019-04-30
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/SecurityTools
@@ -16,7 +16,7 @@
 . $PSScriptRoot\ConvertTo-DbScanReport.ps1
 . $PSScriptRoot\Export-ScanReportAggregate.ps1
 . $PSScriptRoot\Export-ScanReportSummary.ps1
-. $PSScriptRoot\New-ADUserReport.ps1
+. $PSScriptRoot\Export-ADUserReport.ps1
 
 # IMPORT WINDOWS FUNCTIONS
 . $PSScriptRoot\Get-WinLogs.ps1
