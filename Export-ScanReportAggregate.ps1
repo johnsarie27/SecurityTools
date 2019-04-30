@@ -1,4 +1,4 @@
-function New-AggregateScanReport {
+function Export-ScanReportAggregate {
     <# =========================================================================
     .SYNOPSIS
         Aggregate and merge scan results into a single report
@@ -18,7 +18,7 @@ function New-AggregateScanReport {
     .OUTPUTS
         Com.Excel.Application. Format-ScanResults returns an Excel spreadsheet
     .EXAMPLE
-        PS C:\> New-AggregateScanReport -SystemScan $Sys -WebScan $Web
+        PS C:\> Export-ScanReportAggregate -SystemScan $Sys -WebScan $Web
         Merge and aggregate data from $Sys and $Web scans into a pre-filtered
         report for easy review.
     ========================================================================= #>
@@ -69,10 +69,11 @@ function New-AggregateScanReport {
             "Resolution"
             "Evidence"
             "References"
+            @{N = 'Status'; E = { $_.'Active or inactive' }}
         )
 
-        $ActiveWhere = { $_.'Active or inactive' -ne 'Global inactive' -and $_.Severity -ne 'Informational' }
-        $InactiveWhere = { $_.'Active or inactive' -match 'inactive' -or $_.Severity -eq 'Informational' }
+        <# $ActiveWhere = { $_.'Active or inactive' -ne 'Global inactive' -and $_.Severity -ne 'Informational' }
+        $InactiveWhere = { $_.'Active or inactive' -match 'inactive' -or $_.Severity -eq 'Informational' } #>
 
         # GET SAVE FOLDER
         $Outdir = "$HOME\Desktop" # Get-Folder -Description "Save location"
@@ -101,11 +102,10 @@ function New-AggregateScanReport {
             $WebCsv | ForEach-Object -Process { $_ | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
 
             # EXPORT WEB DATA TO EXCEL
-            $WebCsv | Where-Object $ActiveWhere | Select-Object -Property $Properties |
-                Export-ExcelBook @Splat -SheetName 'WebScan'
+            $WebCsv | Select-Object -Property $Properties | Export-ExcelBook @Splat -SheetName 'WebScan'
 
-            # INACTIVE OR INFO
-            $InactiveWeb = $WebCsv | Where-Object $InactiveWhere
+            <# # INACTIVE OR INFO
+            $InactiveWeb = $WebCsv | Where-Object $InactiveWhere #>
         }
 
         # PROCESS SYSTEM SCAN DATA
@@ -117,18 +117,16 @@ function New-AggregateScanReport {
             $Properties += @("Detected OS", "CVE")
 
             # EXPORT SYSTEM DATA TO EXCEL
-            $SystemCsv | Where-Object $ActiveWhere | Select-Object -Property $Properties |
-                Export-ExcelBook @Splat -SheetName 'SystemScan'
+            $SystemCsv | Select-Object -Property $Properties | Export-ExcelBook @Splat -SheetName 'SystemScan'
 
-            # INACTIVE OR INFO
-            $InactiveSystem = $SystemCsv | Where-Object $InactiveWhere
+            <# # INACTIVE OR INFO
+            $InactiveSystem = $SystemCsv | Where-Object $InactiveWhere #>
         }
     }
 
-    End {
+    <# End {
         # ADD INACTIVE OR INFORMATIONAL TAB
         if ( $PSCmdlet.ParameterSetName -ne 'db' ) {
-
             # CHECK FOR INACTIVE OBJECT ARRAYS AND COMBINE INTO SINGEL ARRAY
             if ( $InactiveWeb -and $InactiveSystem ) { $AllInactive = $InactiveWeb + $InactiveSystem }
             elseif ( $InactiveWeb ) { $AllInactive = $InactiveWeb }
@@ -141,5 +139,5 @@ function New-AggregateScanReport {
             # EXPORT ALL INACTIVE DATA TO EXCEL
             $AllInactive | Select-Object -Property $Properties | Export-ExcelBook @Splat -SheetName 'Inactive'
         }
-    }
+    } #>
 }

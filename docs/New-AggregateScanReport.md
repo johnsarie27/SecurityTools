@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# New-AggregateScanReport
+# Export-ScanReportAggregate
 
 ## SYNOPSIS
 {{Fill in the Synopsis}}
@@ -14,37 +14,37 @@ schema: 2.0.0
 
 ### all
 ```
-New-AggregateScanReport -SystemScan <String> -WebScan <String> -DatabaseScan <String> [<CommonParameters>]
+Export-ScanReportAggregate -SystemScan <String> -WebScan <String> -DatabaseScan <String> [<CommonParameters>]
 ```
 
 ### sysdb
 ```
-New-AggregateScanReport -SystemScan <String> -DatabaseScan <String> [<CommonParameters>]
+Export-ScanReportAggregate -SystemScan <String> -DatabaseScan <String> [<CommonParameters>]
 ```
 
 ### sysweb
 ```
-New-AggregateScanReport -SystemScan <String> -WebScan <String> [<CommonParameters>]
+Export-ScanReportAggregate -SystemScan <String> -WebScan <String> [<CommonParameters>]
 ```
 
 ### sys
 ```
-New-AggregateScanReport -SystemScan <String> [<CommonParameters>]
+Export-ScanReportAggregate -SystemScan <String> [<CommonParameters>]
 ```
 
 ### webdb
 ```
-New-AggregateScanReport -WebScan <String> -DatabaseScan <String> [<CommonParameters>]
+Export-ScanReportAggregate -WebScan <String> -DatabaseScan <String> [<CommonParameters>]
 ```
 
 ### web
 ```
-New-AggregateScanReport -WebScan <String> [<CommonParameters>]
+Export-ScanReportAggregate -WebScan <String> [<CommonParameters>]
 ```
 
 ### db
 ```
-New-AggregateScanReport -DatabaseScan <String> [<CommonParameters>]
+Export-ScanReportAggregate -DatabaseScan <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -14,8 +14,8 @@
 
 # IMPORT SCANNING AND REPORTING FUNCTIONS
 . $PSScriptRoot\ConvertTo-DbScanReport.ps1
-. $PSScriptRoot\New-AggregateScanReport.ps1
-. $PSScriptRoot\New-SummaryScanReport.ps1
+. $PSScriptRoot\Export-ScanReportAggregate.ps1
+. $PSScriptRoot\Export-ScanReportSummary.ps1
 . $PSScriptRoot\New-ADUserReport.ps1
 
 # IMPORT WINDOWS FUNCTIONS

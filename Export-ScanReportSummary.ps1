@@ -1,4 +1,4 @@
-function New-SummaryScanReport {
+function Export-ScanReportSummary {
     <# =========================================================================
     .SYNOPSIS
         Summarize scan results into a single report
@@ -14,12 +14,12 @@ function New-SummaryScanReport {
     .PARAMETER ExistingReport
         Path to existing Excel Workbook so new data can be added
     .INPUTS
-        System.String. New-SummaryScanReport accepts string values for SystemScan
+        System.String. Export-ScanReportSummary accepts string values for SystemScan
         and WebScan parameters.
     .OUTPUTS
-        Com.Excel.Application. New-SummaryScanReport returns an Excel spreadsheet
+        Com.Excel.Application. Export-ScanReportSummary returns an Excel spreadsheet
     .EXAMPLE
-        PS C:\> New-SummaryScanReport -SystemScan $Sys -WebScan $Web
+        PS C:\> Export-ScanReportSummary -SystemScan $Sys -WebScan $Web
         Merge and aggregate data from $Sys and $Web scans and return an Excel
         spreadsheet file.
     ========================================================================= #>
