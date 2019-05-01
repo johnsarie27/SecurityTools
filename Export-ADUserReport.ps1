@@ -23,7 +23,7 @@ function Export-ADUserReport {
     ========================================================================= #>
     [CmdletBinding()]
     [Alias('New-ADUserReport')]
-    
+
     Param(
         [Parameter(HelpMessage = 'Directory to save the CSV report')]
         [ValidateScript( { Test-Path -Path $_ -PathType Container })]

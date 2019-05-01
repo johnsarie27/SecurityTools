@@ -21,7 +21,7 @@ function Get-DeviceCollection {
     ========================================================================= #>
     [CmdletBinding()]
     [Alias('Get-DeviceCollections')]
-    
+
     Param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, HelpMessage = 'Device name')]
         [ValidateScript({ Confirm-CMResource -DeviceName $_ })]

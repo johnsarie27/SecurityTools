@@ -18,7 +18,7 @@ function Confirm-CMDrive {
         General notes
     ========================================================================= #>
     [CmdletBinding()]
-    [OutputType(Boolean)]
+    [OutputType([System.Boolean])]
 
     Param(
         [Parameter(Mandatory, HelpMessage = 'PS Drive name')]
@@ -60,8 +60,8 @@ function Confirm-CMResource {
         1.
     ========================================================================= #>
     [CmdletBinding()]
-    [OutputType(Boolean)]
-    
+    [OutputType([System.Boolean])]
+
     Param(
         [Parameter(HelpMessage = 'PS Drive name')]
         [ValidateScript({ Confirm-CMDrive -PSDrive $_ })]

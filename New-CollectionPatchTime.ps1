@@ -24,6 +24,8 @@ function New-CollectionPatchTime {
         General notes
     ========================================================================= #>
     [CmdletBinding()]
+    [OutputType([System.Object[]])]
+
     Param(
         [Parameter(Mandatory, ParameterSetName='start', HelpMessage='Start time for first collection')]
         [ValidateScript( { [System.DateTime]::Parse($_) })]
