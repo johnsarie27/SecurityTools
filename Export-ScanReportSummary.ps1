@@ -86,7 +86,7 @@ function Export-ScanReportSummary {
                 $Count = ($DbCsv | Where-Object Name -EQ $_.Name | Measure-Object).Count
                 $_ | Add-Member -MemberType NoteProperty -Name 'Count' -Value $Count
                 $_ | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'DB Scan'
-                $_ | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
+                $_ | Add-Member -MemberType NoteProperty -Name 'Notes' -Value $_.RuleId
                 $_ | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
                 $_ | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
             }
