@@ -96,7 +96,7 @@ function New-PatchDeployment {
     }
 
     Process {
-        if ($PSBoundParameters.ContainsKey('PatchTimes') ) {
+        if ($PSBoundParameters.ContainsKey('PatchTime') ) {
             # ITERATE THROUGH ARRAY OF OBJECTS AND CREATE NEW DEPLOYMENT FOR EACH
             $PatchTime | ForEach-Object -Process {
                 $Splat.CollectionName = $_.CollectionName
