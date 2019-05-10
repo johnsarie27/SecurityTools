@@ -69,7 +69,7 @@ PowerShellVersion = '4.0'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Confirm-CMResource', 'ConvertTo-DbScanReport', 'Deploy-Script', 'Export-ADUserReport', 'Export-ScanReportAggregate', 'Export-ScanReportSummary', 'Get-ActiveGWUser', 'Get-ADUserStatus', 'Get-DeviceCollection', 'Get-HAGroup', 'Get-RemoteBitLocker', 'Get-ServiceAccount', 'Get-WinLogs', 'Invoke-SDelete', 'New-CollectionPatchTime', 'New-PatchDeployment', 'New-SoftwarePatchGroup')
+FunctionsToExport = @('Confirm-CMResource', 'ConvertTo-DbScanReport', 'Deploy-Script', 'Get-ADUserReport', 'Export-ScanReportAggregate', 'Export-ScanReportSummary', 'Get-ActiveGWUser', 'Get-ADUserStatus', 'Get-DeviceCollection', 'Get-HAGroup', 'Get-RemoteBitLocker', 'Get-ServiceAccount', 'Get-WinLogs', 'Invoke-SDelete', 'New-CollectionPatchTime', 'New-PatchDeployment', 'New-SoftwarePatchGroup')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -78,7 +78,7 @@ CmdletsToExport = @()
 VariablesToExport = @('EventTable')
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = @('Get-DeviceCollections', 'New-ADUserReport', 'Get-ADUserReport')
+AliasesToExport = @('Get-DeviceCollections', 'New-ADUserReport', 'Export-ADUserReport')
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
