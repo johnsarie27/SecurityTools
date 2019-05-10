@@ -22,7 +22,7 @@ function Export-ADUserReport {
         foreach ( $item in $List ) { $item -split ',' | select -First 1 }
     ========================================================================= #>
     [CmdletBinding()]
-    [Alias('New-ADUserReport')]
+    [Alias('New-ADUserReport', 'Get-ADUserReport')]
 
     Param(
         [Parameter(HelpMessage = 'Directory to save the CSV report')]
