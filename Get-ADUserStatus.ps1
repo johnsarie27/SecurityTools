@@ -9,8 +9,10 @@ function Get-ADUserStatus {
         User name of target user.
     .PARAMETER PartialName
         First or last name of user account.
+    .PARAMETER DomainController
+        Specify Domain Controller to use for query.
     .INPUTS
-        System.String.
+        None.
     .OUTPUTS
         System.Object.
     .EXAMPLE
@@ -21,7 +23,7 @@ function Get-ADUserStatus {
     ========================================================================= #>
     [CmdletBinding(DefaultParameterSetName = 'username')]
     Param (
-        [Parameter(Mandatory, ValueFromPipeline, ParameterSetName = 'username', HelpMessage = 'User account name')]
+        [Parameter(Mandatory, ParameterSetName = 'username', HelpMessage = 'User account name')]
         [ValidateScript( { Get-ADUser -Identity $_ })]
         [Alias('User')]
         [string] $UserName,
@@ -29,46 +31,65 @@ function Get-ADUserStatus {
         [Parameter(Mandatory, ParameterSetName = 'fragment', HelpMessage = "Part of user's name")]
         [ValidateScript( { (Get-ADUser -Filter * -Properties *).CN -match "$_" })]
         [Alias('Name', 'Fragment')]
-        [string] $PartialName
+        [string] $PartialName,
+        
+        [Parameter(HelpMessage = 'Hostname of Domain Controller')]
+        [ValidateScript( { Test-Connection -ComputerName $_ -Quiet -Count 1 })]
+        [Alias('DC')]
+        [string] $DomainController
     )
 
-    if ( $PSBoundParameters.ContainsKey('UserName') ) { $SearchName = $UserName }
-    if ( $PSBoundParameters.ContainsKey('PartialName') ) {
-        $SearchName = Get-ADUser -Filter * -Properties "SamAccountName", "CN" |
-            Where-Object "CN" -Match $PartialName | Select-Object -EXP SamAccountName
+    Begin {
+        # CHECK FOR USERNAME
+        if ( $PSBoundParameters.ContainsKey('UserName') ) { $SearchName = $UserName }
+        
+        # CHECK FOR PARTIAL NAME
+        if ( $PSBoundParameters.ContainsKey('PartialName') ) {
+            $SearchName = Get-ADUser -Filter * -Properties "SamAccountName", "CN" |
+                Where-Object "CN" -Match $PartialName | Select-Object -EXP SamAccountName
 
-        # LIST THE USERS RETURNED AND ALLOW SELECTION
-        if ( $SearchName.Count -gt 1 ) { $SearchName = Get-Object -ObjectList $SearchName -String }
-        # THERE SHOULD BE NO ELSE STATEMENT IF THE PARAMETER VALIDATION WORKED
+            # LIST THE USERS RETURNED AND ALLOW SELECTION
+            if ( $SearchName.Count -gt 1 ) { $SearchName = Get-Object -ObjectList $SearchName -String }
+            # THERE SHOULD BE NO ELSE STATEMENT IF THE PARAMETER VALIDATION WORKED
+        }
+
+        # $Filter = { CN -match $Name Enabled -eq $True -and PasswordNeverExpires -eq $False }
+        $Properties = @(
+            # --------------------- ACCOUNT INFO
+            'CN',
+            'EmailAddress',
+            'Created',
+            'Enabled',
+            'LastLogonDate',
+            @{N = 'DaysSinceLastLogon'; E = {(New-TimeSpan -Start $_.LastLogonDate -End (Get-Date)).Days}}
+            # --------------------- LOCKOUT INFO
+            'LockedOut',
+            'AccountLockoutTime',
+            # --------------------- PASSWORD EXPIRIATION
+            'PasswordExpired',
+            @{Name = "ExpiryDate"; Expression = {[datetime]::FromFileTime($_."msDS-UserPasswordExpiryTimeComputed")}}
+            # --------------------- BAD PASSWORDS
+            'LastBadPasswordAttempt',
+            'BadLogonCount',
+            #'logonCount',
+            'Modified',
+            'PasswordLastSet'
+            # --------------------- OTHER
+            #@{N='ExpiresTime';E={[datetime]::FromFileTime($_.accountExpires)}},
+            #@{N='BadPwTime';E={[datetime]::FromFileTime($_.badPasswordTime)}},
+            #'badPwdCount',
+            #'CannotChangePassword',
+        )
     }
-
-    # $Filter = { CN -match $Name Enabled -eq $True -and PasswordNeverExpires -eq $False }
-    $Properties = @(
-        # --------------------- ACCOUNT INFO
-        'CN',
-        'EmailAddress',
-        'Created',
-        'Enabled',
-        'LastLogonDate',
-        @{N = 'DaysSinceLastLogon'; E = {(New-TimeSpan -Start $_.LastLogonDate -End (Get-Date)).Days}}
-        # --------------------- LOCKOUT INFO
-        'LockedOut',
-        'AccountLockoutTime',
-        # --------------------- PASSWORD EXPIRIATION
-        'PasswordExpired',
-        @{Name = "ExpiryDate"; Expression = {[datetime]::FromFileTime($_."msDS-UserPasswordExpiryTimeComputed")}}
-        # --------------------- BAD PASSWORDS
-        'LastBadPasswordAttempt',
-        'BadLogonCount',
-        #'logonCount',
-        'Modified',
-        'PasswordLastSet'
-        # --------------------- OTHER
-        #@{N='ExpiresTime';E={[datetime]::FromFileTime($_.accountExpires)}},
-        #@{N='BadPwTime';E={[datetime]::FromFileTime($_.badPasswordTime)}},
-        #'badPwdCount',
-        #'CannotChangePassword',
-    )
-
-    Get-ADUser -Identity $SearchName -Properties *, "msDS-UserPasswordExpiryTimeComputed" | Select-Object $Properties
+    
+    Process {
+        # CHECK FOR DC PARAM
+        if ( $PSBoundParameters.ContainsKey('DomainController') ) {
+            # GET DATA FROM SPECIFIED DC
+            Get-ADUser -Identity $SearchName -Properties *, "msDS-UserPasswordExpiryTimeComputed" -Server $DomainController | Select-Object $Properties
+        } else {
+            # GET DATA FROM ANY DC
+            Get-ADUser -Identity $SearchName -Properties *, "msDS-UserPasswordExpiryTimeComputed" | Select-Object $Properties
+        }
+    }
 }
