@@ -1,5 +1,5 @@
 # ==============================================================================
-# Updated:      2019-05-10
+# Updated:      2019-05-17
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/SecurityTools
@@ -25,6 +25,7 @@
 . $PSScriptRoot\Get-RemoteBitLocker.ps1
 . $PSScriptRoot\Deploy-Script.ps1
 . $PSScriptRoot\Get-ServiceAccount.ps1
+. $PSScriptRoot\Get-ActiveSmartCardCerts.ps1
 
 # IMPORT OTHER FUNCTIONS
 . $PSScriptRoot\Invoke-SDelete.ps1

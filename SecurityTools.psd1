@@ -51,7 +51,9 @@ PowerShellVersion = '4.0'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @('UtilityFunctions') # REQUIRED FOR EXPORT-SCANREPORTS
+RequiredModules = @('UtilityFunctions')
+# UTILITYFUNCTIONS REQUIRED FOR EXPORT-SCANREPORTS
+# CONSIDER ADDING PSPKI FOR SMARTCARDCERTS
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
@@ -69,7 +71,7 @@ RequiredModules = @('UtilityFunctions') # REQUIRED FOR EXPORT-SCANREPORTS
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Confirm-CMResource', 'ConvertTo-DbScanReport', 'Deploy-Script', 'Get-ADUserReport', 'Export-ScanReportAggregate', 'Export-ScanReportSummary', 'Get-ActiveGWUser', 'Get-ADUserStatus', 'Get-DeviceCollection', 'Get-HAGroup', 'Get-RemoteBitLocker', 'Get-ServiceAccount', 'Get-WinLogs', 'Invoke-SDelete', 'New-CollectionPatchTime', 'New-PatchDeployment', 'New-SoftwarePatchGroup')
+FunctionsToExport = @('Confirm-CMResource', 'ConvertTo-DbScanReport', 'Deploy-Script', 'Get-ADUserReport', 'Export-ScanReportAggregate', 'Export-ScanReportSummary', 'Get-ActiveGWUser', 'Get-ADUserStatus', 'Get-DeviceCollection', 'Get-HAGroup', 'Get-RemoteBitLocker', 'Get-ServiceAccount', 'Get-WinLogs', 'Invoke-SDelete', 'New-CollectionPatchTime', 'New-PatchDeployment', 'New-SoftwarePatchGroup', 'Get-ActiveSmartCardCerts')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
