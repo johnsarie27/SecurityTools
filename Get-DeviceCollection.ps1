@@ -34,24 +34,36 @@ function Get-DeviceCollection {
         [string] $PSDrive
     )
 
-    # IMPORT SCCM MODULE AND CD TO SITE
-    Import-Module (Join-Path -Path $(Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
+    Begin {
+        # IMPORT SCCM MODULE AND CD TO SITE
+        Import-Module (Join-Path -Path $(Split-Path $env:SMS_ADMIN_UI_PATH) -ChildPath "ConfigurationManager.psd1")
 
-    if ( !$PSBoundParameters.ContainsKey('PSDrive') ) {
-        $Site = (Get-PSDrive -PSProvider CMSite).Name
-        if ( !$Site ) { Write-Error "No drives from PSProvider CMSite available."; Pop-Location; Break }
-        elseif ( $Site.Count -gt 1 ) { Write-Error "Please specify CMSite."; Pop-Location; Break }
-        else { Push-Location -Path ('{0}:' -f $Site) }
-    } else { Push-Location -Path ('{0}:' -f $PSDrive) }
+        # CHANGE DRIVE TO CM SITE
+        if ( !$PSBoundParameters.ContainsKey('PSDrive') ) {
+            $Site = (Get-PSDrive -PSProvider CMSite).Name
+            if ( !$Site ) { Write-Error "No drives from PSProvider CMSite available."; Pop-Location; Break }
+            elseif ( $Site.Count -gt 1 ) { Write-Error "Please specify CMSite."; Pop-Location; Break }
+            else { Push-Location -Path ('{0}:' -f $Site) }
+        }
+        else { Push-Location -Path ('{0}:' -f $PSDrive) }
 
-    # FIND ALL COLLECTIONS WHERE GIVEN DEVICE IS A MEMBER
-    $CollectionList = @()
-    foreach ( $collection in ( Get-CMCollection ) ) {
-        $DeviceList = @( Get-CMCollectionMember -CollectionName $collection.Name | Select-Object -EXP Name )
-        if ( $DeviceList -contains $DeviceName ) { $CollectionList += $collection }
+        # CREATE NEW ARRAY
+        $CollectionList = @()
     }
 
-    $CollectionList | Select-Object CollectionID, Name, LastMemberChangeTime, MemberCount
+    Process {
+        # LOOP ALL COLLECTIONS
+        foreach ( $collection in ( Get-CMCollection ) ) {
+            $DeviceList = @( Get-CMCollectionMember -CollectionName $collection.Name | Select-Object -EXP Name )
+            if ( $DeviceList -contains $DeviceName ) { $CollectionList += $collection }
+        }
+    }
+    
+    End {
+        # RETURN COLLECTION DETAILS
+        $CollectionList | Select-Object CollectionID, Name, LastMemberChangeTime, MemberCount
 
-    Pop-Location
+        # RESET LOCATION
+        Pop-Location
+    }
 }
