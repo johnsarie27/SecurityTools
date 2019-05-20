@@ -53,28 +53,37 @@ function Get-ADUserStatus {
             # THERE SHOULD BE NO ELSE STATEMENT IF THE PARAMETER VALIDATION WORKED
         }
 
+        # ACTIVE DIRECTORY PARAMETERS
+        $ADParams = @{
+            Identity   = $SearchName
+            Properties = "*", "msDS-UserPasswordExpiryTimeComputed"
+        }
+
+        # ADD DOMAIN CONTROLLER
+        if ( $PSBoundParameters.ContainsKey('DomainController') ) { $ADParams['Server'] = $DomainController }
+
         # $Filter = { CN -match $Name Enabled -eq $True -and PasswordNeverExpires -eq $False }
         $Properties = @(
-            # --------------------- ACCOUNT INFO
+            # ACCOUNT INFO
             'CN',
             'EmailAddress',
             'Created',
             'Enabled',
             'LastLogonDate',
             @{N = 'DaysSinceLastLogon'; E = {(New-TimeSpan -Start $_.LastLogonDate -End (Get-Date)).Days}}
-            # --------------------- LOCKOUT INFO
+            # LOCKOUT INFO
             'LockedOut',
             'AccountLockoutTime',
-            # --------------------- PASSWORD EXPIRIATION
+            # PASSWORD EXPIRIATION
             'PasswordExpired',
             @{Name = "ExpiryDate"; Expression = {[datetime]::FromFileTime($_."msDS-UserPasswordExpiryTimeComputed")}}
-            # --------------------- BAD PASSWORDS
+            # BAD PASSWORDS
             'LastBadPasswordAttempt',
             'BadLogonCount',
             #'logonCount',
             'Modified',
             'PasswordLastSet'
-            # --------------------- OTHER
+            # OTHER
             #@{N='ExpiresTime';E={[datetime]::FromFileTime($_.accountExpires)}},
             #@{N='BadPwTime';E={[datetime]::FromFileTime($_.badPasswordTime)}},
             #'badPwdCount',
@@ -83,13 +92,7 @@ function Get-ADUserStatus {
     }
     
     Process {
-        # CHECK FOR DC PARAM
-        if ( $PSBoundParameters.ContainsKey('DomainController') ) {
-            # GET DATA FROM SPECIFIED DC
-            Get-ADUser -Identity $SearchName -Properties *, "msDS-UserPasswordExpiryTimeComputed" -Server $DomainController | Select-Object $Properties
-        } else {
-            # GET DATA FROM ANY DC
-            Get-ADUser -Identity $SearchName -Properties *, "msDS-UserPasswordExpiryTimeComputed" | Select-Object $Properties
-        }
+        # GET DATA
+        Get-ADUser @ADParams | Select-Object -Property $Properties
     }
 }
