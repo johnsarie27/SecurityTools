@@ -67,7 +67,7 @@ function New-PatchDeployment {
 
         # SETUP SPLAT TABLE
         $Splat = @{
-            SoftwareUpdateGroupName         = $UpdateGroupName # "2018-11 Update Rollup"
+            SoftwareUpdateGroupName         = $UpdateGroupName
             DeploymentName                  = "Microsoft Software Updates - {0}" -f (Get-Date).ToString("yyyy-MM-dd hh:mm:ss tt")
             DeploymentType                  = "Required"
             SendWakeUpPacket                = $false
@@ -96,14 +96,14 @@ function New-PatchDeployment {
         if ($PSBoundParameters.ContainsKey('PatchTime') ) {
             # ITERATE THROUGH ARRAY OF OBJECTS AND CREATE NEW DEPLOYMENT FOR EACH
             $PatchTime | ForEach-Object -Process {
-                $Splat.CollectionName   = $_.CollectionName
-                $Splat.DeadlineDateTime = [DateTime] $_.UTC
+                $Splat['CollectionName']   = $_.CollectionName
+                $Splat['DeadlineDateTime'] = [DateTime] $_.UTC
                 New-CMSoftwareUpdateDeployment @Splat
             }
         }
         if ( $PSBoundParameters.ContainsKey('CollectionName') ) {
-            $Splat.CollectionName   = $CollectionName
-            $Splat.DeadlineDateTime = [DateTime] $Deadline
+            $Splat['CollectionName']   = $CollectionName
+            $Splat['DeadlineDateTime'] = [DateTime] $Deadline
             New-CMSoftwareUpdateDeployment @Splat
         }
     }
