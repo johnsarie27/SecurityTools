@@ -17,12 +17,9 @@ function New-PatchDeployment {
         Custom object containing CMCollection name ("Name") and deadline ("UTC")
         or list of aforementioned custom objects.
     .INPUTS
-        System.String. New-PatchDeployment accepts string values for UpdateGroup
-        and CollectionName parameters.
-        System.DateTime. New-PatchDeployment accepts DateTime value for Deadline
-        System.PSObject. New-PatchDeployment accepts a custom PSObject for PatchTimes
+        None.
     .OUTPUTS
-        System.Object
+        System.Object.
     .EXAMPLE
         PS C:\> New-PatchDeployment -UpdateGroupName 'Jan Updates' -CollectionName 'UATAppServers' -Deadline (Get-Date).AddDays(3)
         Create a new patch deployment to deploy 'Jan Updates' to the collection 'UATAppServers' in 3 days from now
@@ -99,14 +96,14 @@ function New-PatchDeployment {
         if ($PSBoundParameters.ContainsKey('PatchTime') ) {
             # ITERATE THROUGH ARRAY OF OBJECTS AND CREATE NEW DEPLOYMENT FOR EACH
             $PatchTime | ForEach-Object -Process {
-                $Splat.CollectionName = $_.CollectionName
-                $Splat.Deadline       = [DateTime] $_.UTC
+                $Splat.CollectionName   = $_.CollectionName
+                $Splat.DeadlineDateTime = [DateTime] $_.UTC
                 New-CMSoftwareUpdateDeployment @Splat
             }
         }
         if ( $PSBoundParameters.ContainsKey('CollectionName') ) {
-            $Splat.CollectionName   = $CollectionName       # "Ad Hoc Patching and Maintenance"
-            $Splat.DeadlineDateTime = [DateTime] $Deadline  # (Get-Date).AddDays(3)
+            $Splat.CollectionName   = $CollectionName
+            $Splat.DeadlineDateTime = [DateTime] $Deadline
             New-CMSoftwareUpdateDeployment @Splat
         }
     }
