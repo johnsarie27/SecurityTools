@@ -90,7 +90,7 @@ function Export-ScanReportAggregate {
         # PROCESS DB SCAN DATA
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
             $DbCsv = Import-Csv -Path $DatabaseScan
-            $DbCsv | ForEach-Object -Process { $_ | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Database Scan' }
+            foreach ( $i in $DbCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Database Scan' }
 
             # EXPORT DB DATA TO EXCEL
             $DbCsv | Select-Object -ExcludeProperty Source | Export-ExcelBook @Splat -SheetName 'DBScan'
@@ -99,7 +99,7 @@ function Export-ScanReportAggregate {
         # PROCESS WEB SCAN DATA
         if ( $PSBoundParameters.ContainsKey('WebScan') ) {
             $WebCsv = Import-Csv -Path $WebScan
-            $WebCsv | ForEach-Object -Process { $_ | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
+            foreach ( $i in $WebCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
 
             # EXPORT WEB DATA TO EXCEL
             $WebCsv | Select-Object -Property $Properties | Export-ExcelBook @Splat -SheetName 'WebScan'
@@ -111,7 +111,7 @@ function Export-ScanReportAggregate {
         # PROCESS SYSTEM SCAN DATA
         if ( $PSBoundParameters.ContainsKey('SystemScan') ) {
             $SystemCsv = Import-Csv -Path $SystemScan
-            $SystemCsv | ForEach-Object -Process { $_ | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'System Scan' }
+            foreach ( $i in $SystemCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'System Scan' }
 
             # ADD SYSTEM SPECIFIC PROPERTIES
             $Properties += @("Detected OS", "CVE")

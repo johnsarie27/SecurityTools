@@ -60,15 +60,15 @@ function New-CollectionPatchTime {
 
     Process {
         # LOOP THROUGH COLLECTIONS
-        $CollectionName | ForEach-Object -Process {
+        foreach ( $c in $CollectionName ) {
 
             if ( $PSBoundParameters.ContainsKey('StartTime') ) { $Time = (Get-Date -Date $StartTime).AddHours($n) }
             elseif ( $PSBoundParameters.ContainsKey('EndTime') ) { $Time = (Get-Date -Date $EndTime).AddHours($n) }
 
             $UTCTime = (Convert-TimeZone -Time $Time -Source $TimeZone -Target UTC).UTC
 
-            $New = @{ CollectionName = $_ }
-            if ( $_ -match 'Security' ) {
+            $New = @{ CollectionName = $c }
+            if ( $c -match 'Security' ) {
                 $New.UTC = (Get-Date -Date ('{0} 05:00 AM' -f $UTCTime.ToString("yyyy-MM-dd"))).AddDays(2)
             } else {
                 $New.UTC = $UTCTime

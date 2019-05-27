@@ -82,13 +82,13 @@ function Export-ScanReportSummary {
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
             $DbCsv = Import-Csv -Path $DatabaseScan
             $UDbCsv = $DbCsv | Sort-Object Name -Unique
-            $UDbCsv | ForEach-Object -Process {
-                $Count = ($DbCsv | Where-Object Name -EQ $_.Name | Measure-Object).Count
-                $_ | Add-Member -MemberType NoteProperty -Name 'Count' -Value $Count
-                $_ | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'DB Scan'
-                $_ | Add-Member -MemberType NoteProperty -Name 'Notes' -Value $_.RuleId
-                $_ | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
-                $_ | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+            foreach ( $object in $UDbCsv ) {
+                $Count = ($DbCsv | Where-Object Name -EQ $object.Name | Measure-Object).Count
+                $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $Count
+                $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'DB Scan'
+                $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value $object.RuleId
+                $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
+                $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
             }
         }
 
