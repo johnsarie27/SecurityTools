@@ -25,7 +25,8 @@ function Get-RemoteBitLocker {
     )
 
     Begin {
-        $Results = @()
+        $Results = [System.Collections.Generic.List[System.Object]]::new()
+
         $Properties = @(
             'VolumeType'
             'MountPoint'
@@ -39,14 +40,12 @@ function Get-RemoteBitLocker {
     }
 
     Process {
-        $ComputerName | ForEach-Object -Process {
+        foreach ( $Computer in $ComputerName ) {
             if ( $PSBoundParameters.ContainsKey('ComputerName') ) {
-                <# $Session = New-PSSession -ComputerName $_
-                $Results += Invoke-Command -Session $Session -ScriptBlock { Get-BitLockerVolume }
-                Remove-PSSession -Session $Session #>
-                $Results += Invoke-Command -ComputerName $_ -ScriptBlock { Get-BitLockerVolume }
+                $Results.Add( (Invoke-Command -ComputerName $Computer -ScriptBlock { Get-BitLockerVolume }) )
+            } else {
+                Get-BitLockerVolume
             }
-            else { Get-BitLockerVolume }
         }
     }
 
