@@ -7,6 +7,8 @@ function Revoke-SupersededCardCert {
         exists for the same user.
     .PARAMETER ConfigPath
         Path to file containing configuration data
+    .PARAMETER Confirm
+        Switch parameter to confirm revocation of certificates
     .INPUTS
         None.
     .OUTPUTS
@@ -24,12 +26,12 @@ function Revoke-SupersededCardCert {
         [Alias('ConfigFile', 'DataFile', 'CP', 'File')]
         [string] $ConfigPath,
 
-        [Parameter(HelpMessage = 'Confirm revokation')]
-        [bool] $Confirm = $false
+        [Parameter(HelpMessage = 'Confirm revocation')]
+        [switch] $Confirm
     )
 
     # IMPORT REQUIRED MODULES
-    Import-Module -Name SecurityTools, PSPKI
+    Import-Module -Name PSPKI
 
     # GET ALL ACTIVE CERTIFICATES
     $ActiveCerts = Get-ActiveSmartCardCert -ConfigPath $ConfigPath
@@ -52,15 +54,15 @@ function Revoke-SupersededCardCert {
                     $cert | Revoke-Certificate -Reason 'Superseded'
 
                     # SET MESSAGE
-                    $Message = 'Revoked certificate for {0} expired {1} with hash value {2}'
+                    $Message = 'Revoked certificate for [{0}] expired [{1}] with serial no. {2}'
                 }
                 else {
                     # SET MESSAGE
-                    $Message = 'Certificate for {0} expired {1} with has value {2}'
+                    $Message = 'Certificate for [{0}] expired [{1}] with serial no. {2}'
                 }
 
                 # WRITE OUTPUT
-                Write-Output ($Message -f $cert.'Request.RequesterName', $cert.NotAfter, $cert.Hash)
+                Write-Output ($Message -f $cert.'Request.RequesterName', $cert.NotAfter, $cert.SerialNumber)
             }
         }
     }
