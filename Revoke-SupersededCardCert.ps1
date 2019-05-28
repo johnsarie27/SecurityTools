@@ -54,11 +54,11 @@ function Revoke-SupersededCardCert {
                     $cert | Revoke-Certificate -Reason 'Superseded'
 
                     # SET MESSAGE
-                    $Message = 'Revoked certificate for [{0}] expired [{1}] with serial no. {2}'
+                    $Message = 'Revoked certificate for [{0}] expired [{1}] with serial no. [{2}]'
                 }
                 else {
                     # SET MESSAGE
-                    $Message = 'Certificate for [{0}] expired [{1}] with serial no. {2}'
+                    $Message = 'Certificate for [{0}] expired [{1}] with serial no. [{2}]'
                 }
 
                 # WRITE OUTPUT
