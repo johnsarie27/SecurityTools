@@ -37,14 +37,14 @@ function New-SoftwarePatchGroup {
 
     # CREATE LIST OF UPDATES FOR NEW UPDATE GROUP
     $Pattern = '(Critical\sUpdates|Feature\sPacks|Security\sUpdates|Service\sPacks|Tools|Update\sRollups|Updates|Upgrades)'
-    $NewUpdates = [System.Collections.Generic.List[psobject]]::new()
+    $NewUpdates = @()
     foreach ( $SU in Get-CMSoftwareUpdate -Fast ) {
         if (
             $SU.IsSuperseded -EQ $false -and $SU.IsExpired -eq $false -and`
             $SU.LocalizedDisplayName -notmatch 'preview' -and`
             $SU.LocalizedCategoryInstanceNames -match $Pattern
         )
-        { $NewUpdates.Add($SU) }
+        { $NewUpdates += $SU }
     }
 
     Try {
