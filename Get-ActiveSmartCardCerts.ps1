@@ -1,4 +1,4 @@
-function Get-ActiveSmartCardCerts {
+function Get-ActiveSmartCardCert {
     <# =========================================================================
     .SYNOPSIS
         Get all active smart card certificates
@@ -13,7 +13,7 @@ function Get-ActiveSmartCardCerts {
     .OUTPUTS
         System.Object[].
     .EXAMPLE
-        PS C:\> Get-ActiveSmartCardCerts -CP C:\config.json
+        PS C:\> Get-ActiveSmartCardCert -CP C:\config.json
         Get all active smart card certificates from CA and template in config.json
     .NOTES
         General notes
