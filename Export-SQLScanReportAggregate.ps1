@@ -20,7 +20,7 @@ function Export-SQLScanReportAggregate {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'Path to SQL Vulnerability Assessemnt report file')]
+        [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Path to SQL Vulnerability Assessemnt report file')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
         [Alias('IP', 'Report', 'Input')]
         [string[]] $InputPath,
