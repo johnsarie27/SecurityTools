@@ -18,6 +18,7 @@
 . $PSScriptRoot\Export-ScanReportSummary.ps1
 . $PSScriptRoot\Get-ADUserReport.ps1
 . $PSScriptRoot\Export-SQLVAReport.ps1
+. $PSScriptRoot\Export-SQLScanReportAggregate.ps1
 
 # IMPORT WINDOWS FUNCTIONS
 . $PSScriptRoot\Get-WinLogs.ps1
