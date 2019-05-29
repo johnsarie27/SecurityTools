@@ -1,18 +1,20 @@
 function Export-SQLScanReportAggregate {
     <# =========================================================================
     .SYNOPSIS
-        Short description
+        Aggregate results from SQL Vulnerability Assessment scans
     .DESCRIPTION
-        Long description
-    .PARAMETER abc
-        Parameter description (if any)
+        Aggregate results from SQL Vulnerability Assessment scans into a single report
+    .PARAMETER InputPath
+        Path to SQL Vulnerability Assessemnt report file
+    .PARAMETER OutputPath
+        Path to output report file
     .INPUTS
-        Inputs (if any)
+        System.String.
     .OUTPUTS
-        Output (if any)
+        System.String.
     .EXAMPLE
-        PS C:\> <example usage>
-        Explanation of what the example does
+        PS C:\> Export-SQLScanReportAggregate -InputPath (Get-ChildItem C:\MyScans).FullName
+        Combine all scans in C:\MyScans folder into a single report and output to the desktop.
     .NOTES
         General notes
     ========================================================================= #>
@@ -64,5 +66,8 @@ function Export-SQLScanReportAggregate {
 
         # EXPORT NEW AGGREATE REPORT
         $ReportData | Export-Excel @ExcelParams
+
+        # RETURN PATH TO REPORT
+        Write-Output $OutputPath
     }
 }
