@@ -26,7 +26,8 @@ function Export-SQLScanReportAggregate {
         [string[]] $InputPath,
 
         [Parameter(HelpMessage = 'Path to output report file')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
+        #[ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
+        [ValidateNotNullOrEmpty()]
         [Alias('OP', 'Output')]
         [string] $OutputPath
     )
@@ -41,7 +42,7 @@ function Export-SQLScanReportAggregate {
         # GET OUTPUT PATH
         if ( -not $PSBoundParameters.ContainsKey('OutputPath') ) {
             # STORE ON DESKTOP
-            Join-Path -Path "$HOME\Desktop" -ChildPath ('Aggregate-SQL-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
+            $OutputPath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Aggregate-SQL-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
         }
     }
 
