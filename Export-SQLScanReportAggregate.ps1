@@ -6,10 +6,12 @@ function Export-SQLScanReportAggregate {
         Aggregate results from SQL Vulnerability Assessment scans into a single report
     .PARAMETER InputPath
         Path to directory of SQL Vulnerability Assessemnt file(s)
+    .PARAMETER ZipPath
+        Path to zip file containing repots
     .PARAMETER OutputPath
         Path to output report file
     .INPUTS
-        System.String.
+        None.
     .OUTPUTS
         System.String.
     .EXAMPLE
@@ -18,12 +20,23 @@ function Export-SQLScanReportAggregate {
     .NOTES
         General notes
     ========================================================================= #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'folder')]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'Path to directory of SQL Vulnerability Assessemnt file(s)')]
+        [Parameter(
+            Mandatory, ParameterSetName = 'folder',
+            HelpMessage = 'Path to directory of SQL Vulnerability Assessemnt file(s)'
+        )]
         [ValidateScript({ Get-ChildItem -Path $_ -Include "*.xlsx" -Recurse })]
         [Alias('IP', 'Directory', 'Input')]
         [string] $InputPath,
+
+        [Parameter(
+            Mandatory, ParameterSetName = 'zip',
+            HelpMessage = 'Path to zip file containing reports'
+        )]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.zip" })]
+        [Alias('Zip', 'ZP')]
+        [string] $ZipPath,
 
         [Parameter(HelpMessage = 'Path to output report file')]
         [ValidateScript({
@@ -48,7 +61,16 @@ function Export-SQLScanReportAggregate {
             $OutputPath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Aggregate-SQL-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
         }
 
-        # GET REPORTS
+        # GET REPORTS FROM ZIP
+        if ( $PSBoundParameters.ContainsKey('ZipPath') ) {
+            # EXTRACT FILES
+            Expand-Archive -Path $ZipPath -DestinationPath ($ExpandPath = "$HOME\Desktop\Extract")
+
+            # RESET INPUTPATH VAR
+            $InputPath = $ExpandPath
+        }
+
+        # GET REPORTS FROM FOLDER
         $ReportFiles = Get-ChildItem -Path ('{0}\*.xlsx' -f $InputPath)
     }
 
@@ -76,5 +98,8 @@ function Export-SQLScanReportAggregate {
 
         # RETURN PATH TO REPORT
         Write-Output $OutputPath
+
+        # REMOVE EXTRACTED FILES
+        if ( $ExpandPath ) { Remove-Item -Path $InputPath -Recurse -Force }
     }
 }
