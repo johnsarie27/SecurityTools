@@ -26,7 +26,10 @@ function Export-SQLScanReportAggregate {
         [string] $InputPath,
 
         [Parameter(HelpMessage = 'Path to output report file')]
-        #[ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
+        [ValidateScript({
+            if ( (Test-Path -Path (Split-Path -Path $_) -PathType Container) -and `
+            ((Split-Path -Path $_ -Leaf) -match '^[\w-]+\.xlsx$') ) { Return $true }
+        })]
         [ValidateNotNullOrEmpty()]
         [Alias('OP', 'Output')]
         [string] $OutputPath
