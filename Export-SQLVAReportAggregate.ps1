@@ -58,7 +58,7 @@ function Export-SQLVAReportAggregate {
         Import-Module -Name ImportExcel
 
         # CREATE ARRAY
-        $Data = @()
+        $Data = [System.Collections.Generic.List[System.Object]]::new()
 
         # GET OUTPUT PATH
         if ( -not $PSBoundParameters.ContainsKey('OutputPath') ) {
@@ -82,8 +82,10 @@ function Export-SQLVAReportAggregate {
     Process {
         # LOOP THROUGH ALL PROVIDED REPORTS
         foreach ( $Report in $ReportFiles.FullName ) {
-            # ADD TO ARRAY
-            $Data += Import-Excel -Path $Report -StartRow 8 -WorksheetName Results
+            # ADD ALL FAILED STATUS TO ARRAY
+            foreach ( $o in (Import-Excel -Path $Report -StartRow 8 -WorksheetName Results) ) {
+                if ( $o.Status -eq 'Fail' ) { $Data.Add($o) }
+            }
         }
     }
 

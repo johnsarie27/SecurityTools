@@ -14,10 +14,9 @@ function Export-ScanReportSummary {
     .PARAMETER ExistingReport
         Path to existing Excel Workbook so new data can be added
     .INPUTS
-        System.String. Export-ScanReportSummary accepts string values for SystemScan
-        and WebScan parameters.
+        None.
     .OUTPUTS
-        Com.Excel.Application. Export-ScanReportSummary returns an Excel spreadsheet
+        None.
     .EXAMPLE
         PS C:\> Export-ScanReportSummary -SystemScan $Sys -WebScan $Web
         Merge and aggregate data from $Sys and $Web scans and return an Excel
@@ -41,9 +40,9 @@ function Export-ScanReportSummary {
         [Alias('WebPath', 'WebFile', 'WS')]
         [string] $WebScan,
 
-        [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'CSV file for web scan report')]
-        [Parameter(Mandatory, ParameterSetName = 'db', HelpMessage = 'CSV file for web scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
+        [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'XLSX file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = 'db', HelpMessage = 'XLSX file for web scan report')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
         [ValidateNotNullOrEmpty()]
         [Alias('DbScan', 'DatabasePath', 'DbFile', 'DS')]
         [string] $DatabaseScan,
@@ -56,40 +55,42 @@ function Export-ScanReportSummary {
 
     Begin {
         # IMPORT REQUIRED MODULES
-        Import-Module -Name UtilityFunctions
-
-        $Properties = @('Name', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')
-        # 'CVSS'
-
-        # SET REPORT OPTIONS
-        $Splat = @{
-            SheetName = (Get-Date -UFormat %b).ToUpper()
-            AutoSize  = $true
-            Freeze    = $true
-        }
+        Import-Module -Name ImportExcel
 
         # ADD PATH TO EXCEL PARAMS
-        $ReportPath = "$HOME\Desktop" ; $Date = Get-Date -Format "yyyy-MM"
-        if ( $PSBoundParameters.ContainsKey('ExistingReport') ) {
-            $Splat.Path = $ExistingReport
-        } else {
-            $Splat.Path = Join-Path -Path $ReportPath -ChildPath ('Scan-Summary-Report_{0}.xlsx' -f $Date)
-        }
+        $ReportPath = "$HOME\Desktop"; $Date = Get-Date -Format "yyyy-MM"
     }
 
     Process {
         # PROCESS DATABASE SCAN DATA
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
-            $DbCsv = Import-Csv -Path $DatabaseScan
-            $UDbCsv = $DbCsv | Sort-Object Name -Unique
-            foreach ( $object in $UDbCsv ) {
-                $Count = ($DbCsv | Where-Object Name -EQ $object.Name | Measure-Object).Count
+            $DbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
+            $UDbScan = $DbScan | Sort-Object -Unique ID
+            foreach ( $object in $UDbScan ) {
+                # CREATE COLUMNS FOR SUMMARY REPORT
+                $Count = ($DbScan | Where-Object ID -EQ $object.ID | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'DB Scan'
-                $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value $object.RuleId
                 $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
                 $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+
+                <# # ADDING THE PROPERTIES BELOW IS SLOWER THAN DEFINING AND SELECTING PROPERTIES
+                # KEEPING THIS HERE FOR HISTORICAL PURPOSES
+                $object | Add-Member -MemberType NoteProperty -Name 'Name' -Value $object.'Security Check'
+                $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value $object.ID
+                $object | Add-Member -MemberType NoteProperty -Name 'Severity' -Value $object.Risk #>
             }
+
+            # SET PROPERTY CONVERSION
+            $NewProps = (
+                'Count', 'Source', 'Risk Adj.', 'TFS', 'Status',
+                @{N = 'Name'; E = { $_.'Security Check' } },
+                @{N = 'Notes'; E = { $_.ID } },
+                @{N = 'Severity'; E = { $_.Risk } }
+            )
+
+            # CHANGE COLUMN NAMES
+            $UDbScan = $UDbScan | Select-Object -Property $NewProps
         }
 
         # PROCESS SYSTEM SCAN DATA
@@ -121,13 +122,30 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'Status' -Value $object.'Active or inactive'
             }
         }
-
-        # COMBINE UNIQUE OBJECTS AND REMOVE FIELDS
-        $ScanObjects = $USysCsv + $UWebCsv + $UDbCsv
     }
 
     End {
+        # COMBINE UNIQUE OBJECTS AND REMOVE FIELDS
+        $ScanObjects = $USysCsv + $UWebCsv + $UDbScan
+
+        # SET REPORT OPTIONS
+        $Splat = @{
+            WorksheetName = (Get-Date -UFormat %b).ToUpper()
+            AutoSize     = $true
+            AutoFilter   = $true
+            FreezeTopRow = $true
+            BoldTopRow   = $true
+            MoveToEnd    = $true
+        }
+
+        # ADD PATH PARAMETER AND ARGUMENT
+        if ( $PSBoundParameters.ContainsKey('ExistingReport') ) { $Splat['Path'] = $ExistingReport }
+        else { $Splat['Path'] = Join-Path -Path $ReportPath -ChildPath ('Scan-Summary-Report_{0}.xlsx' -f $Date) }
+
+        # SET DESIRED PROPERTIES
+        $Properties = @('Name', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')#'CVSS'
+        
         # EXPORT TO EXCEL
-        $ScanObjects | Select-Object -Property $Properties | Export-ExcelBook @Splat
+        $ScanObjects | Select-Object -Property $Properties | Export-Excel @Splat
     }
 }
