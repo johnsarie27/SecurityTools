@@ -45,7 +45,10 @@ function Export-SQLScanReportAggregate {
         })]
         [ValidateNotNullOrEmpty()]
         [Alias('OP', 'Output')]
-        [string] $OutputPath
+        [string] $OutputPath,
+
+        [Parameter(HelpMessage = 'Return path to aggreate report')]
+        [switch] $PassThru
     )
 
     Begin {
@@ -97,7 +100,7 @@ function Export-SQLScanReportAggregate {
         $Data | Export-Excel @ExcelParams
 
         # RETURN PATH TO REPORT
-        Write-Output $OutputPath
+        if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $OutputPath }
 
         # REMOVE EXTRACTED FILES
         if ( $ExpandPath ) { Remove-Item -Path $InputPath -Recurse -Force }
