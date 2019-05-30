@@ -10,6 +10,8 @@ function Export-SQLScanReportAggregate {
         Path to zip file containing repots
     .PARAMETER OutputPath
         Path to output report file
+    .PARAMETER PassThru
+        Return report path
     .INPUTS
         None.
     .OUTPUTS
