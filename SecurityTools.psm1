@@ -1,5 +1,5 @@
 # ==============================================================================
-# Updated:      2019-05-29
+# Updated:      2019-05-30
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/SecurityTools
@@ -13,7 +13,6 @@
 . $PSScriptRoot\Confirm-CMResource.ps1
 
 # IMPORT SCANNING AND REPORTING FUNCTIONS
-. $PSScriptRoot\ConvertTo-DbScanReport.ps1
 . $PSScriptRoot\Export-ScanReportAggregate.ps1
 . $PSScriptRoot\Export-ScanReportSummary.ps1
 . $PSScriptRoot\Get-ADUserReport.ps1
@@ -33,6 +32,9 @@
 # IMPORT OTHER FUNCTIONS
 . $PSScriptRoot\Invoke-SDelete.ps1
 . $PSScriptRoot\Get-HAGroup.ps1
+
+# DEPRECATE
+. $PSScriptRoot\ConvertTo-DbScanReport.ps1
 
 # VARIABLES
 $EventTable = Get-Content -Raw -Path $PSScriptRoot\EventTable.json | ConvertFrom-Json
