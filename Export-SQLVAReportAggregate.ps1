@@ -1,4 +1,4 @@
-function Export-SQLScanReportAggregate {
+function Export-SQLVAReportAggregate {
     <# =========================================================================
     .SYNOPSIS
         Aggregate results from SQL Vulnerability Assessment scans
@@ -17,7 +17,7 @@ function Export-SQLScanReportAggregate {
     .OUTPUTS
         System.String.
     .EXAMPLE
-        PS C:\> Export-SQLScanReportAggregate -InputPath (Get-ChildItem C:\MyScans).FullName
+        PS C:\> Export-SQLVAReportAggregate -InputPath (Get-ChildItem C:\MyScans).FullName
         Combine all scans in C:\MyScans folder into a single report and output to the desktop.
     .NOTES
         General notes
