@@ -10,7 +10,7 @@ function Export-SQLVAReport {
     .INPUTS
         None.
     .OUTPUTS
-        None.
+        System.String.
     .EXAMPLE
         PS C:\> .\Export-SQLVAReport.ps1 -CP C:\config.json
         This exports out a scan report using SQL Vulnerability Assessment tool for
@@ -30,7 +30,10 @@ function Export-SQLVAReport {
         [Parameter(HelpMessage = 'Output directory')]
         [ValidateScript( { Test-Path -Path $_ -PathType Container })]
         [Alias('OP', 'Output')]
-        [string] $OutputPath = "D:\MSSQL-VA"
+        [string] $OutputPath = "D:\MSSQL-VA",
+
+        [Parameter(HelpMessage = 'Return path to report directory')]
+        [switch] $PassThru
     )
 
     # IMPORT REQUIRED MODULES
@@ -62,4 +65,7 @@ function Export-SQLVAReport {
         # EXPORT SCAN RESULT TO EXCEL SPREADSHEET
         $Result | Export-SqlVulnerabilityAssessmentScan -FolderPath (Join-Path -Path $Folder -ChildPath $ReportFile)
     }
+
+    # RETURN PATH TO REPORT FOLDER
+    if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $Folder }
 }
