@@ -65,7 +65,7 @@ function Export-ScanReportSummary {
         # PROCESS DATABASE SCAN DATA
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
             $DbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
-            $UDbScan = $DbScan | Sort-Object -Unique ID
+            $UDbScan = $DbScan <# | Where-Object Status -EQ 'Fail'  #>| Sort-Object -Unique ID
             foreach ( $object in $UDbScan ) {
                 # CREATE COLUMNS FOR SUMMARY REPORT
                 $Count = ($DbScan | Where-Object ID -EQ $object.ID | Measure-Object).Count
