@@ -19,13 +19,17 @@ function Export-SQLVAReport {
         General notes
         https://docs.microsoft.com/en-us/sql/relational-databases/security/sql-vulnerability-assessment?view=sql-server-2017
     ========================================================================= #>
-
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = '__cnf')]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'Path to configuration data file')]
+        [Parameter(Mandatory, ParameterSetName = '__cnf', HelpMessage = 'Path to configuration data file')]
         [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.json" })]
         [Alias('ConfigFile', 'DataFile', 'CP', 'File')]
         [string] $ConfigPath,
+
+        [Parameter(Mandatory, ValueFromPipeline, ParameterSetName = '__srv', HelpMessage = 'SQL server name')]
+        [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
+        [Alias('SN', 'Server')]
+        [string[]] $ServerName,
 
         [Parameter(HelpMessage = 'Output directory')]
         [ValidateScript( { Test-Path -Path $_ -PathType Container })]
@@ -36,36 +40,43 @@ function Export-SQLVAReport {
         [switch] $PassThru
     )
 
-    # IMPORT REQUIRED MODULES
-    Import-Module -Name SqlServer
+    Begin {
+        # IMPORT REQUIRED MODULES
+        Import-Module -Name SqlServer
 
-    # GET DATE OBJECTS AND SET OUTPUT FOLDER
-    $Date = Get-Date
-    $DateFolder = '{0}\{1}' -f $Date.ToString("yyyy"), $Date.ToString("MM")
-    $Folder = Join-Path -Path $OutputPath -ChildPath $DateFolder
+        # GET DATE OBJECTS AND SET OUTPUT FOLDER
+        $Date = Get-Date
+        $DateFolder = '{0}\{1}' -f $Date.ToString("yyyy"), $Date.ToString("MM")
+        $Folder = Join-Path -Path $OutputPath -ChildPath $DateFolder
 
-    # CREATE FOLDER IF NOT EXIST
-    if ( -not (Test-Path -Path $Folder) ) { New-Item -Path $Folder -ItemType Directory }
+        # CREATE FOLDER IF NOT EXIST
+        if ( -not (Test-Path -Path $Folder) ) { New-Item -Path $Folder -ItemType Directory }
 
-    # GET CONFIGURATION FILE
-    $Config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
+        # CHECK FOR PARAMETER SET
+        if ( $PSBoundParameters.ContainsKey('ConfigPath') ) {
+            # GET CONFIGURATION FILE
+            $Config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
 
-    # VARIABLE CONTAINING THE LIST OF DBS TO SCAN
-    $Dbs = $Config.Customers.SQLServers
-
-    # LOOP THROUGH ALL DB SERVERS
-    foreach ( $Server in $Dbs ) {
-
-        # CREATE FILE
-        $ReportFile = '{0}_{1}.xlsx' -f (Get-Date -F "yyyy-MM-dd"), $Server
-
-        # EXECUTE SCAN AND SET TO VARIABLE
-        $Result = Invoke-SqlVulnerabilityAssessmentScan -ServerInstance $Server -DatabaseName "master"
-
-        # EXPORT SCAN RESULT TO EXCEL SPREADSHEET
-        $Result | Export-SqlVulnerabilityAssessmentScan -FolderPath (Join-Path -Path $Folder -ChildPath $ReportFile)
+            # VARIABLE CONTAINING THE LIST OF DBS TO SCAN
+            $ServerName = $Config.Customers.SQLServers
+        }
     }
 
-    # RETURN PATH TO REPORT FOLDER
-    if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $Folder }
+    Process {
+        # LOOP THROUGH ALL DB SERVERS
+        foreach ( $Server in $ServerName ) {
+
+            # CREATE FILE
+            $ReportFile = '{0}_{1}.xlsx' -f (Get-Date -F "yyyy-MM-dd"), $Server
+
+            # EXECUTE SCAN AND SET TO VARIABLE
+            $Scan = Invoke-SqlVulnerabilityAssessmentScan -ServerInstance $Server -DatabaseName "master"
+
+            # EXPORT SCAN RESULT TO EXCEL SPREADSHEET
+            $Scan | Export-SqlVulnerabilityAssessmentScan -FolderPath (Join-Path -Path $Folder -ChildPath $ReportFile)
+
+            # RETURN PATH TO REPORT FOLDER
+            if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $Folder }
+        }
+    }
 }
