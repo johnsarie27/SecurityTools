@@ -84,7 +84,7 @@ function Export-SQLVAReportAggregate {
         foreach ( $Report in $ReportFiles.FullName ) {
             # ADD ALL FAILED STATUS TO ARRAY
             foreach ( $o in (Import-Excel -Path $Report -StartRow 8 -WorksheetName Results) ) {
-                if ( $o.Status -eq 'Fail' ) { $Data.Add($o) }
+                if ( $o.Status -ne 'Pass' ) { $Data.Add($o) }
             }
         }
     }
