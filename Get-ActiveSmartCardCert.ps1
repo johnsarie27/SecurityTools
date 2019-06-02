@@ -42,20 +42,17 @@ function Get-ActiveSmartCardCert {
         # IMPORT REQUIRED MODULE
         Import-Module -Name PSPKI
 
-        # SET WHERE CLAUSES
-        if ( $PSBoundParameters.ContainsKey('Expired') ) {
-            # WHERE EXPIRATION IS PRIOR TO TODAY
-            $Where = { $_.CertificateTemplate -EQ $CertificateTemplate -and $_.NotAfter -lt (Get-Date) }
-        }
-        else {
-            # WHERE EXPIRATION IS AFTER TODAY
-            $Where = { $_.CertificateTemplate -EQ $CertificateTemplate -and $_.NotAfter -gt (Get-Date) }
-        }
+        # SET FILTER
+        $Filter = @("CertificateTemplate -EQ $CertificateTemplate")
+
+        # SET FILTERS
+        if ( $PSBoundParameters.ContainsKey('Expired') ) { $Filter += "NotAfter -lt $(Get-Date)" }
+        else { $Filter += "NotAfter -gt $(Get-Date)" }
     }
 
     Process {
         # GET DATA
-        $Results = Get-CA -Name $CertificateAuthority | Get-IssuedRequest | Where-Object $Where
+        $Results = Get-CA -Name $CertificateAuthority | Get-IssuedRequest -Filter $Filter
 
         # OUTPUT DATA
         $Results
