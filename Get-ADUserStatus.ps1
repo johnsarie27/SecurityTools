@@ -32,7 +32,7 @@ function Get-ADUserStatus {
         [ValidateScript( { (Get-ADUser -Filter * -Properties *).CN -match "$_" })]
         [Alias('Name', 'Fragment')]
         [string] $PartialName,
-        
+
         [Parameter(HelpMessage = 'Hostname of Domain Controller')]
         [ValidateScript( { Test-Connection -ComputerName $_ -Quiet -Count 1 })]
         [Alias('DC')]
@@ -42,7 +42,7 @@ function Get-ADUserStatus {
     Begin {
         # CHECK FOR USERNAME
         if ( $PSBoundParameters.ContainsKey('UserName') ) { $SearchName = $UserName }
-        
+
         # CHECK FOR PARTIAL NAME
         if ( $PSBoundParameters.ContainsKey('PartialName') ) {
             $SearchName = Get-ADUser -Filter * -Properties "SamAccountName", "CN" |
@@ -90,7 +90,7 @@ function Get-ADUserStatus {
             #'CannotChangePassword',
         )
     }
-    
+
     Process {
         # GET DATA
         Get-ADUser @ADParams | Select-Object -Property $Properties

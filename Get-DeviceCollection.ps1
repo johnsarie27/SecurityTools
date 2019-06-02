@@ -58,7 +58,7 @@ function Get-DeviceCollection {
             if ( $DeviceList -contains $DeviceName ) { $CollectionList += $collection }
         }
     }
-    
+
     End {
         # RETURN COLLECTION DETAILS
         $CollectionList | Select-Object CollectionID, Name, LastMemberChangeTime, MemberCount

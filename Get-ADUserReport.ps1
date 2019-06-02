@@ -51,7 +51,7 @@ function Get-ADUserReport {
         # CHECK FOR DC
         if ( $PSBoundParameters.ContainsKey('DomainController') ) {
             # GET DATA FROM SPECIFIED DC
-            $Report = Get-ADUser -Filter * -Properties * -Server $DomainController | Select-Object -Property $PropList    
+            $Report = Get-ADUser -Filter * -Properties * -Server $DomainController | Select-Object -Property $PropList
         } else {
             # GET DATA
             $Report = Get-ADUser -Filter * -Properties * | Select-Object -Property $PropList

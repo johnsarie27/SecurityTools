@@ -144,7 +144,7 @@ function Export-ScanReportSummary {
 
         # SET DESIRED PROPERTIES
         $Properties = @('Name', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')#'CVSS'
-        
+
         # EXPORT TO EXCEL
         $ScanObjects | Select-Object -Property $Properties | Export-Excel @Splat
     }
