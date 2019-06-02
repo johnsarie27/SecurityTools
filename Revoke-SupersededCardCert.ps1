@@ -5,8 +5,8 @@ function Revoke-SupersededCardCert {
     .DESCRIPTION
         Revoke smart card certificates where a newer certificate of the same template
         exists for the same user.
-    .PARAMETER ConfigPath
-        Path to file containing configuration data
+    .PARAMETER Certificate
+        Certificate object
     .PARAMETER ReportOnly
         Switch parameter to report expiration status of certificates
     .INPUTS
@@ -21,10 +21,11 @@ function Revoke-SupersededCardCert {
     ========================================================================= #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'Path to configuration data file')]
-        [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.json" })]
-        [Alias('ConfigFile', 'DataFile', 'CP', 'File')]
-        [string] $ConfigPath,
+        [Parameter(Mandatory, HelpMessage = 'Certificate objects')]
+        #[ValidateScript({ $_.Status -EQ 'Active' })]
+        [ValidateNotNullOrEmpty()]
+        [Alias('AC', 'ActiveCerts', 'Certs')]
+        [SysadminsLV.PKI.Management.CertificateServices.Database.AdcsDbRow[]] $Certificate,
 
         [Parameter(HelpMessage = 'Confirm revocation')]
         [switch] $ReportOnly
@@ -33,9 +34,6 @@ function Revoke-SupersededCardCert {
     Begin {
         # IMPORT REQUIRED MODULES
         Import-Module -Name PSPKI
-
-        # GET ALL ACTIVE CERTIFICATES
-        $ActiveCerts = Get-ActiveSmartCardCert -ConfigPath $ConfigPath
 
         # SET MESSAGES
         $RevokeMsg = 'Revoke certificate for [{0}] expired [{1}] with serial no. [{2}]?'
@@ -52,10 +50,10 @@ function Revoke-SupersededCardCert {
 
     Process {
         # LOOP THROUGH ALL ACTIVE CERTS
-        foreach ( $cert in $ActiveCerts ) {
+        foreach ( $cert in $Certificate ) {
 
             # GET ALL CERTS FOR USER
-            $UserCerts = $ActiveCerts | Where-Object 'Request.RequesterName' -EQ $cert.'Request.RequesterName'
+            $UserCerts = $Certificate | Where-Object 'Request.RequesterName' -EQ $cert.'Request.RequesterName'
 
             # LOOP THROUGH ALL CERTS FOR USER
             $UserCerts | ForEach-Object -Process {
