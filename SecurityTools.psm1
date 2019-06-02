@@ -27,7 +27,7 @@
 . $PSScriptRoot\Deploy-Script.ps1
 . $PSScriptRoot\Get-ServiceAccount.ps1
 . $PSScriptRoot\Get-ActiveSmartCardCert.ps1
-. $PSScriptRoot\Revoke-SupersededCardCert.ps1
+. $PSScriptRoot\Revoke-SupersededCert.ps1
 
 # IMPORT OTHER FUNCTIONS
 . $PSScriptRoot\Invoke-SDelete.ps1

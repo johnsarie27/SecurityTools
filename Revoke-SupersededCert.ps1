@@ -1,4 +1,4 @@
-function Revoke-SupersededCardCert {
+function Revoke-SupersededCert {
     <# =========================================================================
     .SYNOPSIS
         Revoke smart card certificates that have been superseded
@@ -14,7 +14,7 @@ function Revoke-SupersededCardCert {
     .OUTPUTS
         System.String[].
     .EXAMPLE
-        PS C:\> .\Revoke-SupersededCardCerts.ps1 -CP C:\config.json
+        PS C:\> .\Revoke-SupersededCerts.ps1 -CP C:\config.json
         Revoke all card certificates where a duplicate with a later expiration exists.
     .NOTES
         General notes

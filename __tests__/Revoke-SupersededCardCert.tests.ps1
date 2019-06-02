@@ -2,6 +2,6 @@
 
 Import-Module -Name $PSScriptRoot\..\SecurityTools.psd1 -Force
 
-Describe -Name "Revoke-SupersededCardCert" -Fixture {
+Describe -Name "Revoke-SupersededCert" -Fixture {
 
 }
