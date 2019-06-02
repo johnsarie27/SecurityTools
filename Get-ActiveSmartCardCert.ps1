@@ -6,8 +6,8 @@ function Get-ActiveSmartCardCert {
         Get all active smart card certificates based on template in provided configuration file
     .PARAMETER ConfigPath
         Path to file containing configuration data
-    .PARAMETER Inactive
-        Return inactive certificates
+    .PARAMETER Expired
+        Return expired certificates
     .INPUTS
         None.
     .OUTPUTS
@@ -26,8 +26,8 @@ function Get-ActiveSmartCardCert {
         [Alias('ConfigFile', 'DataFile', 'CP', 'File')]
         [string] $ConfigPath,
 
-        [Parameter(HelpMessage = 'Return inactive certificates')]
-        [switch] $Inactive
+        [Parameter(HelpMessage = 'Return expired certificates')]
+        [switch] $Expired
     )
 
     Begin {
@@ -44,7 +44,7 @@ function Get-ActiveSmartCardCert {
         $Template = ($Config.Domain.CA.Templates | Where-Object Name -EQ 'SmartCard').Value
 
         # SET WHERE CLAUSES
-        if ( $PSBoundParameters.ContainsKey('Inactive') ) {
+        if ( $PSBoundParameters.ContainsKey('Expired') ) {
             # WHERE EXPIRATION IS PRIOR TO TODAY
             $Where = { $_.CertificateTemplate -EQ $Template -and $_.NotAfter -lt (Get-Date) }
         }
