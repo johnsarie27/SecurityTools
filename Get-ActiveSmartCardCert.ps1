@@ -17,14 +17,22 @@ function Get-ActiveSmartCardCert {
         Get all active smart card certificates from CA and template in config.json
     .NOTES
         General notes
+        # GET CONFIG DATA
+        $Config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
+        $CA = $Config.Domain.CA.Subordinate
+        $CT = ($Config.Domain.CA.Templates | Where-Object Name -EQ 'SmartCard').Value
     ========================================================================= #>
-
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'Path to configuration data file')]
-        [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.json" })]
-        [Alias('ConfigFile', 'DataFile', 'CP', 'File')]
-        [string] $ConfigPath,
+        [Parameter(Mandatory, HelpMessage = 'Ceritificate Authority server')]
+        [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
+        [Alias('CA', 'Authority')]
+        [string] $CertificateAuthority,
+
+        [Parameter(Mandatory, HelpMessage = 'Ceritificate template')]
+        [ValidatePattern('')]
+        [Alias('CT', 'Template')]
+        [string] $CertificateTemplate,
 
         [Parameter(HelpMessage = 'Return expired certificates')]
         [switch] $Expired
@@ -34,29 +42,20 @@ function Get-ActiveSmartCardCert {
         # IMPORT REQUIRED MODULE
         Import-Module -Name PSPKI
 
-        # GET CONFIG DATA
-        $Config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
-
-        # GET CA
-        $CA = $Config.Domain.CA.Subordinate
-
-        # GET TEMPLATE
-        $Template = ($Config.Domain.CA.Templates | Where-Object Name -EQ 'SmartCard').Value
-
         # SET WHERE CLAUSES
         if ( $PSBoundParameters.ContainsKey('Expired') ) {
             # WHERE EXPIRATION IS PRIOR TO TODAY
-            $Where = { $_.CertificateTemplate -EQ $Template -and $_.NotAfter -lt (Get-Date) }
+            $Where = { $_.CertificateTemplate -EQ $CertificateTemplate -and $_.NotAfter -lt (Get-Date) }
         }
         else {
             # WHERE EXPIRATION IS AFTER TODAY
-            $Where = { $_.CertificateTemplate -EQ $Template -and $_.NotAfter -gt (Get-Date) }
+            $Where = { $_.CertificateTemplate -EQ $CertificateTemplate -and $_.NotAfter -gt (Get-Date) }
         }
     }
 
     Process {
         # GET DATA
-        $Results = Get-CA -Name $CA | Get-IssuedRequest | Where-Object $Where
+        $Results = Get-CA -Name $CertificateAuthority | Get-IssuedRequest | Where-Object $Where
 
         # OUTPUT DATA
         $Results
