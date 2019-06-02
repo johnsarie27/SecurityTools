@@ -61,20 +61,27 @@ function Revoke-SupersededCert {
                 # COMPARE EXPIRATION DATE
                 if ( $_.NotAfter -gt $cert.NotAfter ) {
 
-                    # ADD SHOULD PROCESS
+                    # CHECK FOR REPORT ONLY
                     if ( $ReportOnly ) {
-                        # SET MESSAGE
+                        # OUTPUT REPORT MESSAGE
                         Write-Output ($ReportMsg -f $cert.'Request.RequesterName', $cert.NotAfter, $cert.SerialNumber)
                     }
                     else {
                         # ADD SHOULD PROCESS
                         if ($PSCmdlet.ShouldProcess($RevokeMsg -f $cert.'Request.RequesterName', $cert.NotAfter, $cert.SerialNumber)) {
 
-                            # REVOKE CERT
-                            $cert | Revoke-Certificate -Reason 'Superseded'
+                            # ADD TRY/CATCH
+                            try {
+                                # REVOKE CERT
+                                $cert | Revoke-Certificate -Reason 'Superseded'
 
-                            # RETURN RESULT
-                            Write-Output 'Certificate revoked.'
+                                # RETURN RESULT MESSAGE
+                                Write-Output 'Certificate revoked.'
+                            }
+                            catch {
+                                # RETURN RESULT MESSAGE
+                                Write-Output 'Failed to revoke certificate. Error: {0}' -f $_.Exception.Message
+                            }
                         }
                     }
                 }
