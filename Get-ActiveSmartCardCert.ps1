@@ -25,12 +25,12 @@ function Get-ActiveSmartCardCert {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Ceritificate Authority server')]
-        [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
+        [ValidatePattern('^[\w]+$')]
         [Alias('CA', 'Authority')]
         [string] $CertificateAuthority,
 
         [Parameter(Mandatory, HelpMessage = 'Ceritificate template')]
-        [ValidatePattern('')]
+        [ValidatePattern('^[\d\.]+$')]
         [Alias('CT', 'Template')]
         [string] $CertificateTemplate,
 
