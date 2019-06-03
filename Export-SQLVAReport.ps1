@@ -5,10 +5,12 @@ function Export-SQLVAReport {
     .DESCRIPTION
         The script relies on the native Vulnerability Assessment scan tool imbedded
         in SQL Server Management Studio 17.0 & up
-    .PARAMETER ConfigPath
-        Path to configuration file
+    .PARAMETER ServerName
+        Name of SQL Server
+    .PARAMETER DestinationPath
+        Path to output directory for new SQL Vulnerability Assessment reports
     .INPUTS
-        None.
+        System.String.
     .OUTPUTS
         System.String.
     .EXAMPLE
@@ -19,14 +21,9 @@ function Export-SQLVAReport {
         General notes
         https://docs.microsoft.com/en-us/sql/relational-databases/security/sql-vulnerability-assessment?view=sql-server-2017
     ========================================================================= #>
-    [CmdletBinding(DefaultParameterSetName = '__cnf')]
+    [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, ParameterSetName = '__cnf', HelpMessage = 'Path to configuration data file')]
-        [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.json" })]
-        [Alias('ConfigFile', 'DataFile', 'CP', 'File')]
-        [string] $ConfigPath,
-
-        [Parameter(Mandatory, ValueFromPipeline, ParameterSetName = '__srv', HelpMessage = 'SQL server name')]
+        [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'SQL server name')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
         [Alias('SN', 'Server')]
         [string[]] $ServerName,
@@ -50,15 +47,9 @@ function Export-SQLVAReport {
         $Folder = Join-Path -Path $OutputPath -ChildPath $DateFolder
 
         # CREATE FOLDER IF NOT EXIST
-        if ( -not (Test-Path -Path $Folder) ) { New-Item -Path $Folder -ItemType Directory }
-
-        # CHECK FOR PARAMETER SET
-        if ( $PSBoundParameters.ContainsKey('ConfigPath') ) {
-            # GET CONFIGURATION FILE
-            $Config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
-
-            # VARIABLE CONTAINING THE LIST OF DBS TO SCAN
-            $ServerName = $Config.Customers.SQLServers
+        if ( -not (Test-Path -Path $Folder) ) {
+            try { New-Item -Path $Folder -ItemType Directory }
+            catch { Write-Error ('Could not create folder path: [{0}]' -f $Folder) }
         }
     }
 
