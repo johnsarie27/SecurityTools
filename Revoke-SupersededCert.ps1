@@ -22,9 +22,8 @@ function Revoke-SupersededCert {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Certificate objects')]
-        #[ValidateScript({ $_.Status -EQ 'Active' })]
         [ValidateNotNullOrEmpty()]
-        [Alias('AC', 'ActiveCerts', 'Certs')]
+        [Alias('C', 'Certs')]
         [SysadminsLV.PKI.Management.CertificateServices.Database.AdcsDbRow[]] $Certificate,
 
         [Parameter(HelpMessage = 'Confirm revocation')]
