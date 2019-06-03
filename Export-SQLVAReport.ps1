@@ -31,7 +31,7 @@ function Export-SQLVAReport {
         [Parameter(HelpMessage = 'Output directory')]
         [ValidateScript( { Test-Path -Path $_ -PathType Container })]
         [Alias('OP', 'Output')]
-        [string] $OutputPath = "D:\MSSQL-VA",
+        [string] $DestinationPath = "D:\MSSQL-VA",
 
         [Parameter(HelpMessage = 'Return path to report directory')]
         [switch] $PassThru
@@ -44,7 +44,7 @@ function Export-SQLVAReport {
         # GET DATE OBJECTS AND SET OUTPUT FOLDER
         $Date = Get-Date
         $DateFolder = '{0}\{1}' -f $Date.ToString("yyyy"), $Date.ToString("MM")
-        $Folder = Join-Path -Path $OutputPath -ChildPath $DateFolder
+        $Folder = Join-Path -Path $DestinationPath -ChildPath $DateFolder
 
         # CREATE FOLDER IF NOT EXIST
         if ( -not (Test-Path -Path $Folder) ) {

@@ -8,7 +8,7 @@ function Export-SQLVAReportAggregate {
         Path to directory of SQL Vulnerability Assessemnt file(s)
     .PARAMETER ZipPath
         Path to zip file containing repots
-    .PARAMETER OutputPath
+    .PARAMETER DestinationPath
         Path to output report file
     .PARAMETER PassThru
         Return report path
@@ -47,7 +47,7 @@ function Export-SQLVAReportAggregate {
         })]
         [ValidateNotNullOrEmpty()]
         [Alias('OP', 'Output')]
-        [string] $OutputPath,
+        [string] $DestinationPath,
 
         [Parameter(HelpMessage = 'Return path to aggreate report')]
         [switch] $PassThru
@@ -61,9 +61,9 @@ function Export-SQLVAReportAggregate {
         $Data = [System.Collections.Generic.List[System.Object]]::new()
 
         # GET OUTPUT PATH
-        if ( -not $PSBoundParameters.ContainsKey('OutputPath') ) {
+        if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
             # STORE ON DESKTOP
-            $OutputPath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Aggregate-SQL-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
+            $DestinationPath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Aggregate-SQL-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
         }
 
         # GET REPORTS FROM ZIP
@@ -96,7 +96,7 @@ function Export-SQLVAReportAggregate {
             BoldTopRow    = $true
             FreezeTopRow  = $true
             MoveToEnd     = $true
-            Path          = $OutputPath
+            Path          = $DestinationPath
             WorksheetName = 'DBScan'
         }
 
@@ -104,7 +104,7 @@ function Export-SQLVAReportAggregate {
         $Data | Export-Excel @ExcelParams
 
         # RETURN PATH TO REPORT
-        if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $OutputPath }
+        if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $DestinationPath }
 
         # REMOVE EXTRACTED FILES
         if ( $ExpandPath ) { Remove-Item -Path $InputPath -Recurse -Force }
