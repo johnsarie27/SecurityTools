@@ -24,6 +24,11 @@ function Export-ScanReportAggregate {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
+        [Parameter(HelpMessage = 'Output directory')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Container })]
+        [Alias('DP', 'Destination', 'Folder')]
+        [string] $DestinationPath,
+
         [Parameter(Mandatory, ParameterSetName = 'sys', HelpMessage = 'CSV file for system scan report')]
         [Parameter(Mandatory, ParameterSetName = 'sysweb')]
         [Parameter(Mandatory, ParameterSetName = 'sysdb')]
@@ -51,7 +56,7 @@ function Export-ScanReportAggregate {
 
     Begin {
         # IMPORT REQUIRED MODULES
-        Import-Module -Name UtilityFunctions
+        Import-Module -Name ImportExcel
 
         # SET VARS
         $Properties = @(
@@ -72,18 +77,18 @@ function Export-ScanReportAggregate {
             @{N = 'Status'; E = { $_.'Active or inactive' }}
         )
 
-        <# $ActiveWhere = { $_.'Active or inactive' -ne 'Global inactive' -and $_.Severity -ne 'Informational' }
-        $InactiveWhere = { $_.'Active or inactive' -match 'inactive' -or $_.Severity -eq 'Informational' } #>
-
         # GET SAVE FOLDER
-        $Outdir = "$HOME\Desktop" # Get-Folder -Description "Save location"
+        if ( $PSBoundParameters.ContainsKey('DestinationPath') ) { $DestinationPath = "$HOME\Desktop" }
 
-        # STAGE SPLATTER TABLE
+        # SET REPORT OPTIONS
         $Splat = @{
-            Freeze = $true
-            Path   = Join-Path -Path $Outdir -ChildPath ('Aggregate-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
+            #AutoSize      = $true
+            AutoFilter   = $true
+            FreezeTopRow = $true
+            BoldTopRow   = $true
+            MoveToEnd    = $true
+            Path         = Join-Path -Path $DestinationPath -ChildPath ('Aggregate-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
         }
-        if ( $PSCmdlet.ParameterSetName -ne 'db' ) { $Splat.SuppressOpen = $true }
     }
 
     Process {
@@ -93,7 +98,7 @@ function Export-ScanReportAggregate {
             foreach ( $i in $DbCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Database Scan' }
 
             # EXPORT DB DATA TO EXCEL
-            $DbCsv | Select-Object -ExcludeProperty Source | Export-ExcelBook @Splat -SheetName 'DBScan'
+            $DbCsv | Select-Object -ExcludeProperty Source | Export-Excel @Splat -WorksheetName 'DBScan'
         }
 
         # PROCESS WEB SCAN DATA
@@ -102,10 +107,7 @@ function Export-ScanReportAggregate {
             foreach ( $i in $WebCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
 
             # EXPORT WEB DATA TO EXCEL
-            $WebCsv | Select-Object -Property $Properties | Export-ExcelBook @Splat -SheetName 'WebScan'
-
-            <# # INACTIVE OR INFO
-            $InactiveWeb = $WebCsv | Where-Object $InactiveWhere #>
+            $WebCsv | Select-Object -Property $Properties | Export-Excel @Splat -WorksheetName 'WebScan'
         }
 
         # PROCESS SYSTEM SCAN DATA
@@ -117,27 +119,7 @@ function Export-ScanReportAggregate {
             $Properties += @("Detected OS", "CVE")
 
             # EXPORT SYSTEM DATA TO EXCEL
-            $SystemCsv | Select-Object -Property $Properties | Export-ExcelBook @Splat -SheetName 'SystemScan'
-
-            <# # INACTIVE OR INFO
-            $InactiveSystem = $SystemCsv | Where-Object $InactiveWhere #>
+            $SystemCsv | Select-Object -Property $Properties | Export-Excel @Splat -WorksheetName 'SystemScan'
         }
     }
-
-    <# End {
-        # ADD INACTIVE OR INFORMATIONAL TAB
-        if ( $PSCmdlet.ParameterSetName -ne 'db' ) {
-            # CHECK FOR INACTIVE OBJECT ARRAYS AND COMBINE INTO SINGEL ARRAY
-            if ( $InactiveWeb -and $InactiveSystem ) { $AllInactive = $InactiveWeb + $InactiveSystem }
-            elseif ( $InactiveWeb ) { $AllInactive = $InactiveWeb }
-            elseif ( $InactiveSystem ) { $AllInactive = $InactiveSystem }
-
-            # ADD SOURCE TO PROPERTIES AND REMOVE SUPPRESS OPEN
-            $Properties += "Source"
-            $Splat.Remove('SuppressOpen')
-
-            # EXPORT ALL INACTIVE DATA TO EXCEL
-            $AllInactive | Select-Object -Property $Properties | Export-ExcelBook @Splat -SheetName 'Inactive'
-        }
-    } #>
 }

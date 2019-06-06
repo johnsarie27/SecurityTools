@@ -140,7 +140,7 @@ function Export-ScanReportSummary {
 
         # ADD PATH PARAMETER AND ARGUMENT
         if ( $PSBoundParameters.ContainsKey('ExistingReport') ) { $Splat['Path'] = $ExistingReport }
-        else { $Splat['Path'] = Join-Path -Path $ReportPath -ChildPath ('Scan-Summary-Report_{0}.xlsx' -f $Date) }
+        else { $Splat['Path'] = Join-Path -Path $ReportPath -ChildPath ('Summary-Scans_{0}.xlsx' -f $Date) }
 
         # SET DESIRED PROPERTIES
         $Properties = @('Name', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')#'CVSS'
