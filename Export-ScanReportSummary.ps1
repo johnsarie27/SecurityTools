@@ -13,7 +13,7 @@ function Export-ScanReportSummary {
         Path to Web scan CSV file
     .PARAMETER DatabaseScan
         Path to Database scan CSV file
-    .PARAMETER ExistingReport
+    .PARAMETER DestinationPath
         Path to existing Excel Workbook so new data can be added
     .INPUTS
         None.
@@ -51,8 +51,8 @@ function Export-ScanReportSummary {
 
         [Parameter(HelpMessage = 'Create new Excel spreadsheet file')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
-        [Alias('Aggregate', 'File', 'Path')]
-        [string] $ExistingReport
+        [Alias('File', 'Path')]
+        [string] $DestinationPath
     )
 
     Begin {
@@ -141,7 +141,7 @@ function Export-ScanReportSummary {
         }
 
         # ADD PATH PARAMETER AND ARGUMENT
-        if ( $PSBoundParameters.ContainsKey('ExistingReport') ) { $Splat['Path'] = $ExistingReport }
+        if ( $PSBoundParameters.ContainsKey('DestinationPath') ) { $Splat['Path'] = $DestinationPath }
         else { $Splat['Path'] = Join-Path -Path $ReportPath -ChildPath ('Summary-Scans_{0}.xlsx' -f $Date) }
 
         # SET DESIRED PROPERTIES

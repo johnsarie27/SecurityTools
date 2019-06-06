@@ -14,6 +14,8 @@ function Export-ScanReportAggregate {
         Path to Web scan as a string
     .PARAMETER DatabaseScan
         Path to Database scan as a string
+    .PARAMETER DestinationPath
+        Path to output directory
     .INPUTS
         System.String. Format-ScanResults accepts string values for SystemScan
         and WebScan parameters.
@@ -26,7 +28,7 @@ function Export-ScanReportAggregate {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(HelpMessage = 'Output directory')]
+        [Parameter(HelpMessage = 'Path to output directory')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
         [Alias('DP', 'Destination', 'Folder')]
         [string] $DestinationPath = "$HOME\Desktop",
