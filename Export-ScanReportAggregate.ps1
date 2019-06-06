@@ -1,3 +1,5 @@
+#Requires -Module ImportExcel
+
 function Export-ScanReportAggregate {
     <# =========================================================================
     .SYNOPSIS
@@ -27,7 +29,7 @@ function Export-ScanReportAggregate {
         [Parameter(HelpMessage = 'Output directory')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
         [Alias('DP', 'Destination', 'Folder')]
-        [string] $DestinationPath,
+        [string] $DestinationPath = "$HOME\Desktop",
 
         [Parameter(Mandatory, ParameterSetName = 'sys', HelpMessage = 'CSV file for system scan report')]
         [Parameter(Mandatory, ParameterSetName = 'sysweb')]
@@ -76,9 +78,6 @@ function Export-ScanReportAggregate {
             "References"
             @{N = 'Status'; E = { $_.'Active or inactive' }}
         )
-
-        # GET SAVE FOLDER
-        if ( $PSBoundParameters.ContainsKey('DestinationPath') ) { $DestinationPath = "$HOME\Desktop" }
 
         # SET REPORT OPTIONS
         $Splat = @{

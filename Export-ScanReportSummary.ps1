@@ -1,3 +1,5 @@
+#Requires -Module ImportExcel
+
 function Export-ScanReportSummary {
     <# =========================================================================
     .SYNOPSIS
