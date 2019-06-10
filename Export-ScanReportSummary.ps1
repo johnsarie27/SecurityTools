@@ -14,7 +14,7 @@ function Export-ScanReportSummary {
     .PARAMETER DatabaseScan
         Path to Database scan CSV file
     .PARAMETER DestinationPath
-        Path to existing Excel Workbook so new data can be added
+        Path to new or existing Excel Workbook
     .INPUTS
         None.
     .OUTPUTS
@@ -49,8 +49,8 @@ function Export-ScanReportSummary {
         [Alias('DbScan', 'DatabasePath', 'DbFile', 'DS')]
         [string] $DatabaseScan,
 
-        [Parameter(HelpMessage = 'Create new Excel spreadsheet file')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
+        [Parameter(HelpMessage = 'Path to new or existing Excel spreadsheet file')]
+        [ValidateScript({ Confirm-ValidPath -Path $_ -Extension '.xlsx' -Force })]
         [Alias('File', 'Path')]
         [string] $DestinationPath
     )

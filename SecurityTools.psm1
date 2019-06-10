@@ -1,5 +1,5 @@
 # ==============================================================================
-# Updated:      2019-06-02
+# Updated:      2019-06-09
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/SecurityTools
@@ -32,6 +32,9 @@
 # IMPORT OTHER FUNCTIONS
 . $PSScriptRoot\Invoke-SDelete.ps1
 . $PSScriptRoot\Get-HAGroup.ps1
+
+# INTERNAL FUNCTIONS
+. $PSScriptRoot\Confirm-ValidPath.ps1
 
 # DEPRECATE
 . $PSScriptRoot\ConvertTo-DbScanReport.ps1
