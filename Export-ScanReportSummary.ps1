@@ -29,7 +29,7 @@ function Export-ScanReportSummary {
         [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'CSV file for system scan report')]
         [Parameter(Mandatory, ParameterSetName = 'sysweb', HelpMessage = 'CSV file for system scan report')]
         [Parameter(Mandatory, ParameterSetName = 'sys', HelpMessage = 'CSV file for system scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
         [ValidateNotNullOrEmpty()]
         [Alias('SystemPath', 'SystemFile', 'SS')]
         [string] $SystemScan,
@@ -37,14 +37,14 @@ function Export-ScanReportSummary {
         [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'CSV file for web scan report')]
         [Parameter(Mandatory, ParameterSetName = 'sysweb', HelpMessage = 'CSV file for system scan report')]
         [Parameter(Mandatory, ParameterSetName = 'web', HelpMessage = 'CSV file for web scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
         [ValidateNotNullOrEmpty()]
         [Alias('WebPath', 'WebFile', 'WS')]
         [string] $WebScan,
 
         [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'XLSX file for web scan report')]
         [Parameter(Mandatory, ParameterSetName = 'db', HelpMessage = 'XLSX file for web scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf })] # -Include "*.xlsx" ADD THIS LATER
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.xlsx })]
         [ValidateNotNullOrEmpty()]
         [Alias('DbScan', 'DatabasePath', 'DbFile', 'DS')]
         [string] $DatabaseScan,
