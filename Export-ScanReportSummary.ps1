@@ -44,7 +44,7 @@ function Export-ScanReportSummary {
 
         [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'XLSX file for web scan report')]
         [Parameter(Mandatory, ParameterSetName = 'db', HelpMessage = 'XLSX file for web scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf })] # -Include "*.xlsx" ADD THIS LATER
         [ValidateNotNullOrEmpty()]
         [Alias('DbScan', 'DatabasePath', 'DbFile', 'DS')]
         [string] $DatabaseScan,
