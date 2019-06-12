@@ -82,9 +82,13 @@ function Export-SQLVAReport {
                 $BLFile = (Get-ChildItem -Path $BaselinePath -Filter "$Server.json").FullName
 
                 # CONVERT JSON FILE TO BASELINE OBJECT
-                if ($BLFile) {
-                    $Baseline = Import-SqlVulnerabilityAssessmentBaselineSet -FolderPath $BLFile
-                    $SVAParams['Baseline'] = $Baseline
+                if ( $BLFile ) {
+                    try {
+                        $SVAParams['Baseline'] = Import-SqlVulnerabilityAssessmentBaselineSet -FolderPath $BLFile
+                    }
+                    catch {
+                        Write-Warning ('Failed to generate baseline for [{0}] using file [{1}]' -f $Server, $BLFile)
+                    }
                 }
                 else {
                     Write-Warning ('Baseline file not found for server: [{0}]' -f $Server)
