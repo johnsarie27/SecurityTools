@@ -34,7 +34,7 @@ function Export-SQLVAReport {
         [string[]] $ServerName,
 
         [Parameter(HelpMessage = 'Path to folder containing baseline JSON file(s)')]
-        [ValidateScript({ Get-ChildItem -Path $_ -Filter *.json })]
+        [ValidateScript({ Test-Path -Path "$_\*" -Include *.json })]
         [Alias('BP', 'Baseline')]
         [string] $BaselinePath,
 
