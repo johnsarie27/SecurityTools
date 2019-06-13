@@ -43,10 +43,8 @@ function Export-SQLVAReportAggregate {
         [string] $ZipPath,
 
         [Parameter(HelpMessage = 'Path to output report file')]
-        [ValidateScript({
-            if ( (Test-Path -Path (Split-Path -Path $_) -PathType Container) -and `
-            ((Split-Path -Path $_ -Leaf) -match '^[\w-]+\.xlsx$') ) { Return $true }
-        })]
+        [ValidateScript({ Test-Path -Path $_ -Include *.xlsx -IsValid })]
+        #[ValidateScript({ Confirm-ValidPath -Path $_ -Extension '.xlsx' })]
         [ValidateNotNullOrEmpty()]
         [Alias('OP', 'Output')]
         [string] $DestinationPath,
