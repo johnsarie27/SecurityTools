@@ -30,7 +30,7 @@ function Export-SQLVAReportAggregate {
             Mandatory, ParameterSetName = 'folder',
             HelpMessage = 'Path to directory of SQL Vulnerability Assessemnt file(s)'
         )]
-        [ValidateScript({ Get-ChildItem -Path $_ -Include "*.xlsx" -Recurse })]
+        [ValidateScript({ Test-Path -Path "$_\*" -Include "*.xlsx" })]
         [Alias('IP', 'Directory', 'Input')]
         [string] $InputPath,
 
