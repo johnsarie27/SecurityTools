@@ -1,3 +1,5 @@
+#Requires -Module PSPKI
+
 function Revoke-SupersededCert {
     <# =========================================================================
     .SYNOPSIS

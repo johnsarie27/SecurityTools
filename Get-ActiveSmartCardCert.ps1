@@ -1,3 +1,5 @@
+#Requires -Module PSPKI
+
 function Get-ActiveSmartCardCert {
     <# =========================================================================
     .SYNOPSIS
