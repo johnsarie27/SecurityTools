@@ -1,5 +1,5 @@
 # ==============================================================================
-# Updated:      2019-06-09
+# Updated:      2019-06-16
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/SecurityTools
@@ -40,7 +40,7 @@
 . $PSScriptRoot\ConvertTo-DbScanReport.ps1
 
 # VARIABLES
-# $EventTable = Get-Content -Raw -Path $PSScriptRoot\EventTable.json | ConvertFrom-Json
+$EventTable = Get-Content -Raw -Path $PSScriptRoot\EventTable.json | ConvertFrom-Json
 
 # EXPORT MEMBERS
 # THESE ARE SPECIFIED IN THE MODULE MANIFEST AND THEREFORE DON'T NEED TO BE LISTED HERE
