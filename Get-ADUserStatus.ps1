@@ -25,12 +25,12 @@ function Get-ADUserStatus {
     Param (
         [Parameter(Mandatory, ParameterSetName = 'username', HelpMessage = 'User account name')]
         [ValidateScript( { Get-ADUser -Identity $_ })]
-        [Alias('User')]
+        [Alias('UN', 'User')]
         [string] $UserName,
 
         [Parameter(Mandatory, ParameterSetName = 'fragment', HelpMessage = "Part of user's name")]
         [ValidateScript( { (Get-ADUser -Filter * -Properties *).CN -match "$_" })]
-        [Alias('Name', 'Fragment')]
+        [Alias('PN', 'Fragment')]
         [string] $PartialName,
 
         [Parameter(HelpMessage = 'Hostname of Domain Controller')]
