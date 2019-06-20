@@ -50,8 +50,8 @@ function Export-ScanReportSummary {
         [string] $DatabaseScan,
 
         [Parameter(HelpMessage = 'Path to new or existing Excel spreadsheet file')]
-        [ValidateScript({ Confirm-ValidPath -Path $_ -Extension '.xlsx' -Force })]
-        [Alias('File', 'Path')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include *.xlsx })]
+        [Alias('DP', 'Path')]
         [string] $DestinationPath
     )
 
@@ -60,18 +60,19 @@ function Export-ScanReportSummary {
         Import-Module -Name ImportExcel
 
         # ADD PATH TO EXCEL PARAMS
-        $ReportPath = "$HOME\Desktop"; $Date = Get-Date -Format "yyyy-MM"
+        $date = Get-Date -Format "yyyy-MM"
+        $reportPath = "$HOME\Desktop"
     }
 
     Process {
         # PROCESS DATABASE SCAN DATA
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
-            $DbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
-            $UDbScan = $DbScan <# | Where-Object Status -EQ 'Fail'  #>| Sort-Object -Unique ID
-            foreach ( $object in $UDbScan ) {
+            $dbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
+            $udbScan = $dbScan <# | Where-Object Status -EQ 'Fail'  #>| Sort-Object -Unique ID
+            foreach ( $object in $udbScan ) {
                 # CREATE COLUMNS FOR SUMMARY REPORT
-                $Count = ($DbScan | Where-Object ID -EQ $object.ID | Measure-Object).Count
-                $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $Count
+                $count = ($dbScan | Where-Object ID -EQ $object.ID | Measure-Object).Count
+                $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
                 $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'DB Scan'
                 $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
                 $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
@@ -84,7 +85,7 @@ function Export-ScanReportSummary {
             }
 
             # SET PROPERTY CONVERSION
-            $NewProps = (
+            $newProps = (
                 'Count', 'Source', 'Risk Adj.', 'TFS', 'Status',
                 @{N = 'Name'; E = { $_.'Security Check' } },
                 @{N = 'Notes'; E = { $_.ID } },
@@ -92,16 +93,16 @@ function Export-ScanReportSummary {
             )
 
             # CHANGE COLUMN NAMES
-            $UDbScan = $UDbScan | Select-Object -Property $NewProps
+            $udbScan = $udbScan | Select-Object -Property $newProps
         }
 
         # PROCESS SYSTEM SCAN DATA
         if ( $PSBoundParameters.ContainsKey('SystemScan') ) {
-            $SystemCsv = Import-Csv -Path $SystemScan
-            $USysCsv = $SystemCsv | Sort-Object Name -Unique
-            foreach ( $object in $USysCsv ) {
-                $Count = ($SystemCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
-                $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $Count
+            $systemCsv = Import-Csv -Path $SystemScan
+            $uSysCsv = $systemCsv | Sort-Object Name -Unique
+            foreach ( $object in $uSysCsv ) {
+                $count = ($systemCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
+                $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
                 $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'System Scan'
                 $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
                 $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
@@ -112,11 +113,11 @@ function Export-ScanReportSummary {
 
         # PROCESS WEB SCAN DATA
         if ( $PSBoundParameters.ContainsKey('WebScan') ) {
-            $WebCsv = Import-Csv -Path $WebScan
-            $UWebCsv = $WebCsv | Sort-Object Name -Unique
-            foreach ( $object in $UWebCsv ) {
-                $Count = ($WebCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
-                $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $Count
+            $webCsv = Import-Csv -Path $WebScan
+            $uWebCsv = $webCsv | Sort-Object Name -Unique
+            foreach ( $object in $uWebCsv ) {
+                $count = ($webCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
+                $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
                 $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan'
                 $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
                 $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
@@ -128,10 +129,10 @@ function Export-ScanReportSummary {
 
     End {
         # COMBINE UNIQUE OBJECTS AND REMOVE FIELDS
-        $ScanObjects = $USysCsv + $UWebCsv + $UDbScan
+        $scanObjects = $uSysCsv + $uWebCsv + $udbScan
 
         # SET REPORT OPTIONS
-        $Splat = @{
+        $splat = @{
             WorksheetName = (Get-Date -UFormat %b).ToUpper()
             AutoSize     = $true
             AutoFilter   = $true
@@ -141,13 +142,13 @@ function Export-ScanReportSummary {
         }
 
         # ADD PATH PARAMETER AND ARGUMENT
-        if ( $PSBoundParameters.ContainsKey('DestinationPath') ) { $Splat['Path'] = $DestinationPath }
-        else { $Splat['Path'] = Join-Path -Path $ReportPath -ChildPath ('Summary-Scans_{0}.xlsx' -f $Date) }
+        if ( $PSBoundParameters.ContainsKey('DestinationPath') ) { $splat['Path'] = $DestinationPath }
+        else { $splat['Path'] = Join-Path -Path $reportPath -ChildPath ('Summary-Scans_{0}.xlsx' -f $date) }
 
         # SET DESIRED PROPERTIES
-        $Properties = @('Name', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')#'CVSS'
+        $properties = @('Name', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')#'CVSS'
 
         # EXPORT TO EXCEL
-        $ScanObjects | Select-Object -Property $Properties | Export-Excel @Splat
+        $scanObjects | Select-Object -Property $properties | Export-Excel @splat
     }
 }
