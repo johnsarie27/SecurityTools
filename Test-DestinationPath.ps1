@@ -1,4 +1,4 @@
-function Confirm-ValidPath {
+function Test-DestinationPath {
     <# =========================================================================
     .SYNOPSIS
         Validate path
@@ -13,7 +13,7 @@ function Confirm-ValidPath {
     .OUTPUTS
         System.String.
     .EXAMPLE
-        PS C:\> Confirm-ValidPath -Path C:\Users\JSmith\TestFolder\file.xml
+        PS C:\> Test-DestinationPath -Path C:\Users\JSmith\TestFolder\file.xml
         Returns a "True" value if path can be used
     .NOTES
         General notes

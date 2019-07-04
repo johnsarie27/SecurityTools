@@ -44,7 +44,7 @@ function Export-SQLVAReportAggregate {
 
         [Parameter(HelpMessage = 'Path to output report file')]
         [ValidateScript({ Test-Path -Path $_ -Include *.xlsx -IsValid })]
-        #[ValidateScript({ Confirm-ValidPath -Path $_ -Extension '.xlsx' })]
+        #[ValidateScript({ Test-DestinationPath -Path $_ -Extension '.xlsx' })]
         [ValidateNotNullOrEmpty()]
         [Alias('OP', 'Output')]
         [string] $DestinationPath,

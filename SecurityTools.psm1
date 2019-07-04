@@ -34,7 +34,7 @@
 . $PSScriptRoot\Get-HAGroup.ps1
 
 # INTERNAL FUNCTIONS
-. $PSScriptRoot\Confirm-ValidPath.ps1
+. $PSScriptRoot\Test-DestinationPath.ps1
 
 # DEPRECATE
 . $PSScriptRoot\ConvertTo-DbScanReport.ps1
