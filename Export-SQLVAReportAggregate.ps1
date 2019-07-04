@@ -31,7 +31,7 @@ function Export-SQLVAReportAggregate {
             HelpMessage = 'Path to directory of SQL Vulnerability Assessemnt file(s)'
         )]
         [ValidateScript({ Test-Path -Path "$_\*" -Include "*.xlsx" })]
-        [Alias('IP', 'Directory', 'Input')]
+        [Alias('IP', 'Directory')]
         [string] $InputPath,
 
         [Parameter(
@@ -43,10 +43,9 @@ function Export-SQLVAReportAggregate {
         [string] $ZipPath,
 
         [Parameter(HelpMessage = 'Path to output report file')]
-        [ValidateScript({ Test-Path -Path $_ -Include *.xlsx -IsValid })]
-        #[ValidateScript({ Test-DestinationPath -Path $_ -Extension '.xlsx' })]
+        [ValidateScript({ Test-Path -Path $_ -IsValid })]
         [ValidateNotNullOrEmpty()]
-        [Alias('OP', 'Output')]
+        [Alias('DP')]
         [string] $DestinationPath,
 
         [Parameter(HelpMessage = 'Return path to aggreate report')]
@@ -60,10 +59,13 @@ function Export-SQLVAReportAggregate {
         # CREATE ARRAY
         $Data = [System.Collections.Generic.List[System.Object]]::new()
 
-        # GET OUTPUT PATH
+        # WRITE TO DESKTOP IF DESTINATIONPATH NOT PROVIDED
         if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
-            # STORE ON DESKTOP
             $DestinationPath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Aggregate-SQL-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
+        }
+        # VALIDATE PARENT DIRECTORY
+        if ( !(Test-Path -Path (Split-Path -Path $DestinationPath)) ) {
+            Throw ('All or part of the path "{0}" does not exist' -f $DestinationPath)
         }
 
         # GET REPORTS FROM ZIP
