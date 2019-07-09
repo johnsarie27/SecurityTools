@@ -1,5 +1,5 @@
 # ==============================================================================
-# Updated:      2019-06-16
+# Updated:      2019-07-08
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/SecurityTools
@@ -34,7 +34,6 @@
 . $PSScriptRoot\Get-HAGroup.ps1
 
 # INTERNAL FUNCTIONS
-. $PSScriptRoot\Test-DestinationPath.ps1
 
 # DEPRECATE
 . $PSScriptRoot\ConvertTo-DbScanReport.ps1

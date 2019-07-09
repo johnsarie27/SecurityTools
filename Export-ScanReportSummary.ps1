@@ -31,7 +31,7 @@ function Export-ScanReportSummary {
         [Parameter(Mandatory, ParameterSetName = 'sys', HelpMessage = 'CSV file for system scan report')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
         [ValidateNotNullOrEmpty()]
-        [Alias('SystemPath', 'SystemFile', 'SS')]
+        [Alias('SS')]
         [string] $SystemScan,
 
         [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'CSV file for web scan report')]
@@ -39,19 +39,20 @@ function Export-ScanReportSummary {
         [Parameter(Mandatory, ParameterSetName = 'web', HelpMessage = 'CSV file for web scan report')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
         [ValidateNotNullOrEmpty()]
-        [Alias('WebPath', 'WebFile', 'WS')]
+        [Alias('WS')]
         [string] $WebScan,
 
         [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'XLSX file for web scan report')]
         [Parameter(Mandatory, ParameterSetName = 'db', HelpMessage = 'XLSX file for web scan report')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.xlsx })]
         [ValidateNotNullOrEmpty()]
-        [Alias('DbScan', 'DatabasePath', 'DbFile', 'DS')]
+        [Alias('DbScan', 'DBS', 'DS')]
         [string] $DatabaseScan,
 
         [Parameter(HelpMessage = 'Path to new or existing Excel spreadsheet file')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include *.xlsx })]
-        [Alias('DP', 'Path')]
+        [ValidateScript({ Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) })]
+        [ValidateScript({ [System.IO.Path]::GetExtension($_) -eq '.xlsx' })]
+        [Alias('DP')]
         [string] $DestinationPath
     )
 
@@ -59,9 +60,11 @@ function Export-ScanReportSummary {
         # IMPORT REQUIRED MODULES
         Import-Module -Name ImportExcel
 
-        # ADD PATH TO EXCEL PARAMS
-        $date = Get-Date -Format "yyyy-MM"
-        $reportPath = "$HOME\Desktop"
+        # SET DESTINATION PATH
+        if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
+            $fileName = 'Summary-Scans_{0}.xlsx' -f (Get-Date -Format "yyyy-MM")
+            $DestinationPath = Join-Path -Path "$HOME\Desktop" -ChildPath $fileName
+        }
     }
 
     Process {
@@ -139,11 +142,8 @@ function Export-ScanReportSummary {
             FreezeTopRow = $true
             BoldTopRow   = $true
             MoveToEnd    = $true
+            Path         = $DestinationPath
         }
-
-        # ADD PATH PARAMETER AND ARGUMENT
-        if ( $PSBoundParameters.ContainsKey('DestinationPath') ) { $splat['Path'] = $DestinationPath }
-        else { $splat['Path'] = Join-Path -Path $reportPath -ChildPath ('Summary-Scans_{0}.xlsx' -f $date) }
 
         # SET DESIRED PROPERTIES
         $properties = @('Name', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')#'CVSS'
