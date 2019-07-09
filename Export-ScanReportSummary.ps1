@@ -137,12 +137,12 @@ function Export-ScanReportSummary {
         # SET REPORT OPTIONS
         $splat = @{
             WorksheetName = (Get-Date -UFormat %b).ToUpper()
-            AutoSize     = $true
-            AutoFilter   = $true
-            FreezeTopRow = $true
-            BoldTopRow   = $true
-            MoveToEnd    = $true
-            Path         = $DestinationPath
+            AutoSize      = $true
+            AutoFilter    = $true
+            FreezeTopRow  = $true
+            BoldTopRow    = $true
+            MoveToEnd     = $true
+            Path          = $DestinationPath
         }
 
         # SET DESIRED PROPERTIES
