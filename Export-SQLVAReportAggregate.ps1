@@ -43,8 +43,8 @@ function Export-SQLVAReportAggregate {
         [string] $ZipPath,
 
         [Parameter(HelpMessage = 'Path to output report file')]
-        [ValidateScript({ Test-Path -Path $_ -IsValid })]
-        [ValidateNotNullOrEmpty()]
+        [ValidateScript({ Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) })]
+        [ValidateScript({ [System.IO.Path]::GetExtension($_) -eq '.xlsx' })]
         [Alias('DP')]
         [string] $DestinationPath,
 
@@ -63,11 +63,7 @@ function Export-SQLVAReportAggregate {
         if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
             $DestinationPath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Aggregate-SQL-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
         }
-        # VALIDATE PARENT DIRECTORY
-        if ( !(Test-Path -Path (Split-Path -Path $DestinationPath)) ) {
-            Throw ('All or part of the path "{0}" does not exist' -f $DestinationPath)
-        }
-
+        
         # GET REPORTS FROM ZIP
         if ( $PSBoundParameters.ContainsKey('ZipPath') ) {
             # EXTRACT FILES

@@ -60,7 +60,7 @@ function Export-SQLVAReport {
 
         # CREATE FOLDER IF NOT EXIST
         if ( -not (Test-Path -Path $Folder) ) {
-            try { New-Item -Path $Folder -ItemType Directory }
+            try { New-Item -Path $Folder -ItemType Directory | Out-Null }
             catch { Write-Error ('Could not create folder path: [{0}]' -f $Folder) }
         }
 
@@ -102,9 +102,11 @@ function Export-SQLVAReport {
 
             # EXPORT SCAN RESULT TO EXCEL SPREADSHEET
             $Scan | Export-SqlVulnerabilityAssessmentScan -FolderPath (Join-Path -Path $Folder -ChildPath $ReportFile)
-
-            # RETURN PATH TO REPORT FOLDER
-            if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $Folder }
         }
+    }
+
+    End {
+        # RETURN PATH TO REPORT FOLDER
+        if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $Folder }
     }
 }
