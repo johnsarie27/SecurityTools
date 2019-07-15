@@ -30,7 +30,6 @@ function Export-ScanReportAggregate {
     Param(
         [Parameter(HelpMessage = 'Path to output directory')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [Alias('DP', 'Destination', 'Folder')]
         [string] $DestinationPath = "$HOME\Desktop",
 
         [Parameter(Mandatory, ParameterSetName = 'sys', HelpMessage = 'CSV file for system scan report')]
@@ -38,7 +37,6 @@ function Export-ScanReportAggregate {
         [Parameter(Mandatory, ParameterSetName = 'sysdb')]
         [Parameter(Mandatory, ParameterSetName = 'all')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
-        [Alias('SystemPath', 'SystemFile', 'System')]
         [string] $SystemScan,
 
         [Parameter(Mandatory, ParameterSetName = 'web', HelpMessage = 'CSV file for web scan report')]
@@ -46,15 +44,13 @@ function Export-ScanReportAggregate {
         [Parameter(Mandatory, ParameterSetName = 'webdb')]
         [Parameter(Mandatory, ParameterSetName = 'all')]
         [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
-        [Alias('WebPath', 'WebFile', 'Web')]
         [string] $WebScan,
 
         [Parameter(Mandatory, ParameterSetName = 'db', HelpMessage = 'CSV file for DB scan report')]
         [Parameter(Mandatory, ParameterSetName = 'sysdb')]
         [Parameter(Mandatory, ParameterSetName = 'webdb')]
         [Parameter(Mandatory, ParameterSetName = 'all')]
-        [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
-        [Alias('DbPath', 'DbFile', 'DataBase', 'D')]
+        [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
         [string] $DatabaseScan
     )
 
@@ -63,7 +59,7 @@ function Export-ScanReportAggregate {
         Import-Module -Name ImportExcel
 
         # SET VARS
-        $Properties = @(
+        $properties = @(
             "IP-address"
             "Detected Hostname"
             "Port number"
@@ -82,7 +78,7 @@ function Export-ScanReportAggregate {
         )
 
         # SET REPORT OPTIONS
-        $Splat = @{
+        $splat = @{
             #AutoSize      = $true
             AutoFilter   = $true
             FreezeTopRow = $true
@@ -93,34 +89,34 @@ function Export-ScanReportAggregate {
     }
 
     Process {
-        # PROCESS DB SCAN DATA
-        if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
-            $DbCsv = Import-Csv -Path $DatabaseScan
-            foreach ( $i in $DbCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Database Scan' }
-
-            # EXPORT DB DATA TO EXCEL
-            $DbCsv | Select-Object -ExcludeProperty Source | Export-Excel @Splat -WorksheetName 'DBScan'
-        }
-
         # PROCESS WEB SCAN DATA
         if ( $PSBoundParameters.ContainsKey('WebScan') ) {
-            $WebCsv = Import-Csv -Path $WebScan
-            foreach ( $i in $WebCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
+            $webCsv = Import-Csv -Path $WebScan
+            #foreach ( $i in $webCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
 
             # EXPORT WEB DATA TO EXCEL
-            $WebCsv | Select-Object -Property $Properties | Export-Excel @Splat -WorksheetName 'WebScan'
+            $webCsv | Select-Object -Property $properties | Export-Excel @splat -WorksheetName 'WebScan'
         }
 
         # PROCESS SYSTEM SCAN DATA
         if ( $PSBoundParameters.ContainsKey('SystemScan') ) {
-            $SystemCsv = Import-Csv -Path $SystemScan
-            foreach ( $i in $SystemCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'System Scan' }
+            $systemCsv = Import-Csv -Path $SystemScan
+            #foreach ( $i in $systemCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'System Scan' }
 
             # ADD SYSTEM SPECIFIC PROPERTIES
-            $Properties += @("Detected OS", "CVE")
+            $properties += @("Detected OS", "CVE")
 
             # EXPORT SYSTEM DATA TO EXCEL
-            $SystemCsv | Select-Object -Property $Properties | Export-Excel @Splat -WorksheetName 'SystemScan'
+            $systemCsv | Select-Object -Property $properties | Export-Excel @splat -WorksheetName 'SystemScan'
+        }
+
+        # PROCESS DB SCAN DATA
+        if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
+            $dbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
+            #foreach ( $i in $dbScan ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Database Scan' }
+
+            # EXPORT DB DATA TO EXCEL
+            $dbScan | Export-Excel @splat -WorksheetName 'DBScan'
         }
     }
 }
