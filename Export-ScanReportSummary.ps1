@@ -70,6 +70,7 @@ function Export-ScanReportSummary {
     Process {
         # PROCESS DATABASE SCAN DATA
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
+            $DatabaseScan = (Resolve-Path -Path $DatabaseScan).Path
             $dbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
             $udbScan = $dbScan <# | Where-Object Status -EQ 'Fail'  #>| Sort-Object -Unique ID
             foreach ( $object in $udbScan ) {

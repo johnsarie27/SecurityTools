@@ -112,6 +112,7 @@ function Export-ScanReportAggregate {
 
         # PROCESS DB SCAN DATA
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
+            $DatabaseScan = (Resolve-Path -Path $DatabaseScan).Path
             $dbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
             #foreach ( $i in $dbScan ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Database Scan' }
 
