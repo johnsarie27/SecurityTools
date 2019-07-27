@@ -1,3 +1,3 @@
 # SecurityTools
 
-A PowerShell module for System Center reporting tools
+A PowerShell module with tool sets related to security, forensic, and reporting tasks.
