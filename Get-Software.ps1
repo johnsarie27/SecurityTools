@@ -62,7 +62,7 @@ function Get-Software {
             $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
             $isAdmin = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
             if ( $isAdmin ) { Write-Verbose 'Current user has admin privileges' }
-            
+
             # GET USER KEYS
             if ( $true -eq $Using:GetUsers -and $isAdmin ) {
                 # ADD NEW PSDRIVE FOR HKEY CURRENT USER HIVE

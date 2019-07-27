@@ -63,7 +63,7 @@ function Export-SQLVAReportAggregate {
         if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
             $DestinationPath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Aggregate-SQL-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
         }
-        
+
         # GET REPORTS FROM ZIP
         if ( $PSBoundParameters.ContainsKey('ZipPath') ) {
             # EXTRACT FILES

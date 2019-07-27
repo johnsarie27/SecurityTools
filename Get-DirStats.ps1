@@ -51,7 +51,7 @@ function Get-DirStats {
             # IF SIZE MATCH ADD TO COLLECTION
             if ( ($file.Length / 1GB) -GT $SizeInGb ) {
                 try { $fileList.Add($file) }
-                catch { }
+                catch { Write-Verbose ('Unable to add file {0}' -f $file.Name) }
             }
 
             # SET WARNING
@@ -74,7 +74,7 @@ function Get-DirStats {
 
             # SET WARNING VARIABLE
             if ( $EV -or $MO ) { $warning = $true }
-        
+
             # EVALUATE FOLDER SIZE
             if ( ($folder.Sum / 1GB) -gt $SizeInGb ) {
                 # CREATE NEW OBJECT
@@ -95,7 +95,7 @@ function Get-DirStats {
         foreach ( $item in (Get-ChildItem -Path $Path -Directory -Force) ) {
             # SET VARS
             $count = 0; $sizeTotal = 0
-        
+
             # LOOP ALL OBJECTS IN EACH DIRECTORY
             foreach ( $i in (Get-ChildItem -Path $item.FullName -Recurse -Force -ErrorAction 0) ) {
                 # ADD FILES
@@ -113,7 +113,7 @@ function Get-DirStats {
                     FolderName = $item.Name
                 }
                 try { $folderList.Add($New) }
-                catch { }
+                catch { Write-Verbose ('Unable to add object {0}' -f $New) }
             }
         }
         #endregion
@@ -133,7 +133,7 @@ function Get-DirStats {
                 'FullName' = '--- Totals ---'
             }
             try { $fileList.Add($New) }
-            catch { }
+            catch { Write-Verbose ('Unable to add object {0}' -f $New) }
 
             # LOOP THROUGH ALL FOLDER OBJECTS
             foreach ( $item in $folderList ) {
@@ -146,7 +146,7 @@ function Get-DirStats {
                 'FolderName' = '--- Totals ---'
             }
             try { $folderList.Add($New) }
-            catch { }
+            catch { Write-Verbose ('Unable to add object {0}' -f $New) }
         }
     }
 

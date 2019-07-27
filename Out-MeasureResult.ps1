@@ -6,7 +6,7 @@ function Out-MeasureResult {
     .EXAMPLE
         $measured = [System.Collections.Generic.List[System.TimeSpan]]::new()
         foreach ($run in (0..9)) {
-            
+
             [System.GC]::Collect()
 
             $measure = Measure-Command -Expression {
@@ -23,7 +23,7 @@ function Out-MeasureResult {
         MaxMilliseconds : 2570,0842
         MinMilliseconds : 1852,0017
         AvgMilliseconds : 2241,86343
-        
+
     .INPUTS
         Accepts an System.TimeSpan object or a collection of System.TimeSpan objects
     .NOTES
@@ -35,7 +35,7 @@ function Out-MeasureResult {
         [Parameter(ValueFromPipeline)]
         [System.Timespan[]] $Measurement
     )
-    
+
     Begin {
         $list = [System.Collections.Generic.List[System.TimeSpan]]::new()
     }
@@ -53,10 +53,10 @@ function Out-MeasureResult {
         $max = ($list | Measure-Object -Property Ticks -Maximum).Maximum
         $min = ($list | Measure-Object -Property Ticks -Minimum).Minimum
         $avg = $list | Measure-Object -Property TotalMilliseconds -Average
-        
+
         $maxObj = $list.Where( { $_.Ticks -eq $max } )
         $minObj = $list.Where( { $_.Ticks -eq $min } )
-        
+
         [PSCustomObject] @{
             MaxMilliseconds = [int] $maxObj.TotalMilliseconds
             MinMilliseconds = [int] $minObj.TotalMilliseconds

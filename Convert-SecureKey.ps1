@@ -36,7 +36,7 @@ function Convert-SecureKey {
         [Parameter(Mandatory, ParameterSetName = '_retrieve', HelpMessage = 'Path to secure Clixml file')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.xml" })]
         [string] $Path,
-        
+
         [Parameter(Mandatory, ParameterSetName = '_create', HelpMessage = 'Username')]
         [ValidateNotNullOrEmpty()]
         [string] $Username,
@@ -68,7 +68,7 @@ function Convert-SecureKey {
             if ( (Test-Path -Path $DestinationPath -PathType Leaf) -and !$Force ) {
                 Throw 'File already exists. Use "-Force" to overwrite.'
             }
-            
+
             # IF SECURE PASSWORD NOT PROVIDED IN PARAMETERS
             if ( -not $PSBoundParameters.ContainsKey('SecurePassword') ) {
                 # PROMPT USER FOR PASSWORD AS SECURE STRING

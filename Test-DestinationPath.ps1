@@ -50,18 +50,18 @@ function Test-DestinationPath {
         # VALIDATE PARENT PATH
         $parentDirectory = [System.IO.Path]::GetDirectoryName($Path)
         Write-Verbose ('parent directory: {0}' -f $parentDirectory)
-        
+
         if ($null -eq $parentDirectory) { Throw 'Invalid file path' }
         if ($parentDirectory -eq [string]::Empty) { $parentDirectory = '.' }
 
         if (-not (Test-Path -Path $parentDirectory -PathType Container)) {
             Throw ('All or part of the directory "{0}" does not exist' -f $parentDirectory)
         }
-        
+
         # JOIN FILE NAME AND PARENT PATH
         $fileName = [System.IO.Path]::GetFileName($Path)
         Write-Verbose ('file name: {0}' -f $fileName)
-        
+
         $Path = Join-Path -Path $parentDirectory -ChildPath $fileName
         Write-Verbose ('path: {0}' -f $Path)
 
