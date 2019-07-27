@@ -12,7 +12,7 @@
 RootModule = 'SecurityTools.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.4.10'
+ModuleVersion = '0.5.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -71,7 +71,7 @@ RequiredModules = @('UtilityFunctions')
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Confirm-CMResource', 'Deploy-Script', 'Get-ADUserReport', 'Export-ScanReportAggregate', 'Export-ScanReportSummary', 'Get-ActiveGWUser', 'Get-ADUserStatus', 'Get-DeviceCollection', 'Get-HAGroup', 'Get-RemoteBitLocker', 'Get-ServiceAccount', 'Get-WinLogs', 'Invoke-SDelete', 'New-CollectionPatchTime', 'New-PatchDeployment', 'New-SoftwarePatchGroup', 'Get-ActiveSmartCardCert', 'Revoke-SupersededCert', 'Export-SQLVAReport', 'Export-SQLVAReportAggregate')
+FunctionsToExport = @('Confirm-CMResource', 'Deploy-Script', 'Get-ADUserReport', 'Export-ScanReportAggregate', 'Export-ScanReportSummary', 'Get-ActiveGWUser', 'Get-ADUserStatus', 'Get-DeviceCollection', 'Get-HAGroup', 'Get-RemoteBitLocker', 'Get-ServiceAccount', 'Get-WinLogs', 'Invoke-SDelete', 'New-CollectionPatchTime', 'New-PatchDeployment', 'New-SoftwarePatchGroup', 'Get-ActiveSmartCardCert', 'Revoke-SupersededCert', 'Export-SQLVAReport', 'Export-SQLVAReportAggregate', 'ConvertTo-Excel', 'Compare-FileHash', 'Compare-Lists', 'Convert-SecureKey', 'Convert-TimeZone', 'Export-ExcelBook', 'Find-ServerPendingReboot', 'Format-Disk', 'Get-DirItemAges', 'Get-DirStats', 'Get-LoggedOnUser', 'Get-SavedHistory', 'Get-Software', 'Get-TalkingApps', 'Get-UncPath', 'Out-MeasureResult', 'Remove-Files', 'Save-KBFile', 'Test-Performance', 'Uninstall-AllModules', 'Update-LocalUserPassword', 'Write-Log')
 
 # DEPRECATE: @('ConvertTo-DbScanReport')
 
@@ -82,7 +82,7 @@ CmdletsToExport = @()
 VariablesToExport = @('EventTable')
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = @('Get-DeviceCollections', 'New-ADUserReport', 'Export-ADUserReport')
+AliasesToExport = @('Get-DeviceCollections', 'New-ADUserReport', 'Export-ADUserReport', 'ConvertTo-Excel', 'epeb', 'epb', 'gs', 'wl')
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()

@@ -1,35 +1,25 @@
 ---
-external help file: SecurityTools-help.xml
-Module Name: SecurityTools
+external help file: UtilityFunctions-help.xml
+Module Name: UtilityFunctions
 online version:
 schema: 2.0.0
 ---
 
-# Confirm-CMResource
+# Get-Object
 
 ## SYNOPSIS
 {{Fill in the Synopsis}}
 
 ## SYNTAX
 
-### update
+### object (Default)
 ```
-Confirm-CMResource [-PSDrive <String>] -UpdateGroupName <String> [<CommonParameters>]
-```
-
-### collection
-```
-Confirm-CMResource [-PSDrive <String>] -CollectionName <String> [<CommonParameters>]
+Get-Object -ObjectList <Object[]> -DisplayProperty <String> [-Index] [<CommonParameters>]
 ```
 
-### device
+### string
 ```
-Confirm-CMResource [-PSDrive <String>] -DeviceName <String> [<CommonParameters>]
-```
-
-### drive
-```
-Confirm-CMResource -PSDrive <String> [<CommonParameters>]
+Get-Object -ObjectList <Object[]> [-String] [-Index] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -46,13 +36,13 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -CollectionName
-Collection name
+### -DisplayProperty
+Object property to display
 
 ```yaml
 Type: String
-Parameter Sets: collection
-Aliases:
+Parameter Sets: object
+Aliases: Name, DP
 
 Required: True
 Position: Named
@@ -61,27 +51,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -DeviceName
-Device name
+### -Index
+Return object index instead of object
 
 ```yaml
-Type: String
-Parameter Sets: device
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PSDrive
-PS Drive name
-
-```yaml
-Type: String
-Parameter Sets: update, collection, device
+Type: SwitchParameter
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -91,10 +66,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ObjectList
+List of objects to choose from
+
 ```yaml
-Type: String
-Parameter Sets: drive
-Aliases:
+Type: Object[]
+Parameter Sets: (All)
+Aliases: List, OL
 
 Required: True
 Position: Named
@@ -103,12 +81,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UpdateGroupName
-Update group name
+### -String
+Object type of string
 
 ```yaml
-Type: String
-Parameter Sets: update
+Type: SwitchParameter
+Parameter Sets: string
 Aliases:
 
 Required: True

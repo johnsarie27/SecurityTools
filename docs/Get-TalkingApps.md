@@ -1,62 +1,47 @@
 ---
-external help file: SecurityTools-help.xml
-Module Name: SecurityTools
+external help file: UtilityFunctions-help.xml
+Module Name: UtilityFunctions
 online version:
 schema: 2.0.0
 ---
 
-# Get-DeviceCollection
+# Get-TalkingApps
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get Windows processes with open network connections
 
 ## SYNTAX
 
 ```
-Get-DeviceCollection [-DeviceName] <String> [[-PSDrive] <String>] [<CommonParameters>]
+Get-TalkingApps [[-ComputerName] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Query Windows processes and display open connections
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-TalkingApps.ps1 -ComputerName MyServer
 ```
 
-{{ Add example description here }}
+Get all processes with open network connections on MyServer
 
 ## PARAMETERS
 
-### -DeviceName
-Device name
+### -ComputerName
+Target computer name
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Name, ComputerName
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -PSDrive
-PSDrive for Configuration Manager
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: Drive, DriveName, CMDrive
+Aliases: Name, Computer, Host, HostName, CN
 
 Required: False
-Position: 1
+Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 

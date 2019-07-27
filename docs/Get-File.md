@@ -1,26 +1,20 @@
 ---
-external help file: SecurityTools-help.xml
-Module Name: SecurityTools
+external help file: UtilityFunctions-help.xml
+Module Name: UtilityFunctions
 online version:
 schema: 2.0.0
 ---
 
-# New-PatchDeployment
+# Get-File
 
 ## SYNOPSIS
 {{Fill in the Synopsis}}
 
 ## SYNTAX
 
-### one (Default)
 ```
-New-PatchDeployment [-PSDrive <String>] -UpdateGroupName <String> -CollectionName <String> -Deadline <DateTime>
+Get-File [[-InitialDirectory] <String>] [-Save] [[-Extension] <String>] [[-Title] <String>]
  [<CommonParameters>]
-```
-
-### many
-```
-New-PatchDeployment [-PSDrive <String>] -UpdateGroupName <String> -PatchTimes <PSObject[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -37,43 +31,44 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -CollectionName
-CM Collection Name
-
-```yaml
-Type: String
-Parameter Sets: one
-Aliases: Collection, DeviceCollection
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Deadline
-Deadline for patch install
-
-```yaml
-Type: DateTime
-Parameter Sets: one
-Aliases: DeadlineDate, Date
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PSDrive
-PSDrive for Configuration Manager
+### -Extension
+File extension
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Drive, DriveName, CMDrive
+Aliases:
+Accepted values: csv, xlsx, xls, xml, json, log, txt, exe, msi
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -InitialDirectory
+Starting directory for file selection
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Save
+Save file as
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
 
 Required: False
 Position: Named
@@ -82,31 +77,16 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PatchTimes
-PSCustomObject with values Name and UTC
-
-```yaml
-Type: PSObject[]
-Parameter Sets: many
-Aliases: Collections, Groups
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -UpdateGroupName
-CM Software Update Group name
+### -Title
+Title or file name
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: SoftwareUpdateGroup, UGN, SUGN
+Aliases:
 
-Required: True
-Position: Named
+Required: False
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

@@ -1,11 +1,11 @@
 ---
-external help file: SecurityTools-help.xml
-Module Name: SecurityTools
+external help file: UtilityFunctions-help.xml
+Module Name: UtilityFunctions
 online version:
 schema: 2.0.0
 ---
 
-# Get-HAGroup
+# Get-Folder
 
 ## SYNOPSIS
 {{Fill in the Synopsis}}
@@ -13,8 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-HAGroup [-PSDrive] <String> [-CollectionNames] <String[]> [[-Station] <String>] [[-ServerType] <String>]
- [<CommonParameters>]
+Get-Folder [[-InitialPath] <String>] [[-Description] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -31,63 +30,31 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -CollectionNames
-Array of CM Collection Names
+### -Description
+Folder description
 
 ```yaml
-Type: String[]
+Type: String
 Parameter Sets: (All)
-Aliases: Collections, GroupNames
+Aliases:
 
-Required: True
+Required: False
 Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PSDrive
-PSDriver for Configuration Manager
+### -InitialPath
+Starting directory for selection window
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Drive, DriveName, CMDrive
+Aliases:
 
-Required: True
+Required: False
 Position: 0
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -ServerType
-Server type
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: Type, Purpose, Designation
-Accepted values: apps, data
-
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Station
-Primary or secondary HA group
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: HAGroup, Group
-Accepted values: primary, secondary
-
-Required: False
-Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -99,7 +66,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## INPUTS
 
-### System.String
+### None
 
 ## OUTPUTS
 
