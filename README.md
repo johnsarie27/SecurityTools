@@ -1,3 +1,3 @@
 # SecurityTools
 
-A PowerShell module with tool sets related to security, forensic, and reporting tasks.
+A PowerShell module with tools for information security, forensics, and reporting tasks.
