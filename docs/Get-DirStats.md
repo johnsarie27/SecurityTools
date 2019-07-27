@@ -1,6 +1,6 @@
 ---
-external help file: UtilityFunctions-help.xml
-Module Name: UtilityFunctions
+external help file: SecurityTools-help.xml
+Module Name: SecurityTools
 online version:
 schema: 2.0.0
 ---

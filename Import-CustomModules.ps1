@@ -46,9 +46,9 @@ $WC = New-Object System.Net.WebClient
 $FileList = @(
     'https://github.com/johnsarie27/AWSReporting/AWSReporting.psd1'
     'https://github.com/johnsarie27/AWSReporting/AWSReporting.psm1'
-    'https://github.com/johnsarie27/UtilityFunctions/UtilityFunctions.psd1'
-    'https://github.com/johnsarie27/UtilityFunctions/UtilityFunctions.psm1'
-    'https://github.com/johnsarie27/UtilityFunctions/EventTable.json'
+    'https://github.com/johnsarie27/SecurityTools/SecurityTools.psd1'
+    'https://github.com/johnsarie27/SecurityTools/SecurityTools.psm1'
+    'https://github.com/johnsarie27/SecurityTools/EventTable.json'
     'https://github.com/johnsarie27/SecurityTools/SecurityTools.psd1'
     'https://github.com/johnsarie27/SecurityTools/SecurityTools.psm1'
 )
