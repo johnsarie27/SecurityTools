@@ -1,6 +1,6 @@
 #Requires -Modules Pester
 
-Import-Module -Name $PSScriptRoot\..\UtilityFunctions.psd1 -Force
+Import-Module -Name $PSScriptRoot\..\SecurityTools.psd1 -Force
 Import-Module "C:\Program Files\WindowsPowerShell\Modules\Pester\4.8.1\Pester.psd1"
 Import-Module -Name ImportExcel
 

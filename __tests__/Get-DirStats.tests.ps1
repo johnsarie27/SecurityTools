@@ -1,6 +1,6 @@
 #Requires -Modules Pester
 
-Import-Module -Name $PSScriptRoot\..\UtilityFunctions.psd1 -Force
+Import-Module -Name $PSScriptRoot\..\SecurityTools.psd1 -Force
 
 Describe -Name "Get-DirStats" -Fixture {
     It -Name "should not fail" -Test {
