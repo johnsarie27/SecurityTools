@@ -32,7 +32,7 @@ function Export-ExcelBook {
         General notes
     ========================================================================= #>
     [CmdletBinding()]
-    [Alias('ConvertTo-Excel', 'epeb', 'epb')]
+    [Alias('ConvertTo-Excel')]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Array of data objects')]
         [ValidateNotNullOrEmpty()]
@@ -40,7 +40,7 @@ function Export-ExcelBook {
         [System.Object[]] $Data,
 
         [Parameter(HelpMessage = 'Path to new or existing Excel file')]
-        [ValidateScript({ Test-Path -Path (Split-Path -Path $_) -PathType Container })]
+        [ValidateScript( { Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) -PathType Container })]
         [Alias('FilePath', 'File', 'DataFile')]
         [string] $Path,
 
@@ -51,7 +51,7 @@ function Export-ExcelBook {
         [switch] $Freeze,
 
         [Parameter(HelpMessage = 'Custom name for sheet or tab')]
-        [ValidateScript({ $_ -match '[a-z09-_]{1,16}' })]
+        [ValidateScript({ $_ -match '[\w-]{1,16}' })]
         [string] $SheetName,
 
         [Parameter(HelpMessage = 'Do not open file after creation')]
@@ -82,13 +82,15 @@ function Export-ExcelBook {
         # IF PATH PARAMETER DECLARED USE PATH, IF NOT, STORE IN TEMP
         if ( $PSBoundParameters.ContainsKey('Path') ) {
 
-            # IF EXCEL FILE ALREADY EXISTS
             if ( Test-Path -Path $Path -PathType Leaf -Include "*.xlsx" ) {
+                # IF THE FILE EXISTS, OPEN THE WORKBOOK AND ADD A NEW WORKSHEET
                 $ExistingBook = $true
                 $WorkBook = $Excel.Workbooks.Open($Path)
                 $Sheet = $WorkBook.Worksheets.Add()
             }
             else {
+                # IF THE FILE DOES NOT EXIST, CREATE A NEW WORKBOOK AND USE "SHEET1"
+                # THE WORKSHEET WILL BE RENAMED LATER IF PARAMETER ARGUMENT PROVIDED
                 $WorkBook = $Excel.Workbooks.Add()
                 $Sheet = $WorkBook.Worksheets.Item("Sheet1")
             }
@@ -116,7 +118,7 @@ function Export-ExcelBook {
                 $Columns = $d | Get-Member -MemberType NoteProperty, Property
 
                 # VALIDATE OBJECTS
-                if ( -not $d ) { Write-Warning "Invalid input object"; Break }
+                if ( -not $d ) { Throw "Invalid input object" }
 
                 foreach ( $C in $Columns ) {
                     $Sheet.Cells.Item($CurrentRow, ([array]::IndexOf($Columns, $C) + 1)) = $C.Name
