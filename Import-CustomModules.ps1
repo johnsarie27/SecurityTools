@@ -44,8 +44,8 @@ if ( -not (Test-Path $PROFILE.CurrentUserAllHosts) ) {
 # CREATE WEBCLIENT AND URL LIST
 $WC = New-Object System.Net.WebClient
 $FileList = @(
-    'https://github.com/johnsarie27/AWSReporting/AWSReporting.psd1'
-    'https://github.com/johnsarie27/AWSReporting/AWSReporting.psm1'
+    'https://github.com/johnsarie27/AWSAutomation/AWSAutomation.psd1'
+    'https://github.com/johnsarie27/AWSAutomation/AWSAutomation.psm1'
     'https://github.com/johnsarie27/SecurityTools/SecurityTools.psd1'
     'https://github.com/johnsarie27/SecurityTools/SecurityTools.psm1'
     'https://github.com/johnsarie27/SecurityTools/EventTable.json'
