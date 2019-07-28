@@ -33,7 +33,7 @@ Copyright = '(c) 2018 Justin Johns. All rights reserved.'
 Description = 'Functions used in reporting and management of security devices and resources.'
 
 # Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '4.0'
+PowerShellVersion = '4.1'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
@@ -70,7 +70,7 @@ RequiredModules = @()
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Confirm-CMResource', 'Deploy-Script', 'Get-ADUserReport', 'Export-ScanReportAggregate', 'Export-ScanReportSummary', 'Get-ActiveGWUser', 'Get-ADUserStatus', 'Get-DeviceCollection', 'Get-HAGroup', 'Get-RemoteBitLocker', 'Get-ServiceAccount', 'Get-WinLogs', 'Invoke-SDelete', 'New-CollectionPatchTime', 'New-PatchDeployment', 'New-SoftwarePatchGroup', 'Get-ActiveSmartCardCert', 'Revoke-SupersededCert', 'Export-SQLVAReport', 'Export-SQLVAReportAggregate', 'ConvertTo-Excel', 'Compare-FileHash', 'Compare-Lists', 'Convert-SecureKey', 'Convert-TimeZone', 'Export-ExcelBook', 'Find-ServerPendingReboot', 'Format-Disk', 'Get-DirItemAges', 'Get-DirStats', 'Get-LoggedOnUser', 'Get-SavedHistory', 'Get-Software', 'Get-TalkingApps', 'Get-UncPath', 'Out-MeasureResult', 'Remove-Files', 'Save-KBFile', 'Test-Performance', 'Uninstall-AllModules', 'Update-LocalUserPassword', 'Write-Log', 'Get-Object')
+FunctionsToExport = @('Confirm-CMResource', 'Deploy-Script', 'Get-ADUserReport', 'Export-ScanReportAggregate', 'Export-ScanReportSummary', 'Get-ActiveGWUser', 'Get-ADUserStatus', 'Get-DeviceCollection', 'Get-HAGroup', 'Get-RemoteBitLocker', 'Get-ServiceAccount', 'Get-WinLogs', 'Invoke-SDelete', 'New-CollectionPatchTime', 'New-PatchDeployment', 'New-SoftwarePatchGroup', 'Get-ActiveSmartCardCert', 'Revoke-SupersededCert', 'Export-SQLVAReport', 'Export-SQLVAReportAggregate', 'ConvertTo-Excel', 'Compare-FileHash', 'Compare-Lists', 'Convert-SecureKey', 'Convert-TimeZone', 'Export-ExcelBook', 'Find-ServerPendingReboot', 'Format-Disk', 'Get-DirItemAges', 'Get-DirStats', 'Get-LoggedOnUser', 'Get-SavedHistory', 'Get-Software', 'Get-TalkingApps', 'Get-UncPath', 'Out-MeasureResult', 'Remove-Files', 'Save-KBFile', 'Test-Performance', 'Uninstall-AllModules', 'Update-LocalUserPassword', 'Write-Log', 'Get-Object', 'Install-ModuleFromPackage')
 
 # DEPRECATE: @('ConvertTo-DbScanReport')
 

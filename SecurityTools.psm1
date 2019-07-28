@@ -1,5 +1,5 @@
 # ==============================================================================
-# Updated:      2019-07-27
+# Updated:      2019-07-28
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/SecurityTools
@@ -29,6 +29,7 @@
 . $PSScriptRoot\Get-ServiceAccount.ps1
 . $PSScriptRoot\Get-TalkingApps.ps1
 . $PSScriptRoot\Get-UncPath.ps1
+. $PSScriptRoot\Install-ModuleFromPackage.ps1
 . $PSScriptRoot\Remove-Files.ps1
 . $PSScriptRoot\Uninstall-AllModules.ps1
 . $PSScriptRoot\Write-Log.ps1
