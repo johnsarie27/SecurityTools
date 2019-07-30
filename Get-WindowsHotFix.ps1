@@ -24,7 +24,7 @@ function Get-WindowsHotFix {
         [Parameter(ValueFromPipeline, HelpMessage = 'Name of target computer')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Count 1 -Quiet })]
         [string[]] $ComputerName,
-    
+
         [Parameter(HelpMessage = 'Knowledge base identifier')]
         [ValidatePattern('KB\d{7}')]
         [string[]] $Id
@@ -46,11 +46,11 @@ function Get-WindowsHotFix {
         # HAVE PROVIDED THE SAME RESULT. MORE TESTING SHOULD BE DONE TO DETERMINE THE PERFORMANCE
         # IMPACT, HOWEVER, THE PIPELINE IS GENERALLY SLOWER. THIS CHOICE ALLOWS THE CALLER TO USE
         # WHATEVER METHOD THEY CHOOSE TO PASS INPUT TO THE FUNCTION.
-        
+
         #Invoke-Command -ComputerName $ComputerName -ScriptBlock $ScriptBlock
 
         foreach ( $cn in $ComputerName ) {
-            Invoke-Command -ComputerName $cn -ScriptBlock $ScriptBlock    
+            Invoke-Command -ComputerName $cn -ScriptBlock $ScriptBlock
         }
     }
 }
