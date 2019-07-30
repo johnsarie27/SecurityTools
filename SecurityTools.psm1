@@ -1,5 +1,5 @@
 # ==============================================================================
-# Updated:      2019-07-28
+# Updated:      2019-07-30
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/SecurityTools
@@ -43,6 +43,7 @@
 . $PSScriptRoot\Get-LoggedOnUser.ps1
 . $PSScriptRoot\Get-RemoteBitLocker.ps1
 . $PSScriptRoot\Get-Software.ps1
+. $PSScriptRoot\Get-WindowsHotFix.ps1
 . $PSScriptRoot\Get-WinLogs.ps1
 . $PSScriptRoot\Invoke-SDelete.ps1
 . $PSScriptRoot\Revoke-SupersededCert.ps1
