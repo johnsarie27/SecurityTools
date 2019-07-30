@@ -33,7 +33,7 @@ Copyright = '(c) 2018 Justin Johns. All rights reserved.'
 Description = 'Functions used in reporting and management of security devices and resources.'
 
 # Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '4.1'
+PowerShellVersion = '4.2'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
