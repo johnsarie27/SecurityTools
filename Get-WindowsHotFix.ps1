@@ -8,6 +8,8 @@ function Get-WindowsHotFix {
         Specifies a remote computer. Type the NetBIOS name, an Internet Protocol (IP) address, or a fully qualified domain name (FQDN) of a remote computer.
     .PARAMETER Id
         Filters the Get-HotFix results for specific hotfix Ids. Wildcards aren't accepted.
+    .PARAMETER Description
+        Get-HotFix uses the Description parameter to specify hotfix types. Wildcards are permitted.
     .INPUTS
         System.String.
     .OUTPUTS
@@ -27,17 +29,32 @@ function Get-WindowsHotFix {
 
         [Parameter(HelpMessage = 'Knowledge base identifier')]
         [ValidatePattern('KB\d{7}')]
-        [string[]] $Id
+        [string[]] $Id,
+
+        [Parameter(HelpMessage = 'Specify hotfix type by description. Wildcards are supported')]
+        [ValidateNotNullOrEmpty()]
+        [string] $Description
     )
 
     Begin {
         # SET PARAMETERS
+        $cmdParams = @{ ScriptBlock = { Get-HotFix } }
+
         if ( $PSBoundParameters.ContainsKey('Id') ) {
-            $ScriptBlock = { Get-HotFix -Id $Id }
+            if ( $PSBoundParameters.ContainsKey('Description') ) {
+                $cmdParams['ScriptBlock'] = { Get-HotFix -Id $Using:Id -Description $Using:Description }
+            }
+            else {
+                $cmdParams['ScriptBlock'] = { Get-HotFix -Id $Using:Id }
+            }
         }
-        else {
-            $ScriptBlock = { Get-HotFix }
+
+        if ( $PSBoundParameters.ContainsKey('Description') ) {
+            $cmdParams['ScriptBlock'] = { Get-HotFix -Description $Using:Description }
         }
+
+        # WRITE PARAMETERS WHEN -VERBOSE IS USED
+        Write-Verbose ('Parameters: {0}' -f ($cmdParams | Out-String))
     }
 
     Process {
@@ -47,10 +64,10 @@ function Get-WindowsHotFix {
         # IMPACT, HOWEVER, THE PIPELINE IS GENERALLY SLOWER. THIS CHOICE ALLOWS THE CALLER TO USE
         # WHATEVER METHOD THEY CHOOSE TO PASS INPUT TO THE FUNCTION.
 
-        #Invoke-Command -ComputerName $ComputerName -ScriptBlock $ScriptBlock
+        #Invoke-Command @cmdParams -ComputerName $ComputerName
 
         foreach ( $cn in $ComputerName ) {
-            Invoke-Command -ComputerName $cn -ScriptBlock $ScriptBlock
+            Invoke-Command @cmdParams -ComputerName $cn
         }
     }
 }
