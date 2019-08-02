@@ -48,8 +48,7 @@ function Get-WindowsHotFix {
                 $cmdParams['ScriptBlock'] = { Get-HotFix -Id $Using:Id }
             }
         }
-
-        if ( $PSBoundParameters.ContainsKey('Description') ) {
+        if ( $PSBoundParameters.ContainsKey('Description') -and -not $PSBoundParameters.ContainsKey('Id') ) {
             $cmdParams['ScriptBlock'] = { Get-HotFix -Description $Using:Description }
         }
 
