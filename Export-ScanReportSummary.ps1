@@ -143,6 +143,7 @@ function Export-ScanReportSummary {
             FreezeTopRow  = $true
             BoldTopRow    = $true
             MoveToEnd     = $true
+            Style         = (New-ExcelStyle -Bold -Range '1:1' -HorizontalAlignment Center)
             Path          = $DestinationPath
         }
 

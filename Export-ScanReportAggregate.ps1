@@ -84,6 +84,7 @@ function Export-ScanReportAggregate {
             FreezeTopRow = $true
             BoldTopRow   = $true
             MoveToEnd    = $true
+            Style        = (New-ExcelStyle -Bold -Range '1:1' -HorizontalAlignment Center)
             Path         = Join-Path -Path $DestinationPath -ChildPath ('Aggregate-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
         }
     }

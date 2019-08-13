@@ -96,6 +96,7 @@ function Export-SQLVAReportAggregate {
             MoveToEnd     = $true
             Path          = $DestinationPath
             WorksheetName = 'DBScan'
+            Style         = (New-ExcelStyle -Bold -Range '1:1' -HorizontalAlignment Center)
         }
 
         # EXPORT NEW AGGREATE REPORT
