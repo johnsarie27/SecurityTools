@@ -22,8 +22,6 @@ function Get-ADUserReport {
         foreach ( $item in $List ) { $item -split ',' | select -First 1 }
     ========================================================================= #>
     [CmdletBinding()]
-    [Alias('New-ADUserReport', 'Export-ADUserReport')]
-
     Param(
         [Parameter(HelpMessage = 'Hostname of Domain Controller')]
         [ValidateScript( { Test-Connection -ComputerName $_ -Quiet -Count 1 })]
