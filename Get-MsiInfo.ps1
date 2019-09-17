@@ -1,9 +1,9 @@
 function Get-MsiInfo {
     <# =========================================================================
     .SYNOPSIS
-        Short description
+        Get MSI information
     .DESCRIPTION
-        Long description
+        Get specific MSI property information
     .PARAMETER Path
         Path to MSI file
     .PARAMETER Property
@@ -13,8 +13,8 @@ function Get-MsiInfo {
     .OUTPUTS
         None.
     .EXAMPLE
-        PS C:\> <example usage>
-        Explanation of what the example does
+        PS C:\> Get-MsiInfo -Path "C:\myMsi.msi" -Property ProductCode
+        Returns the product code for myMsi.msi
     .NOTES
         General notes
         This function was originally written by Nickolaj Andersen (see link below)
