@@ -1,11 +1,11 @@
 # ==============================================================================
-# Updated:      2019-07-30
+# Updated:      2019-09-16
 # Created by:   Justin Johns
 # Filename:     SecurityTools.psm1
 # Link:         https://github.com/johnsarie27/SecurityTools
 # ==============================================================================
 
-# IMPORT SCANNING AND REPORTING FUNCTIONS
+# SCANNING AND REPORTING FUNCTIONS
 . $PSScriptRoot\Export-ScanReportAggregate.ps1
 . $PSScriptRoot\Export-ScanReportSummary.ps1
 . $PSScriptRoot\Get-ADUserReport.ps1
@@ -16,7 +16,7 @@
 . $PSScriptRoot\Out-MeasureResult.ps1
 . $PSScriptRoot\Test-Performance.ps1
 
-# IMPORT FUNCTIONS
+# GENERAL FUNCTIONS
 . $PSScriptRoot\Compare-FileHash.ps1
 . $PSScriptRoot\Compare-Lists.ps1
 . $PSScriptRoot\Convert-SecureKey.ps1
@@ -34,7 +34,7 @@
 . $PSScriptRoot\Uninstall-AllModules.ps1
 . $PSScriptRoot\Write-Log.ps1
 
-# IMPORT WINDOWS FUNCTIONS
+# WINDOWS FUNCTIONS
 . $PSScriptRoot\Export-ExcelBook.ps1
 . $PSScriptRoot\Find-ServerPendingReboot.ps1
 . $PSScriptRoot\Get-ActiveGWUser.ps1
@@ -49,6 +49,7 @@
 . $PSScriptRoot\Revoke-SupersededCert.ps1
 . $PSScriptRoot\Save-KBFile.ps1
 . $PSScriptRoot\Update-LocalUserPassword.ps1
+. $PSScriptRoot\Get-MsiInfo.ps1
 
 # INTERNAL FUNCTIONS
 . $PSScriptRoot\Get-File.ps1
