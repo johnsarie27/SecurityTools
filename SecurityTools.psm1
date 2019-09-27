@@ -43,7 +43,6 @@
 . $PSScriptRoot\Get-LoggedOnUser.ps1
 . $PSScriptRoot\Get-RemoteBitLocker.ps1
 . $PSScriptRoot\Get-Software.ps1
-. $PSScriptRoot\Get-WindowsHotFix.ps1
 . $PSScriptRoot\Get-WinLogs.ps1
 . $PSScriptRoot\Invoke-SDelete.ps1
 . $PSScriptRoot\Revoke-SupersededCert.ps1

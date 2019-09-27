@@ -20,6 +20,8 @@ function Get-WindowsHotFix {
     .NOTES
         General notes
         https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-hotfix?view=powershell-5.1#parameters
+        (2019-09-27) TODAY I DISCOVERED THAT THIS FUNCTIONALITY HAS BEEN ADDED TO GET-HOTFIX. I WILL REMOVE
+        THIS FUNCTION FROM THE MODULE BUT KEEP THE FILE FOR HISTORICAL PURPOSES.
     ========================================================================= #>
     [CmdletBinding()]
     Param(
