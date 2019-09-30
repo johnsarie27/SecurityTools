@@ -1,7 +1,7 @@
 function Find-SavedCommand {
     <# =========================================================================
     .SYNOPSIS
-        Get command history matching search term(s)
+        Find command matching search term(s)
     .DESCRIPTION
         Search for commands in the stored session history for PowerShell that
         match the provided keyword(s). If no keywards are provided all unique
