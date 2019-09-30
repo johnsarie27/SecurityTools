@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-SavedHistory
+# Find-SavedCommand
 
 ## SYNOPSIS
 Get command history matching word or phrase
@@ -13,7 +13,7 @@ Get command history matching word or phrase
 ## SYNTAX
 
 ```
-Get-SavedHistory [-Phrase] <String> [<CommonParameters>]
+Find-SavedCommand [-Phrase] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -23,7 +23,7 @@ This function will return results of commands run and stored in the HistorySaveP
 
 ### Example 1
 ```powershell
-PS C:\> Get-SavedHistory -Phrase "ELBLoadBalancer -Name" -Results 100
+PS C:\> Find-SavedCommand -Phrase "ELBLoadBalancer -Name" -Results 100
 ```
 
 Show the last 100 commands run using the phrase "ELBLoadBalancer -Name"

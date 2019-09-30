@@ -25,7 +25,7 @@
 . $PSScriptRoot\Format-Disk.ps1
 . $PSScriptRoot\Get-DirItemAges.ps1
 . $PSScriptRoot\Get-DirStats.ps1
-. $PSScriptRoot\Get-SavedHistory.ps1
+. $PSScriptRoot\Find-SavedCommand.ps1
 . $PSScriptRoot\Get-ServiceAccount.ps1
 . $PSScriptRoot\Get-TalkingApps.ps1
 . $PSScriptRoot\Get-UncPath.ps1
