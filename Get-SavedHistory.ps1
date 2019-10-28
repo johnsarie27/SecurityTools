@@ -1,4 +1,4 @@
-function Find-SavedCommand {
+function Get-SavedHistory {
     <# =========================================================================
     .SYNOPSIS
         Find command matching search term(s)
@@ -13,7 +13,7 @@ function Find-SavedCommand {
     .OUTPUTS
         System.Object[].
     .EXAMPLE
-        PS C:\> Find-SavedCommand -Search "ELBLoadBalancer -Name"
+        PS C:\> Get-SavedHistory -Search "ELBLoadBalancer -Name"
     .NOTES
         See article: https://serverfault.com/questions/891265/how-to-search-powershell-command-history-from-previous-sessions
     ========================================================================= #>
