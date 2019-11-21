@@ -65,6 +65,11 @@ function Export-ScanReportSummary {
             $fileName = 'Summary-Scans_{0}.xlsx' -f (Get-Date -Format "yyyy-MM")
             $DestinationPath = Join-Path -Path "$HOME\Desktop" -ChildPath $fileName
         }
+        else {
+            # GET LAST MONTH'S REPORT IF EXISTS
+            $lastMonth = (Get-Date -Date (Get-Date).AddMonths(-1) -UFormat %b).ToUpper()
+            $summaryReport = Import-Excel -Path $DestinationPath -WorksheetName $lastMonth -ErrorAction SilentlyContinue
+        }
     }
 
     Process {
@@ -79,7 +84,15 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
                 $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'DB Scan'
                 $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
-                $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+
+                # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
+                $match = $summaryReport | Where-Object { $_.Name -eq $object.'Security Check' }
+                if ( $match ) {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                }
+                else {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+                }
 
                 <# # ADDING THE PROPERTIES BELOW IS SLOWER THAN DEFINING AND SELECTING PROPERTIES
                 # KEEPING THIS HERE FOR HISTORICAL PURPOSES
@@ -110,8 +123,16 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'System Scan'
                 $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
                 $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
-                $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
                 $object | Add-Member -MemberType NoteProperty -Name 'Status' -Value $object.'Active or inactive'
+
+                # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
+                $match = $summaryReport | Where-Object { $_.Name -eq $object.Name }
+                if ( $match ) {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                }
+                else {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+                }
             }
         }
 
@@ -125,8 +146,16 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan'
                 $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
                 $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
-                $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
                 $object | Add-Member -MemberType NoteProperty -Name 'Status' -Value $object.'Active or inactive'
+
+                # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
+                $match = $summaryReport | Where-Object { $_.Name -eq $object.Name }
+                if ( $match ) {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                }
+                else {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+                }
             }
         }
     }
