@@ -1,3 +1,5 @@
+#Requires -Modules AWSPowerShell
+
 function Invoke-SDelete {
     <# =========================================================================
     .SYNOPSIS
@@ -41,6 +43,23 @@ function Invoke-SDelete {
         if ( !(Test-Path -Path $Path) ) { Throw "SDelete not found" }
         if ( !(Test-Path -Path $LogPath) ) { New-Item -Path $LogPath -ItemType Directory -Force }
 
+        # CREATE HASH TABLE FOR VOLUME ID'S
+        $alphabetList = 0..25 | ForEach-Object { [char](65 + $_) } # 'A'..'Z'
+        [int] $i = 0 ; $volumeLookupTable = @{ }
+        $alphabetList | ForEach-Object -Process {
+            $key = 'T' + $i.ToString("00") ; [string] $value = ('xvd' + $_).ToLower()
+            $volumeLookupTable.Add($key, $value) ; $i++
+        }
+        $volumeLookupTable['T00'] = '/dev/sda1/'
+
+        # GET MAPPINGS FROM INSTANCE
+        $instanceVolumes = @{ }
+        $instanceId = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/instance-id"
+        $instance = (Get-EC2Instance -InstanceId $instanceId).Instances
+        foreach ( $vol in $instance.BlockDeviceMappings ) {
+            $instanceVolumes.Add($vol.DeviceName, $vol.Ebs.VolumeId)
+        }
+
         # GET SDELETE DIRECTORY AND INITIALIZE SDELETE
         $procParams = @{
             FilePath     = $Path
@@ -70,8 +89,9 @@ function Invoke-SDelete {
             #$Command = '{0} -p 3 -z {1}' -f $Path, $d.Number
 
             # ADD LOG FILE
-            $logName = 'SDelete_{1}_{0}.log' -f (Get-Date -F 'yyMMddTHHmmss'), $d.SerialNumber
-            $logFile = Join-Path -Path $LogPath -ChildPath $logName
+            $targetId = $d.Location.SubString(39, 3) # THIS IS CHANGED IN WINDOWS SERVER 2016
+            $volId = $instanceVolumes[$volumeLookupTable[$targetId]]
+            $logFile = Join-Path -Path $LogPath -ChildPath ('SDelete_{0}_{1}.log' -f $volId, (Get-Date -F 'yyyyMMddTHHmm'))
             $procParams['RedirectStandardOutput'] = $logFile
 
             # START SDELETE
