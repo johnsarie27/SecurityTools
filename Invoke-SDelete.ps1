@@ -1,4 +1,4 @@
-#Requires -Modules AWSPowerShell
+#Requires -Modules AWS.Tools.EC2
 
 function Invoke-SDelete {
     <# =========================================================================
@@ -21,6 +21,8 @@ function Invoke-SDelete {
         SDelete disk 4 and log actions to temp directory on C:\Temp
     .NOTES
         General notes
+        try using Start-Process -AsJob and -Wait till jobs are all done (or)
+        use PS7 with Start-Process -Wait and Foreach-Object -Parallel
     ========================================================================= #>
     [CmdletBinding()]
     Param(
