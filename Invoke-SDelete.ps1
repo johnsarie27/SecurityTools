@@ -22,30 +22,27 @@ function Invoke-SDelete {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Disk object to be cleaned')]
+        [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Disk to be cleaned')]
         [ValidateScript( { $_.Number -notcontains 0 })] ## add custom error message
         [Microsoft.Management.Infrastructure.CimInstance[]] $Disk,
 
-        [Parameter(HelpMessage = 'Path to folder where logs will be written')]
+        [Parameter(HelpMessage = 'Path to logs folder')]
         [ValidateScript( { Test-Path -Path (Split-Path -Path $_) -PathType Container })]
-        [Alias('Log', 'LogFile')]
-        [String] $LogPath = 'C:\TEMP\SDeleteLogs',
+        [String] $LogPath = 'C:\logs\SDelete',
 
         [Parameter(HelpMessage = 'Path to SDelete64.exe')]
         [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.exe" })]
-        [Alias('Executable', 'FilePath', 'SDelete')]
+        [Alias('SDelete')]
         [string] $Path = "C:\TEMP\SDelete\sdelete64.exe"
     )
 
     Begin {
-        # CONFIRM PATH EXISTENCE
-        if ( !(Test-Path -Path $Path) ) { Write-Error "SDelete not found"; Break }
-
-        # CREATE LOG FOLDER IF NOT EXIST
+        # CONFIRM PATHS
+        if ( !(Test-Path -Path $Path) ) { Throw "SDelete not found" }
         if ( !(Test-Path -Path $LogPath) ) { New-Item -Path $LogPath -ItemType Directory -Force }
 
         # GET SDELETE DIRECTORY AND INITIALIZE SDELETE
-        $Splat = @{
+        $procParams = @{
             FilePath     = $Path
             ArgumentList = "-accepteula"
             Wait         = $true
@@ -53,33 +50,33 @@ function Invoke-SDelete {
         }
 
         # ACCEPT SDELETE EULA
-        Start-Process @Splat
+        Start-Process @procParams
 
         # REMOVE WAIT PARAM
-        $Splat.Remove('Wait')
+        $procParams.Remove('Wait')
     }
 
     Process {
-        # PERFORM FORMAT AND DELETE
-        foreach ( $D in $Disk ) {
+        # LOOP THROUGH EACH DISK
+        foreach ( $d in $Disk ) {
 
             # BRING DISK ONLINE AND FORMAT
-            $D | Set-Disk -IsOffline $false
-            $D | Set-Disk -IsReadOnly $false
-            $D | Clear-Disk -RemoveData -Confirm:$false
+            $d | Set-Disk -IsOffline $false
+            $d | Set-Disk -IsReadOnly $false
+            $d | Clear-Disk -RemoveData -Confirm:$false
 
             # SET COMMAND ARGUMENTS AND LOGGING
-            $Splat['ArgumentList'] = @("-p", 3, "-z", $D.Number)
-            #$Command = '{0} -p 3 -z {1}' -f $Path, $D.Number
+            $procParams['ArgumentList'] = @("-p", 3, "-z", $d.Number)
+            #$Command = '{0} -p 3 -z {1}' -f $Path, $d.Number
 
             # ADD LOG FILE
-            $LogName = 'SDelete_{1}_{0}.log' -f (Get-Date -F 'yyMMddTHHmmss'), $D.SerialNumber
-            $LogFile = Join-Path -Path $LogPath -ChildPath $LogName
-            $Splat['RedirectStandardOutput'] = $LogFile
+            $logName = 'SDelete_{1}_{0}.log' -f (Get-Date -F 'yyMMddTHHmmss'), $d.SerialNumber
+            $logFile = Join-Path -Path $LogPath -ChildPath $logName
+            $procParams['RedirectStandardOutput'] = $logFile
 
             # START SDELETE
-            Start-Process @Splat
-            #Start-Job -ScriptBlock { Invoke-Expression -Command $Command | Tee-Object -FilePath $LogFile }
+            Start-Process @procParams
+            #Start-Job -ScriptBlock { Invoke-Expression -Command $Command | Tee-Object -FilePath $logFile }
         }
     }
 
