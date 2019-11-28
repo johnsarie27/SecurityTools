@@ -14,7 +14,7 @@ function Export-ScanReportAggregate {
         Path to Web scan as a string
     .PARAMETER DatabaseScan
         Path to Database scan as a string
-    .PARAMETER DestinationPath
+    .PARAMETER OutputDirectory
         Path to output directory
     .INPUTS
         System.String. Format-ScanResults accepts string values for SystemScan
@@ -30,7 +30,8 @@ function Export-ScanReportAggregate {
     Param(
         [Parameter(HelpMessage = 'Path to output directory')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [string] $DestinationPath = "$HOME\Desktop",
+        [Alias('DestinationPath')]
+        [string] $OutputDirectory = "$HOME\Desktop",
 
         [Parameter(Mandatory, ParameterSetName = 'sys', HelpMessage = 'CSV file for system scan report')]
         [Parameter(Mandatory, ParameterSetName = 'sysweb')]
@@ -85,7 +86,7 @@ function Export-ScanReportAggregate {
             BoldTopRow   = $true
             MoveToEnd    = $true
             Style        = (New-ExcelStyle -Bold -Range '1:1' -HorizontalAlignment Center)
-            Path         = Join-Path -Path $DestinationPath -ChildPath ('Aggregate-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
+            Path         = Join-Path -Path $OutputDirectory -ChildPath ('Aggregate-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
         }
     }
 

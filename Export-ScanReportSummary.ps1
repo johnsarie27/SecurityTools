@@ -57,9 +57,6 @@ function Export-ScanReportSummary {
     )
 
     Begin {
-        # IMPORT REQUIRED MODULES
-        Import-Module -Name ImportExcel
-
         # SET DESTINATION PATH
         if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
             $fileName = 'Summary-Scans_{0}.xlsx' -f (Get-Date -Format "yyyy-MM")

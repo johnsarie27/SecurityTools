@@ -10,7 +10,7 @@ function Invoke-SDelete {
         Disk object(s) to be securely deleted
     .PARAMETER Path
         Full path to SDelete64.exe
-    .PARAMETER LogPath
+    .PARAMETER OutputDirectory
         Path to log folder
     .INPUTS
         Microsoft.Management.Infrastructure.CimInstance.
@@ -32,7 +32,7 @@ function Invoke-SDelete {
 
         [Parameter(HelpMessage = 'Path to logs folder')]
         [ValidateScript( { Test-Path -Path (Split-Path -Path $_) -PathType Container })]
-        [String] $LogPath = 'C:\logs\SDelete',
+        [String] $OutputDirectory = 'C:\logs\SDelete',
 
         [Parameter(HelpMessage = 'Path to SDelete64.exe')]
         [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.exe" })]
@@ -43,7 +43,7 @@ function Invoke-SDelete {
     Begin {
         # CONFIRM PATHS
         if ( !(Test-Path -Path $Path) ) { Throw "SDelete not found" }
-        if ( !(Test-Path -Path $LogPath) ) { New-Item -Path $LogPath -ItemType Directory -Force }
+        if ( !(Test-Path -Path $OutputDirectory) ) { New-Item -Path $OutputDirectory -ItemType Directory -Force }
 
         # CREATE HASH TABLE FOR VOLUME ID'S
         $alphabetList = 0..25 | ForEach-Object { [char](65 + $_) } # 'A'..'Z'
@@ -93,7 +93,7 @@ function Invoke-SDelete {
             # ADD LOG FILE
             $targetId = $d.Location.SubString(39, 3) # THIS IS CHANGED IN WINDOWS SERVER 2016
             $volId = $instanceVolumes[$volumeLookupTable[$targetId]]
-            $logFile = Join-Path -Path $LogPath -ChildPath ('SDelete_{0}_{1}.log' -f $volId, (Get-Date -F 'yyyyMMddTHHmm'))
+            $logFile = Join-Path -Path $OutputDirectory -ChildPath ('SDelete_{0}_{1}.log' -f $volId, (Get-Date -F 'yyyyMMddTHHmm'))
             $procParams['RedirectStandardOutput'] = $logFile
 
             # START SDELETE
