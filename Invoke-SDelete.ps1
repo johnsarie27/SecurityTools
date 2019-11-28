@@ -27,15 +27,15 @@ function Invoke-SDelete {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Disk to be cleaned')]
-        [ValidateScript( { $_.Number -notcontains 0 })] ## add custom error message
+        [ValidateScript({ $_.Number -notcontains 0 })] ## add custom error message
         [Microsoft.Management.Infrastructure.CimInstance[]] $Disk,
 
         [Parameter(HelpMessage = 'Path to logs folder')]
-        [ValidateScript( { Test-Path -Path (Split-Path -Path $_) -PathType Container })]
+        [ValidateScript({ Test-Path -Path $_ -PathType Container })]
         [String] $OutputDirectory = 'C:\logs\SDelete',
 
         [Parameter(HelpMessage = 'Path to SDelete64.exe')]
-        [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.exe" })]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.exe" })]
         [Alias('SDelete')]
         [string] $Path = "C:\TEMP\SDelete\sdelete64.exe"
     )
