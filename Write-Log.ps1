@@ -33,36 +33,31 @@ function Write-Log {
     [CmdletBinding(DefaultParameterSetName = "__log")]
     [Alias('wl')]
     Param(
-        [Parameter(Mandatory, ParameterSetName = '__initialize', HelpMessage = 'Folder where log should be created')]
+        [Parameter(Mandatory, ParameterSetName='__initialize', HelpMessage='Folder where log should be created')]
         [ValidateScript({ Test-Path -Path (Split-Path -Path $_) -PathType Container })]
-        [Alias('Dir', 'D')]
         [string] $Directory,
 
-        [Parameter(Mandatory, ParameterSetName = "__initialize", HelpMessage='Log name')]
+        [Parameter(Mandatory, ParameterSetName="__initialize", HelpMessage='Log name')]
         [ValidateNotNullOrEmpty()]
         [string] $Name,
 
-        [Parameter(ParameterSetName = "__initialize", HelpMessage='New log file creation frequency')]
+        [Parameter(ParameterSetName="__initialize", HelpMessage='New log file creation frequency')]
         [ValidateSet('Daily', 'Monthly', 'Yearly')]
-        [Alias('F')]
         [string] $Frequency = 'Daily',
 
-        [Parameter(Mandatory, ParameterSetName = "__log", HelpMessage='Log file path')]
+        [Parameter(Mandatory, ParameterSetName="__log", HelpMessage='Log file path')]
         [ValidateScript({ Test-Path $_ -PathType 'Leaf' -Include "*.log" })]
-        [Alias('P')]
         [string] $Path,
 
-        [Parameter(Mandatory, ValueFromPipeline, ParameterSetName = "__log", HelpMessage = 'Log entry message')]
+        [Parameter(Mandatory, ValueFromPipeline, ParameterSetName="__log", HelpMessage='Log entry message')]
         [ValidateNotNullOrEmpty()]
-        [Alias('M')]
         [string] $Message,
 
-        [Parameter(ParameterSetName = "__log", HelpMessage = 'Log entry type')]
+        [Parameter(ParameterSetName="__log", HelpMessage='Log entry type')]
         [ValidateSet('Info', 'Error', 'Warning', 'Debug')]
-        [Alias('T')]
         [string] $Type = 'Info',
 
-        [Parameter(ParameterSetName = "__log", HelpMessage = 'Source of log message')]
+        [Parameter(ParameterSetName="__log", HelpMessage='Source of log message')]
         [ValidateNotNullOrEmpty()]
         [Alias('CN')]
         [string] $ComputerName
@@ -75,18 +70,19 @@ function Write-Log {
             if ( -not (Test-Path $Directory) ) { New-Item -Path $Directory -ItemType "Directory" -Force | Out-Null }
 
             # GET DATE FORMAT
-            $Date = switch ($Frequency) {
+            $date = switch ($Frequency) {
                 'Yearly'  { Get-Date -Format "yyyy" }
                 'Monthly' { Get-Date -Format "yyyy-MM" }
                 'Daily'   { Get-Date -Format "yyyy-MM-dd" }
             }
 
             # CREATE LOG FILE PATH
-            $FilePath = Join-Path -Path $Directory -ChildPath ('{0}-Log_{1}.log' -f $Name, $Date)
-        } else {
+            $filePath = Join-Path -Path $Directory -ChildPath ('{0}-Log_{1}.log' -f $Name, $date)
+        }
+        else {
             # SET TYPE AND DATE
             #$Type = $Type.ToUpper()
-            $Status = switch ($Type) {
+            $status = switch ($Type) {
                 'Info'    { 'INFO' }
                 'Error'   { 'EROR' }
                 'Warning' { 'WARN' }
@@ -94,34 +90,35 @@ function Write-Log {
             }
 
             # SET FILEPATH TO PROVIDED PATH ARGUMENT
-            $FilePath = $Path
+            $filePath = $Path
         }
     }
 
     Process {
         # SET/RESET DATE VAR
-        $Date = Get-Date -F "yyyy-MM-dd_hh:mm:ss"
+        $date = Get-Date -F "yyyy-MM-dd_hh:mm:ss"
 
         # CHECK FOR PARAMETER SET
         if ( $PSCmdlet.ParameterSetName -eq '__log' ) {
             # CHECK FOR COMPUTERNAME
             if ( $PSBoundParameters.ContainsKey('ComputerName') ) {
-                $LogEntry = '{0} -- {1} -- {2} -- {3}' -f $Date, $Status, $ComputerName, $Message
+                $logEntry = '{0} -- {1} -- {2} -- {3}' -f $date, $status, $ComputerName, $Message
             }
             else {
-                $LogEntry = '{0} -- {1} -- {2}' -f $Date, $Status, $Message
+                $logEntry = '{0} -- {1} -- {2}' -f $date, $status, $Message
             }
-        } else {
+        }
+        else {
             # ADD INITIAL LOG ENTRY
-            $LogEntry = '{0} -- INFO -- Begin Logging' -f $Date
+            $logEntry = '{0} -- INFO -- Begin Logging' -f $date
         }
 
         # ADD TO LOG
-        Add-Content -Path $FilePath -Value $LogEntry
+        Add-Content -Path $filePath -Value $logEntry
     }
 
     End {
         # RETURN
-        if ( $PSCmdlet.ParameterSetName -eq '__initialize' ) { $FilePath }
+        if ( $PSCmdlet.ParameterSetName -eq '__initialize' ) { $filePath }
     }
 }
