@@ -32,7 +32,7 @@ function Invoke-SDelete {
 
         [Parameter(HelpMessage = 'Path to logs folder')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [String] $OutputDirectory = 'C:\logs\SDelete',
+        [string] $OutputDirectory = 'C:\logs\SDelete',
 
         [Parameter(HelpMessage = 'Path to SDelete64.exe')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.exe" })]
@@ -46,7 +46,7 @@ function Invoke-SDelete {
         if ( !(Test-Path -Path $OutputDirectory) ) { New-Item -Path $OutputDirectory -ItemType Directory -Force }
 
         # CREATE HASH TABLE FOR VOLUME ID'S
-        $alphabetList = 0..25 | ForEach-Object { [char](65 + $_) } # 'A'..'Z'
+        $alphabetList = 0..25 | ForEach-Object { [char] (65 + $_) } # 'A'..'Z'
         [int] $i = 0 ; $volumeLookupTable = @{ }
         $alphabetList | ForEach-Object -Process {
             $key = 'T' + $i.ToString("00") ; [string] $value = ('xvd' + $_).ToLower()
@@ -97,7 +97,7 @@ function Invoke-SDelete {
             $procParams['RedirectStandardOutput'] = $logFile
 
             # START SDELETE
-            Start-Process @procParams
+            Start-Process @procParams #-AsJob
             #Start-Job -ScriptBlock { Invoke-Expression -Command $Command | Tee-Object -FilePath $logFile }
         }
     }
