@@ -70,14 +70,14 @@ function Write-Log {
             if ( -not (Test-Path $Directory) ) { New-Item -Path $Directory -ItemType "Directory" -Force | Out-Null }
 
             # GET DATE FORMAT
-            $date = switch ($Frequency) {
+            $dateFormat = switch ($Frequency) {
                 'Yearly'  { Get-Date -Format "yyyy" }
                 'Monthly' { Get-Date -Format "yyyy-MM" }
                 'Daily'   { Get-Date -Format "yyyy-MM-dd" }
             }
 
             # CREATE LOG FILE PATH
-            $filePath = Join-Path -Path $Directory -ChildPath ('{0}-Log_{1}.log' -f $Name, $date)
+            $filePath = Join-Path -Path $Directory -ChildPath ('{0}-Log_{1}.log' -f $Name, $dateFormat)
         }
         else {
             # SET TYPE AND DATE

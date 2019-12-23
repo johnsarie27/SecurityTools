@@ -24,7 +24,7 @@ function Compare-Lists {
     .EXAMPLE
         PS C:\> Compare-Lists -ListA $ListA -ListB $ListB
     .NOTES
-        Remove $CompSheet section and have use Import-Csv with two lists?
+        Remove $compSheet section and have use Import-Csv with two lists?
     ========================================================================= #>
     [CmdletBinding(DefaultParameterSetName = "__list")]
     [OutputType([System.Collections.Generic.List`1[System.Object]])]
@@ -48,83 +48,85 @@ function Compare-Lists {
 
     Begin {
         # CREATE RESULTS COLLECTION
-        $Results = [System.Collections.Generic.List[System.Object]]::new()
+        $results = [System.Collections.Generic.List[System.Object]]::new()
     }
 
     Process {
         if ( $PSCmdlet.ParameterSetName -eq '__file' ) {
             # GET CSV DATA
-            $CompSheet = Import-Csv -Path $Path
+            $compSheet = Import-Csv -Path $Path
 
             # CREATE WORKING LISTS
-            $SameList = @() ; $Header1List = @() ; $Header2List = @()
+            $sameList = @() ; $header1List = @() ; $header2List = @()
 
-            $Headers = $CompSheet | Get-Member -MemberType NoteProperty
-            if ( ($Headers | Measure-Object).Count -ne 2 ) { Write-Warning 'CSV must contain only 2 colums'; Break }
+            $headers = $compSheet | Get-Member -MemberType NoteProperty
+            if ( ($headers | Measure-Object).Count -ne 2 ) { Write-Warning 'CSV must contain only 2 colums'; Break }
             else {
-                $Header1 = $Headers | Select-Object -First 1 -ExpandProperty Name
-                $Header2 = $Headers | Select-Object -Last 1 -ExpandProperty Name
+                $header1 = $headers | Select-Object -First 1 -ExpandProperty Name
+                $header2 = $headers | Select-Object -Last 1 -ExpandProperty Name
             }
 
-            # NEED TO USE SELECT-OBJECT RATHER THAN $CompSheet."$Header1" BECAUSE OF THE HEADER "ITEM."
+            # NEED TO USE SELECT-OBJECT RATHER THAN $compSheet."$header1" BECAUSE OF THE HEADER "ITEM."
             # THIS SEEMS TO CALL A METHOD OR PROPERTY OF A PSCustomObject I WASN'T PREVIOUSLY AWARE OF
-            foreach ( $i in ($CompSheet | Select-Object -EXP $Header1) ) {
-                if ( ($CompSheet | Select-Object -EXP $Header2) -contains $i ) { $SameList += $i }
-                else { $Header1List += $i }
+            foreach ( $i in ($compSheet | Select-Object -EXP $header1) ) {
+                if ( ($compSheet | Select-Object -EXP $header2) -contains $i ) { $sameList += $i }
+                else { $header1List += $i }
             }
-            foreach ( $i in ($CompSheet | Select-Object -EXP $Header2) ) {
-                if ( ($CompSheet | Select-Object -EXP $Header1) -notcontains $i ) { $Header2List += $i }
+            foreach ( $i in ($compSheet | Select-Object -EXP $header2) ) {
+                if ( ($compSheet | Select-Object -EXP $header1) -notcontains $i ) { $header2List += $i }
             }
 
-            if ( $SameList.Count -gt $Header1List.Count ) { $Longest = $SameList }
-            else { $Longest = $Header1List }
-            if ( $Header2List.Count -gt $Longest.Count ) { $Longest = $Header2List }
+            if ( $sameList.Count -gt $header1List.Count ) { $longest = $sameList }
+            else { $longest = $header1List }
+            if ( $header2List.Count -gt $longest.Count ) { $longest = $header2List }
 
-            for ( $i = 0; $i -lt $Longest.Count; $i++ ) {
+            for ( $i = 0; $i -lt $longest.Count; $i++ ) {
                 $new = New-Object -TypeName psobject
-                if ( $SameList[$i] ) { $new | Add-Member -MemberType NoteProperty -Name 'DUPLICATES' -Value $SameList[$i] }
+                if ( $sameList[$i] ) { $new | Add-Member -MemberType NoteProperty -Name 'DUPLICATES' -Value $sameList[$i] }
                 else { $new | Add-Member -MemberType NoteProperty -Name 'DUPLICATES' -Value '=>' }
-                if ( $Header1List[$i] ) { $new | Add-Member -MemberType NoteProperty -Name "$Header1" -Value $Header1List[$i] }
-                else { $new | Add-Member -MemberType NoteProperty -Name "$Header1" -Value '<>' }
-                if ( $Header2List[$i] ) { $new | Add-Member -MemberType NoteProperty -Name "$Header2" -Value $Header2List[$i] }
-                else { $new | Add-Member -MemberType NoteProperty -Name "$Header2" -Value '<=' }
-                $Results.Add($new)
+                if ( $header1List[$i] ) { $new | Add-Member -MemberType NoteProperty -Name "$header1" -Value $header1List[$i] }
+                else { $new | Add-Member -MemberType NoteProperty -Name "$header1" -Value '<>' }
+                if ( $header2List[$i] ) { $new | Add-Member -MemberType NoteProperty -Name "$header2" -Value $header2List[$i] }
+                else { $new | Add-Member -MemberType NoteProperty -Name "$header2" -Value '<=' }
+                $results.Add($new)
             }
         }
 
         if ( $PSCmdlet.ParameterSetName -eq '__list' ) {
             # SETUP WORKING LISTS
-            $SameList = @() ; $UniqueListA = @() ; $UniqueListB = @()
+            $sameList = @() ; $uniqueListA = @() ; $uniqueListB = @()
 
             # COMPARE LIST OBJECTS
-            $ListAName = 'LIST-A'; $ListBName = 'LIST-B'
+            $listAName = 'LIST-A'; $listBName = 'LIST-B'
             foreach ( $i in $ListA ) {
-                if ( $ListB -contains $i ) { $SameList += $i }
-                else { $UniqueListA += $i }
+                if ( $ListB -contains $i ) { $sameList += $i }
+                else { $uniqueListA += $i }
             }
             foreach ( $i in $ListB ) {
-                if ( $ListA -notcontains $i ) { $UniqueListB += $i }
+                if ( $ListA -notcontains $i ) { $uniqueListB += $i }
             }
 
             # GET LONGEST LIST
-            if ( $SameList.Count -gt $UniqueListA.Count ) { $Longest = $SameList }
-            else { $Longest = $UniqueListA }
-            if ( $UniqueListB.Count -gt $Longest.Count ) { $Longest = $UniqueListB }
+            if ( $sameList.Count -gt $uniqueListA.Count ) { $longest = $sameList }
+            else { $longest = $uniqueListA }
+            if ( $uniqueListB.Count -gt $longest.Count ) { $longest = $uniqueListB }
 
             # CREATE AND POPULATE OUTPUT OBJECTS
-            for ( $i = 0; $i -lt $Longest.Count; $i++ ) {
+            for ( $i = 0; $i -lt $longest.Count; $i++ ) {
                 $new = New-Object -TypeName psobject
-                if ( $SameList[$i] ) { $new | Add-Member -MemberType NoteProperty -Name 'DUPLICATES' -Value $SameList[$i] }
+                if ( $sameList[$i] ) { $new | Add-Member -MemberType NoteProperty -Name 'DUPLICATES' -Value $sameList[$i] }
                 else { $new | Add-Member -MemberType NoteProperty -Name 'DUPLICATES' -Value '=>' }
-                if ( $UniqueListA[$i] ) { $new | Add-Member -MemberType NoteProperty -Name $ListAName -Value $UniqueListA[$i] }
-                else { $new | Add-Member -MemberType NoteProperty -Name $ListAName -Value '<>' }
-                if ( $UniqueListB[$i] ) { $new | Add-Member -MemberType NoteProperty -Name $ListBName -Value $UniqueListB[$i] }
-                else { $new | Add-Member -MemberType NoteProperty -Name $ListBName -Value '<=' }
-                $Results.Add($new)
+                if ( $uniqueListA[$i] ) { $new | Add-Member -MemberType NoteProperty -Name $listAName -Value $uniqueListA[$i] }
+                else { $new | Add-Member -MemberType NoteProperty -Name $listAName -Value '<>' }
+                if ( $uniqueListB[$i] ) { $new | Add-Member -MemberType NoteProperty -Name $listBName -Value $uniqueListB[$i] }
+                else { $new | Add-Member -MemberType NoteProperty -Name $listBName -Value '<=' }
+                $results.Add($new)
             }
         }
+    }
 
+    End {
         # RETURN RESULTS COLLECTION
-        $Results
+        $results
     }
 }
