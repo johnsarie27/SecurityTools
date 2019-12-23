@@ -70,27 +70,27 @@ function Convert-TimeZone {
             }
         }
 
-        $Source = $TimeZoneHash[$SourceTimeZone]
-        $Target = $TimeZoneHash[$TargetTimeZone]
+        $source = $TimeZoneHash[$SourceTimeZone]
+        $target = $TimeZoneHash[$TargetTimeZone]
     }
 
     Process {
         # LOOP ALL TIME ARGUMENTS
         foreach ( $t in $Time ) {
             # CONVERT ARGUMENTS TO PROPER DATA TYPES
-            $OldTime = Get-Date -Date $t
+            $oldTime = Get-Date -Date $t
 
             # SETUP RESULTS HASHTABLE
-            $New = @{ $SourceTimeZone = $OldTime }
+            $new = @{ $SourceTimeZone = $oldTime }
 
             # CONVERT SOURCE TO UTC
-            $New.UTC = [System.TimeZoneInfo]::ConvertTimeToUtc($OldTime, $Source)
+            $new.UTC = [System.TimeZoneInfo]::ConvertTimeToUtc($oldTime, $source)
 
             # CONVERT UTC TO TARGET
-            $New[$TargetTimeZone] = [System.TimeZoneInfo]::ConvertTime($New.UTC, $Target)
+            $new[$TargetTimeZone] = [System.TimeZoneInfo]::ConvertTime($new.UTC, $target)
 
             # RETURN RESULT
-            [PSCustomObject] $New
+            [PSCustomObject] $new
         }
     }
 }
