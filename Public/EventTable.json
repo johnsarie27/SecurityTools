@@ -1,0 +1,152 @@
+[
+    {
+        "Id": 1,
+        "Name": "RDGW Logon",
+        "Log": "Microsoft-Windows-TerminalServices-Gateway",
+        "EventId": 302
+    },
+    {
+        "Id": 2,
+        "Name": "RDGW Logoff",
+        "Log": "Microsoft-Windows-TerminalServices-Gateway",
+        "EventId": 303
+    },
+    {
+        "Id": 3,
+        "Name": "Software Installed",
+        "Log": "Application",
+        "EventId": 11707
+    },
+    {
+        "Id": 4,
+        "Name": "Software Uninstalled",
+        "Log": "Application",
+        "EventId": 11724
+    },
+    {
+        "Id": 5,
+        "Name": "Event Log Started",
+        "Log": "System",
+        "EventId": 6005
+    },
+    {
+        "Id": 6,
+        "Name": "Event Log Stopped",
+        "Log": "System",
+        "EventId": 6006
+    },
+    {
+        "Id": 7,
+        "Name": "User Account Created",
+        "Log": "Security",
+        "EventId": 4720
+    },
+    {
+        "Id": 8,
+        "Name": "User Account Deleted",
+        "Log": "Security",
+        "EventId": 4726
+    },
+    {
+        "Id": 9,
+        "Name": "RDP Session",
+        "Log": "Microsoft-Windows-TerminalServices-LocalSessionManager",
+        "EventId": 21
+    },
+    {
+        "Id": 10,
+        "Name": "BitLocker Encryption",
+        "Log": "System",
+        "EventId": 24667
+    },
+    {
+        "Id": 11,
+        "Name": "Antimalware Scan Started",
+        "Log": "System",
+        "EventId": 1000
+    },
+    {
+        "Id": 12,
+        "Name": "Antimalware Scan Completed",
+        "Log": "System",
+        "EventId": 1001
+    },
+    {
+        "Id": 13,
+        "Name": "Antimalware Signature Version Update",
+        "Log": "System",
+        "EventId": 2000
+    },
+    {
+        "Id": 14,
+        "Name": "Malware Detected",
+        "Log": "System",
+        "EventId": 1116
+    },
+    {
+        "Id": 15,
+        "Name": "Antimalware Action Taken",
+        "Log": "System",
+        "EventId": 1117
+    },
+    {
+        "Id": 16,
+        "Name": "Antimalware Deleted Item from Quarantine",
+        "Log": "System",
+        "EventId": 1011
+    },
+    {
+        "Id": 17,
+        "Name": "Task Scheduler Task Completed",
+        "Log": "Microsoft-Windows-TaskScheduler",
+        "EventId": 102
+    },
+    {
+        "Id": 18,
+        "Name": "Task Scheduler Action Completed",
+        "Log": "Microsoft-Windows-TaskScheduler",
+        "EventId": 201
+    },
+    {
+        "Id": 19,
+        "Name": "Task Scheduler Action Startd",
+        "Log": "Microsoft-Windows-TaskScheduler",
+        "EventId": 200
+    },
+    {
+        "Id": 20,
+        "Name": "Task Scheduler Created Task Process",
+        "Log": "Microsoft-Windows-TaskScheduler",
+        "EventId": 129
+    },
+    {
+        "Id": 21,
+        "Name": "Windows Defender Scan Started",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1000
+    },
+    {
+        "Id": 22,
+        "Name": "Windows Defender Scan Completed",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1001
+    },
+    {
+        "Id": 23,
+        "Name": "Windows Defender Malware Detected",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1006
+    },
+    {
+        "Id": 24,
+        "Name": "Windows Server Feature Added",
+        "Log": "Microsoft-Windows-ServerManager-DeploymentProvider",
+        "EventId": 204
+    },
+    {
+        "Id": 25,
+        "Name": "Windows Server Feature Removed",
+        "Log": "Microsoft-Windows-ServerManager-DeploymentProvider",
+        "EventId": 304
+    }
+]
