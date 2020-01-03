@@ -105,6 +105,7 @@
         'Test-Performance'
         'Uninstall-AllModules'
         'Update-LocalUserPassword'
+        'Update-LocalUserPw'
         'Write-Log'
         # 'ConvertTo-DbScanReport' DEPRICATED
     )

@@ -5,14 +5,10 @@ function Update-LocalUserPassword {
     .DESCRIPTION
         This function updates the password for a Windows local user account on
         one or more systems.
-    .PARAMETER UserName
-        User to change password
-    .PARAMETER SecurePassword
-        New password entered as Secure String
+    .PARAMETER Credential
+        PS Credential object containing existing user name and new password
     .PARAMETER ComputerName
         Target computer to change user password
-    .PARAMETER FilePath
-        Path to CLIXML file containing new password
     .INPUTS
         System.String[].
     .OUTPUTS
@@ -25,34 +21,19 @@ function Update-LocalUserPassword {
         This function has not yet been tested!!!
         https://www.petri.com/how-to-change-user-password-with-powershell
     ========================================================================= #>
-    [CmdletBinding(DefaultParameterSetName = 'input', SupportsShouldProcess)]
+    [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'User account name')]
-        [ValidateScript({ (Get-LocalUser).Name -contains $_ })]
-        [string] $UserName,
-
-        [Parameter(Mandatory, HelpMessage = 'New password', ParameterSetName = 'input')]
-        [ValidateScript({ $_.Length -gt 13 })]
-        [SecureString] $SecurePassword,
+        [Parameter(Mandatory, HelpMessage = 'PowerShell Credential')]
+        [ValidateNotNullOrEmpty()]
+        [pscredential] $Credential,
 
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Target comuter(s)')]
         [ValidateScript({ $_ -notin @($env:COMPUTERNAME, '127.0.0.1', 'localhost', '::1') })]
-        [string[]] $ComputerName,
-
-        [Parameter(Mandatory, HelpMessage = 'Clixml file containing SecureString', ParameterSetName = 'stored')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xml" })]
-        [string] $FilePath
+        [Alias('CN')]
+        [string[]] $ComputerName
     )
 
     Begin {
-        # CHECK FOR FILEPATH PARAM
-        if ( $PSBoundParameters.ContainsKey('FilePath') ) {
-            $password = (Convert-SecureKey -Retrieve -Path $FilePath).Password
-        }
-        else {
-            $password = $SecurePassword
-        }
-
         # COMMON PARAMS
         $splat = @{ ErrorAction = 'Stop' }
     }
@@ -64,8 +45,8 @@ function Update-LocalUserPassword {
             Invoke-Command -ComputerName $computer <# -AsJob #> -ScriptBlock {
                 # TRY TO CHANGE THE PASSWORD FOR GIVEN USER
                 try {
-                    Get-LocalUser -Name $UserName @splat | Set-LocalUser -Password $password @splat
-                    $result = 'User [{0}] updated successfully on [{1}].' -f $UserName, $computer
+                    Get-LocalUser -Name $Credential.UserName @splat | Set-LocalUser -Password $Credential.GetHashCode().Password @splat
+                    $result = 'User [{0}] updated successfully on [{1}].' -f $Credential.UserName, $computer
                 }
                 catch {
                     $result = $_.Exception.Message
