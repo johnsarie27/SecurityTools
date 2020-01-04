@@ -14,9 +14,14 @@ function Update-LocalUserPassword {
     .OUTPUTS
         System.String[].
     .EXAMPLE
-        PS C:\> Update-LocalUserPassword -User JSmith -CN $Servers
-        Change the password for user JSmith on all systems in array $Servers.
-        This will prompt for the new password as Secure String.
+        ----- Example 1: Changes the password for user contained in $creds in array $Servers -----
+        Update-LocalUserPassword -Credential $creds -ComputerName $Servers
+        Changes the password for user contained in $creds on all systems in array $Servers.
+
+        ----- Example 2: Update password for user 'Jimmy' on MyServer01 -----
+        $pw = Read-Host -Prompt 'Enter password' -AsSecureString
+        $creds = [System.Management.Automation.PSCredential]::new('Jimmy', $pw)
+        Update-LocalUserPassword -Credential $creds -ComputerName MyServer01
     .NOTES
         This function has not yet been tested!!!
         https://www.petri.com/how-to-change-user-password-with-powershell
@@ -49,7 +54,7 @@ function Update-LocalUserPassword {
                     $result = 'User [{0}] updated successfully on [{1}].' -f $Credential.UserName, $computer
                 }
                 catch {
-                    $result = $_.Exception.Message
+                    $result = '[{0}]: Update failed with error: {1}' -f $computer, $_.Exception.Message
                 }
                 Write-Output $result
             }
