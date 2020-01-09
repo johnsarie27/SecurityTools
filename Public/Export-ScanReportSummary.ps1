@@ -57,6 +57,9 @@ function Export-ScanReportSummary {
     )
 
     Begin {
+        # CREATE MASTER LIST
+        $summaryObjects = [System.Collections.Generic.List[System.Object]]::new()
+
         # SET DESTINATION PATH
         if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
             $fileName = 'Summary-Scans_{0}.xlsx' -f (Get-Date -Format "yyyy-MM")
@@ -74,8 +77,8 @@ function Export-ScanReportSummary {
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
             $DatabaseScan = (Resolve-Path -Path $DatabaseScan).Path
             $dbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
-            $udbScan = $dbScan <# | Where-Object Status -EQ 'Fail'  #>| Sort-Object -Unique ID
-            foreach ( $object in $udbScan ) {
+            $uDbScan = $dbScan | Sort-Object -Unique ID
+            foreach ( $object in $uDbScan ) {
                 # CREATE COLUMNS FOR SUMMARY REPORT
                 $count = ($dbScan | Where-Object ID -EQ $object.ID | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
@@ -107,7 +110,10 @@ function Export-ScanReportSummary {
             )
 
             # CHANGE COLUMN NAMES
-            $udbScan = $udbScan | Select-Object -Property $newProps
+            $uDbScan = $uDbScan | Select-Object -Property $newProps
+
+            # ADD TO MASTER LIST
+            foreach ( $i in $uDbScan ) { $summaryObjects.Add($i) }
         }
 
         # PROCESS SYSTEM SCAN DATA
@@ -131,6 +137,9 @@ function Export-ScanReportSummary {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
                 }
             }
+
+            # ADD TO MASTER LIST
+            foreach ( $i in $uSysCsv ) { $summaryObjects.Add($i) }
         }
 
         # PROCESS WEB SCAN DATA
@@ -154,12 +163,17 @@ function Export-ScanReportSummary {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
                 }
             }
+
+            # ADD TO MASTER LIST
+            foreach ( $i in $uWebCsv ) { $summaryObjects.Add($i) }
         }
     }
 
     End {
-        # COMBINE UNIQUE OBJECTS AND REMOVE FIELDS
-        $scanObjects = $uSysCsv + $uWebCsv + $udbScan
+        # VERBOSE
+        Write-Verbose -Message ('System Scan Count: {0}' -f ($uSysCsv | Measure-Object | Select-Object -Exp Count))
+        Write-Verbose -Message ('Web Scan Count: {0}' -f ($uWebCsv | Measure-Object | Select-Object -Exp Count))
+        Write-Verbose -Message ('DB Scan Count: {0}' -f ($uDbScan | Measure-Object | Select-Object -Exp Count))
 
         # SET REPORT OPTIONS
         $splat = @{
@@ -177,6 +191,6 @@ function Export-ScanReportSummary {
         $properties = @('Name', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')#'CVSS'
 
         # EXPORT TO EXCEL
-        $scanObjects | Select-Object -Property $properties | Export-Excel @splat
+        $summaryObjects | Select-Object -Property $properties | Export-Excel @splat
     }
 }
