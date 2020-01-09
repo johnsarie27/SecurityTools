@@ -1,4 +1,4 @@
-#Requires -Module ImportExcel
+#Requires -Module @{ ModuleName = 'ImportExcel'; ModuleVersion = '6.5.0' }
 
 function Export-ScanReportSummary {
     <# =========================================================================
