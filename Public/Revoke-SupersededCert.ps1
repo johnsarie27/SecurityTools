@@ -25,7 +25,6 @@ function Revoke-SupersededCert {
     Param(
         [Parameter(Mandatory, HelpMessage = 'Certificate objects')]
         [ValidateNotNullOrEmpty()]
-        [Alias('C', 'Certs')]
         [SysadminsLV.PKI.Management.CertificateServices.Database.AdcsDbRow[]] $Certificate,
 
         [Parameter(HelpMessage = 'Confirm revocation')]

@@ -28,12 +28,10 @@ function Get-ActiveSmartCardCert {
     Param(
         [Parameter(Mandatory, HelpMessage = 'Ceritificate Authority server')]
         [ValidatePattern('^[\w]+$')]
-        [Alias('CA', 'Authority')]
         [string] $CertificateAuthority,
 
         [Parameter(Mandatory, HelpMessage = 'Ceritificate template')]
         [ValidatePattern('^[\d\.]+$')]
-        [Alias('CT', 'Template')]
         [string] $CertificateTemplate,
 
         [Parameter(HelpMessage = 'Return expired certificates')]
