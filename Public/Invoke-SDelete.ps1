@@ -32,7 +32,7 @@ function Invoke-SDelete {
 
         [Parameter(HelpMessage = 'Path to logs folder')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [string] $OutputDirectory = 'C:\logs\SDelete',
+        [string] $OutputDirectory = 'C:\TEMP\logs\SDelete',
 
         [Parameter(HelpMessage = 'Path to SDelete64.exe')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.exe" })]
