@@ -84,6 +84,7 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
                 $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'DB Scan'
                 $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
+                $object | Add-Member -MemberType NoteProperty -Name 'CVSS v3' -Value 'n/a'
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
                 $match = $summaryReport.Where({ $_.Name -eq $object.'Security Check' })
@@ -103,7 +104,7 @@ function Export-ScanReportSummary {
 
             # SET PROPERTY CONVERSION
             $newProps = (
-                'Count', 'Source', 'Risk Adj.', 'TFS', 'Status',
+                'Count', 'Source', 'Risk Adj.', 'TFS', 'Status', 'CVSS v3',
                 @{N = 'Name'; E = { $_.'Security Check' } },
                 @{N = 'Notes'; E = { $_.ID } },
                 @{N = 'Severity'; E = { $_.Risk } }
@@ -127,6 +128,23 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
                 $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
                 $object | Add-Member -MemberType NoteProperty -Name 'Status' -Value $object.'Active or inactive'
+
+                # GET CVSS v3 SCORE
+                if ( $object.Name -match 'CVE-\d{4}-\d+' ) {
+                    $cve = $object.Name -replace '^.*(CVE-\d{4}-\d+).*$', '$1'
+                    try {
+                        $nvd = Get-CVSSv3BaseScore -CVE $cve
+                        $score = $nvd.Score
+                        $object.Severity = $nvd.Severity
+                    }
+                    catch {
+                        $score = 'n/a'
+                    }
+                }
+                else {
+                    $score = 'n/a'
+                }
+                $object | Add-Member -MemberType NoteProperty -Name 'CVSS v3' -Value $score
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
                 $match = $summaryReport.Where({ $_.Name -eq $object.Name })
@@ -153,6 +171,23 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
                 $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
                 $object | Add-Member -MemberType NoteProperty -Name 'Status' -Value $object.'Active or inactive'
+
+                # GET CVSS v3 SCORE
+                if ( $object.Name -match 'CVE-\d{4}-\d+' ) {
+                    $cve = $object.Name -replace '^.*(CVE-\d{4}-\d+).*$', '$1'
+                    try {
+                        $nvd = Get-CVSSv3BaseScore -CVE $cve
+                        $score = $nvd.Score
+                        $object.Severity = $nvd.Severity
+                    }
+                    catch {
+                        $score = 'n/a'
+                    }
+                }
+                else {
+                    $score = 'n/a'
+                }
+                $object | Add-Member -MemberType NoteProperty -Name 'CVSS v3' -Value $score
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
                 $match = $summaryReport.Where({ $_.Name -eq $object.Name })
@@ -188,7 +223,7 @@ function Export-ScanReportSummary {
         }
 
         # SET DESIRED PROPERTIES
-        $properties = @('Name', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')#'CVSS'
+        $properties = @('Name', 'CVSS v3', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')#'CVSS'
 
         # EXPORT TO EXCEL
         $summaryObjects | Select-Object -Property $properties | Export-Excel @splat
