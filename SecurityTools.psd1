@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.5.4'
+    ModuleVersion     = '0.5.5'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -84,6 +84,7 @@
         'Get-ActiveSmartCardCert'
         'Get-ADUserReport'
         'Get-ADUserStatus'
+        'Get-CVSSv3BaseScore'
         'Get-DirItemAges'
         'Get-DirStats'
         'Get-LoggedOnUser'
