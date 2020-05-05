@@ -8,7 +8,7 @@ function Get-CVSSv3BaseScore {
     .PARAMETER CVE
         CVE ID
     .INPUTS
-        System.String.
+        System.String[].
     .OUTPUTS
         System.Object.
     .EXAMPLE
@@ -22,22 +22,32 @@ function Get-CVSSv3BaseScore {
         [Parameter(ValueFromPipeline, Mandatory, HelpMessage = 'CVE ID')]
         [ValidatePattern('CVE-\d{4}\-\d+')]
         #[ValidateScript({ $_ -match 'CVE-\d{4}\-\d+' })]
-        [string] $CVE
+        [string[]] $CVE
     )
 
     Begin {
-        $uri = "https://nvd.nist.gov/vuln/detail/{0}" -f $CVE
+        $baseUri = "https://nvd.nist.gov/vuln/detail/{0}"
         $pattern = '"vuln-cvss3-panel-score"\>(\d+\.\d+)\s(\w+)'
     }
 
     Process {
-        $response = Invoke-WebRequest -Uri $uri
+        foreach ( $c in $CVE ) {
+            $uri = $baseUri -f $c
 
-        $results = $response.Content | Select-String -Pattern $pattern # -AllMatches
+            $response = Invoke-WebRequest -Uri $uri
 
-        [PSCustomObject] @{
-            Score = $results.Matches.Groups[1].Value
-            Severity = $results.Matches.Groups[2].Value
+            $results = $response.Content | Select-String -Pattern $pattern # -AllMatches
+
+            try {
+                [PSCustomObject] @{
+                    CVE      = $c
+                    Score    = $results.Matches.Groups[1].Value
+                    Severity = $results.Matches.Groups[2].Value
+                }
+            }
+            catch {
+                Write-Warning -Message ('No CVSS v3 score found for vulnerability [{0}]' -f $c)
+            }
         }
     }
 }
