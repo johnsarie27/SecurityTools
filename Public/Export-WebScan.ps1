@@ -1,4 +1,4 @@
-#Requires -Module @{ ModuleName = 'ImportExcel'; ModuleVersion = '6.5.0' }
+#Requires -Modules @{ ModuleName = 'ImportExcel'; ModuleVersion = '6.5.0' }
 
 function Export-WebScan {
     <# =========================================================================
@@ -8,6 +8,8 @@ function Export-WebScan {
         Export vulnerability report from provided Acunetix XML report
     .PARAMETER Path
         Path to Acunetix report file in XML format
+    .PARAMETER OutputDirectory
+        Path to output directory
     .INPUTS
         System.String.
     .OUTPUTS
@@ -22,7 +24,11 @@ function Export-WebScan {
     Param(
         [Parameter(Mandatory, HelpMessage = 'Path to Acunetix report file in XML format')]
         [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.xml" })]
-        [string] $Path
+        [string] $Path,
+
+        [Parameter(HelpMessage = 'Path to output directory')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Container })]
+        [string] $OutputDirectory = "$HOME\Desktop"
     )
 
     Begin {
@@ -65,6 +71,36 @@ function Export-WebScan {
 
         [XML] $xml = Get-Content -Path $Path
         $report = [System.Collections.Generic.List[System.Object]]::new()
+
+        $excelParams = @{
+            FreezeTopRow = $true
+            MoveToEnd    = $true
+            BoldTopRow   = $true
+            AutoFilter   = $true
+            Style        = (New-ExcelStyle -Bold -Range '1:1' -HorizontalAlignment Center)
+            Path         = Join-Path -Path $OutputDirectory -ChildPath ('WebScans_{0}.xlsx' -f (Get-Date -F "yyyy-MM-dd"))
+        }
+
+        $propOrder = @(
+            'Name'
+            'Description'
+            'Type'
+            'Impact'
+            'Affects'
+            'CVSS'
+            'Severity'
+            'CVSS3'
+            'CVSS3Severity'
+            'CWE'
+            'CVE'
+            'ModuleName'
+            'Details'
+            'Parameter'
+            'DetailedInfo'
+            'Recommendation'
+            'Request'
+            'Status'
+        )
     }
 
     Process {
@@ -96,6 +132,6 @@ function Export-WebScan {
         }
 
         # RETURN
-        $report
+        $report | Select-Object -Property $propOrder | Export-Excel @excelParams
     }
 }
