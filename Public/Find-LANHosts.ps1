@@ -53,10 +53,8 @@ function Find-LANHost {
 
     foreach ( $i in $IP ) {
         $UDP.Connect($i, 1)
-        [void]$UDP.Send($Bytes, $Bytes.length)
-        if ($DelayMS) {
-            [System.Threading.Thread]::Sleep($DelayMS)
-        }
+        [void] $UDP.Send($Bytes, $Bytes.length)
+        if ( $DelayMS ) { [System.Threading.Thread]::Sleep($DelayMS) }
     }
 
     $Hosts = arp -a
