@@ -10,8 +10,7 @@ function Export-SQLVAReport {
     .PARAMETER ServerName
         Name of SQL Server
     .PARAMETER BaselinePath
-        Path to folder containing baseline JSON file(s). The JSON file names must
-        match the DB server names.
+        Path to baseline file in JSON format
     .PARAMETER OutputDirectory
         Path to output directory for new SQL Vulnerability Assessment reports
     .PARAMETER PassThru
@@ -33,10 +32,10 @@ function Export-SQLVAReport {
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'SQL server name')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
         [Alias('SN', 'Server')]
-        [string[]] $ServerName,
+        [string] $ServerName,
 
-        [Parameter(HelpMessage = 'Path to folder containing baseline JSON file(s)')]
-        [ValidateScript({ Test-Path -Path "$_\*" -Include *.json })]
+        [Parameter(HelpMessage = 'Path to baseline file in JSON format')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include *.json })]
         [Alias('BP', 'Baseline')]
         [string] $BaselinePath,
 
@@ -54,59 +53,46 @@ function Export-SQLVAReport {
         Import-Module -Name SqlServer
 
         # GET DATE OBJECTS AND SET OUTPUT FOLDER
-        $Date = Get-Date
-        $DateFolder = '{0}\{1}' -f $Date.ToString("yyyy"), $Date.ToString("MM")
-        $Folder = Join-Path -Path $OutputDirectory -ChildPath $DateFolder
+        $date = Get-Date
+        $dateFolder = '{0}\{1}' -f $date.ToString("yyyy"), $date.ToString("MM")
+        $folder = Join-Path -Path $OutputDirectory -ChildPath $dateFolder
 
         # CREATE FOLDER IF NOT EXIST
-        if ( -not (Test-Path -Path $Folder) ) {
-            try { New-Item -Path $Folder -ItemType Directory | Out-Null }
-            catch { Write-Error ('Could not create folder path: [{0}]' -f $Folder) }
+        if ( -not (Test-Path -Path $folder) ) {
+            try { New-Item -Path $folder -ItemType Directory | Out-Null }
+            catch { Write-Error ('Could not create folder path: [{0}]' -f $folder) }
         }
 
         # CREATE SPLATTER TABLE
-        $SVAParams = @{ DatabaseName = "master" }
+        $SVAParams = @{
+            DatabaseName   = "master"
+            ServerInstance = $ServerName
+        }
     }
 
     Process {
-        # LOOP THROUGH ALL DB SERVERS
-        foreach ( $Server in $ServerName ) {
+        # CREATE FILE
+        $ReportFile = '{0}_{1}.xlsx' -f (Get-Date -F "yyyy-MM-dd"), $ServerName
 
-            # CREATE FILE
-            $ReportFile = '{0}_{1}.xlsx' -f (Get-Date -F "yyyy-MM-dd"), $Server
-
-            # UPDATE PARAMETERS
-            $SVAParams['ServerInstance'] = $Server
-
-            # CHECK FOR BASELINE PARAM
-            if ( $PSBoundParameters.ContainsKey('BaselinePath') ) {
-                # GET BASELINE FILE
-                $BLFile = (Get-ChildItem -Path $BaselinePath -Filter "$Server.json").FullName
-
-                # CONVERT JSON FILE TO BASELINE OBJECT
-                if ( $BLFile ) {
-                    try {
-                        $SVAParams['Baseline'] = Import-SqlVulnerabilityAssessmentBaselineSet -FolderPath $BLFile
-                    }
-                    catch {
-                        Write-Warning ('Failed to generate baseline for [{0}] using file [{1}]' -f $Server, $BLFile)
-                    }
-                }
-                else {
-                    Write-Warning ('Baseline file not found for server: [{0}]' -f $Server)
-                }
+        # CHECK FOR BASELINE PARAM
+        if ( $PSBoundParameters.ContainsKey('BaselinePath') ) {
+            try {
+                $SVAParams['Baseline'] = Import-SqlVulnerabilityAssessmentBaselineSet -FolderPath $BaselinePath
             }
-
-            # EXECUTE SCAN AND SET TO VARIABLE
-            $Scan = Invoke-SqlVulnerabilityAssessmentScan @SVAParams
-
-            # EXPORT SCAN RESULT TO EXCEL SPREADSHEET
-            $Scan | Export-SqlVulnerabilityAssessmentScan -FolderPath (Join-Path -Path $Folder -ChildPath $ReportFile)
+            catch {
+                Write-Warning ('Failed to generate baseline for [{0}] using file [{1}]' -f $ServerName, $BaselinePath)
+            }
         }
+
+        # EXECUTE SCAN AND SET TO VARIABLE
+        $Scan = Invoke-SqlVulnerabilityAssessmentScan @SVAParams
+
+        # EXPORT SCAN RESULT TO EXCEL SPREADSHEET
+        $Scan | Export-SqlVulnerabilityAssessmentScan -FolderPath (Join-Path -Path $folder -ChildPath $ReportFile)
     }
 
     End {
         # RETURN PATH TO REPORT FOLDER
-        if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $Folder }
+        if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $folder }
     }
 }
