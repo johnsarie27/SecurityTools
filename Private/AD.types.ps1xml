@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Types>
+    <Type>
+        <Name>Microsoft.ActiveDirectory.Management.ADUser</Name>
+            <Members>
+                <PropertySet>
+                    <Name>ADInfo</Name>
+                    <ReferencedProperties>
+                        <Name>Name</Name>
+                        <Name>Type</Name>
+                        <Name>Username</Name>
+                        <Name>Role</Name>
+                        <Name>Enabled</Name>
+                        <Name>LastLogonDate</Name>
+                        <Name>PasswordLastSet</Name>
+                        <Name>DaysSincePwLastSet</Name>
+                        <Name>OU</Name>
+                        <Name>DaysSinceLogon</Name>
+                    </ReferencedProperties>
+                </PropertySet>
+            </Members>
+        </Type>
+</Types>
