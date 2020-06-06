@@ -48,7 +48,7 @@ function Invoke-NetScan {
                 }
 
                 if ( $PSBoundParameters.ContainsKey('ResolveHostname') ) {
-                    $new['Name'] = (Resolve-DnsName -Name $new['IpAddress'] -EA 0).NameHost
+                    $new['Name'] = (Resolve-DnsName -Name $new['IpAddress'] -ErrorAction SilentlyContinue).NameHost
                     # ADD "-CacheOnly" ON THE RESOLVE TO GO FASTER
                 }
 
