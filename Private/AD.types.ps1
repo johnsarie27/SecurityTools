@@ -2,7 +2,7 @@
 # Updated:      2020-06-06
 # Created by:   Justin Johns
 # Filename:     AD.types.ps1
-# Version:      0.0.1
+# Version:      0.0.2
 # ==============================================================================
 
 #Requires -Modules activedirectory
@@ -11,7 +11,8 @@
 $propHash = @{
     DaysSincePwLastSet = { (New-TimeSpan -Start $this.PasswordLastSet -End (Get-Date)).Days }
     OU                 = { $this.CanonicalName -split '/' | Select-Object -Skip 1 -First 1 }
-    DaysSinceLogon     = { (New-TimeSpan -Start $this.LastLogonDate -End (Get-Date)).Days }
+    DaysSinceLastLogon = { (New-TimeSpan -Start $this.LastLogonDate -End (Get-Date)).Days }
+    ExpiryDate         = { [datetime]::FromFileTime($this."msDS-UserPasswordExpiryTimeComputed") }
 }
 
 $params = @{

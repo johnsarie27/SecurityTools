@@ -18,6 +18,25 @@
                         <Name>DaysSinceLogon</Name>
                     </ReferencedProperties>
                 </PropertySet>
+                <PropertySet>
+                    <Name>UserInfo</Name>
+                    <ReferencedProperties>
+                        <Name>CN</Name>
+                        <Name>EmailAddress</Name>
+                        <Name>Created</Name>
+                        <Name>Enabled</Name>
+                        <Name>LastLogonDate</Name>
+                        <Name>DaysSinceLastLogon</Name>
+                        <Name>LockedOut</Name>
+                        <Name>AccountLockoutTime</Name>
+                        <Name>PasswordExpired</Name>
+                        <Name>ExpiryDate</Name>
+                        <Name>LastBadPasswordAttempt</Name>
+                        <Name>BadLogonCount</Name>
+                        <Name>Modified</Name>
+                        <Name>PasswordLastSet</Name>
+                    </ReferencedProperties>
+                </PropertySet>
             </Members>
         </Type>
 </Types>
