@@ -1,8 +1,8 @@
 # ==============================================================================
-# Updated:      2020-06-06
+# Updated:      2020-06-08
 # Created by:   Justin Johns
 # Filename:     AD.types.ps1
-# Version:      0.0.2
+# Version:      0.0.3
 # ==============================================================================
 
 #Requires -Modules activedirectory
@@ -44,3 +44,5 @@ $prophash.GetEnumerator() | ForEach-Object {
     $params['Value'] = $_.value
     Update-TypeData @params
 }
+
+Update-TypeData -AppendPath "$PSScriptRoot\Ec2.types.ps1xml"

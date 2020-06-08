@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.5.9'
+    ModuleVersion     = '0.6.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -59,7 +59,7 @@
 
     # Type files (.ps1xml) to be loaded when importing this module
     TypesToProcess = @(
-        'AD.types.ps1xml'
+        'ADUser.types.ps1xml'
     )
 
     # Format files (.ps1xml) to be loaded when importing this module
@@ -86,8 +86,6 @@
         'Format-Disk'
         'Get-ActiveGWUser'
         'Get-ActiveSmartCardCert'
-        'Get-ADUserReport'
-        'Get-ADUserStatus'
         'Get-CVSSv3BaseScore'
         'Get-DirItemAges'
         'Get-DirStats'
