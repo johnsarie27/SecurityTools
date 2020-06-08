@@ -1,4 +1,4 @@
-#Requires -Modules AWS.Tools.EC2
+<# #Requires -Modules AWS.Tools.EC2 #>
 
 function Invoke-SDelete {
     <# =========================================================================
