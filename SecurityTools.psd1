@@ -101,7 +101,6 @@
         'Get-WinLogs'
         'Install-ModuleFromPackage'
         'Invoke-NetScan'
-        'Invoke-SDelete'
         'Out-MeasureResult'
         'Remove-Files'
         'Revoke-SupersededCert'
