@@ -45,4 +45,16 @@ $prophash.GetEnumerator() | ForEach-Object {
     Update-TypeData @params
 }
 
+# UPDATE WITH PS1XML
 Update-TypeData -AppendPath "$PSScriptRoot\Ec2.types.ps1xml"
+
+# NEW METHOD
+$params = @{
+    TypeName   = "Microsoft.ActiveDirectory.Management.ADUser"
+    MemberType = "ScriptMethod"
+    MemberName = "GetStatus"
+    Value      = { Get-ADUser -Identity $this.SamAccountName -Properties "*", "msDS-UserPasswordExpiryTimeComputed" | Select-Object -Property UserStatus }
+    Force      = $true
+}
+
+Update-TypeData @params
