@@ -53,7 +53,7 @@ function Install-ModuleFromPackage {
     Move-Item -Path $Path -Destination $ModulePath
 
     # GET SCRIPT FILES
-    $Scripts = Get-ChildItem -Path $ModulePath -Include @("*.ps1", "*.psm1") -Recurse
+    $Scripts = Get-ChildItem -Path $ModulePath -Include @("*.ps1*", "*.psm1") -Recurse
 
     # SIGN SCRIPT FILES
     Set-AuthenticodeSignature -FilePath $Scripts.FullName -Certificate $MyCert
