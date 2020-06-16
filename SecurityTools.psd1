@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.6.1'
+    ModuleVersion     = '0.6.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -79,6 +79,8 @@
         'Export-ExcelBook'
         'Export-ScanReportAggregate'
         'Export-ScanReportSummary'
+        'Export-ScanReport2Aggregate'
+        'Export-ScanReport2Summary'
         'Export-SQLVAReport'
         'Export-SQLVAReportAggregate'
         'Export-WebScan'
