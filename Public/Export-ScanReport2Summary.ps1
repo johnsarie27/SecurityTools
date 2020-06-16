@@ -77,14 +77,11 @@ function Export-ScanReport2Summary {
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
             $DatabaseScan = (Resolve-Path -Path $DatabaseScan).Path
             $dbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
-            $uDbScan = $dbScan | Sort-Object -Unique ID
-            foreach ( $object in $uDbScan ) {
+            $uniqueDbVulns = $dbScan | Sort-Object -Unique ID
+            foreach ( $object in $uniqueDbVulns ) {
                 # CREATE COLUMNS FOR SUMMARY REPORT
                 $count = ($dbScan | Where-Object ID -EQ $object.ID | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
-                $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'DB Scan'
-                $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
-                $object | Add-Member -MemberType NoteProperty -Name 'CVSSv3' -Value 'n/a'
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
                 $match = $summaryReport.Where({ $_.Name -eq $object.'Security Check' })
@@ -104,30 +101,26 @@ function Export-ScanReport2Summary {
 
             # SET PROPERTY CONVERSION
             $newProps = (
-                'Count', 'Source', 'Risk Adj.', 'TFS', 'Status', 'CVSSv3',
-                @{Name = 'Name'; Expression = { $_.'Security Check' } },
-                @{Name = 'Notes'; Expression = { $_.ID } },
-                @{Name = 'Severity'; Expression = { $_.Risk } }
+                'Count', 'TFS', 'Status', 'CVSSv3', 'Risk',
+                @{ Name = 'Source'; Expression = { 'DB Scan' } },
+                @{ Name = 'Name'; Expression = { $_.'Security Check' } },
+                @{ Name = 'CVE'; Expression = { $_.ID } }
             )
 
             # CHANGE COLUMN NAMES
-            $uDbScan = $uDbScan | Select-Object -Property $newProps
+            $uniqueDbVulns = $uniqueDbVulns | Select-Object -Property $newProps
 
             # ADD TO MASTER LIST
-            foreach ( $i in $uDbScan ) { $summaryObjects.Add($i) }
+            foreach ( $i in $uniqueDbVulns ) { $summaryObjects.Add($i) }
         }
 
         # PROCESS SYSTEM SCAN DATA
         if ( $PSBoundParameters.ContainsKey('SystemScan') ) {
             $systemCsv = Import-Csv -Path $SystemScan
-            $uSysCsv = $systemCsv | Sort-Object Name -Unique
-            foreach ( $object in $uSysCsv ) {
+            $uniqueSysVulns = $systemCsv | Sort-Object Name -Unique
+            foreach ( $object in $uniqueSysVulns ) {
                 $count = ($systemCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
-                $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'System Scan'
-                $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
-                $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
-                #$object | Add-Member -MemberType NoteProperty -Name 'Status' -Value $object.'Active or inactive'
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
                 $match = $summaryReport.Where({ $_.Name -eq $object.Name })
@@ -141,46 +134,41 @@ function Export-ScanReport2Summary {
 
             # SET PROPERTY CONVERSION
             $newProps = (
-                'Count', 'Source', 'Risk Adj.', 'TFS', 'Status', 'Name', 'Notes',
-                @{Name = 'CVSSv3'; Expression = { $_.'CVSS v3.0 Base Score' } },
-                @{Name = 'Severity'; Expression = { $_.Risk } }
+                'Count', 'TFS', 'Status', 'Name', 'Risk', 'CVE', 'CVSS',
+                @{ Name = 'Source'; Expression = { 'System Scan' } },
+                @{ Name = 'CVSSv3'; Expression = { $_.'CVSS v3.0 Base Score' } }
             )
 
             # CHANGE COLUMN NAMES
-            $uSysCsv = $uSysCsv | Select-Object -Property $newProps
+            $uniqueSysVulns = $uniqueSysVulns | Select-Object -Property $newProps
 
             # ADD TO MASTER LIST
-            foreach ( $i in $uSysCsv ) { $summaryObjects.Add($i) }
+            foreach ( $i in $uniqueSysVulns ) { $summaryObjects.Add($i) }
         }
 
         # PROCESS WEB SCAN DATA
         if ( $PSBoundParameters.ContainsKey('WebScan') ) {
             $webCsv = Import-Csv -Path $WebScan
-            $uWebCsv = $webCsv | Sort-Object Name -Unique
-            foreach ( $object in $uWebCsv ) {
+            $uniqueWebVulns = $webCsv | Sort-Object Name -Unique
+            foreach ( $object in $uniqueWebVulns ) {
                 $count = ($webCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
                 $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan'
-                $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
-                $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
                 $object | Add-Member -MemberType NoteProperty -Name 'Status' -Value $object.'Active or inactive'
+                $object | Add-Member -MemberType NoteProperty -Name 'Risk' -Value $object.Severity
 
                 # GET CVSSv3 SCORE
                 if ( $object.Name -match 'CVE-\d{4}-\d+' ) {
                     $cve = $object.Name -replace '^.*(CVE-\d{4}-\d+).*$', '$1'
                     try {
                         $nvd = Get-CVSSv3BaseScore -CVE $cve
-                        $score = $nvd.Score
+                        $object | Add-Member -MemberType NoteProperty -Name 'CVSSv3' -Value $nvd.Score
                         $object.Severity = $nvd.Severity
                     }
                     catch {
-                        $score = 'n/a'
+                        $object | Add-Member -MemberType NoteProperty -Name 'CVSSv3' -Value ''
                     }
                 }
-                else {
-                    $score = 'n/a'
-                }
-                $object | Add-Member -MemberType NoteProperty -Name 'CVSSv3' -Value $score
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
                 $match = $summaryReport.Where({ $_.Name -eq $object.Name })
@@ -193,18 +181,18 @@ function Export-ScanReport2Summary {
             }
 
             # ADD TO MASTER LIST
-            foreach ( $i in $uWebCsv ) { $summaryObjects.Add($i) }
+            foreach ( $i in $uniqueWebVulns ) { $summaryObjects.Add($i) }
         }
     }
 
     End {
         # VERBOSE
-        Write-Verbose -Message ('System Scan Count: {0}' -f ($uSysCsv | Measure-Object | Select-Object -Exp Count))
-        Write-Verbose -Message ('Web Scan Count: {0}' -f ($uWebCsv | Measure-Object | Select-Object -Exp Count))
-        Write-Verbose -Message ('DB Scan Count: {0}' -f ($uDbScan | Measure-Object | Select-Object -Exp Count))
+        Write-Verbose -Message ( 'System Scan Count: {0}' -f (($uniqueSysVulns | Measure-Object).Count) )
+        Write-Verbose -Message ( 'Web Scan Count: {0}' -f (($uniqueWebVulns | Measure-Object).Count) )
+        Write-Verbose -Message ( 'DB Scan Count: {0}' -f (($uniqueDbVulns | Measure-Object).Count) )
 
         # SET REPORT OPTIONS
-        $splat = @{
+        $excelParams = @{
             WorksheetName = (Get-Date -UFormat %b).ToUpper()
             AutoSize      = $true
             AutoFilter    = $true
@@ -216,9 +204,21 @@ function Export-ScanReport2Summary {
         }
 
         # SET DESIRED PROPERTIES
-        $properties = @('Name', 'CVSSv3', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')#'CVSS'
+        $reportProps = @(
+            'Name'
+            'CVE'
+            'CVSS'
+            'CVSSv3'
+            'Risk'
+            'Source'
+            'Count'
+            'Risk Adj.'
+            'Status'
+            'TFS'
+            'Notes'
+        )
 
         # EXPORT TO EXCEL
-        $summaryObjects | Select-Object -Property $properties | Export-Excel @splat
+        $summaryObjects | Select-Object -Property $reportProps | Export-Excel @excelParams
     }
 }
