@@ -75,11 +75,16 @@ function Export-ScanReport2Summary {
     Process {
         # PROCESS DATABASE SCAN DATA
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
+            # RESOLVING PATH IS REQUIRED AS IMPORT-EXCEL WILL NOT ACCEPT LINKS OR REFERENCES
             $DatabaseScan = (Resolve-Path -Path $DatabaseScan).Path
             $dbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
+
+            # FIND UNIQUE VULNERABILITIES
             $uniqueDbVulns = $dbScan | Sort-Object -Unique ID
+
+            # ADD A COUNT AND FIND TFS # FOR EACH VULNERABILITY
             foreach ( $object in $uniqueDbVulns ) {
-                # CREATE COLUMNS FOR SUMMARY REPORT
+                # GET A COUNT FOR EACH UNIQUE ITEM
                 $count = ($dbScan | Where-Object ID -EQ $object.ID | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
 
