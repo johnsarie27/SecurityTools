@@ -173,7 +173,7 @@ function Export-ScanReport2Summary {
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
                 $match = $summaryReport.Where({ $_.Name -eq $object.Name })
                 if ( $match ) {
-                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match[0].TFS
                 }
                 else {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
