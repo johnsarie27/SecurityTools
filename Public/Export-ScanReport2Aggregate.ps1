@@ -60,7 +60,7 @@ function Export-ScanReport2Aggregate {
         Import-Module -Name ImportExcel
 
         # SET VARS
-        $properties = @(
+        $webProps = @(
             "IP-address"
             "Detected Hostname"
             "Port number"
@@ -75,7 +75,7 @@ function Export-ScanReport2Aggregate {
             "Resolution"
             "Evidence"
             "References"
-            @{N = 'Status'; E = { $_.'Active or inactive' }}
+            @{ Name = 'Status'; Expression = { $_.'Active or inactive' } }
         )
 
         # SET REPORT OPTIONS
@@ -97,7 +97,7 @@ function Export-ScanReport2Aggregate {
             #foreach ( $i in $webCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
 
             # EXPORT WEB DATA TO EXCEL
-            $webCsv | Select-Object -Property $properties | Export-Excel @splat -WorksheetName 'WebScan'
+            $webCsv | Select-Object -Property $webProps | Export-Excel @splat -WorksheetName 'WebScan'
         }
 
         # PROCESS SYSTEM SCAN DATA
