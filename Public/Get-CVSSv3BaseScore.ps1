@@ -27,7 +27,7 @@ function Get-CVSSv3BaseScore {
 
     Begin {
         $baseUri = "https://nvd.nist.gov/vuln/detail/{0}"
-        $pattern = '"vuln-cvss3-panel-score"\>(\d+\.\d+)\s(\w+)'
+        $pattern = 'class="label\slabel-\w+">(\d+\.\d+)\s(\w+)</a>'
     }
 
     Process {
