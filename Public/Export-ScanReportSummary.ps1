@@ -87,7 +87,7 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'CVSS v3' -Value 'n/a'
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where({ $_.Name -eq $object.'Security Check' })
+                $match = $summaryReport.Where({ $_.Name -eq $object.'Security Check' -and $_.Source -eq 'DB Scan' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
@@ -147,7 +147,7 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'CVSS v3' -Value $score
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where({ $_.Name -eq $object.Name })
+                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'System Scan' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
@@ -190,7 +190,7 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'CVSS v3' -Value $score
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where({ $_.Name -eq $object.Name })
+                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'Web Scan' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
