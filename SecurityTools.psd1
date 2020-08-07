@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.6.4'
+    ModuleVersion     = '0.6.5'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -123,7 +123,7 @@
     VariablesToExport = @('EventTable')
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport   = @('ConvertTo-Excel', 'gs', 'wl')
+    AliasesToExport   = @('gs', 'wl')
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()

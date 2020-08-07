@@ -32,7 +32,6 @@ function Export-ExcelBook {
         General notes
     ========================================================================= #>
     [CmdletBinding()]
-    [Alias('ConvertTo-Excel')]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Array of data objects')]
         [ValidateNotNullOrEmpty()]
