@@ -1,5 +1,3 @@
-#Requires -Module PSPKI
-
 function Revoke-SupersededCert {
     <# =========================================================================
     .SYNOPSIS
@@ -32,8 +30,13 @@ function Revoke-SupersededCert {
     )
 
     Begin {
-        # IMPORT REQUIRED MODULES
-        Import-Module -Name PSPKI
+        # REQUIRES MODULE PSPKI
+        if ( -not (Get-Module -ListAvailable -Name 'PSPKI') ) {
+            Write-Error -Message 'This function requires module PSPKI'
+        }
+        else {
+            Import-Module -Name 'PSPKI'
+        }
 
         # SET MESSAGES
         $RevokeMsg = 'Revoke certificate for [{0}] expired [{1}] with serial no. [{2}]?'

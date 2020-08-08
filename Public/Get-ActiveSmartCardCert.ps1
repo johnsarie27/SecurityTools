@@ -1,5 +1,3 @@
-#Requires -Module PSPKI
-
 function Get-ActiveSmartCardCert {
     <# =========================================================================
     .SYNOPSIS
@@ -39,8 +37,13 @@ function Get-ActiveSmartCardCert {
     )
 
     Begin {
-        # IMPORT REQUIRED MODULE
-        Import-Module -Name PSPKI
+        # REQUIRES MODULE PSPKI
+        if ( -not (Get-Module -ListAvailable -Name 'PSPKI') ) {
+            Write-Error -Message 'This function requires module PSPKI'
+        }
+        else {
+            Import-Module -Name 'PSPKI'
+        }
 
         # SET FILTER
         $Filter = @("CertificateTemplate -EQ $CertificateTemplate")
