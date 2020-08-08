@@ -32,7 +32,7 @@ function Revoke-SupersededCert {
     Begin {
         # REQUIRES MODULE PSPKI
         if ( -not (Get-Module -ListAvailable -Name 'PSPKI') ) {
-            Write-Error -Message 'This function requires module PSPKI'
+            Throw 'This function requires module PSPKI'
         }
         else {
             Import-Module -Name 'PSPKI'
