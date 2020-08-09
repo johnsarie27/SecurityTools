@@ -95,7 +95,7 @@ function Export-ExcelBook {
             }
         }
         else {
-            $Path = (Join-Path -Path $DestFolder -ChildPath ('{0}.xlsx' -f (Get-Date -F "yyyyMMddTHHmmss")))
+            $Path = (Join-Path -Path $DestFolder -ChildPath ('{0:yyyyMMddTHHmmss}.xlsx' -f (Get-Date)))
             $WorkBook = $Excel.Workbooks.Add()
             $Sheet = $WorkBook.Worksheets.Item("Sheet1")
         }

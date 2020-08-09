@@ -72,7 +72,7 @@ function Export-SQLVAReport {
 
     Process {
         # CREATE FILE
-        $ReportFile = '{0}_{1}.xlsx' -f (Get-Date -F "yyyy-MM-dd"), $ServerName
+        $ReportFile = '{0:yyyy-MM-dd}_{1}.xlsx' -f (Get-Date), $ServerName
 
         # CHECK FOR BASELINE PARAM
         if ( $PSBoundParameters.ContainsKey('BaselinePath') ) {

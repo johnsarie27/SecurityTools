@@ -9,7 +9,7 @@ Describe -Name "Write-Log" -Fixture {
 
         It -Name "creates daily log file" -Test {
             Write-Log -Directory $LogDir -Name Test
-            $FileName = 'TestDrive:\Logs\Test-Log_{0}.log' -f (Get-Date -F "yyyy-MM-dd")
+            $FileName = 'TestDrive:\Logs\Test-Log_{0:yyyy-MM-dd}.log' -f (Get-Date)
             Test-Path -Path $FileName | Should -BeTrue
         }
 

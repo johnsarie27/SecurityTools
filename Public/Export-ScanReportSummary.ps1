@@ -62,7 +62,7 @@ function Export-ScanReportSummary {
 
         # SET DESTINATION PATH
         if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
-            $fileName = 'Summary-Scans_{0}.xlsx' -f (Get-Date -Format "yyyy-MM")
+            $fileName = 'Summary-Scans_{0:yyyy-MM}.xlsx' -f (Get-Date)
             $DestinationPath = Join-Path -Path "$HOME\Desktop" -ChildPath $fileName
         }
         else {

@@ -61,7 +61,7 @@ function Export-SQLVAReportAggregate {
 
         # WRITE TO DESKTOP IF DESTINATIONPATH NOT PROVIDED
         if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
-            $DestinationPath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Aggregate-SQL-Scans_{0}.xlsx' -f (Get-Date -F "yyyy-MM"))
+            $DestinationPath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Aggregate-SQL-Scans_{0:yyyy-MM}.xlsx' -f (Get-Date))
         }
 
         # GET REPORTS FROM ZIP

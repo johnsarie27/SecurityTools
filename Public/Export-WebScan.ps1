@@ -78,7 +78,7 @@ function Export-WebScan {
             BoldTopRow   = $true
             AutoFilter   = $true
             Style        = (New-ExcelStyle -Bold -Range '1:1' -HorizontalAlignment Center)
-            Path         = Join-Path -Path $OutputDirectory -ChildPath ('WebScans_{0}.xlsx' -f (Get-Date -F "yyyy-MM-dd"))
+            Path         = Join-Path -Path $OutputDirectory -ChildPath ('WebScans_{0:yyyy-MM-dd}.xlsx' -f (Get-Date))
         }
 
         $propOrder = @(

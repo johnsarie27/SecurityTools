@@ -37,13 +37,13 @@ function Update-LocalUserPw {
     )
 
     # SETUP LOG
-    $logFile = '{0}\Desktop\{1}_PwUpdateLog.log' -f $HOME, (Get-Date -Format yyyyMMddTHHmmss)
+    $logFile = '{0}\Desktop\{1:yyyyMMddTHHmmss}_PwUpdateLog.log' -f $HOME, (Get-Date)
     if ( -not (Test-Path -Path $logFile) ) { New-Item -Path $logFile -ItemType File -Force | Out-Null }
-    Add-Content -Path $logFile -Value ('Begin Logging: ' -f (Get-Date -Format yyyyMMddTHHmmss))
+    Add-Content -Path $logFile -Value ('Begin Logging: {0:yyyyMMddTHHmmss}' -f (Get-Date))
 
     # UPDATE PASSWORD
     foreach ( $computer in $ComputerName ) {
-        $msg = '{0} -- Computer [{1,-14}] -- ' -f (Get-Date -Format yyyyMMddTHHmmss), $computer
+        $msg = '{0:yyyyMMddTHHmmss} -- Computer [{1,-14}] -- ' -f (Get-Date), $computer
         $user = '{0}/{1}' -f $computer, $Credential.UserName
 
         try {
@@ -62,5 +62,5 @@ function Update-LocalUserPw {
     }
 
     # END LOG
-    Add-Content -Path $logFile -Value ('{0} -- Job completed.' -f (Get-Date -Format yyyyMMddTHHmmss))
+    Add-Content -Path $logFile -Value ('{0:yyyyMMddTHHmmss} -- Job completed.' -f (Get-Date))
 }

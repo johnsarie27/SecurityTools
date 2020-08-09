@@ -93,7 +93,7 @@ function Invoke-SDelete {
             # ADD LOG FILE
             $targetId = $d.Location -replace '^.+P\d+(T\d+)L.+$', '$1' # THIS IS CHANGED IN WINDOWS SERVER 2016
             $volId = $instanceVolumes[$volumeLookupTable[$targetId]]
-            $logFile = Join-Path -Path $OutputDirectory -ChildPath ('SDelete_{0}_{1}.log' -f $volId, (Get-Date -F 'yyyyMMddTHHmm'))
+            $logFile = Join-Path -Path $OutputDirectory -ChildPath ('SDelete_{0}_{1:yyyyMMddTHHmm}.log' -f $volId, (Get-Date))
             $procParams['RedirectStandardOutput'] = $logFile
 
             # START SDELETE
