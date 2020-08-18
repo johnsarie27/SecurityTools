@@ -27,6 +27,7 @@ function Get-RandomAlphanumericString {
 
     Process {
         $charSet = @( 0x30..0x39 + 0x41..0x5A + 0x61..0x7A )
+        #$charSet = @( 0x21..0x7E ) # INCLUDES SPECIAL CHARS
 
         $chars = Get-Random -InputObject $charSet -Count $Length | ForEach-Object { [char]$_ }
 
