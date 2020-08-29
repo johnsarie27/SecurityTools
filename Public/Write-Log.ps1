@@ -17,6 +17,8 @@ function Write-Log {
         Path to the log file
     .PARAMETER Type
         log entry type. Accepted values include Info, Warning, Error, and Debug.
+    .PARAMETER Id
+        Unique ID for the log entry or set of entries (e.g., process id, etc.)
     .PARAMETER Message
         Log message
     .PARAMETER ComputerName
@@ -57,6 +59,10 @@ function Write-Log {
         [ValidateSet('Info', 'Error', 'Warning', 'Debug')]
         [string] $Type = 'Info',
 
+        [Parameter(ParameterSetName="__log", HelpMessage='Id')]
+        [ValidateRange(0,99999)]
+        [int] $Id = 0,
+
         [Parameter(ParameterSetName="__log", HelpMessage='Source of log message')]
         [ValidateNotNullOrEmpty()]
         [Alias('CN')]
@@ -81,12 +87,11 @@ function Write-Log {
         }
         else {
             # SET TYPE AND DATE
-            #$Type = $Type.ToUpper()
             $status = switch ($Type) {
                 'Info'    { 'INFO' }
-                'Error'   { 'EROR' }
+                'Error'   { 'ERROR' }
                 'Warning' { 'WARN' }
-                'Debug'   { 'DBUG' }
+                'Debug'   { 'DEBUG' }
             }
 
             # SET FILEPATH TO PROVIDED PATH ARGUMENT
@@ -96,21 +101,21 @@ function Write-Log {
 
     Process {
         # SET/RESET DATE VAR
-        $date = Get-Date -F "yyyy-MM-dd_hh:mm:ss"
+        $date = Get-Date -F "yyyy-MM-dd hh:mm:ss,ffff"
 
         # CHECK FOR PARAMETER SET
         if ( $PSCmdlet.ParameterSetName -eq '__log' ) {
             # CHECK FOR COMPUTERNAME
             if ( $PSBoundParameters.ContainsKey('ComputerName') ) {
-                $logEntry = '{0} -- {1} -- {2} -- {3}' -f $date, $status, $ComputerName, $Message
+                $logEntry = '{0} {4} [{1,-5}] - {2}: {3}' -f $date, $status, $ComputerName, $Message, $Id
             }
             else {
-                $logEntry = '{0} -- {1} -- {2}' -f $date, $status, $Message
+                $logEntry = '{0} {3} [{1,-5}] - {2}' -f $date, $status, $Message, $Id
             }
         }
         else {
             # ADD INITIAL LOG ENTRY
-            $logEntry = '{0} -- INFO -- Begin Logging' -f $date
+            $logEntry = '{0} [INFO ] - Begin Logging' -f $date
         }
 
         # ADD TO LOG
