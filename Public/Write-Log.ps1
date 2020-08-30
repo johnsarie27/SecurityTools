@@ -60,7 +60,8 @@ function Write-Log {
         [string] $Type = 'Info',
 
         [Parameter(ParameterSetName="__log", HelpMessage='Id')]
-        [ValidateRange(0,99999)]
+        [Parameter(ParameterSetName = "__initialize", HelpMessage = 'Id')]
+        [ValidateRange(0, 99999)]
         [int] $Id = 0,
 
         [Parameter(ParameterSetName="__log", HelpMessage='Source of log message')]
@@ -77,9 +78,9 @@ function Write-Log {
 
             # GET DATE FORMAT
             $dateFormat = switch ($Frequency) {
-                'Yearly'  { Get-Date -Format "yyyy" }
-                'Monthly' { Get-Date -Format "yyyy-MM" }
-                'Daily'   { Get-Date -Format "yyyy-MM-dd" }
+                'Yearly'  { '{0:yyyy}' -f (Get-Date) }
+                'Monthly' { '{0:yyyy-MM}' -f (Get-Date) }
+                'Daily'   { '{0:yyyy-MM-dd}' -f (Get-Date) }
             }
 
             # CREATE LOG FILE PATH
@@ -115,7 +116,7 @@ function Write-Log {
         }
         else {
             # ADD INITIAL LOG ENTRY
-            $logEntry = '{0} [INFO ] - Begin Logging' -f $date
+            $logEntry = '{0} {1} [INFO ] - Begin Logging' -f $date, $Id
         }
 
         # ADD TO LOG
