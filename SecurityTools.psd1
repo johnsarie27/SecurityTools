@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.6.7'
+    ModuleVersion     = '0.6.8'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -102,6 +102,7 @@
         'Get-Software'
         'Get-TalkingApps'
         'Get-UncPath'
+        'Get-WhoIs'
         'Get-WinLogs'
         'Install-ModuleFromPackage'
         'Invoke-NetScan'
