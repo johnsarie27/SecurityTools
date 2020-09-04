@@ -7,9 +7,9 @@ function Get-WhoIs {
     .PARAMETER IPAddress
         Target IP address
     .INPUTS
-        System.String.
+        System.String[].
     .OUTPUTS
-        System.Object.
+        System.Object[].
     .EXAMPLE
         PS C:\> Get-WhoIs -IPAddress '8.8.8.8'
         Get's WhoIs info for the ip 8.8.8.8
@@ -39,7 +39,7 @@ function Get-WhoIs {
                     $true
                 }
             })]
-        [string] $IPAddress
+        [string[]] $IPAddress
     )
 
     Begin {
@@ -51,32 +51,33 @@ function Get-WhoIs {
     } #begin
 
     Process {
-        Write-Verbose "Getting WhoIs information for $IPAddress"
-        $url = "$baseUrl/ip/$ipaddress"
-        Try {
-            $r = Invoke-Restmethod -Uri $url -Headers $header -ErrorAction Stop
-            Write-verbose ($r.net | Out-String)
-        }
-        Catch {
-            $errMsg = "Sorry. There was an error retrieving WhoIs information for $IPAddress. $($_.exception.message)"
-            #$host.ui.WriteErrorLine($errMsg)
-            Write-Error -Message $errMsg
-        }
-
-        if ($r.net) {
-            Write-Verbose "Creating result"
-            [pscustomobject] @{
-                PSTypeName             = "WhoIsResult"
-                IP                     = $ipaddress
-                Name                   = $r.net.name
-                RegisteredOrganization = $r.net.orgRef.name
-                City                   = (Invoke-RestMethod $r.net.orgRef.'#text').org.city
-                StartAddress           = $r.net.startAddress
-                EndAddress             = $r.net.endAddress
-                NetBlocks              = $r.net.netBlocks.netBlock | foreach-object { "$($_.startaddress)/$($_.cidrLength)" }
-                Updated                = $r.net.updateDate -as [datetime]
+        foreach ( $ip in $IPAddress ) {
+            Write-Verbose -Message "Getting WhoIs information for $ip"
+            $url = '{0}/ip/{1}' -f $baseURL, $ip
+            try {
+                $r = Invoke-Restmethod -Uri $url -Headers $header -ErrorAction Stop
+                Write-verbose ($r.net | Out-String)
             }
-        } #If $r.net
+            catch {
+                $errMsg = 'Failed to retrieve WhoIs information for [{0}] with error: {1}' -f $ip, $_.Exception.Message
+                Write-Error -Message $errMsg
+            }
+
+            if ($r.net) {
+                Write-Verbose "Creating result"
+                [pscustomobject] @{
+                    PSTypeName             = "WhoIsResult"
+                    IP                     = $ip
+                    Name                   = $r.net.name
+                    RegisteredOrganization = $r.net.orgRef.name
+                    City                   = (Invoke-RestMethod $r.net.orgRef.'#text').org.city
+                    StartAddress           = $r.net.startAddress
+                    EndAddress             = $r.net.endAddress
+                    NetBlocks              = $r.net.netBlocks.netBlock | foreach-object { "$($_.startaddress)/$($_.cidrLength)" }
+                    Updated                = $r.net.updateDate -as [datetime]
+                }
+            } #If $r.net
+        }
     } #Process
 
     End {
