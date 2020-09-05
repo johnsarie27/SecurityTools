@@ -27,7 +27,7 @@ function Get-WinInfo {
 
         [Parameter(Mandatory, HelpMessage = 'Class Id', ParameterSetName = 'info')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ $infoModel.Id -contains $_ })]
+        [ValidateScript({ $InfoModel.Classes.Id -contains $_ })]
         [int] $Id,
 
         [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = 'info')]

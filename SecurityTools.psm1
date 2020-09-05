@@ -5,6 +5,7 @@ foreach ( $directory in @('Public', 'Private') ) {
 
 # VARIABLES
 $EventTable = Get-Content -Raw -Path $PSScriptRoot\Public\EventTable.json | ConvertFrom-Json
+$InfoModel = Get-Content -Raw -Path $PSScriptRoot\Public\InformationModel.json | ConvertFrom-Json
 
 # EXPORT MEMBERS
 # THESE ARE SPECIFIED IN THE MODULE MANIFEST AND THEREFORE DON'T NEED TO BE LISTED HERE
