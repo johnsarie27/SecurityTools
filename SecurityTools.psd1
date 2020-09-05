@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.6.9'
+    ModuleVersion     = '0.6.10'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -104,6 +104,7 @@
         'Get-TalkingApps'
         'Get-UncPath'
         'Get-WhoIs'
+        'Get-WinInfo'
         'Get-WinLogs'
         'Install-ModuleFromPackage'
         'Invoke-NetScan'
@@ -123,7 +124,10 @@
     CmdletsToExport   = @()
 
     # Variables to export from this module
-    VariablesToExport = @('EventTable')
+    VariablesToExport = @(
+        'EventTable'
+        'InformationModel'
+    )
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport   = @('gs', 'wl')

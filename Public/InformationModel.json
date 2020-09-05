@@ -1,0 +1,109 @@
+{
+    "Schema": "2020-07-04",
+    "Classes": [
+        {
+            "Id": 0,
+            "Namespace": "root/CIMV2",
+            "ClassName": "cim_process",
+            "Filters": null,
+            "Comments": "Process information",
+            "PowerShell": "Get-Process"
+        },
+        {
+            "Id": 1,
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_startupcommand",
+            "Filters": null,
+            "Comments": "Windows startup items",
+            "PowerShell": ""
+        },
+        {
+            "Id": 2,
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_networkloginprofile",
+            "Filters": null,
+            "Comments": "Windows login profile info",
+            "PowerShell": "Get-LocalUser"
+        },
+        {
+            "Id": 3,
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_ntlogevent",
+            "Filters": "\"logfile='security'\"",
+            "Comments": "Windows event log info",
+            "PowerShell": ""
+        },
+        {
+            "Id": 4,
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_systemdriver",
+            "Filters": null,
+            "Comments": "Driver info",
+            "PowerShell": ""
+        },
+        {
+            "Id": 5,
+            "Namespace": "root\\securitycenter2",
+            "ClassName": "antivirusproduct",
+            "Filters": null,
+            "Comments": "Antivirus software info",
+            "PowerShell": ""
+        },
+        {
+            "Id": 6,
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_environment",
+            "Filters": null,
+            "Comments": "Environment variables",
+            "PowerShell": "Get-ChildItem -Path Env:"
+        },
+        {
+            "Id": 7,
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_networkadapterconfiguration",
+            "Filters": null,
+            "Comments": "Network adapter info",
+            "PowerShell": ""
+        },
+        {
+            "Id": 8,
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_quickfixengineering",
+            "Filters": null,
+            "Comments": "Windows patches info",
+            "PowerShell": "Get-HotFix"
+        },
+        {
+            "Id": 9,
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_computersystem",
+            "Filters": null,
+            "Comments": "General computer info",
+            "PowerShell": "Get-ComputerInfo"
+        },
+        {
+            "Id": 10,
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_logicaldisk",
+            "Filters": null,
+            "Comments": "Logical disk info",
+            "PowerShell": "Get-Volume (not) Get-Disk"
+        },
+        {
+            "Id": 11,
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_bios",
+            "Filters": null,
+            "Comments": "Bios info",
+            "PowerShell": ""
+        },
+        {
+            "Id": 12,
+            "Namespace": "root/CIMV2",
+            "ClassName": "",
+            "Filters": null,
+            "Comments": "",
+            "PowerShell": ""
+        }
+    ]
+}

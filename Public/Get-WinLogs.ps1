@@ -71,7 +71,9 @@ function Get-WinLogs {
 
     Process {
         # CHECK FOR LIST PARAM
-        if ( $PSBoundParameters.ContainsKey('List') ) { $EventTable | Select-Object -Property Id, Name }
+        if ( $PSBoundParameters.ContainsKey('List') ) {
+            $EventTable | Select-Object -Property Id, Name
+        }
         else {
             # CHECK FOR EVENT LOG TYPE
             if ( $E.Log -in $EventLogList ) {
