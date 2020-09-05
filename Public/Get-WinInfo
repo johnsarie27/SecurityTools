@@ -51,8 +51,8 @@ function Get-WinInfo {
             $infoModel.Classes | Select-Object -Property Id, Comments
         }
         else {
-            $params.Add('Namespace', $im.Namespace)
-            $params.Add('ClassName', $im.ClassName)
+            $params['Namespace'] = $im.Namespace
+            $params['ClassName'] = $im.ClassName
 
             if ( $im.Filters ) { $params.Add('Filter', $im.Filters) }
 
