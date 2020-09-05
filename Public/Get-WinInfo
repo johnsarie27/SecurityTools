@@ -43,12 +43,12 @@ function Get-WinInfo {
         $params = @{ }
 
         if ( $PSBoundParameters.ContainsKey('ComputerName') ) { $params.Add('ComputerName', $ComputerName) }
-        if ( $PSBoundParameters.ContainsKey('Id') ) { $im = $infoModel.Where({ $_.Id -EQ $Id }) }
+        if ( $PSBoundParameters.ContainsKey('Id') ) { $im = $infoModel.Classes.Where({ $_.Id -EQ $Id }) }
     }
 
     Process {
         if ( $PSBoundParameters.ContainsKey('List') ) {
-            $infoModel | Select-Object -Property Id, Comments
+            $infoModel.Classes | Select-Object -Property Id, Comments
         }
         else {
             $params.Add('Namespace', $im.Namespace)
