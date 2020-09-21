@@ -16,12 +16,18 @@ function Get-PatchTuesday {
     [CmdletBinding()]
     Param(
         [Parameter(HelpMessage = 'Target month')]
-        #[ValidateSet('example-1','example-2')]
         [string] $Month = (Get-Date).Month,
 
         [Parameter(HelpMessage = 'Target year')]
-        #[ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.json" })]
-        [string] $Year = (Get-Date).Year
+        [string] $Year = (Get-Date).Year,
+
+        [Parameter(HelpMessage = 'Day of Week')]
+        [ValidateSet('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')]
+        [String] $WeekDay = 'Tuesday',
+
+        [Parameter(HelpMessage = 'Week of month')]
+        [ValidateRange(0, 5)]
+        [int] $WeekOfMonth = 2
     )
 
     Process {
@@ -31,9 +37,9 @@ function Get-PatchTuesday {
         $lastDayOfMonth = $firstDayOfMonth.AddMonths(1).AddSeconds(-1)
 
         # GET THE SECOND TUESDAY OF THE MONTH
-        (0..($lastDayOfMonth.Day) | ForEach-Object { $firstDayOfMonth.AddDays($_) } | Where-Object { $_.DayOfWeek -like "Tue*" })[1]
-
+        $n = $WeekOfMonth - 1
+        (0..($lastDayOfMonth.Day) | ForEach-Object { $firstDayOfMonth.AddDays($_) } | Where-Object { $_.DayOfWeek -eq $WeekDay })[$n]
         <# $daysOfMonth = foreach ( $day in 0..($lastDayOfMonth.Day) ) { $firstDayOfMonth.AddDays($day) }
-        $daysOfMonth | Where-Object -FilterScript { $_.DayOfWeek -like 'Tue*' } | Select-Object -Skip 1 -First 1 #>
+        $daysOfMonth | Where-Object -FilterScript { $_.DayOfWeek -eq $WeekDay } | Select-Object -Skip $n -First 1 #>
     }
 }
