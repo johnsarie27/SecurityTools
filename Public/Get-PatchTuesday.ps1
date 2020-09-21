@@ -32,5 +32,8 @@ function Get-PatchTuesday {
 
         # GET THE SECOND TUESDAY OF THE MONTH
         (0..($lastDayOfMonth.Day) | ForEach-Object { $firstDayOfMonth.AddDays($_) } | Where-Object { $_.DayOfWeek -like "Tue*" })[1]
+
+        <# $daysOfMonth = foreach ( $day in 0..($lastDayOfMonth.Day) ) { $firstDayOfMonth.AddDays($day) }
+        $daysOfMonth | Where-Object -FilterScript { $_.DayOfWeek -like 'Tue*' } | Select-Object -Skip 1 -First 1 #>
     }
 }
