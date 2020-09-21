@@ -1,18 +1,28 @@
 function Get-PatchTuesday {
     <# =========================================================================
-	.SYNOPSIS
-		Get the Patch Tuesday of a month
-	.PARAMETER Month
-		The month to check
-	.PARAMETER Year
-		The year to check
-	.EXAMPLE
-		Get-PatchTue -Month 6 -Year 2015
-	.EXAMPLE
-		Get-PatchTue June 2015
-	.Notes
-		https://gallery.technet.microsoft.com/scriptcenter/Find-Patch-Tuesday-using-94484479
-	========================================================================= #>
+    .SYNOPSIS
+        Get the Patch Tuesday of a month
+    .DESCRIPTION
+        Get the Patch Tuesday, or any other day, of a month
+    .PARAMETER Month
+        The month to check
+    .PARAMETER Year
+        The year to check
+    .PARAMETER WeekDay
+        Day of week
+    .PARAMETER WeekOfMonth
+        Week of month
+    .INPUTS
+        None.
+    .OUTPUTS
+        System.DateTime.
+    .EXAMPLE
+        Get-PatchTue -Month 6 -Year 2015
+    .EXAMPLE
+        Get-PatchTue June 2015
+    .Notes
+        https://gallery.technet.microsoft.com/scriptcenter/Find-Patch-Tuesday-using-94484479
+    ========================================================================= #>
     [CmdletBinding()]
     Param(
         [Parameter(HelpMessage = 'Target month')]
@@ -26,7 +36,7 @@ function Get-PatchTuesday {
         [String] $WeekDay = 'Tuesday',
 
         [Parameter(HelpMessage = 'Week of month')]
-        [ValidateRange(0, 5)]
+        [ValidateRange(1, 5)]
         [int] $WeekOfMonth = 2
     )
 
