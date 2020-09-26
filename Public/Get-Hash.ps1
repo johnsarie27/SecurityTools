@@ -1,4 +1,4 @@
-function Get-HashFromString {
+function Get-Hash {
     <# =========================================================================
     .SYNOPSIS
         Generate hash
@@ -13,7 +13,7 @@ function Get-HashFromString {
     .OUTPUTS
         System.String.
     .EXAMPLE
-        PS C:\> Get-HashFromString -String 'String' -Algorithm SHA256
+        PS C:\> Get-Hash -String 'String' -Algorithm SHA256
         Generate the SHA256 hash value of "String"
     .NOTES
         General notes

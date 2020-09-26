@@ -92,7 +92,7 @@
         'Get-CVSSv3BaseScore'
         'Get-DirItemAges'
         'Get-DirStats'
-        'Get-HashFromString'
+        'Get-Hash'
         'Get-Ipinfo'
         'Get-LoggedOnUser'
         'Get-MsiInfo'
