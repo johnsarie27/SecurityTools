@@ -102,7 +102,7 @@ function Write-Log {
 
     Process {
         # SET/RESET DATE VAR
-        $date = Get-Date -F "yyyy-MM-dd hh:mm:ss,ffff"
+        $date = '{0:yyyy-MM-dd HH:mm:ss,ffff}' -f (Get-Date)
 
         # CHECK FOR PARAMETER SET
         if ( $PSCmdlet.ParameterSetName -eq '__log' ) {
