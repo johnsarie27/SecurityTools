@@ -43,13 +43,11 @@ function Convert-SecureKey {
 
         [Parameter(ParameterSetName = '_create', HelpMessage = 'Enter SecureString')]
         [ValidateNotNullOrEmpty()]
-        [Alias('SP')]
         [SecureString] $SecurePassword,
 
         [Parameter(Mandatory, ParameterSetName = '_create', HelpMessage = 'Path to new credential XML file')]
         [ValidateScript({ Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) })]
         [ValidateScript({ [System.IO.Path]::GetExtension($_) -eq '.xml' })]
-        [Alias('DP')]
         [string] $DestinationPath,
 
         [Parameter(ParameterSetName = '_create', HelpMessage = 'Return new credential object')]
@@ -59,19 +57,14 @@ function Convert-SecureKey {
         [switch] $Force
     )
 
-    Begin {
-        # CREATE NEW ENCRYPTED CREDENTIAL FILE
+    Process {
         if ( $PSCmdlet.ParameterSetName -eq '_create' ) {
-            $DestinationPath = Test-DestinationPath -Path $DestinationPath -Extension '.xml' -AllowOverwrite
 
-            # CONFIRM PATH DOESN'T EXIST
             if ( (Test-Path -Path $DestinationPath -PathType Leaf) -and !$Force ) {
                 Throw 'File already exists. Use "-Force" to overwrite.'
             }
 
-            # IF SECURE PASSWORD NOT PROVIDED IN PARAMETERS
             if ( -not $PSBoundParameters.ContainsKey('SecurePassword') ) {
-                # PROMPT USER FOR PASSWORD AS SECURE STRING
                 do {
                     $SecurePassword = Read-Host -Prompt 'Enter password' -AsSecureString
                     $confirmPassword = Read-Host -Prompt 'Confirm password' -AsSecureString
@@ -83,32 +76,16 @@ function Convert-SecureKey {
                 }
                 while ( $sp -cne $cp )
             }
-            # $SecurePassword = 'SuperDuperPassword' | ConvertTo-SecureString -AsPlainText -Force
 
-            # CREATE NEW CREDENTIAL OBJECT
-            $Credential = New-Object System.Management.Automation.PSCredential($Username, $SecurePassword)
+            $credential = New-Object System.Management.Automation.PSCredential($Username, $SecurePassword)
+
+            $credential | Export-Clixml -Path $DestinationPath
+
+            if ( $PSBoundParameters.ContainsKey('PassThru') ) { $credential }
         }
-    }
-    End {
-        # CREATE XML FILE AND RETURN CREDENTIAL OBJECT
-        if ( $PSCmdlet.ParameterSetName -eq '_create' ) {
-            # SAVE CREDENTIAL OBJECT TO CLIXML FILE
-            $Credential | Export-Clixml -Path $DestinationPath
-
-            # RETURN NEW PATH
-            if ( $PSBoundParameters.ContainsKey('PassThru') ) { $Credential }
-        }
-
-        # RETRIEVE CREDENTIAL OBJECT FOR CLIXML FILE
-        if ( $PSCmdlet.ParameterSetName -eq '_retrieve' ) {
-            <# # DO NOT DELETE
-            $Password = (Import-Clixml -Path $Path).GetNetworkCredential().Password #>
-
-            # RETRIEVE CREDENTIAL OBJECT FROM CLIXML FILE
-            $Credential = Import-Clixml -Path $Path
-
-            # RETURN CREDENTIAL OBJECT
-            $Credential
+        else {
+            # SQUEEZE VARIABLE
+            ($credential = Import-Clixml -Path $Path)
         }
     }
 }
