@@ -1,5 +1,3 @@
-#Requires -Modules @{ ModuleName = 'ImportExcel'; ModuleVersion = '6.5.0' }
-
 function Export-WebScan {
     <# =========================================================================
     .SYNOPSIS

@@ -1,5 +1,3 @@
-#Requires -Module ImportExcel
-
 function ConvertTo-DbScanReport {
     <# =========================================================================
     .SYNOPSIS
