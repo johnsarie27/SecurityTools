@@ -33,7 +33,6 @@ function Write-Log {
         PS C:\> Write-Log -Path $Path -Message 'No data found' -Type Error
     ========================================================================= #>
     [CmdletBinding(DefaultParameterSetName = "__log")]
-    [Alias('wl')]
     Param(
         [Parameter(Mandatory, ParameterSetName='__initialize', HelpMessage='Folder where log should be created')]
         [ValidateScript({ Test-Path -Path (Split-Path -Path $_) -PathType Container })]
@@ -71,23 +70,19 @@ function Write-Log {
     )
 
     Begin {
-        # CHECK FOR PARAMETER SET
         if ( $PSCmdlet.ParameterSetName -eq '__initialize' ) {
-            # CHECK FOR DIRECTORY
+            # CREATE DIRECTORY IF NOT EXIST
             if ( -not (Test-Path $Directory) ) { New-Item -Path $Directory -ItemType "Directory" -Force | Out-Null }
 
-            # GET DATE FORMAT
             $dateFormat = switch ($Frequency) {
                 'Yearly'  { '{0:yyyy}' -f (Get-Date) }
                 'Monthly' { '{0:yyyy-MM}' -f (Get-Date) }
                 'Daily'   { '{0:yyyy-MM-dd}' -f (Get-Date) }
             }
 
-            # CREATE LOG FILE PATH
             $filePath = Join-Path -Path $Directory -ChildPath ('{0}-Log_{1}.log' -f $Name, $dateFormat)
         }
         else {
-            # SET TYPE AND DATE
             $status = switch ($Type) {
                 'Info'    { 'INFO' }
                 'Error'   { 'ERROR' }
@@ -95,36 +90,26 @@ function Write-Log {
                 'Debug'   { 'DEBUG' }
             }
 
-            # SET FILEPATH TO PROVIDED PATH ARGUMENT
             $filePath = $Path
         }
     }
 
     Process {
-        # SET/RESET DATE VAR
         $date = '{0:yyyy-MM-dd HH:mm:ss,ffff}' -f (Get-Date)
 
-        # CHECK FOR PARAMETER SET
         if ( $PSCmdlet.ParameterSetName -eq '__log' ) {
-            # CHECK FOR COMPUTERNAME
-            if ( $PSBoundParameters.ContainsKey('ComputerName') ) {
-                $logEntry = '{0} {4} [{1,-5}] - {2}: {3}' -f $date, $status, $ComputerName, $Message, $Id
-            }
-            else {
-                $logEntry = '{0} {3} [{1,-5}] - {2}' -f $date, $status, $Message, $Id
-            }
+            if ( $PSBoundParameters.ContainsKey('ComputerName') ) { $ComputerName = '{0}: ' -f $ComputerName }
+            $logEntry = '{0} {1} [{2,-5}] - {3}{4}' -f $date, $Id, $status, $ComputerName, $Message
         }
         else {
             # ADD INITIAL LOG ENTRY
             $logEntry = '{0} {1} [INFO ] - Begin Logging' -f $date, $Id
         }
 
-        # ADD TO LOG
         Add-Content -Path $filePath -Value $logEntry
     }
 
     End {
-        # RETURN
         if ( $PSCmdlet.ParameterSetName -eq '__initialize' ) { $filePath }
     }
 }
