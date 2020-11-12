@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.6.12'
+    ModuleVersion     = '0.7.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -51,6 +51,8 @@
     RequiredModules   = @(
         'ImportExcel'
         'SqlServer'
+        #'PSNetAddressing'
+        #'PSPKI'
     )
     # CONSIDER ADDING PSPKI FOR SMARTCARDCERTS
 
@@ -91,7 +93,6 @@
         'Find-ServerPendingReboot'
         'Format-Disk'
         'Get-ActiveGWUser'
-        'Get-ActiveSmartCardCert'
         'Get-CVSSv3BaseScore'
         'Get-DirItemAges'
         'Get-DirStats'
@@ -115,7 +116,6 @@
         'Invoke-NetScan'
         'Out-MeasureResult'
         'Remove-Files'
-        'Revoke-SupersededCert'
         'Save-KBFile'
         'Test-Performance'
         'Uninstall-AllModules'
