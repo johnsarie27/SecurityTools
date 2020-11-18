@@ -19,7 +19,7 @@ function Remove-Signature {
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Path to script file')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.ps*" })]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include '*.ps*' })]
         [Alias('Path', 'Script', 'File')]
         [string[]] $ScriptPath
     )
