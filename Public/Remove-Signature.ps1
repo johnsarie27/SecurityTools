@@ -31,8 +31,8 @@ function Remove-Signature {
             if ($line) {
                 if ($PSCmdlet.ShouldProcess("$file", "Removing signature block")) {
                     $content[0..($line - 3)] | Set-Content -Path $file
+                    Write-Output -InputObject ('Removed signature from file: {0}' -f $file)
                 }
-                Write-Output -InputObject ('Removed signature from file: {0}' -f $file)
             }
             else {
                 Write-Verbose -Message ('No signature found in file: {0}' -f $file)
