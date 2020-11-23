@@ -100,6 +100,14 @@
         },
         {
             "Id": 12,
+            "Namespace": "root/CCM/SoftMgmtAgent",
+            "ClassName": "CacheConfig",
+            "Filters": null,
+            "Comments": "SCCM Client Cache",
+            "PowerShell": ""
+        },
+        {
+            "Id": 13,
             "Namespace": "root/CIMV2",
             "ClassName": "",
             "Filters": null,
