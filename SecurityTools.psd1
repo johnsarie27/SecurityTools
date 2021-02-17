@@ -51,6 +51,7 @@
     RequiredModules   = @(
         'ImportExcel'
         'SqlServer'
+        #'GroupPolicy' # FOR Get-RSOP
         #'PSNetAddressing'
         #'PSPKI'
     )
@@ -104,6 +105,7 @@
         'Get-PatchTuesday'
         'Get-RandomAlphanumericString'
         'Get-RemoteBitLocker'
+        'Get-RSOP'
         'Get-SavedHistory'
         'Get-ServiceAccount'
         'Get-Software'
