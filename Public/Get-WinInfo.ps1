@@ -20,43 +20,44 @@ function Get-WinInfo {
     .NOTES
         General notes
     ========================================================================= #>
-    [CmdletBinding(DefaultParameterSetName = 'list')]
+    [CmdletBinding(DefaultParameterSetName = '__list')]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'List available classes', ParameterSetName = 'list')]
+        [Parameter(Mandatory, HelpMessage = 'List available classes', ParameterSetName = '__list')]
         [switch] $List,
 
-        [Parameter(Mandatory, HelpMessage = 'Class Id', ParameterSetName = 'info')]
+        [Parameter(Mandatory, HelpMessage = 'Class Id', ParameterSetName = '__info')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({ $InfoModel.Classes.Id -contains $_ })]
         [int] $Id,
 
-        [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = 'info')]
+        [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = '__info')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({ Test-Connection -ComputerName $_ -Count 1 -Quiet })]
         [Alias('CN')]
         [string] $ComputerName
     )
 
-    Begin {
+    Process {
         $infoModel = Get-Content -Raw -Path "$PSScriptRoot\InformationModel.json" | ConvertFrom-Json
 
-        $params = @{ }
+        switch ($PSCmdlet.ParameterSetName) {
+            '__list' {
+                $infoModel.Classes | Select-Object -Property Id, Comments
+            }
+            '__info' {
+                $im = $infoModel.Classes.Where({ $_.Id -EQ $Id })
 
-        if ( $PSBoundParameters.ContainsKey('ComputerName') ) { $params.Add('ComputerName', $ComputerName) }
-        if ( $PSBoundParameters.ContainsKey('Id') ) { $im = $infoModel.Classes.Where({ $_.Id -EQ $Id }) }
-    }
+                $cimParams = @{
+                    Namespace = $im.Namespace
+                    ClassName = $im.ClassName
+                }
 
-    Process {
-        if ( $PSBoundParameters.ContainsKey('List') ) {
-            $infoModel.Classes | Select-Object -Property Id, Comments
-        }
-        else {
-            $params['Namespace'] = $im.Namespace
-            $params['ClassName'] = $im.ClassName
+                if ( $im.Filters ) { $cimParams.Add('Filter', $im.Filters) }
 
-            if ( $im.Filters ) { $params.Add('Filter', $im.Filters) }
+                if ( $PSBoundParameters.ContainsKey('ComputerName') ) { $cimParams.Add('ComputerName', $ComputerName) }
 
-            Get-CimInstance @params
+                Get-CimInstance @cimParams
+            }
         }
     }
 }

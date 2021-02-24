@@ -21,21 +21,21 @@ function Get-WinLogs {
         PS C:\> Get-WinLogs.ps1 -Id 8 -ComputerName $Server -Results 10
         Display last 10 RDP Sessions
     ========================================================================= #>
-    [CmdletBinding(DefaultParameterSetName = '_list')]
+    [CmdletBinding(DefaultParameterSetName = '__list')]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'List available events', ParameterSetName = '_list')]
+        [Parameter(Mandatory, HelpMessage = 'List available events', ParameterSetName = '__list')]
         [switch] $List,
 
-        [Parameter(Mandatory, HelpMessage = 'Event Table Id', ParameterSetName = '_events')]
+        [Parameter(Mandatory, HelpMessage = 'Event Table Id', ParameterSetName = '__events')]
         [ValidateScript({ $EventTable.Id -contains $_ })]
         [int] $Id,
 
-        [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = '_events')]
+        [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = '__events')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Count 1 -Quiet })]
         [Alias('CN')]
         [string] $ComputerName,
 
-        [Parameter(HelpMessage = 'Number of results to return', ParameterSetName = '_events')]
+        [Parameter(HelpMessage = 'Number of results to return', ParameterSetName = '__events')]
         [ValidateNotNullOrEmpty()]
         [int] $Results = 10
     )
@@ -44,10 +44,10 @@ function Get-WinLogs {
         $eventTable = Get-Content -Raw -Path $PSScriptRoot\EventTable.json | ConvertFrom-Json
 
         switch ($PSCmdlet.ParameterSetName) {
-            '_list' {
+            '__list' {
                 $eventTable | Select-Object -Property Id, Name
             }
-            '_events' {
+            '__events' {
                 $eventParams = @{ }
 
                 if ( $PSBoundParameters.ContainsKey('Results') ) { $eventParams['MaxEvents'] = $Results }
