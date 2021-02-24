@@ -21,78 +21,41 @@ function Get-WinLogs {
         PS C:\> Get-WinLogs.ps1 -Id 8 -ComputerName $Server -Results 10
         Display last 10 RDP Sessions
     ========================================================================= #>
-    [CmdletBinding(DefaultParameterSetName = 'list')]
+    [CmdletBinding(DefaultParameterSetName = '_list')]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'List available events', ParameterSetName = 'list')]
+        [Parameter(Mandatory, HelpMessage = 'List available events', ParameterSetName = '_list')]
         [switch] $List,
 
-        [Parameter(Mandatory, HelpMessage = 'Event Table Id', ParameterSetName = 'events')]
+        [Parameter(Mandatory, HelpMessage = 'Event Table Id', ParameterSetName = '_events')]
         [ValidateScript({ $EventTable.Id -contains $_ })]
         [int] $Id,
 
-        [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = 'events')]
+        [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = '_events')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Count 1 -Quiet })]
         [Alias('CN')]
         [string] $ComputerName,
 
-        [Parameter(HelpMessage = 'Number of results to return', ParameterSetName = 'events')]
+        [Parameter(HelpMessage = 'Number of results to return', ParameterSetName = '_events')]
+        [ValidateNotNullOrEmpty()]
         [int] $Results = 10
     )
 
-    Begin {
-        # IMPORT EVENTS AND CREATE LOG LIST
-        $EventTable = Get-Content -Raw -Path $PSScriptRoot\EventTable.json | ConvertFrom-Json
-        $EventLogList = @('Application', 'Security', 'Setup', 'System')
-
-        # CREATE SPLATTER TABLE FOR COMMON PARAMETERS
-        $Params = @{}
-
-        # ADD PARAM FOR MAX EVENTS
-        if ( $PSBoundParameters.ContainsKey('Results') ) { $Params['MaxEvents'] = $Results }
-
-        # ADD COMPUTERNAME IF PROVIDED
-        if ( $PSBoundParameters.ContainsKey('ComputerName') ) { $Params['ComputerName'] = $ComputerName }
-
-        # IF ID WAS PROVIDED AS AN ARGUMENT
-        if ( $PSBoundParameters.ContainsKey('Id') ) {
-            # FIND ID CORRESPONDING TO PROVIDED PARAMETER
-            $E = $EventTable | Where-Object Id -EQ $Id
-
-            # SET ID IN FILTERHASH
-            $FilterHashtable = @{ ID = $E.EventId }
-        }
-
-        <# # CREATE VAR FOR RESULTS
-        $Return = @()
-
-        # SELECT SPECIFIC PROPERTIES
-        $Properties = @('TimeCreated', 'Message') #>
-    }
-
     Process {
-        # CHECK FOR LIST PARAM
-        if ( $PSBoundParameters.ContainsKey('List') ) {
-            $EventTable | Select-Object -Property Id, Name
-        }
-        else {
-            # CHECK FOR EVENT LOG TYPE
-            if ( $E.Log -in $EventLogList ) {
-                # ADD TO FILTERHASH
-                $FilterHashtable['LogName'] = $E.Log
+        $eventTable = Get-Content -Raw -Path $PSScriptRoot\EventTable.json | ConvertFrom-Json
 
-                <# # ADD PARAMS
-                $Params += @{ LogName = $E.Log ; InstanceId = $E.EventId }
-
-                # GET EVENT LOGS
-                Get-EventLog @Params | Select-Object -First $Results #>
+        switch ($PSCmdlet.ParameterSetName) {
+            '_list' {
+                $eventTable | Select-Object -Property Id, Name
             }
-            else {
-                # CREATE AND ADD FILTER
-                $FilterHashtable['ProviderName'] = $E.Log
+            '_events' {
+                $eventParams = @{ }
 
-                <# $FilterHashtable = @{
-                    ProviderName = $E.Log
-                    ID           = $E.EventId
+                if ( $PSBoundParameters.ContainsKey('Results') ) { $eventParams['MaxEvents'] = $Results }
+                if ( $PSBoundParameters.ContainsKey('ComputerName') ) { $eventParams['ComputerName'] = $ComputerName }
+
+                <# $filterHash = @{
+                    ProviderName = $e.Log
+                    ID           = $e.EventId
                     LogName      = <String[]>
                     #Path         = <String[]>
                     #Keywords     = <Long[]>
@@ -102,15 +65,16 @@ function Get-WinLogs {
                     #UserID       = <SID>
                     #Data         = <String[]>
                 } #>
+
+                $e = $eventTable.Where({ $_.Id -eq $Id }) #| Where-Object Id -EQ $Id
+                $filterHash = @{ ID = $e.EventId }
+
+                $logNames = @('Application', 'Security', 'Setup', 'System')
+                if ( $e.Log -in $logNames ) { $filterHash['LogName'] = $e.Log }
+                else { $filterHash['ProviderName'] = $e.Log }
+
+                Get-WinEvent @eventParams -FilterHashtable $filterHash
             }
-
-            # GET WINDOWS EVENT
-            Get-WinEvent @Params -FilterHashtable $FilterHashtable
         }
-    }
-
-    End {
-        <# # RETURN RESULTS
-        $Return | Select-Object -Property $Properties -First $Results #>
     }
 }
