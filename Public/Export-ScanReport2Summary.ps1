@@ -131,9 +131,9 @@ function Export-ScanReport2Summary {
             # SET PROPERTY CONVERSION
             $newProps = (
                 'Count', 'TFS', 'Status', 'CVSSv3', 'Risk',
-                @{ Name = 'Source'; Expression = {'SQL Scan'} },
-                @{ Name = 'Name'; Expression = {$_.'Security Check'} },
-                @{ Name = 'CVE'; Expression = {$_.ID} }
+                @{ Name = 'Source'; Expression = { 'SQL Scan' } },
+                @{ Name = 'Name'; Expression = { $_.'Security Check' } },
+                @{ Name = 'CVE'; Expression = { $_.ID } }
             )
 
             # CHANGE COLUMN NAMES
@@ -164,8 +164,8 @@ function Export-ScanReport2Summary {
             # SET PROPERTY CONVERSION
             $newProps = (
                 'Count', 'TFS', 'Status', 'Name', 'Risk', 'CVE', 'CVSS',
-                @{ Name = 'Source'; Expression = {'Nessus'} },
-                @{ Name = 'CVSSv3'; Expression = {$_.'CVSS v3.0 Base Score'} }
+                @{ Name = 'Source'; Expression = { 'Nessus' } },
+                @{ Name = 'CVSSv3'; Expression = { $_.'CVSS v3.0 Base Score' } }
             )
 
             # CHANGE COLUMN NAMES
@@ -182,9 +182,6 @@ function Export-ScanReport2Summary {
             foreach ( $object in $uniqueWebVulns ) {
                 $count = ($webCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
-                $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan'
-                $object | Add-Member -MemberType NoteProperty -Name 'Status' -Value $object.'Active or inactive'
-                $object | Add-Member -MemberType NoteProperty -Name 'Risk' -Value $object.Severity
 
                 # GET CVSSv3 SCORE
                 if ( $object.Name -match 'CVE-\d{4}-\d+' ) {
@@ -208,6 +205,17 @@ function Export-ScanReport2Summary {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
                 }
             }
+
+            # SET PROPERTY CONVERSION
+            $newProps = (
+                'Name', 'Count', 'TFS', 'CVSSv3', 'CVSS',
+                @{ Name = 'Source'; Expression = { 'Web Scan' } },
+                @{ Name = 'Status'; Expression = { $_.'Active or inactive' } },
+                @{ Name = 'Risk'; Expression = { $_.'Severity' } }
+            )
+
+            # CHANGE COLUMN NAMES
+            $uniqueWebVulns = $uniqueWebVulns | Select-Object -Property $newProps
 
             # ADD TO MASTER LIST
             foreach ( $i in $uniqueWebVulns ) { $summaryObjects.Add($i) }
@@ -234,12 +242,12 @@ function Export-ScanReport2Summary {
             # SET PROPERTY CONVERSION
             $newProps = (
                 'Name', 'Count', 'TFS',
-                @{ Name = 'Source'; Expression = {'Acunetix'} },
-                @{ Name = 'Status'; Expression = {$_.'IsFalsePositive'} },
-                @{ Name = 'CVE'; Expression = {$_.'CWEList'} },
-                @{ Name = 'Risk'; Expression = { $_.'Severity'} },
-                @{ Name = 'CVSSv3'; Expression = {$_.'CVSS3 Score'} },
-                @{ Name = 'CVSS'; Expression = {$_.'CVSS Score'} }
+                @{ Name = 'Source'; Expression = { 'Acunetix' } },
+                @{ Name = 'Status'; Expression = { $_.'IsFalsePositive' } },
+                @{ Name = 'CVE'; Expression = { $_.'CWEList' } },
+                @{ Name = 'Risk'; Expression = { $_.'Severity' } },
+                @{ Name = 'CVSSv3'; Expression = { $_.'CVSS3 Score' } },
+                @{ Name = 'CVSS'; Expression = { $_.'CVSS Score' } }
             )
 
             # CHANGE COLUMN NAMES
