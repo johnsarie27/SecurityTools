@@ -33,19 +33,47 @@ function Export-ScanReport2Aggregate {
         [Alias('DestinationPath')]
         [string] $OutputDirectory = "$HOME\Desktop",
 
-        [Parameter(ParameterSetName = '__sys', HelpMessage = 'CSV file for system scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sys', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysweb', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syssql', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysacu', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebacu', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebsql', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysacusql', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__all', HelpMessage = 'CSV file for Nessus scan report')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
         [string] $NessusScan,
 
-        [Parameter(ParameterSetName = '__web', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__web', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysweb', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__websql', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__webacu', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebacu', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebsql', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__websqlacu', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__all', HelpMessage = 'CSV file for web scan report')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
         [string] $WebScan,
 
-        [Parameter(ParameterSetName = '__dbs', HelpMessage = 'CSV file for DB scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sql', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syssql', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__websql', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sqlacu', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebsql', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysacusql', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__websqlacu', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__all', HelpMessage = 'XLSX file for SQL scan report')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
         [string] $DatabaseScan,
 
-        [Parameter(ParameterSetName = '__aut', HelpMessage = 'CSV file for authenticated web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__acu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysacu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__webacu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sqlacu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebacu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysacusql', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__websqlacu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__all', HelpMessage = 'CSV file for Acunetix scan report')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
         [string] $AcunetixScan
     )
@@ -103,10 +131,6 @@ function Export-ScanReport2Aggregate {
             Style        = (New-ExcelStyle -Bold -Range '1:1' -HorizontalAlignment Center)
             Path         = Join-Path -Path $OutputDirectory -ChildPath ('Aggregate-Scans_{0:yyyy-MM}.xlsx' -f (Get-Date))
         }
-
-        if ( $PSCmdlet.ParameterSetName -notin @('__sys', '__dbs'. '__web'.'__aut') ) {
-            Throw 'Please enter parameters for report aggregation'
-        }
     }
 
     Process {
@@ -120,30 +144,24 @@ function Export-ScanReport2Aggregate {
         }
 
         # PROCESS AUTHENTICATED WEB SCAN DATA
-        if ( $PSBoundParameters.ContainsKey('AuthenticatedWebScan') ) {
+        if ( $PSBoundParameters.ContainsKey('AcunetixScan') ) {
             $authCsv = Import-Csv -Path $AcunetixScan
-            #foreach ( $i in $authCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
 
-            # EXPORT AUTHENTICATED WEB DATA TO EXCEL
             $authCsv | Select-Object -Property $authWebProps | Export-Excel @splat -WorksheetName 'Acunetix'
         }
 
         # PROCESS SYSTEM SCAN DATA
-        if ( $PSBoundParameters.ContainsKey('SystemScan') ) {
+        if ( $PSBoundParameters.ContainsKey('NessusScan') ) {
             $systemCsv = Import-Csv -Path $NessusScan
-            #foreach ( $i in $systemCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'System Scan' }
 
-            # EXPORT SYSTEM DATA TO EXCEL
-            $systemCsv | Export-Excel @splat -WorksheetName 'SystemScan'
+            $systemCsv | Export-Excel @splat -WorksheetName 'Nessus'
         }
 
         # PROCESS DB SCAN DATA
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
             $DatabaseScan = (Resolve-Path -Path $DatabaseScan).Path
             $dbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
-            #foreach ( $i in $dbScan ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Database Scan' }
 
-            # EXPORT DB DATA TO EXCEL
             $dbScan | Export-Excel @splat -WorksheetName 'DBScan'
         }
     }

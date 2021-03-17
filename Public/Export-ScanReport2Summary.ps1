@@ -5,53 +5,79 @@ function Export-ScanReport2Summary {
     .DESCRIPTION
         This function takes a web scan and system scan report and merges the
         pertinent information into a summary view of the vulnerabilities found
-    .PARAMETER SystemScan
+    .PARAMETER DestinationPath
+        Path to new or existing Excel Workbook
+    .PARAMETER NessusScan
         Path to System scan CSV file
     .PARAMETER WebScan
         Path to Web scan CSV file
     .PARAMETER DatabaseScan
         Path to Database scan CSV file
-    .PARAMETER DestinationPath
-        Path to new or existing Excel Workbook
+    .PARAMETER AcunetixScan
+        Path to Acunetix scan CSV file
     .INPUTS
         None.
     .OUTPUTS
         None.
     .EXAMPLE
-        PS C:\> Export-ScanReportSummary -SystemScan $Sys -WebScan $Web
+        PS C:\> Export-ScanReportSummary -NessusScan $Sys -WebScan $Web
         Merge and aggregate data from $Sys and $Web scans and return an Excel
         spreadsheet file.
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'CSV file for system scan report')]
-        [Parameter(Mandatory, ParameterSetName = 'sysweb', HelpMessage = 'CSV file for system scan report')]
-        [Parameter(Mandatory, ParameterSetName = 'sys', HelpMessage = 'CSV file for system scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
-        [ValidateNotNullOrEmpty()]
-        [Alias('SS')]
-        [string] $SystemScan,
-
-        [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'CSV file for web scan report')]
-        [Parameter(Mandatory, ParameterSetName = 'sysweb', HelpMessage = 'CSV file for system scan report')]
-        [Parameter(Mandatory, ParameterSetName = 'web', HelpMessage = 'CSV file for web scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
-        [ValidateNotNullOrEmpty()]
-        [Alias('WS')]
-        [string] $WebScan,
-
-        [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'XLSX file for web scan report')]
-        [Parameter(Mandatory, ParameterSetName = 'db', HelpMessage = 'XLSX file for web scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.xlsx })]
-        [ValidateNotNullOrEmpty()]
-        [Alias('DbScan', 'DBS', 'DS')]
-        [string] $DatabaseScan,
-
         [Parameter(HelpMessage = 'Path to new or existing Excel spreadsheet file')]
         [ValidateScript({ Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) })]
         [ValidateScript({ [System.IO.Path]::GetExtension($_) -eq '.xlsx' })]
-        [Alias('DP')]
-        [string] $DestinationPath
+        [string] $DestinationPath,
+
+        [Parameter(Mandatory, ParameterSetName = '__sys', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysweb', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syssql', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysacu', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebacu', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebsql', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysacusql', HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__all', HelpMessage = 'CSV file for Nessus scan report')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
+        [ValidateNotNullOrEmpty()]
+        [string] $NessusScan,
+
+        [Parameter(Mandatory, ParameterSetName = '__web', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysweb', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__websql', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__webacu', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebacu', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebsql', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__websqlacu', HelpMessage = 'CSV file for web scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__all', HelpMessage = 'CSV file for web scan report')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
+        [ValidateNotNullOrEmpty()]
+        [string] $WebScan,
+
+        [Parameter(Mandatory, ParameterSetName = '__sql', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syssql', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__websql', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sqlacu', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebsql', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysacusql', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__websqlacu', HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__all', HelpMessage = 'XLSX file for SQL scan report')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.xlsx })]
+        [ValidateNotNullOrEmpty()]
+        [string] $DatabaseScan,
+
+        [Parameter(Mandatory, ParameterSetName = '__acu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysacu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__webacu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sqlacu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__syswebacu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__sysacusql', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__websqlacu', HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory, ParameterSetName = '__all', HelpMessage = 'CSV file for Acunetix scan report')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.csv })]
+        [ValidateNotNullOrEmpty()]
+        [string] $AcunetixScan
     )
 
     Begin {
@@ -87,7 +113,7 @@ function Export-ScanReport2Summary {
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where({ $_.Name -eq $object.'Security Check' -and $_.Source -eq 'DB Scan' })
+                $match = $summaryReport.Where({ $_.Name -eq $object.'Security Check' -and $_.Source -eq 'SQL Scan' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
@@ -105,9 +131,9 @@ function Export-ScanReport2Summary {
             # SET PROPERTY CONVERSION
             $newProps = (
                 'Count', 'TFS', 'Status', 'CVSSv3', 'Risk',
-                @{ Name = 'Source'; Expression = { 'DB Scan' } },
-                @{ Name = 'Name'; Expression = { $_.'Security Check' } },
-                @{ Name = 'CVE'; Expression = { $_.ID } }
+                @{ Name = 'Source'; Expression = {'SQL Scan'} },
+                @{ Name = 'Name'; Expression = {$_.'Security Check'} },
+                @{ Name = 'CVE'; Expression = {$_.ID} }
             )
 
             # CHANGE COLUMN NAMES
@@ -118,15 +144,15 @@ function Export-ScanReport2Summary {
         }
 
         # PROCESS SYSTEM SCAN DATA
-        if ( $PSBoundParameters.ContainsKey('SystemScan') ) {
-            $systemCsv = Import-Csv -Path $SystemScan
+        if ( $PSBoundParameters.ContainsKey('NessusScan') ) {
+            $systemCsv = Import-Csv -Path $NessusScan
             $uniqueSysVulns = $systemCsv | Sort-Object Name -Unique
             foreach ( $object in $uniqueSysVulns ) {
                 $count = ($systemCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'System Scan' })
+                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'Nessus' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
@@ -138,8 +164,8 @@ function Export-ScanReport2Summary {
             # SET PROPERTY CONVERSION
             $newProps = (
                 'Count', 'TFS', 'Status', 'Name', 'Risk', 'CVE', 'CVSS',
-                @{ Name = 'Source'; Expression = { 'System Scan' } },
-                @{ Name = 'CVSSv3'; Expression = { $_.'CVSS v3.0 Base Score' } }
+                @{ Name = 'Source'; Expression = {'Nessus'} },
+                @{ Name = 'CVSSv3'; Expression = {$_.'CVSS v3.0 Base Score'} }
             )
 
             # CHANGE COLUMN NAMES
@@ -186,13 +212,50 @@ function Export-ScanReport2Summary {
             # ADD TO MASTER LIST
             foreach ( $i in $uniqueWebVulns ) { $summaryObjects.Add($i) }
         }
+
+        # PROCESS ACUNETIX SCAN DATA
+        if ( $PSBoundParameters.ContainsKey('AcunetixScan') ) {
+            $acuCsv = Import-Csv -Path $AcunetixScan
+            $uniqueAcuVulns = $acuCsv | Sort-Object Name -Unique
+            foreach ( $object in $uniqueAcuVulns ) {
+                $count = ($acuCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
+                $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
+
+                # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
+                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'Acunetix' })
+                if ( $match ) {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                }
+                else {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+                }
+            }
+
+            # SET PROPERTY CONVERSION
+            $newProps = (
+                'Name', 'Count', 'TFS',
+                @{ Name = 'Source'; Expression = {'Acunetix'} },
+                @{ Name = 'Status'; Expression = {$_.'IsFalsePositive'} },
+                @{ Name = 'CVE'; Expression = {$_.'CWEList'} },
+                @{ Name = 'Risk'; Expression = { $_.'Severity'} },
+                @{ Name = 'CVSSv3'; Expression = {$_.'CVSS3 Score'} },
+                @{ Name = 'CVSS'; Expression = {$_.'CVSS Score'} }
+            )
+
+            # CHANGE COLUMN NAMES
+            $uniqueAcuVulns = $uniqueAcuVulns | Select-Object -Property $newProps
+
+            # ADD TO MASTER LIST
+            foreach ( $i in $uniqueAcuVulns ) { $summaryObjects.Add($i) }
+        }
     }
 
     End {
         # VERBOSE
-        Write-Verbose -Message ( 'System Scan Count: {0}' -f (($uniqueSysVulns | Measure-Object).Count) )
+        Write-Verbose -Message ( 'Nessus Scan Count: {0}' -f (($uniqueSysVulns | Measure-Object).Count) )
         Write-Verbose -Message ( 'Web Scan Count: {0}' -f (($uniqueWebVulns | Measure-Object).Count) )
         Write-Verbose -Message ( 'DB Scan Count: {0}' -f (($uniqueDbVulns | Measure-Object).Count) )
+        Write-Verbose -Message ( 'Acunetix Scan Count: {0}' -f (($uniqueAcuVulns | Measure-Object).Count) )
 
         # SET REPORT OPTIONS
         $excelParams = @{
