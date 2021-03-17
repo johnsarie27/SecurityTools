@@ -146,14 +146,12 @@ function Export-ScanReport2Aggregate {
         # PROCESS AUTHENTICATED WEB SCAN DATA
         if ( $PSBoundParameters.ContainsKey('AcunetixScan') ) {
             $authCsv = Import-Csv -Path $AcunetixScan
-
             $authCsv | Select-Object -Property $authWebProps | Export-Excel @splat -WorksheetName 'Acunetix'
         }
 
         # PROCESS SYSTEM SCAN DATA
         if ( $PSBoundParameters.ContainsKey('NessusScan') ) {
             $systemCsv = Import-Csv -Path $NessusScan
-
             $systemCsv | Export-Excel @splat -WorksheetName 'Nessus'
         }
 
@@ -161,7 +159,6 @@ function Export-ScanReport2Aggregate {
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
             $DatabaseScan = (Resolve-Path -Path $DatabaseScan).Path
             $dbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
-
             $dbScan | Export-Excel @splat -WorksheetName 'DBScan'
         }
     }
