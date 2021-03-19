@@ -5,58 +5,70 @@ function Export-ScanReportSummary {
     .DESCRIPTION
         This function takes a web scan and system scan report and merges the
         pertinent information into a summary view of the vulnerabilities found
-    .PARAMETER SystemScan
-        Path to System scan CSV file
-    .PARAMETER WebScan
-        Path to Web scan CSV file
-    .PARAMETER DatabaseScan
-        Path to Database scan CSV file
     .PARAMETER DestinationPath
         Path to new or existing Excel Workbook
+    .PARAMETER NessusScan
+        Path to System scan CSV file
+    .PARAMETER AlertLogicSystemScan
+        Path to AlertLogic System scan CSV file
+    .PARAMETER AlertLogicWebScan
+        Path to AlertLogic Web scan CSV file
+    .PARAMETER DatabaseScan
+        Path to MSSQL datbase scan CSV file
+    .PARAMETER AcunetixScan
+        Path to Acunetix scan CSV file
     .INPUTS
         None.
     .OUTPUTS
         None.
     .EXAMPLE
-        PS C:\> Export-ScanReportSummary -SystemScan $Sys -WebScan $Web
+        PS C:\> Export-ScanReportSummary -NessusScan $Sys -AlertLogicWebScan $Web
         Merge and aggregate data from $Sys and $Web scans and return an Excel
         spreadsheet file.
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'CSV file for system scan report')]
-        [Parameter(Mandatory, ParameterSetName = 'sysweb', HelpMessage = 'CSV file for system scan report')]
-        [Parameter(Mandatory, ParameterSetName = 'sys', HelpMessage = 'CSV file for system scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
-        [ValidateNotNullOrEmpty()]
-        [Alias('SS')]
-        [string] $SystemScan,
-
-        [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'CSV file for web scan report')]
-        [Parameter(Mandatory, ParameterSetName = 'sysweb', HelpMessage = 'CSV file for system scan report')]
-        [Parameter(Mandatory, ParameterSetName = 'web', HelpMessage = 'CSV file for web scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
-        [ValidateNotNullOrEmpty()]
-        [Alias('WS')]
-        [string] $WebScan,
-
-        [Parameter(Mandatory, ParameterSetName = 'all', HelpMessage = 'XLSX file for web scan report')]
-        [Parameter(Mandatory, ParameterSetName = 'db', HelpMessage = 'XLSX file for web scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.xlsx })]
-        [ValidateNotNullOrEmpty()]
-        [Alias('DbScan', 'DBS', 'DS')]
-        [string] $DatabaseScan,
-
         [Parameter(HelpMessage = 'Path to new or existing Excel spreadsheet file')]
         [ValidateScript({ Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) })]
         [ValidateScript({ [System.IO.Path]::GetExtension($_) -eq '.xlsx' })]
-        [Alias('DP')]
-        [string] $DestinationPath
+        [string] $DestinationPath,
+
+        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for Nessus scan report')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
+        [ValidateNotNullOrEmpty()]
+        [string] $NessusScan,
+
+        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for AlertLogic System scan report')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
+        [ValidateNotNullOrEmpty()]
+        [string] $AlertLogicSystemScan,
+
+        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for AlertLogic Web scan report')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
+        [ValidateNotNullOrEmpty()]
+        [string] $AlertLogicWebScan,
+
+        [Parameter(Mandatory = $false, HelpMessage = 'XLSX file for MSSQL scan report')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.xlsx })]
+        [ValidateNotNullOrEmpty()]
+        [string] $DatabaseScan,
+
+        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for Acunetix scan report')]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.csv })]
+        [ValidateNotNullOrEmpty()]
+        [string] $AcunetixScan
     )
 
     Begin {
         # CREATE MASTER LIST
         $summaryObjects = [System.Collections.Generic.List[System.Object]]::new()
+
+        # PROVIDE HELP FOR THE USER WHEN NO SCANS ARE DECLARED
+        $requiredParams = @('NessusScan', 'AlertLogicSystemScan', 'AlertLogicWebScan', 'DatabaseScan', 'AcunetixScan')
+        foreach ( $param in $requiredParams ) {
+            if ( $param -notin $PSBoundParameters.Keys ) { $fail = $true } else { $fail = $false; break }
+        }
+        if ( $fail ) { Throw 'Missing scan reports to summarize. Please provide at least one scan report.' }
 
         # SET DESTINATION PATH
         if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
@@ -73,19 +85,21 @@ function Export-ScanReportSummary {
     Process {
         # PROCESS DATABASE SCAN DATA
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
+            # RESOLVING PATH IS REQUIRED AS IMPORT-EXCEL WILL NOT ACCEPT LINKS OR REFERENCES
             $DatabaseScan = (Resolve-Path -Path $DatabaseScan).Path
             $dbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
-            $uDbScan = $dbScan | Sort-Object -Unique ID
-            foreach ( $object in $uDbScan ) {
-                # CREATE COLUMNS FOR SUMMARY REPORT
+
+            # FIND UNIQUE VULNERABILITIES
+            $uniqueDbVulns = $dbScan | Sort-Object -Unique ID
+
+            # ADD A COUNT AND FIND TFS # FOR EACH VULNERABILITY
+            foreach ( $object in $uniqueDbVulns ) {
+                # GET A COUNT FOR EACH UNIQUE ITEM
                 $count = ($dbScan | Where-Object ID -EQ $object.ID | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
-                $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'DB Scan'
-                $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
-                $object | Add-Member -MemberType NoteProperty -Name 'CVSS v3' -Value 'n/a'
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where({ $_.Name -eq $object.'Security Check' -and $_.Source -eq 'DB Scan' })
+                $match = $summaryReport.Where({ $_.Name -eq $object.'Security Check' -and $_.Source -eq 'SQL Scan' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
@@ -102,30 +116,58 @@ function Export-ScanReportSummary {
 
             # SET PROPERTY CONVERSION
             $newProps = (
-                'Count', 'Source', 'Risk Adj.', 'TFS', 'Status', 'CVSS v3',
-                @{N = 'Name'; E = { $_.'Security Check' } },
-                @{N = 'Notes'; E = { $_.ID } },
-                @{N = 'Severity'; E = { $_.Risk } }
+                'Count', 'TFS', 'Status', 'CVSSv3', 'Risk',
+                @{ Name = 'Source'; Expression = { 'SQL Scan' } },
+                @{ Name = 'Name'; Expression = { $_.'Security Check' } },
+                @{ Name = 'CVE'; Expression = { $_.ID } }
             )
 
             # CHANGE COLUMN NAMES
-            $uDbScan = $uDbScan | Select-Object -Property $newProps
+            $uniqueDbVulns = $uniqueDbVulns | Select-Object -Property $newProps
 
             # ADD TO MASTER LIST
-            foreach ( $i in $uDbScan ) { $summaryObjects.Add($i) }
+            foreach ( $i in $uniqueDbVulns ) { $summaryObjects.Add($i) }
         }
 
         # PROCESS SYSTEM SCAN DATA
-        if ( $PSBoundParameters.ContainsKey('SystemScan') ) {
-            $systemCsv = Import-Csv -Path $SystemScan
-            $uSysCsv = $systemCsv | Sort-Object Name -Unique
-            foreach ( $object in $uSysCsv ) {
+        if ( $PSBoundParameters.ContainsKey('NessusScan') ) {
+            $systemCsv = Import-Csv -Path $NessusScan
+            $uniqueNesVulns = $systemCsv | Sort-Object Name -Unique
+            foreach ( $object in $uniqueNesVulns ) {
                 $count = ($systemCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
-                $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'System Scan'
-                $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
-                $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
-                $object | Add-Member -MemberType NoteProperty -Name 'Status' -Value $object.'Active or inactive'
+
+                # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
+                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'Nessus' })
+                if ( $match ) {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                }
+                else {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+                }
+            }
+
+            # SET PROPERTY CONVERSION
+            $newProps = (
+                'Count', 'TFS', 'Status', 'Name', 'Risk', 'CVE', 'CVSS',
+                @{ Name = 'Source'; Expression = { 'Nessus' } },
+                @{ Name = 'CVSSv3'; Expression = { $_.'CVSS v3.0 Base Score' } }
+            )
+
+            # CHANGE COLUMN NAMES
+            $uniqueNesVulns = $uniqueNesVulns | Select-Object -Property $newProps
+
+            # ADD TO MASTER LIST
+            foreach ( $i in $uniqueNesVulns ) { $summaryObjects.Add($i) }
+        }
+
+        # PROCESS SYSTEM SCAN DATA
+        if ( $PSBoundParameters.ContainsKey('AlertLogicSystemScan') ) {
+            $systemCsv = Import-Csv -Path $SystemScan
+            $uniqueSysVulns = $systemCsv | Sort-Object Name -Unique
+            foreach ( $object in $uniqueSysVulns ) {
+                $count = ($systemCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
+                $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
 
                 # GET CVSS v3 SCORE
                 if ( $object.Name -match 'CVE-\d{4}-\d+' ) {
@@ -145,7 +187,7 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'CVSS v3' -Value $score
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'System Scan' })
+                $match = $summaryReport.Where( { $_.Name -eq $object.Name -and $_.Source -eq 'System Scan' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
@@ -154,38 +196,41 @@ function Export-ScanReportSummary {
                 }
             }
 
+            # SET PROPERTY CONVERSION
+            $newProps = (
+                'Name', 'Count', 'TFS', 'CVSSv3', 'CVSS', 'CVE',
+                @{ Name = 'Source'; Expression = { 'AlertLogic System Scan' } },
+                @{ Name = 'Status'; Expression = { $_.'Active or inactive' } },
+                @{ Name = 'Risk'; Expression = { $_.'Severity' } }
+            )
+
+            # CHANGE COLUMN NAMES
+            $uniqueSysVulns = $uniqueSysVulns | Select-Object -Property $newProps
+
             # ADD TO MASTER LIST
-            foreach ( $i in $uSysCsv ) { $summaryObjects.Add($i) }
+            foreach ( $i in $uniqueSysVulns ) { $summaryObjects.Add($i) }
         }
 
         # PROCESS WEB SCAN DATA
-        if ( $PSBoundParameters.ContainsKey('WebScan') ) {
-            $webCsv = Import-Csv -Path $WebScan
-            $uWebCsv = $webCsv | Sort-Object Name -Unique
-            foreach ( $object in $uWebCsv ) {
+        if ( $PSBoundParameters.ContainsKey('AlertLogicWebScan') ) {
+            $webCsv = Import-Csv -Path $AlertLogicWebScan
+            $uniqueWebVulns = $webCsv | Sort-Object Name -Unique
+            foreach ( $object in $uniqueWebVulns ) {
                 $count = ($webCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
-                $object | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan'
-                $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
-                $object | Add-Member -MemberType NoteProperty -Name 'Risk Adj.' -Value ''
-                $object | Add-Member -MemberType NoteProperty -Name 'Status' -Value $object.'Active or inactive'
 
-                # GET CVSS v3 SCORE
+                # GET CVSSv3 SCORE
                 if ( $object.Name -match 'CVE-\d{4}-\d+' ) {
                     $cve = $object.Name -replace '^.*(CVE-\d{4}-\d+).*$', '$1'
                     try {
                         $nvd = Get-CVSSv3BaseScore -CVE $cve
-                        $score = $nvd.Score
+                        $object | Add-Member -MemberType NoteProperty -Name 'CVSSv3' -Value $nvd.Score
                         $object.Severity = $nvd.Severity
                     }
                     catch {
-                        $score = 'n/a'
+                        $object | Add-Member -MemberType NoteProperty -Name 'CVSSv3' -Value ''
                     }
                 }
-                else {
-                    $score = 'n/a'
-                }
-                $object | Add-Member -MemberType NoteProperty -Name 'CVSS v3' -Value $score
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
                 $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'Web Scan' })
@@ -197,19 +242,68 @@ function Export-ScanReportSummary {
                 }
             }
 
+            # SET PROPERTY CONVERSION
+            $newProps = (
+                'Name', 'Count', 'TFS', 'CVSSv3', 'CVSS', 'CVE',
+                @{ Name = 'Source'; Expression = { 'AlertLogic Web Scan' } },
+                @{ Name = 'Status'; Expression = { $_.'Active or inactive' } },
+                @{ Name = 'Risk'; Expression = { $_.'Severity' } }
+            )
+
+            # CHANGE COLUMN NAMES
+            $uniqueWebVulns = $uniqueWebVulns | Select-Object -Property $newProps
+
             # ADD TO MASTER LIST
-            foreach ( $i in $uWebCsv ) { $summaryObjects.Add($i) }
+            foreach ( $i in $uniqueWebVulns ) { $summaryObjects.Add($i) }
+        }
+
+        # PROCESS ACUNETIX SCAN DATA
+        if ( $PSBoundParameters.ContainsKey('AcunetixScan') ) {
+            $acuCsv = Import-Csv -Path $AcunetixScan
+            $uniqueAcuVulns = $acuCsv | Sort-Object Name -Unique
+            foreach ( $object in $uniqueAcuVulns ) {
+                $count = ($acuCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
+                $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
+
+                # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
+                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'Acunetix' })
+                if ( $match ) {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                }
+                else {
+                    $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+                }
+            }
+
+            # SET PROPERTY CONVERSION
+            $newProps = (
+                'Name', 'Count', 'TFS',
+                @{ Name = 'Source'; Expression = { 'Acunetix' } },
+                @{ Name = 'Status'; Expression = { $_.'IsFalsePositive' } },
+                @{ Name = 'CVE'; Expression = { $_.'CWEList' } },
+                @{ Name = 'Risk'; Expression = { $_.'Severity' } },
+                @{ Name = 'CVSSv3'; Expression = { $_.'CVSS3 Score' } },
+                @{ Name = 'CVSS'; Expression = { $_.'CVSS Score' } }
+            )
+
+            # CHANGE COLUMN NAMES
+            $uniqueAcuVulns = $uniqueAcuVulns | Select-Object -Property $newProps
+
+            # ADD TO MASTER LIST
+            foreach ( $i in $uniqueAcuVulns ) { $summaryObjects.Add($i) }
         }
     }
 
     End {
         # VERBOSE
-        Write-Verbose -Message ('System Scan Count: {0}' -f ($uSysCsv | Measure-Object | Select-Object -Exp Count))
-        Write-Verbose -Message ('Web Scan Count: {0}' -f ($uWebCsv | Measure-Object | Select-Object -Exp Count))
-        Write-Verbose -Message ('DB Scan Count: {0}' -f ($uDbScan | Measure-Object | Select-Object -Exp Count))
+        Write-Verbose -Message ( 'Nessus Scan Count: {0}' -f (($uniqueSysVulns | Measure-Object).Count) )
+        Write-Verbose -Message ( 'AlertLogic System Scan Count: {0}' -f (($uniqueSysVulns | Measure-Object).Count) )
+        Write-Verbose -Message ( 'AlertLogic Web Scan Count: {0}' -f (($uniqueWebVulns | Measure-Object).Count) )
+        Write-Verbose -Message ( 'DB Scan Count: {0}' -f (($uniqueDbVulns | Measure-Object).Count) )
+        Write-Verbose -Message ( 'Acunetix Scan Count: {0}' -f (($uniqueAcuVulns | Measure-Object).Count) )
 
         # SET REPORT OPTIONS
-        $splat = @{
+        $excelParams = @{
             WorksheetName = (Get-Date -UFormat %b).ToUpper()
             AutoSize      = $true
             AutoFilter    = $true
@@ -221,9 +315,21 @@ function Export-ScanReportSummary {
         }
 
         # SET DESIRED PROPERTIES
-        $properties = @('Name', 'CVSS v3', 'Severity', 'Source', 'Count', 'Notes', 'Risk Adj.', 'Status', 'TFS')#'CVSS'
+        $reportProps = @(
+            'Name'
+            'CVE'
+            'CVSS'
+            'CVSSv3'
+            'Risk'
+            'Source'
+            'Count'
+            'Risk Adj.'
+            'Status'
+            'TFS'
+            'Notes'
+        )
 
         # EXPORT TO EXCEL
-        $summaryObjects | Select-Object -Property $properties | Export-Excel @splat
+        $summaryObjects | Select-Object -Property $reportProps | Export-Excel @excelParams
     }
 }

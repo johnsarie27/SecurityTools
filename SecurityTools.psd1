@@ -85,8 +85,6 @@
         'Export-ExcelBook'
         'Export-ScanReportAggregate'
         'Export-ScanReportSummary'
-        'Export-ScanReport2Aggregate'
-        'Export-ScanReport2Summary'
         'Export-SQLVAReport'
         'Export-SQLVAReportAggregate'
         'Export-WebScan'
