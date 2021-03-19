@@ -83,7 +83,7 @@ function Export-ScanReportSummary {
     }
 
     Process {
-        # PROCESS DATABASE SCAN DATA
+        # PROCESS INDIVIDUAL SCAN DATA
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
             # RESOLVING PATH IS REQUIRED AS IMPORT-EXCEL WILL NOT ACCEPT LINKS OR REFERENCES
             $DatabaseScan = (Resolve-Path -Path $DatabaseScan).Path
@@ -129,7 +129,6 @@ function Export-ScanReportSummary {
             foreach ( $i in $uniqueDbVulns ) { $summaryObjects.Add($i) }
         }
 
-        # PROCESS SYSTEM SCAN DATA
         if ( $PSBoundParameters.ContainsKey('NessusScan') ) {
             $nessusCsv = Import-Csv -Path $NessusScan
             $uniqueNesVulns = $nessusCsv | Sort-Object Name -Unique
@@ -161,7 +160,6 @@ function Export-ScanReportSummary {
             foreach ( $i in $uniqueNesVulns ) { $summaryObjects.Add($i) }
         }
 
-        # PROCESS SYSTEM SCAN DATA
         if ( $PSBoundParameters.ContainsKey('AlertLogicSystemScan') ) {
             $systemCsv = Import-Csv -Path $AlertLogicSystemScan
             $uniqueSysVulns = $systemCsv | Sort-Object Name -Unique
@@ -211,7 +209,6 @@ function Export-ScanReportSummary {
             foreach ( $i in $uniqueSysVulns ) { $summaryObjects.Add($i) }
         }
 
-        # PROCESS WEB SCAN DATA
         if ( $PSBoundParameters.ContainsKey('AlertLogicWebScan') ) {
             $webCsv = Import-Csv -Path $AlertLogicWebScan
             $uniqueWebVulns = $webCsv | Sort-Object Name -Unique
@@ -257,7 +254,6 @@ function Export-ScanReportSummary {
             foreach ( $i in $uniqueWebVulns ) { $summaryObjects.Add($i) }
         }
 
-        # PROCESS ACUNETIX SCAN DATA
         if ( $PSBoundParameters.ContainsKey('AcunetixScan') ) {
             $acuCsv = Import-Csv -Path $AcunetixScan
             $uniqueAcuVulns = $acuCsv | Sort-Object Name -Unique
@@ -314,7 +310,6 @@ function Export-ScanReportSummary {
             Path          = $DestinationPath
         }
 
-        # SET DESIRED PROPERTIES
         $reportProps = @(
             'Name'
             'CVE'
@@ -329,7 +324,6 @@ function Export-ScanReportSummary {
             'Notes'
         )
 
-        # EXPORT TO EXCEL
         $summaryObjects | Select-Object -Property $reportProps | Export-Excel @excelParams
     }
 }
