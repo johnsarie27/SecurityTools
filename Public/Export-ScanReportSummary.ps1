@@ -99,7 +99,7 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where({ $_.Name -eq $object.'Security Check' -and $_.Source -eq 'SQL Scan' })
+                $match = $summaryReport.Where({ $_.Name -eq $object.'Security Check' -and $_.Source -eq 'MSSQL' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
@@ -117,7 +117,7 @@ function Export-ScanReportSummary {
             # SET PROPERTY CONVERSION
             $newProps = (
                 'Count', 'TFS', 'Status', 'CVSSv3', 'Risk',
-                @{ Name = 'Source'; Expression = { 'SQL Scan' } },
+                @{ Name = 'Source'; Expression = { 'MSSQL' } },
                 @{ Name = 'Name'; Expression = { $_.'Security Check' } },
                 @{ Name = 'CVE'; Expression = { $_.ID } }
             )
@@ -131,10 +131,10 @@ function Export-ScanReportSummary {
 
         # PROCESS SYSTEM SCAN DATA
         if ( $PSBoundParameters.ContainsKey('NessusScan') ) {
-            $systemCsv = Import-Csv -Path $NessusScan
-            $uniqueNesVulns = $systemCsv | Sort-Object Name -Unique
+            $nessusCsv = Import-Csv -Path $NessusScan
+            $uniqueNesVulns = $nessusCsv | Sort-Object Name -Unique
             foreach ( $object in $uniqueNesVulns ) {
-                $count = ($systemCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
+                $count = ($nessusCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
@@ -163,7 +163,7 @@ function Export-ScanReportSummary {
 
         # PROCESS SYSTEM SCAN DATA
         if ( $PSBoundParameters.ContainsKey('AlertLogicSystemScan') ) {
-            $systemCsv = Import-Csv -Path $SystemScan
+            $systemCsv = Import-Csv -Path $AlertLogicSystemScan
             $uniqueSysVulns = $systemCsv | Sort-Object Name -Unique
             foreach ( $object in $uniqueSysVulns ) {
                 $count = ($systemCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
@@ -187,7 +187,7 @@ function Export-ScanReportSummary {
                 $object | Add-Member -MemberType NoteProperty -Name 'CVSS v3' -Value $score
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where( { $_.Name -eq $object.Name -and $_.Source -eq 'System Scan' })
+                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'AlertLogic-System' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
@@ -199,7 +199,7 @@ function Export-ScanReportSummary {
             # SET PROPERTY CONVERSION
             $newProps = (
                 'Name', 'Count', 'TFS', 'CVSSv3', 'CVSS', 'CVE',
-                @{ Name = 'Source'; Expression = { 'AlertLogic System Scan' } },
+                @{ Name = 'Source'; Expression = { 'AlertLogic-System' } },
                 @{ Name = 'Status'; Expression = { $_.'Active or inactive' } },
                 @{ Name = 'Risk'; Expression = { $_.'Severity' } }
             )
@@ -233,7 +233,7 @@ function Export-ScanReportSummary {
                 }
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'Web Scan' })
+                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'AlertLogic-Web' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
@@ -245,7 +245,7 @@ function Export-ScanReportSummary {
             # SET PROPERTY CONVERSION
             $newProps = (
                 'Name', 'Count', 'TFS', 'CVSSv3', 'CVSS', 'CVE',
-                @{ Name = 'Source'; Expression = { 'AlertLogic Web Scan' } },
+                @{ Name = 'Source'; Expression = { 'AlertLogic-Web' } },
                 @{ Name = 'Status'; Expression = { $_.'Active or inactive' } },
                 @{ Name = 'Risk'; Expression = { $_.'Severity' } }
             )

@@ -11,7 +11,9 @@ function Export-ScanReportAggregate {
     .PARAMETER NessusScan
         Path to System scan as a sting
     .PARAMETER AlertLogicWebScan
-        Path to Web scan as a string
+        Path to AlertLogic Web scan as a string
+    .PARAMETER AlertLogicSystemScan
+        Path to AlertLogic System scan as a string
     .PARAMETER DatabaseScan
         Path to Database scan as a string
     .PARAMETER AcunetixScan
@@ -60,10 +62,7 @@ function Export-ScanReportAggregate {
         foreach ( $param in $requiredParams ) {
             if ( $param -notin $PSBoundParameters.Keys ) { $fail = $true } else { $fail = $false; break }
         }
-        if ( $fail ) { Throw 'Missing scan reports to summarize. Please provide at least one scan report.' }
-
-        # IMPORT REQUIRED MODULES
-        Import-Module -Name ImportExcel
+        if ( $fail ) { Throw 'Missing scan reports to aggregate. Please provide at least one scan report.' }
 
         # SET VARS
         $alProperties = @(
@@ -105,7 +104,7 @@ function Export-ScanReportAggregate {
         )
 
         # SET REPORT OPTIONS
-        $splat = @{
+        $excelParams = @{
             #AutoSize      = $true
             AutoFilter   = $true
             FreezeTopRow = $true
@@ -123,26 +122,26 @@ function Export-ScanReportAggregate {
             #foreach ( $i in $webCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
 
             # EXPORT WEB DATA TO EXCEL
-            $webCsv | Select-Object -Property $alProperties | Export-Excel @splat -WorksheetName 'WebScan'
+            $webCsv | Select-Object -Property $alProperties | Export-Excel @excelParams -WorksheetName 'AlertLogic-Web'
         }
         if ( $PSBoundParameters.ContainsKey('AlertLogicSystemScan') ) {
             $systemCsv = Import-Csv -Path $AlertLogicSystemScan
 
             $alProperties += @('Detected OS', 'CVE')
-            $systemCsv | Select-Object -Property $alProperties | Export-Excel @splat -WorksheetName 'SystemScan'
+            $systemCsv | Select-Object -Property $alProperties | Export-Excel @excelParams -WorksheetName 'AlertLogic-System'
         }
         if ( $PSBoundParameters.ContainsKey('AcunetixScan') ) {
             $authCsv = Import-Csv -Path $AcunetixScan
-            $authCsv | Select-Object -Property $authWebProps | Export-Excel @splat -WorksheetName 'Acunetix'
+            $authCsv | Select-Object -Property $authWebProps | Export-Excel @excelParams -WorksheetName 'Acunetix'
         }
         if ( $PSBoundParameters.ContainsKey('NessusScan') ) {
             $nessusCsv = Import-Csv -Path $NessusScan
-            $nessusCsv | Export-Excel @splat -WorksheetName 'Nessus'
+            $nessusCsv | Export-Excel @excelParams -WorksheetName 'Nessus'
         }
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
             $DatabaseScan = (Resolve-Path -Path $DatabaseScan).Path
             $dbScan = Import-Excel -Path $DatabaseScan -WorksheetName 'DBScan'
-            $dbScan | Export-Excel @splat -WorksheetName 'DBScan'
+            $dbScan | Export-Excel @excelParams -WorksheetName 'MSSQL'
         }
     }
 }
