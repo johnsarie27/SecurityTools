@@ -1,53 +1,53 @@
 function Convert-Epoch {
     <# =========================================================================
     .SYNOPSIS
-        Convert epoch to date/time
+        Convert epoch
     .DESCRIPTION
-        Convert epoch to date/time
+        Convert epoch to date/time or date/time to epoch
     .PARAMETER Seconds
         Epoch Time in seconds
     .PARAMETER Milliseconds
         Epoch Time in milliseconds
-    .PARAMETER Time
+    .PARAMETER Date
         DateTime object
     .INPUTS
-        System.Int64.
         System.DateTime.
     .OUTPUTS
-        System.DateTime.
-        System.Int64.
+        System.Object.
     .EXAMPLE
         PS C:\> Convert-Epoch -Seconds 1618614176
         Converts epoch time to date/time object
     .NOTES
         General notes
     ========================================================================= #>
-    [CmdletBinding(DefaultParameterSetName = '__sec')]
+    [CmdletBinding(DefaultParameterSetName = '__dt')]
     Param(
-        [Parameter(Mandatory, Position = 0, ParameterSetName = '__sec', ValueFromPipeline, HelpMessage = 'EPOCH Time in seconds')]
+        [Parameter(Position = 0, ParameterSetName = '__dt', ValueFromPipeline, HelpMessage = 'DateTime object')]
+        [ValidateNotNullOrEmpty()]
+        [datetime] $Date = (Get-Date),
+
+        [Parameter(Mandatory, Position = 0, ParameterSetName = '__sc', HelpMessage = 'EPOCH Time in seconds')]
         [ValidateNotNullOrEmpty()]
         [Int64] $Seconds, # 1618614176
 
-        [Parameter(Mandatory, Position = 0, ParameterSetName = '__ms', ValueFromPipeline, HelpMessage = 'EPOCH Time in milliseconds')]
+        [Parameter(Mandatory, Position = 0, ParameterSetName = '__ms', HelpMessage = 'EPOCH Time in milliseconds')]
         [ValidateNotNullOrEmpty()]
-        [Int64] $Milliseconds, # 1618614176000
-
-        [Parameter(Mandatory, Position = 0, ParameterSetName = '__date', ValueFromPipeline, HelpMessage = 'DateTime object')]
-        [ValidateNotNullOrEmpty()]
-        [datetime] $Time
+        [Int64] $Milliseconds # 1618614176000
     )
     Process {
-        if ($PSBoundParameters.ContainsKey('Seconds')) {
-            [System.DateTimeOffset]::FromUnixTimeSeconds($Seconds).DateTime.ToLocalTime()
-        }
-        elseif ($PSBoundParameters.ContainsKey('Milliseconds')) {
-            [System.DateTimeOffset]::FromUnixTimeMilliseconds($Milliseconds).DateTime.ToLocalTime()
-        }
-        elseif ($PSBoundParameters.ContainsKey('Time')) {
-            [PSCustomObject] @{
-                Date         = $Time
-                Seconds      = [System.DateTimeOffset]::new($Time).ToUnixTimeSeconds()
-                Milliseconds = [System.DateTimeOffset]::new($Time).ToUnixTimeMilliseconds()
+        switch ($PSCmdlet.ParameterSetName) {
+            '__dt' {
+                [PSCustomObject] @{
+                    Date         = $Date
+                    Seconds      = [System.DateTimeOffset]::new($Date).ToUnixTimeSeconds()
+                    Milliseconds = [System.DateTimeOffset]::new($Date).ToUnixTimeMilliseconds()
+                }
+            }
+            '__sc' {
+                [System.DateTimeOffset]::FromUnixTimeSeconds($Seconds).DateTime.ToLocalTime()
+            }
+            '__ms' {
+                [System.DateTimeOffset]::FromUnixTimeMilliseconds($Milliseconds).DateTime.ToLocalTime()
             }
         }
     }
