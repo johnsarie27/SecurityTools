@@ -1,4 +1,4 @@
-function ConvertFrom-EpochTime {
+function Convert-Epoch {
     <# =========================================================================
     .SYNOPSIS
         Convert epoch to date/time
@@ -8,12 +8,16 @@ function ConvertFrom-EpochTime {
         Epoch Time in seconds
     .PARAMETER Milliseconds
         Epoch Time in milliseconds
+    .PARAMETER Time
+        DateTime object
     .INPUTS
         System.Int64.
+        System.DateTime.
     .OUTPUTS
+        System.DateTime.
         System.Int64.
     .EXAMPLE
-        PS C:\> ConvertFrom-EpochTime -Seconds 1618614176
+        PS C:\> Convert-Epoch -Seconds 1618614176
         Converts epoch time to date/time object
     .NOTES
         General notes
@@ -26,7 +30,11 @@ function ConvertFrom-EpochTime {
 
         [Parameter(Mandatory, Position = 0, ParameterSetName = '__ms', ValueFromPipeline, HelpMessage = 'EPOCH Time in milliseconds')]
         [ValidateNotNullOrEmpty()]
-        [Int64] $Milliseconds # 1618614176000
+        [Int64] $Milliseconds, # 1618614176000
+
+        [Parameter(Mandatory, Position = 0, ParameterSetName = '__date', ValueFromPipeline, HelpMessage = 'DateTime object')]
+        [ValidateNotNullOrEmpty()]
+        [datetime] $Time
     )
     Process {
         if ($PSBoundParameters.ContainsKey('Seconds')) {
@@ -34,6 +42,13 @@ function ConvertFrom-EpochTime {
         }
         elseif ($PSBoundParameters.ContainsKey('Milliseconds')) {
             [System.DateTimeOffset]::FromUnixTimeMilliseconds($Milliseconds).DateTime.ToLocalTime()
+        }
+        elseif ($PSBoundParameters.ContainsKey('Time')) {
+            [PSCustomObject] @{
+                Date         = $Time
+                Seconds      = [System.DateTimeOffset]::new($Time).ToUnixTimeSeconds()
+                Milliseconds = [System.DateTimeOffset]::new($Time).ToUnixTimeMilliseconds()
+            }
         }
     }
 }
