@@ -4,12 +4,12 @@ function Convert-Epoch {
         Convert epoch
     .DESCRIPTION
         Convert epoch to date/time or date/time to epoch
+    .PARAMETER Date
+        DateTime object
     .PARAMETER Seconds
         Epoch Time in seconds
     .PARAMETER Milliseconds
         Epoch Time in milliseconds
-    .PARAMETER Date
-        DateTime object
     .INPUTS
         System.DateTime.
     .OUTPUTS
