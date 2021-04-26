@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.7.2'
+    ModuleVersion     = '0.7.3'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -83,7 +83,6 @@
         'Convert-SecureKey'
         'Convert-TimeZone'
         'Deploy-Script'
-        'Export-ExcelBook'
         'Export-ScanReportAggregate'
         'Export-ScanReportSummary'
         'Export-SQLVAReport'
@@ -121,8 +120,6 @@
         'Save-KBFile'
         'Test-Performance'
         'Uninstall-AllModules'
-        'Update-LocalUserPassword'
-        'Update-LocalUserPw'
         'Write-Log'
         # 'ConvertTo-DbScanReport' DEPRICATED
     )
