@@ -148,5 +148,11 @@
         "Name": "Windows Server Feature Removed",
         "Log": "Microsoft-Windows-ServerManager-DeploymentProvider",
         "EventId": 304
+    },
+    {
+        "Id": 26,
+        "Name": "Failed logon attempt",
+        "Log": "Security",
+        "EventId": 4625
     }
 ]
