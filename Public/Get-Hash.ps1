@@ -25,14 +25,15 @@ function Get-Hash {
 
         [Parameter(HelpMessage = 'Hashing algorithm to use')]
         [ValidateSet('MD5', 'SHA1', 'SHA256', 'SHA512')]
-        [string] $Algorithm = 'MD5'
+        [string] $Algorithm = 'SHA256'
     )
 
     Process {
         # THE TYPE COULD BE CHANGED FROM ASCII TO UTF8 OR UNICODE
         # DEPENDING ON THE STRING INPUT
-        $inputBytes = [System.Text.Encoding]::ASCII.GetBytes($String)
-        Write-Verbose -Message ('Using {0} encoding' -f 'ASCII')
+        #$inputBytes = [System.Text.Encoding]::ASCII.GetBytes($String)
+        $inputBytes = [System.Text.Encoding]::UTF8.GetBytes($String)
+        Write-Verbose -Message ('Using {0} encoding' -f 'UTF8')
 
         $ag = switch ($Algorithm) {
             'MD5' { [System.Security.Cryptography.MD5]::Create() }
