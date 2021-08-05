@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.7.4'
+    ModuleVersion     = '0.7.5'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -51,6 +51,7 @@
     RequiredModules   = @(
         'ImportExcel'
         'SqlServer'
+        'ActiveDirectory' # FOR Get-ADUserStatus
         #'GroupPolicy' # FOR Get-RSOP
         #'PSNetAddressing'
         #'PSPKI'
@@ -93,6 +94,7 @@
         'Find-ServerPendingReboot'
         'Format-Disk'
         'Get-ActiveGWUser'
+        'Get-ADUserStatus'
         'Get-CVSSv3BaseScore'
         'Get-DirItemAges'
         'Get-DirStats'
