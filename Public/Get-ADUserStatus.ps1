@@ -40,7 +40,6 @@ function Get-ADUserStatus {
             'PasswordLastSet'
         )
 
-        $userStatus = Get-ADUser -Identity $Identity -Properties "*", "msDS-UserPasswordExpiryTimeComputed"
-        $userStatus | Select-Object -Property $props
+        Get-ADUser -Identity $Identity -Properties "*", "msDS-UserPasswordExpiryTimeComputed" | Select-Object -Property $props
     }
 }

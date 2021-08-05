@@ -51,7 +51,7 @@
     RequiredModules   = @(
         'ImportExcel'
         'SqlServer'
-        'ActiveDirectory' # FOR Get-ADUserStatus
+        #'ActiveDirectory' # FOR Get-ADUserStatus
         #'GroupPolicy' # FOR Get-RSOP
         #'PSNetAddressing'
         #'PSPKI'
