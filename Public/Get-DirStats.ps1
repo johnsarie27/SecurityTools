@@ -12,8 +12,8 @@ function Get-DirStats {
         Threshold for which to measure file and folder sizes.
     .PARAMETER OutputDirectory
         Output report directory (directory must already exist)
-    .PARAMETER Totals
-        Calculate totals for file sizes and number of files in folders
+    .PARAMETER NoTotals
+        Skip calculatation of file size totals and number of files totals
     .PARAMETER All
         Measure all files of any size
     .INPUTS
@@ -25,19 +25,19 @@ function Get-DirStats {
     ========================================================================= #>
     Param(
         [Parameter(Mandatory, HelpMessage = 'Directory to evaluate')]
-        [ValidateScript({Test-Path -Path $_ -PathType Container})]
+        [ValidateScript({ Test-Path -Path $_ -PathType Container })]
         [string] $Path,
 
         [Parameter(HelpMessage = 'Minimum file size to search for')]
         [ValidateRange(0, 10)]
         [double] $SizeInGb = 1,
 
-        [Parameter(HelpMessage = 'Show totals at end')]
-        [switch] $Totals,
-
         [Parameter(HelpMessage = 'Output report directory')]
-        [ValidateScript({Test-Path -Path $_ -PathType Container})]
+        [ValidateScript({ Test-Path -Path $_ -PathType Container })]
         [string] $OutputDirectory,
+
+        [Parameter(HelpMessage = 'Skip total calculations')]
+        [switch] $NoTotals,
 
         [Parameter(HelpMessage = 'Measure all files of any size')]
         [switch] $All
@@ -125,7 +125,7 @@ function Get-DirStats {
         #endregion
 
         # ADD TOTALS
-        if ( $Totals ) {
+        if ( -not $PSBoundParameters.ContainsKey('NoTotals') ) {
             # CREATE SIZE AND COUNT VARIABLES
             $fileTotal = 0; $fileCount = 0; $folderNumTotal = 0; $folderSizeTotal = 0
 
