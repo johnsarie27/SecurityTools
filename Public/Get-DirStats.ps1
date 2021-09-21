@@ -10,6 +10,8 @@ function Get-DirStats {
         Target folder for statistics
     .PARAMETER SizeInGb
         Threshold for which to measure file and folder sizes.
+    .PARAMETER OutputDirectory
+        Output report directory (directory must already exist)
     .PARAMETER Totals
         Calculate totals for file sizes and number of files in folders
     .PARAMETER All
@@ -23,7 +25,7 @@ function Get-DirStats {
     ========================================================================= #>
     Param(
         [Parameter(Mandatory, HelpMessage = 'Directory to evaluate')]
-        [ValidateScript( {Test-Path -Path $_ -PathType Container})]
+        [ValidateScript({Test-Path -Path $_ -PathType Container})]
         [string] $Path,
 
         [Parameter(HelpMessage = 'Minimum file size to search for')]
@@ -32,6 +34,10 @@ function Get-DirStats {
 
         [Parameter(HelpMessage = 'Show totals at end')]
         [switch] $Totals,
+
+        [Parameter(HelpMessage = 'Output report directory')]
+        [ValidateScript({Test-Path -Path $_ -PathType Container})]
+        [string] $OutputDirectory,
 
         [Parameter(HelpMessage = 'Measure all files of any size')]
         [switch] $All
@@ -130,7 +136,7 @@ function Get-DirStats {
             }
             $New = [PSCustomObject] @{
                 'Size(GB)' = $fileTotal
-                'FullName' = '--- Totals ---'
+                'FullName' = '--- Total ---'
             }
             try { $fileList.Add($New) }
             catch { Write-Verbose ('Unable to add object {0}' -f $New) }
@@ -143,7 +149,7 @@ function Get-DirStats {
             $New = [PSCustomObject] @{
                 'Size(GB)'   = $folderSizeTotal
                 'Files'      = $folderNumTotal
-                'FolderName' = '--- Totals ---'
+                'FolderName' = '--- Total ---'
             }
             try { $folderList.Add($New) }
             catch { Write-Verbose ('Unable to add object {0}' -f $New) }
@@ -163,5 +169,19 @@ function Get-DirStats {
             Write-Output ( $folderList | Format-Table -AutoSize | Out-String )
         }
         if ( $warning ) { Write-Warning "One or more directories was not accessible!" }
+
+        if ( $PSBoundParameters.ContainsKey('OutputDirectory') ) {
+            $log = Join-Path -Path $OutputDirectory -ChildPath ('DirStats_{0:yyyyMMdd-HHmmss}.log' -f (Get-Date))
+            Set-Content -Path $log -Value `n"Directory: $dir"`n
+            if ( $fileList ) {
+                Add-Content -Path $log -Value "Files greater than: $SizeInGb GB"
+                Add-Content -Path $log -Value ( $fileList | Format-Table -AutoSize | Out-String )
+            }
+            if ( $folderList ) {
+                Add-Content -Path $log -Value "Folders greater than: $SizeInGb GB"
+                Add-Content -Path $log -Value ( $folderList | Format-Table -AutoSize | Out-String )
+            }
+            if ( $warning ) { Add-Content -Path $log -Value "One or more directories was not accessible!" }
+        }
     }
 }
