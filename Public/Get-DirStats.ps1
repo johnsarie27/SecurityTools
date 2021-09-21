@@ -1,15 +1,14 @@
 function Get-DirStats {
     <# =========================================================================
     .SYNOPSIS
-        Show directory statistics for a given directory
+        Get directory statistics
     .DESCRIPTION
-        This function will display all files and folders in a given directory
-        that are greater than or equal to a given size in GB. The defaul is
-        1GB.
+        Get summary of all files and folders in specified directory that are
+        greater than or equal to specified size (defaul size is 1GB).
     .PARAMETER Path
-        Target folder for statistics
+        Target folder
     .PARAMETER SizeInGb
-        Threshold for which to measure file and folder sizes.
+        Threshold for which to measure file and folder sizes
     .PARAMETER OutputDirectory
         Output report directory (directory must already exist)
     .PARAMETER NoTotals
