@@ -67,10 +67,18 @@ function Read-EncryptedFile {
             ## dumping them directly into the output stream
             $streamReader.ReadToEnd()
         }
-        catch { }
+        catch {
+            # Clean up
+            if ( $streamReader ) { $streamReader.Close() }
+            if ( $cryptoStream ) { $cryptoStream.Close() }
+            if ( $fileStream ) { $fileStream.Close() }
+            if ( $crypto ) { $crypto.Clear() }
+
+            throw $_
+        }
         finally {
             # Clean up
-            if ( $StreamWriter ) { $StreamWriter.Close() }
+            if ( $streamReader ) { $streamReader.Close() }
             if ( $cryptoStream ) { $cryptoStream.Close() }
             if ( $fileStream ) { $fileStream.Close() }
             if ( $crypto ) { $crypto.Clear() }
