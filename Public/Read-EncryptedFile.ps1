@@ -43,37 +43,37 @@ function Read-EncryptedFile {
             if ( $KeyBytes.Count -ne 32 ) { $KeyBytes = ( $KeyBytes + [byte[]]'ThePaddingToUseIfWeNeedMoreBytes'.ToCharArray() )[0..31] }
 
             # Create cryptography engine
-            $Crypto = New-Object -TypeName System.Security.Cryptography.RijndaelManaged
+            $crypto = New-Object -TypeName System.Security.Cryptography.RijndaelManaged
 
             # Set key
-            $Crypto.Key = $KeyBytes
+            $crypto.Key = $KeyBytes
 
             # Use hash of key for initializing vector
-            $Crypto.IV = (New-Object -TypeName Security.Cryptography.SHA256Managed).ComputeHash( $Crypto.Key )[0..15]
+            $crypto.IV = (New-Object -TypeName Security.Cryptography.SHA256Managed).ComputeHash( $crypto.Key )[0..15]
 
             # Create decryptor
-            $Decryptor = $Crypto.CreateDecryptor()
+            $decryptor = $crypto.CreateDecryptor()
 
             # Open file stream from source file
-            $FileStream = New-Object System.IO.FileStream -ArgumentList @( $Path, [System.IO.FileMode]::Open )
+            $fileStream = New-Object System.IO.FileStream -ArgumentList @( $Path, [System.IO.FileMode]::Open )
 
             # Plumb the file stream into a cryptography stream with decryptor
-            $CryptoStream = New-Object -TypeName Security.Cryptography.CryptoStream -ArgumentList @( $FileStream, $Decryptor, "Read" )
+            $cryptoStream = New-Object -TypeName Security.Cryptography.CryptoStream -ArgumentList @( $fileStream, $decryptor, "Read" )
 
             # Create stream reader to get the data
-            $StreamReader = New-Object -TypeName IO.StreamReader $CryptoStream
+            $streamReader = New-Object -TypeName IO.StreamReader $cryptoStream
 
             ## Turn on the spigot and get the results,
             ## dumping them directly into the output stream
-            $StreamReader.ReadToEnd()
+            $streamReader.ReadToEnd()
         }
         catch { }
         finally {
             # Clean up
             if ( $StreamWriter ) { $StreamWriter.Close() }
-            if ( $CryptoStream ) { $CryptoStream.Close() }
-            if ( $FileStream ) { $FileStream.Close() }
-            if ( $Crypto ) { $Crypto.Clear() }
+            if ( $cryptoStream ) { $cryptoStream.Close() }
+            if ( $fileStream ) { $fileStream.Close() }
+            if ( $crypto ) { $crypto.Clear() }
         }
     }
 }

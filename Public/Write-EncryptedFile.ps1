@@ -42,71 +42,71 @@ function Write-EncryptedFile {
     Begin {
         try {
             # If the key was provided as a string convert it to bytes
-            if ( $Key ) { $KeyBytes = [byte[]]$Key.ToCharArray() }
+            if ( $Key ) { $KeyBytes = [byte[]] $Key.ToCharArray() }
 
             # If the key is not 256 bits pad it or truncate it as needed
             if ( $KeyBytes.Count -ne 32 ) { $KeyBytes = ( $KeyBytes + [byte[]]'ThePaddingToUseIfWeNeedMoreBytes'.ToCharArray() )[0..31] }
 
             # Create cryptography engine
-            $Crypto = New-Object -TypeName System.Security.Cryptography.RijndaelManaged
+            $crypto = New-Object -TypeName System.Security.Cryptography.RijndaelManaged
 
             # Set key
-            $Crypto.Key = $KeyBytes
+            $crypto.Key = $KeyBytes
 
             # Use hash of key for initializing vector
-            $Crypto.IV = (New-Object -TypeName Security.Cryptography.SHA256Managed).ComputeHash($Crypto.Key)[0..15]
+            $crypto.IV = (New-Object -TypeName Security.Cryptography.SHA256Managed).ComputeHash($crypto.Key)[0..15]
 
             # Create encryptor
-            $Encryptor = $Crypto.CreateEncryptor()
+            $encryptor = $crypto.CreateEncryptor()
 
             # Create file stream
-            $FileStream = New-Object System.IO.FileStream -ArgumentList @( $Path, [System.IO.FileMode]::Create )
+            $fileStream = New-Object System.IO.FileStream -ArgumentList @( $Path, [System.IO.FileMode]::Create )
 
             # Plumb the file stream into a cryptography stream with encryptor
-            $CryptoStream = New-Object -TypeName Security.Cryptography.CryptoStream -ArgumentList @( $FileStream, $Encryptor, "Write" )
+            $cryptoStream = New-Object -TypeName Security.Cryptography.CryptoStream -ArgumentList @( $fileStream, $encryptor, "Write" )
 
             # Create stream writer to send the data
-            $StreamWriter = New-Object -TypeName IO.StreamWriter -ArgumentList $CryptoStream
+            $streamWriter = New-Object -TypeName IO.StreamWriter -ArgumentList $cryptoStream
         }
         catch {
             # Clean up
-            if ( $StreamWriter ) { $StreamWriter.Close() }
-            if ( $CryptoStream ) { $CryptoStream.Close() }
-            if ( $FileStream ) { $FileStream.Close() }
-            if ( $Crypto ) { $Crypto.Clear() }
+            if ( $streamWriter ) { $streamWriter.Close() }
+            if ( $cryptoStream ) { $cryptoStream.Close() }
+            if ( $fileStream ) { $fileStream.Close() }
+            if ( $crypto ) { $crypto.Clear() }
 
             throw $_
         }
 
         # Set first line flag
-        $FirstLine = $True
+        $firstLine = $true
     }
     Process {
         try {
             foreach ( $line in $Content ) {
-                if ( $FirstLine ) { $FirstLine = $false }
-                else { $StreamWriter.Write( [Environment]::NewLine ) }
+                if ( $firstLine ) { $firstLine = $false }
+                else { $streamWriter.Write( [Environment]::NewLine ) }
 
                 # Dump the data to be encrypted into the stream
-                $StreamWriter.Write( $line )
+                $streamWriter.Write( $line )
             }
         }
         catch {
             # Clean up
-            if ( $StreamWriter ) { $StreamWriter.Close() }
-            if ( $CryptoStream ) { $CryptoStream.Close() }
-            if ( $FileStream ) { $FileStream.Close() }
-            if ( $Crypto ) { $Crypto.Clear() }
+            if ( $streamWriter ) { $streamWriter.Close() }
+            if ( $cryptoStream ) { $cryptoStream.Close() }
+            if ( $fileStream ) { $fileStream.Close() }
+            if ( $crypto ) { $crypto.Clear() }
 
             throw $_
         }
     }
     End {
         # Clean up
-        if ( $StreamWriter ) { $StreamWriter.Close() }
-        if ( $CryptoStream ) { $CryptoStream.Close() }
-        if ( $FileStream ) { $FileStream.Close() }
-        if ( $Crypto ) { $Crypto.Clear() }
+        if ( $streamWriter ) { $streamWriter.Close() }
+        if ( $cryptoStream ) { $cryptoStream.Close() }
+        if ( $fileStream ) { $fileStream.Close() }
+        if ( $crypto ) { $crypto.Clear() }
 
         # Return resulting file
         return ( Get-Item -Path $Path )
