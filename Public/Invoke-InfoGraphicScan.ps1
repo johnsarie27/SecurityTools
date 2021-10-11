@@ -50,7 +50,7 @@ function Invoke-InfoGraphicScan {
             $title = $list[5]
 
             # EXTRACT DATA COMPONENT AND FROM ORIGINAL
-            $data = $list[($dataLine - 1)]
+            $data = $list[($Line - 1)]
             $data = $data.Replace('const reportDataJson = ', '')
             $data = $data.TrimEnd(';')
 
@@ -58,7 +58,7 @@ function Invoke-InfoGraphicScan {
             $list.RemoveAt(5)
 
             # REMOVE DATA - SUBTRACT 2 SINCE THE TITLE WAS JUST REMOVED IN THE CODE ABOVE
-            $list.RemoveAt(($dataLine - 2))
+            $list.RemoveAt(($Line - 2))
 
             # GET FILE HASH VALUE
             $tempFile = Join-Path -Path $TempPath -ChildPath ([System.IO.Path]::GetRandomFileName())
