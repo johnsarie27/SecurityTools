@@ -7,8 +7,10 @@ function Invoke-InfoGraphicScan {
         for static code, and validating JSON data.
     .PARAMETER Path
         Path to HTML file
-    .PARAMETER Line
+    .PARAMETER DataLine
         Report data JSON line number
+    .PARAMETER TitleLine
+        Report title line number
     .PARAMETER TempPath
         Temporary directory
     .INPUTS
@@ -30,7 +32,11 @@ function Invoke-InfoGraphicScan {
 
         [Parameter(Mandatory, HelpMessage = 'Report data JSON line number')]
         [ValidateRange(1, 999)]
-        [int] $Line,
+        [int] $DataLine,
+
+        [Parameter(HelpMessage = 'Report data JSON line number')]
+        [ValidateRange(1, 999)]
+        [int] $TitleLine = 6,
 
         [Parameter(HelpMessage = 'Temporary directory')]
         [ValidateScript({ Test-Path -Path (Split-Path -Path $_) -PathType Container })]
@@ -47,18 +53,18 @@ function Invoke-InfoGraphicScan {
             $list = [System.Collections.Generic.List[System.Object]]::new((Get-Content -Path $file))
 
             # EXTRACT TITLE
-            $title = $list[5]
+            $title = $list[($TitleLine - 1)]
 
             # EXTRACT DATA COMPONENT AND FROM ORIGINAL
-            $data = $list[($Line - 1)]
+            $data = $list[($DataLine - 1)]
             $data = $data.Replace('const reportDataJson = ', '')
             $data = $data.TrimEnd(';')
 
             # REMOVE TITLE LINE
-            $list.RemoveAt(5)
+            $list.RemoveAt(($TitleLine - 1))
 
             # REMOVE DATA - SUBTRACT 2 SINCE THE TITLE WAS JUST REMOVED IN THE CODE ABOVE
-            $list.RemoveAt(($Line - 2))
+            $list.RemoveAt(($DataLine - 2))
 
             # GET FILE HASH VALUE
             $tempFile = Join-Path -Path $TempPath -ChildPath ([System.IO.Path]::GetRandomFileName())
