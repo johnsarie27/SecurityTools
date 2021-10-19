@@ -65,22 +65,27 @@ function Export-NPMAudit {
             # GET CVSS INFO FROM NVD BY CVE NUMBER
             $cvss = Get-CVSSv3BaseScore -CVE $advCont.cves[0]
 
-            $advList += [PSCustomObject] @{
-                Name               = $adv.Name
-                Title              = $advCont.title
-                VulnerableVersions = $advCont.vulnerable_versions
-                ModuleName         = $advCont.module_name
-                CVES               = $advCont.cves -join ', '
-                Severity           = $cvss.Severity
-                Score              = $cvss.Score
-                NPMSeverity        = $advCont.severity
-                CWE                = $advCont.cwe
-                PatchedVersions    = $advCont.patched_versions
-                Updated            = $advCont.updated
-                Recommendation     = $advCont.recommendation
-                References         = $advCont.references
-                Overview           = $advCont.overview
-                URL                = $advCont.url
+            foreach ($fin in $advCont.findings) {
+
+                $advList += [PSCustomObject] @{
+                    Number             = $adv.Name
+                    Version            = $fin.version
+                    Paths              = $fin.paths -join '; '
+                    Title              = $advCont.title
+                    VulnerableVersions = $advCont.vulnerable_versions
+                    ModuleName         = $advCont.module_name
+                    CVES               = $advCont.cves -join ', '
+                    Severity           = $cvss.Severity
+                    Score              = $cvss.Score
+                    NPMSeverity        = $advCont.severity
+                    CWE                = $advCont.cwe
+                    PatchedVersions    = $advCont.patched_versions
+                    Updated            = $advCont.updated
+                    Recommendation     = $advCont.recommendation
+                    References         = $advCont.references
+                    Overview           = $advCont.overview
+                    URL                = $advCont.url
+                }
             }
 
             # REMOVE VARIABLE TO PREVENT REUSE WHEN LOOKUP FAILS
