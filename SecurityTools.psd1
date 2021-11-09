@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.7.10'
+    ModuleVersion     = '0.7.11'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -83,7 +83,6 @@
         'Convert-Epoch'
         'Convert-SecureKey'
         'Convert-TimeZone'
-        'Deploy-Script'
         'Export-NPMAudit'
         'Export-ScanReportAggregate'
         'Export-ScanReportSummary'
@@ -106,10 +105,8 @@
         'Get-Object'
         'Get-PatchTuesday'
         'Get-RandomAlphanumericString'
-        'Get-RemoteBitLocker'
         'Get-RSOP'
         'Get-SavedHistory'
-        'Get-ServiceAccount'
         'Get-Software'
         'Get-TalkingApps'
         'Get-UncPath'
@@ -121,13 +118,10 @@
         'Invoke-NetScan'
         'Out-MeasureResult'
         'Read-EncryptedFile'
-        'Remove-Files'
-        'Remove-Signature'
         'Save-KBFile'
         'Test-Performance'
         'Uninstall-AllModules'
         'Write-EncryptedFile'
-        # 'ConvertTo-DbScanReport' DEPRICATED
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
