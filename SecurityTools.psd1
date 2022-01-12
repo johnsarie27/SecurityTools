@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.7.17'
+    ModuleVersion     = '0.7.20'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -83,10 +83,6 @@
         'Convert-Epoch'
         'Convert-SecureKey'
         'Convert-TimeZone'
-        'ConvertFrom-Base64'
-        'ConvertFrom-URLEncode'
-        'ConvertTo-Base64'
-        'ConvertTo-URLEncode'
         'Expand-URL'
         'Export-NPMAudit'
         'Export-ScanReportAggregate'
@@ -101,9 +97,11 @@
         'Get-ActiveGWUser'
         'Get-ADUserStatus'
         'Get-CVSSv3BaseScore'
+        'Get-Decoded'
         'Get-DirItemAges'
         'Get-DirStats'
         'Get-DomainRegistration'
+        'Get-Encoded'
         'Get-Hash'
         'Get-Ipinfo'
         'Get-LoggedOnUser'
