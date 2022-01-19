@@ -5,9 +5,7 @@ function Get-Weather {
     .PARAMETER City
         City
     .PARAMETER Format
-        Use predefined weather format (1-4)
-    .PARAMETER Sun
-        Get sunrise and sunset times
+        Use predefined weather format (1-4) or 'Sun'
     .INPUTS
         None.
     .OUTPUTS
@@ -30,28 +28,24 @@ function Get-Weather {
         [ValidateNotNullOrEmpty()]
         [string] $City,
 
-        [Parameter(ParameterSetName = '__for', HelpMessage = 'Predefined format')]
-        [ValidateRange(1,4)]
-        [string] $Format,
-
-        [Parameter(ParameterSetName = '__sun', HelpMessage = 'Sunrise and sunset times')]
-        [switch] $Sun
+        [Parameter(HelpMessage = 'Predefined format')]
+        #[ValidateRange(1,4)]
+        [ValidateSet(1,2,3,4,'Sun')]
+        [string] $Format
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
-        New-Variable -Name 'base_uri' -Value 'https://wttr.in' -Option ReadOnly
+        New-Variable -Name 'base_uri' -Value 'https://wttr.in/' -Option ReadOnly
         $uri = $base_uri
 
         if ($PSBoundParameters.ContainsKey('City')) {
             $fCity = $City.Replace(' ', '+')
-            $uri += "/$fCity"
+            $uri += "$fCity"
         }
         if ($PSBoundParameters.ContainsKey('Format')) {
-            $uri += '?format={0}' -f $Format
-        }
-        if ($PSBoundParameters.ContainsKey('Sun')) {
-            $uri += '?format="%l:+%S+%s\n"'
+            if ($Format -IN 1..4) { $uri += '?format={0}' -f $Format }
+            elseif ($Format -EQ 'Sun') { $uri += '?format="%l:+%S+%s\n"' }
         }
     }
     Process {
