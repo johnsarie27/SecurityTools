@@ -17,8 +17,9 @@ function ConvertFrom-GZipString {
     .NOTES
         Name: ConvertFrom-GZipString
         Author: Justin Johns
-        Version: 0.1.0 | Last Edit: 2022-01-26 [0.1.0]
-        - <VersionNotes> (or remove this line if no version notes)
+        Version: 0.1.1 | Last Edit: 2022-01-27 [0.1.1]
+        - modified parameter to accept array of string
+        - changed Foreach-Object to foreach command
         Comments: <Comment(s)>
         General notes
         https://www.dorkbrain.com/docs/2017/09/02/gzip-in-powershell/
@@ -26,13 +27,13 @@ function ConvertFrom-GZipString {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline)]
-        [string] $String
+        [string[]] $String
     )
     Process {
         Write-Verbose -Message "Starting $(MyInvocation.Mycommand)"
 
-        $String | ForEach-Object {
-            $compressedBytes = [System.Convert]::FromBase64String($_)
+        foreach ($str in $String) {
+            $compressedBytes = [System.Convert]::FromBase64String($str)
             $ms = New-Object System.IO.MemoryStream
             $ms.write($compressedBytes, 0, $compressedBytes.Length)
             $ms.Seek(0, 0) | Out-Null
