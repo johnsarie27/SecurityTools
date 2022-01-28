@@ -41,7 +41,6 @@ function ConvertFrom-GZipString {
             $cs = New-Object System.IO.Compression.GZipStream($ms, [System.IO.Compression.CompressionMode]::Decompress)
             $sr = New-Object System.IO.StreamReader($cs)
             $sr.ReadToEnd()
-
         }
     }
     End {
