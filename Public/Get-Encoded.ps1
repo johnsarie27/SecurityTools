@@ -16,8 +16,8 @@ function Get-Encoded {
     .NOTES
         Name: Get-Encoded
         Author: Justin Johns
-        Version: 0.1.0 | Last Edit: 2022-01-11 [0.1.0]
-        - <VersionNotes> (or remove this line if no version notes)
+        Version: 0.1.1 | Last Edit: 2022-01-11 [0.1.1]
+        - Changed class used to perform URL encoding
         Comments: <Comment(s)>
         General notes
     ========================================================================= #>
@@ -37,7 +37,8 @@ function Get-Encoded {
             [System.Convert]::ToBase64String($bytes)
         }
         if ($Encoding -EQ 'URL') {
-            [System.Web.HttpUtility]::UrlEncode($String)
+            #[System.Web.HttpUtility]::UrlEncode($String)
+            [System.Uri]::EscapeDataString($String)
         }
     }
 }

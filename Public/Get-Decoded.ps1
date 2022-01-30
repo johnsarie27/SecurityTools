@@ -16,8 +16,8 @@ function Get-Decoded {
     .NOTES
         Name: Get-Decoded
         Author: Justin Johns
-        Version: 0.1.0 | Last Edit: 2022-01-11 [0.1.0]
-        - <VersionNotes> (or remove this line if no version notes)
+        Version: 0.1.1 | Last Edit: 2022-01-11 [0.1.1]
+        - Changed class used to perform URL decoding
         Comments: <Comment(s)>
         General notes
     ========================================================================= #>
@@ -37,7 +37,8 @@ function Get-Decoded {
             [System.Text.Encoding]::UTF8.GetString($bytes)
         }
         if ($Encoding -EQ 'URL') {
-            [System.Web.HttpUtility]::UrlDecode($String)
+            #[System.Web.HttpUtility]::UrlDecode($String)
+            [System.Uri]::UnescapeDataString($String)
         }
     }
 }
