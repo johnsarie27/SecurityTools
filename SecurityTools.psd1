@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.7.22'
+    ModuleVersion     = '0.7.23'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -94,7 +94,6 @@
         'Export-WebScan'
         'Find-LANHost'
         'Find-ServerPendingReboot'
-        'Format-Disk'
         'Get-ActiveGWUser'
         'Get-ADUserStatus'
         'Get-CVSSv3BaseScore'
