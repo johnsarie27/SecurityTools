@@ -6,56 +6,52 @@ function Export-ScanReportSummary {
         This function takes a web scan and system scan report and merges the
         pertinent information into a summary view of the vulnerabilities found
     .PARAMETER DestinationPath
-        Path to new or existing Excel Workbook
-    .PARAMETER NessusScan
-        Path to System scan CSV file
-    .PARAMETER AlertLogicSystemScan
-        Path to AlertLogic System scan CSV file
+        Path to new or existing Excel spreadsheet file
+    .PARAMETER NessusSystemScan
+        Path to CSV file for Nessus system scan report
+    .PARAMETER NessusWebScan
+        Path to CSV file for Nessus web scan report
     .PARAMETER AlertLogicWebScan
-        Path to AlertLogic Web scan CSV file
+        Path to CSV file for AlertLogic Web scan report
     .PARAMETER DatabaseScan
-        Path to MSSQL datbase scan CSV file
+        Path to XLSX file for MSSQL scan report
     .PARAMETER AcunetixScan
-        Path to Acunetix scan CSV file
+        Path to CSV file for Acunetix scan report
     .INPUTS
         None.
     .OUTPUTS
         None.
     .EXAMPLE
-        PS C:\> Export-ScanReportSummary -NessusScan $Sys -AlertLogicWebScan $Web
+        PS C:\> Export-ScanReportSummary -NessusSystemScan $Sys -AlertLogicWebScan $Web
         Merge and aggregate data from $Sys and $Web scans and return an Excel
         spreadsheet file.
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(HelpMessage = 'Path to new or existing Excel spreadsheet file')]
+        [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) })]
         [ValidateScript({ [System.IO.Path]::GetExtension($_) -eq '.xlsx' })]
         [string] $DestinationPath,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
-        [ValidateNotNullOrEmpty()]
-        [string] $NessusScan,
+        [Alias('NessusScan')]
+        [string] $NessusSystemScan,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for AlertLogic System scan report')]
+        [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
-        [ValidateNotNullOrEmpty()]
-        [string] $AlertLogicSystemScan,
+        [string] $NessusWebScan,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for AlertLogic Web scan report')]
+        [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
-        [ValidateNotNullOrEmpty()]
         [string] $AlertLogicWebScan,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'XLSX file for MSSQL scan report')]
+        [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.xlsx })]
-        [ValidateNotNullOrEmpty()]
         [string] $DatabaseScan,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.csv })]
-        [ValidateNotNullOrEmpty()]
         [string] $AcunetixScan
     )
 
@@ -64,7 +60,7 @@ function Export-ScanReportSummary {
         $summaryObjects = [System.Collections.Generic.List[System.Object]]::new()
 
         # PROVIDE HELP FOR THE USER WHEN NO SCANS ARE DECLARED
-        $requiredParams = @('NessusScan', 'AlertLogicSystemScan', 'AlertLogicWebScan', 'DatabaseScan', 'AcunetixScan')
+        $requiredParams = @('NessusSystemScan', 'NessusWebScan', 'AlertLogicWebScan', 'DatabaseScan', 'AcunetixScan')
         foreach ( $param in $requiredParams ) {
             if ( $param -notin $PSBoundParameters.Keys ) { $fail = $true } else { $fail = $false; break }
         }
@@ -129,15 +125,15 @@ function Export-ScanReportSummary {
             foreach ( $i in $uniqueDbVulns ) { $summaryObjects.Add($i) }
         }
 
-        if ( $PSBoundParameters.ContainsKey('NessusScan') ) {
-            $nessusCsv = Import-Csv -Path $NessusScan
-            $uniqueNesVulns = $nessusCsv | Sort-Object Name -Unique
-            foreach ( $object in $uniqueNesVulns ) {
-                $count = ($nessusCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
+        if ( $PSBoundParameters.ContainsKey('NessusSystemScan') ) {
+            $nSysCsv = Import-Csv -Path $NessusSystemScan
+            $uniqueNesVulns = $nSysCsv | Sort-Object Name -Unique
+            foreach ($object in $uniqueNesVulns) {
+                $count = ($nSysCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
 
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'Nessus' })
+                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'NessusSystem' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
@@ -149,7 +145,7 @@ function Export-ScanReportSummary {
             # SET PROPERTY CONVERSION
             $newProps = (
                 'Count', 'TFS', 'Status', 'Name', 'Risk', 'CVE', 'CVSS',
-                @{ Name = 'Source'; Expression = { 'Nessus' } },
+                @{ Name = 'Source'; Expression = { 'NessusSystem' } },
                 @{ Name = 'CVSSv3'; Expression = { $_.'CVSS v3.0 Base Score' } }
             )
 
@@ -157,35 +153,18 @@ function Export-ScanReportSummary {
             $uniqueNesVulns = $uniqueNesVulns | Select-Object -Property $newProps
 
             # ADD TO MASTER LIST
-            foreach ( $i in $uniqueNesVulns ) { $summaryObjects.Add($i) }
+            foreach ($i in $uniqueNesVulns) { $summaryObjects.Add($i) }
         }
 
-        if ( $PSBoundParameters.ContainsKey('AlertLogicSystemScan') ) {
-            $systemCsv = Import-Csv -Path $AlertLogicSystemScan
-            $uniqueSysVulns = $systemCsv | Sort-Object Name -Unique
-            foreach ( $object in $uniqueSysVulns ) {
-                $count = ($systemCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
+        if ( $PSBoundParameters.ContainsKey('NessusWebScan') ) {
+            $nWebCsv = Import-Csv -Path $NessusWebScan
+            $uniqueNesWebVs = $nWebCsv | Sort-Object Name -Unique
+            foreach ($object in $uniqueNesWebVs) {
+                $count = ($nWebCsv | Where-Object Name -eq $object.Name | Measure-Object).Count
                 $object | Add-Member -MemberType NoteProperty -Name 'Count' -Value $count
 
-                # GET CVSS v3 SCORE
-                if ( $object.Name -match 'CVE-\d{4}-\d+' ) {
-                    $cve = $object.Name -replace '^.*(CVE-\d{4}-\d+).*$', '$1'
-                    try {
-                        $nvd = Get-CVSSv3BaseScore -CVE $cve
-                        $score = $nvd.Score
-                        $object.Severity = $nvd.Severity
-                    }
-                    catch {
-                        $score = 'n/a'
-                    }
-                }
-                else {
-                    $score = 'n/a'
-                }
-                $object | Add-Member -MemberType NoteProperty -Name 'CVSS v3' -Value $score
-
                 # FIND MATCHING VULNERABILITY FROM LAST MONTH AND SET TFS ACCORDINGLY
-                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'AlertLogic-System' })
+                $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'NessusWeb' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
                 }
@@ -196,17 +175,16 @@ function Export-ScanReportSummary {
 
             # SET PROPERTY CONVERSION
             $newProps = (
-                'Name', 'Count', 'TFS', 'CVSSv3', 'CVSS', 'CVE',
-                @{ Name = 'Source'; Expression = { 'AlertLogic-System' } },
-                @{ Name = 'Status'; Expression = { $_.'Active or inactive' } },
-                @{ Name = 'Risk'; Expression = { $_.'Severity' } }
+                'Count', 'TFS', 'Status', 'Name', 'Risk', 'CVE', 'CVSS',
+                @{ Name = 'Source'; Expression = { 'NessusWeb' } },
+                @{ Name = 'CVSSv3'; Expression = { $_.'CVSS v3.0 Base Score' } }
             )
 
             # CHANGE COLUMN NAMES
-            $uniqueSysVulns = $uniqueSysVulns | Select-Object -Property $newProps
+            $uniqueNesWebVs = $uniqueNesWebVs | Select-Object -Property $newProps
 
             # ADD TO MASTER LIST
-            foreach ( $i in $uniqueSysVulns ) { $summaryObjects.Add($i) }
+            foreach ($i in $uniqueNesWebVs) { $summaryObjects.Add($i) }
         }
 
         if ( $PSBoundParameters.ContainsKey('AlertLogicWebScan') ) {
@@ -292,8 +270,8 @@ function Export-ScanReportSummary {
 
     End {
         # VERBOSE
-        Write-Verbose -Message ( 'Nessus Scan Count: {0}' -f (($uniqueSysVulns | Measure-Object).Count) )
-        Write-Verbose -Message ( 'AlertLogic System Scan Count: {0}' -f (($uniqueSysVulns | Measure-Object).Count) )
+        Write-Verbose -Message ( 'Nessus System Scan Count: {0}' -f (($uniqueNesVulns | Measure-Object).Count) )
+        Write-Verbose -Message ( 'Nessus Web Scan Count: {0}' -f (($uniqueNesWebVs | Measure-Object).Count) )
         Write-Verbose -Message ( 'AlertLogic Web Scan Count: {0}' -f (($uniqueWebVulns | Measure-Object).Count) )
         Write-Verbose -Message ( 'DB Scan Count: {0}' -f (($uniqueDbVulns | Measure-Object).Count) )
         Write-Verbose -Message ( 'Acunetix Scan Count: {0}' -f (($uniqueAcuVulns | Measure-Object).Count) )

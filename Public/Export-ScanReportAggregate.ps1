@@ -8,16 +8,16 @@ function Export-ScanReportAggregate {
         spreadsheet with multiple tabs.
     .PARAMETER OutputDirectory
         Path to output directory
-    .PARAMETER NessusScan
-        Path to System scan as a sting
+    .PARAMETER NessusSystemScan
+        Path to CSV file for Nessus system scan report
+    .PARAMETER NessusWebScan
+        Path to CSV file for Nessus web scan report
     .PARAMETER AlertLogicWebScan
-        Path to AlertLogic Web scan as a string
-    .PARAMETER AlertLogicSystemScan
-        Path to AlertLogic System scan as a string
+        Path to CSV file for AlertLogic web scan report
     .PARAMETER DatabaseScan
-        Path to Database scan as a string
+        Path to XLSX file for SQL scan report
     .PARAMETER AcunetixScan
-        Path to Authenticated Web scan as a string
+        Path to CSV file for Acunetix scan report
     .INPUTS
         System.String. Format-ScanResults accepts string values for SystemScan
         and AlertLogicWebScan parameters.
@@ -35,30 +35,31 @@ function Export-ScanReportAggregate {
         [Alias('DestinationPath')]
         [string] $OutputDirectory = "$HOME\Desktop",
 
-        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for Nessus scan report')]
+        [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
-        [string] $NessusScan,
+        [Alias('NessusScan')]
+        [string] $NessusSystemScan,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for AlertLogic web scan report')]
+        [Parameter(Mandatory = $false)]
+        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
+        [string] $NessusWebScan,
+
+        [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
         [string] $AlertLogicWebScan,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for AlertLogic system scan report')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
-        [string] $AlertLogicSystemScan,
-
-        [Parameter(Mandatory = $false, HelpMessage = 'XLSX file for SQL scan report')]
+        [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
         [string] $DatabaseScan,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'CSV file for Acunetix scan report')]
+        [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
         [string] $AcunetixScan
     )
 
     Begin {
         # PROVIDE HELP FOR THE USER WHEN NO SCANS ARE DECLARED
-        $requiredParams = @('NessusScan', 'AlertLogicSystemScan', 'AlertLogicWebScan', 'DatabaseScan', 'AcunetixScan')
+        $requiredParams = @('NessusSystemScan', 'NessusWebScan', 'AlertLogicWebScan', 'DatabaseScan', 'AcunetixScan')
         foreach ( $param in $requiredParams ) {
             if ( $param -notin $PSBoundParameters.Keys ) { $fail = $true } else { $fail = $false; break }
         }
@@ -122,21 +123,19 @@ function Export-ScanReportAggregate {
             #foreach ( $i in $webCsv ) { $i | Add-Member -MemberType NoteProperty -Name 'Source' -Value 'Web Scan' }
 
             # EXPORT WEB DATA TO EXCEL
-            $webCsv | Select-Object -Property $alProperties | Export-Excel @excelParams -WorksheetName 'AlertLogic-Web'
-        }
-        if ( $PSBoundParameters.ContainsKey('AlertLogicSystemScan') ) {
-            $systemCsv = Import-Csv -Path $AlertLogicSystemScan
-
-            $alProperties += @('Detected OS', 'CVE')
-            $systemCsv | Select-Object -Property $alProperties | Export-Excel @excelParams -WorksheetName 'AlertLogic-System'
+            $webCsv | Select-Object -Property $alProperties | Export-Excel @excelParams -WorksheetName 'AlertLogicWeb'
         }
         if ( $PSBoundParameters.ContainsKey('AcunetixScan') ) {
             $authCsv = Import-Csv -Path $AcunetixScan
             $authCsv | Select-Object -Property $authWebProps | Export-Excel @excelParams -WorksheetName 'Acunetix'
         }
-        if ( $PSBoundParameters.ContainsKey('NessusScan') ) {
-            $nessusCsv = Import-Csv -Path $NessusScan
-            $nessusCsv | Export-Excel @excelParams -WorksheetName 'Nessus'
+        if ( $PSBoundParameters.ContainsKey('NessusSystemScan') ) {
+            $nSysCsv = Import-Csv -Path $NessusSystemScan
+            $nSysCsv | Export-Excel @excelParams -WorksheetName 'NessusSystem'
+        }
+        if ( $PSBoundParameters.ContainsKey('NessusWebScan') ) {
+            $nWebCsv = Import-Csv -Path $NessusWebScan
+            $nWebCsv | Export-Excel @excelParams -WorksheetName 'NessusWeb'
         }
         if ( $PSBoundParameters.ContainsKey('DatabaseScan') ) {
             $DatabaseScan = (Resolve-Path -Path $DatabaseScan).Path
