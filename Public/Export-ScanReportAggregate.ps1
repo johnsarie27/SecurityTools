@@ -30,7 +30,7 @@ function Export-ScanReportAggregate {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(HelpMessage = 'Path to output directory')]
+        [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
         [Alias('DestinationPath')]
         [string] $OutputDirectory = "$HOME\Desktop",
