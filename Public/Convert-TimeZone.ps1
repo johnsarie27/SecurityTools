@@ -26,7 +26,7 @@ function Convert-TimeZone {
     [OutputType([System.Object[]])]
     Param(
         [Parameter(ValueFromPipeline, HelpMessage = 'Time to convert')] #Mandatory,
-        [ValidateScript( { [System.DateTime]::Parse($_) })]
+        [ValidateScript({ [System.DateTime]::Parse($_) })]
         [string[]] $Time = (Get-Date),
 
         [Parameter(HelpMessage = 'Source time zone (default is local)')]
@@ -41,7 +41,6 @@ function Convert-TimeZone {
         [Alias('Target')]
         [string] $TargetTimeZone = 'UTC'
     )
-
     Begin {
         # FIND OS
         if ( $PSVersionTable.PSVersion.Major -lt 6 ) { $Windows = $true }
@@ -73,7 +72,6 @@ function Convert-TimeZone {
         $source = $TimeZoneHash[$SourceTimeZone]
         $target = $TimeZoneHash[$TargetTimeZone]
     }
-
     Process {
         # LOOP ALL TIME ARGUMENTS
         foreach ( $t in $Time ) {
