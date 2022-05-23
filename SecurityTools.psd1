@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.7.25'
+    ModuleVersion     = '0.7.26'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()

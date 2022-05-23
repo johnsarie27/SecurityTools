@@ -154,5 +154,11 @@
         "Name": "Failed logon attempt",
         "Log": "Security",
         "EventId": 4625
+    },
+    {
+        "Id": 27,
+        "Name": "Restart or shutdown",
+        "Log": "System",
+        "EventId": 1074
     }
 ]
