@@ -105,33 +105,20 @@ function Get-FolderSize {
         # Go through each folder in the base path.
         foreach ($folder in $allFolders) {
 
-            # Clear out the variables used in the loop.
-            $fullPath = $null
-            $folderObject = $null
-            $folderSize = $null
-            $folderSizeInMB = $null
-            $folderSizeInGB = $null
-            $folderBaseName = $null
-
-            # Store the full path to the folder and its name in separate variables
-            $fullPath = $folder.FullName
-            $folderBaseName = $folder.BaseName
-
-            Write-Verbose "Working with [$fullPath]..."
+            # WRITE VERBOSE TO SEE THE CURRENT PATH
+            Write-Verbose -Message ('Working with [{0}]...' -f $folder.FullName)
 
             # Get folder info / sizes
-            $folderSize = Get-Childitem -Path $fullPath -Recurse -Force -ErrorAction 0 | Measure-Object -Property Length -Sum -ErrorAction 0
-
-            # We use the string format operator here to show only 2 decimals, and do some PS Math.
-            $folderSizeInMB = '{0:N2} MB' -f ($folderSize.Sum / 1MB)
-            $folderSizeInGB = '{0:N2} GB' -f ($folderSize.Sum / 1GB)
+            $folderSize = Get-Childitem -Path $folder.FullName -Recurse -Force -ErrorAction 0 | Measure-Object -Property Length -Sum -ErrorAction 0
 
             # Here we create a custom object that we'll add to the array
+            # USING COMPOSITE FORMATTING (e.g., '{0:N2} MB' -f ($folderSize.Sum / 1MB)) DOES NOT
+            # LINE UP THE RESULTS CORRECTLY
             $folderObject = [PSCustomObject] @{
-                FolderName    = $folderBaseName
+                FolderName    = $folder.BaseName
                 'Size(Bytes)' = $folderSize.Sum
-                'Size(MB)'    = $folderSizeInMB
-                'Size(GB)'    = $folderSizeInGB
+                'Size(MB)'    = [System.Math]::Round(($folderSize.Sum / 1MB), 2)
+                'Size(GB)'    = [System.Math]::Round(($folderSize.Sum / 1GB), 2)
             }
 
             # Add the object to the array
@@ -147,14 +134,12 @@ function Get-FolderSize {
 
                 foreach ($fldr in $folderList) { $grandTotal += $fldr.'Size(Bytes)' }
 
-                $totalFolderSizeInMB = '{0:N2} MB' -f ($grandTotal / 1MB)
-                $totalFolderSizeInGB = '{0:N2} GB' -f ($grandTotal / 1GB)
-
+                # '{0:N2}' -f ($grandTotal / 1GB)
                 $folderObject = [PSCustomObject] @{
                     FolderName    = 'GrandTotal'
                     'Size(Bytes)' = $grandTotal
-                    'Size(MB)'    = $totalFolderSizeInMB
-                    'Size(GB)'    = $totalFolderSizeInGB
+                    'Size(MB)'    = [System.Math]::Round(($grandTotal / 1MB), 2)
+                    'Size(GB)'    = [System.Math]::Round(($grandTotal / 1GB), 2)
                 }
 
                 # Add the object to the array
