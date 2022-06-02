@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.7.26'
+    ModuleVersion     = '0.7.27'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -102,6 +102,7 @@
         'Get-DirStats'
         'Get-DomainRegistration'
         'Get-Encoded'
+        'Get-FolderSize'
         'Get-Ipinfo'
         'Get-LoggedOnUser'
         'Get-MsiInfo'
