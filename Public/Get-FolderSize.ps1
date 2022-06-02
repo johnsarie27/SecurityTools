@@ -10,16 +10,16 @@ function Get-FolderSize {
         It defaults to C:\.
     .PARAMETER FolderName
         This parameter allows you to specify the name of a specific folder you'd like to get the size of.
-    .PARAMETER AddTotal
-        This parameter adds a total count at the end of the array
     .PARAMETER OmitFolder
         This parameter allows you to omit folder(s) (array of string) from being included
+    .PARAMETER NoTotal
+        Remove folder sizes total
     .INPUTS
         None.
     .OUTPUTS
         None.
     .EXAMPLE
-        Get-FolderSize.ps1
+        Get-FolderSize
 
         FolderName                Size(Bytes) Size(MB)     Size(GB)
         ----------                ----------- --------     --------
@@ -30,7 +30,7 @@ function Get-FolderSize {
         Documents and Settings                0.00 MB      0.00 GB
         Games                     48522184491 46,274.36 MB 45.19 GB
     .EXAMPLE
-        Get-FolderSize.ps1 -Path 'C:\Program Files'
+        Get-FolderSize -Path 'C:\Program Files'
 
         FolderName                                   Size(Bytes) Size(MB)    Size(GB)
         ----------                                   ----------- --------    --------
@@ -40,13 +40,13 @@ function Get-FolderSize {
         Bonjour                                           615066 0.59 MB     0.00 GB
         Common Files                                   489183608 466.52 MB   0.46 GB
     .EXAMPLE
-        Get-FolderSize.ps1 -Path 'C:\Program Files' -FolderName IIS
+        Get-FolderSize -Path 'C:\Program Files' -FolderName IIS
 
         FolderName Size(Bytes) Size(MB) Size(GB)
         ---------- ----------- -------- --------
         IIS            5480411 5.23 MB  0.01 GB
     .EXAMPLE
-        Get-FolderSize.ps1
+        Get-FolderSize
 
         FolderName Size(GB) Size(MB)
         ---------- -------- --------
@@ -54,7 +54,7 @@ function Get-FolderSize {
         thegn      2.39 GB  2,442.99 MB
     .EXAMPLE
         Sort by size descending
-        Get-FolderSize.ps1 | Sort-Object 'Size(Bytes)' -Descending
+        Get-FolderSize | Sort-Object 'Size(Bytes)' -Descending
 
         FolderName                Size(Bytes) Size(MB)     Size(GB)
         ----------                ----------- --------     --------
@@ -64,7 +64,7 @@ function Get-FolderSize {
         Windows                   25351747445 24,177.31 MB 23.61 GB
     .EXAMPLE
         Omit folder(s) from being included
-        .\Get-FolderSize.ps1 -OmitFolder 'C:\Temp','C:\Windows'
+        .\Get-FolderSize -OmitFolder 'C:\Temp','C:\Windows'
     .NOTES
         Name:     Get-FolderSize
         Author:   Ginger Ninja
@@ -86,8 +86,8 @@ function Get-FolderSize {
         [Parameter(Mandatory = $false, HelpMessage = 'Folder to omit')]
         [System.String[]] $OmitFolder,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'Print running total of all folder sizes')]
-        [System.Management.Automation.SwitchParameter] $AddTotal
+        [Parameter(Mandatory = $false, HelpMessage = 'Remove folder sizes total')]
+        [System.Management.Automation.SwitchParameter] $NoTotal
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
@@ -139,7 +139,7 @@ function Get-FolderSize {
         }
     }
     End {
-        if ($PSBoundParameters.ContainsKey('AddTotal')) {
+        if (-NOT $PSBoundParameters.ContainsKey('NoTotal')) {
 
             $grandTotal = $null
 
