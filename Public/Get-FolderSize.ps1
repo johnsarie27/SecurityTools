@@ -69,8 +69,9 @@ function Get-FolderSize {
         Name:     Get-FolderSize
         Author:   Ginger Ninja
         Version:  0.1.1 | Last Edit: 2022-06-02 (Justin Johns)
-        - 1.0 - Updated object creation, removed try/catch that was causing issues
-        - 0.5 - Just created!
+        - 0.1.1 - Lots of code clean and consolidation, changed some parameters
+        - 0.1.0 - Updated object creation, removed try/catch that was causing issues
+        - 0.0.5 - Just created!
         Comments: <Comment(s)>
         General notes
         https://www.gngrninja.com/script-ninja/2016/5/24/powershell-calculating-folder-sizes
