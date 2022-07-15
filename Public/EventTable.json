@@ -139,24 +139,30 @@
     },
     {
         "Id": 24,
+        "Name": "Windows Defender Malware or Other Unwanted Software Detected",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1116
+    },
+    {
+        "Id": 25,
         "Name": "Windows Server Feature Added",
         "Log": "Microsoft-Windows-ServerManager-DeploymentProvider",
         "EventId": 204
     },
     {
-        "Id": 25,
+        "Id": 26,
         "Name": "Windows Server Feature Removed",
         "Log": "Microsoft-Windows-ServerManager-DeploymentProvider",
         "EventId": 304
     },
     {
-        "Id": 26,
+        "Id": 27,
         "Name": "Failed logon attempt",
         "Log": "Security",
         "EventId": 4625
     },
     {
-        "Id": 27,
+        "Id": 28,
         "Name": "Restart or shutdown",
         "Log": "System",
         "EventId": 1074
