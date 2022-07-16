@@ -1,182 +1,194 @@
 [
     {
-        "Id": 1,
         "Name": "RDGW Logon",
         "Log": "Microsoft-Windows-TerminalServices-Gateway",
-        "EventId": 302
+        "EventId": 302,
+        "Description": ""
     },
     {
-        "Id": 2,
         "Name": "RDGW Logoff",
         "Log": "Microsoft-Windows-TerminalServices-Gateway",
-        "EventId": 303
+        "EventId": 303,
+        "Description": ""
     },
     {
-        "Id": 3,
         "Name": "Software Installed",
         "Log": "Application",
-        "EventId": 11707
+        "EventId": 11707,
+        "Description": ""
     },
     {
-        "Id": 4,
         "Name": "Software Uninstalled",
         "Log": "Application",
-        "EventId": 11724
+        "EventId": 11724,
+        "Description": ""
     },
     {
-        "Id": 5,
         "Name": "Event Log Started",
         "Log": "System",
-        "EventId": 6005
+        "EventId": 6005,
+        "Description": ""
     },
     {
-        "Id": 6,
         "Name": "Event Log Stopped",
         "Log": "System",
-        "EventId": 6006
+        "EventId": 6006,
+        "Description": ""
     },
     {
-        "Id": 7,
         "Name": "User Account Created",
         "Log": "Security",
-        "EventId": 4720
+        "EventId": 4720,
+        "Description": ""
     },
     {
-        "Id": 8,
         "Name": "User Account Deleted",
         "Log": "Security",
-        "EventId": 4726
+        "EventId": 4726,
+        "Description": ""
     },
     {
-        "Id": 9,
         "Name": "RDP Session",
         "Log": "Microsoft-Windows-TerminalServices-LocalSessionManager",
-        "EventId": 21
+        "EventId": 21,
+        "Description": ""
     },
     {
-        "Id": 10,
         "Name": "BitLocker Encryption",
         "Log": "System",
-        "EventId": 24667
+        "EventId": 24667,
+        "Description": ""
     },
     {
-        "Id": 11,
         "Name": "Antimalware Scan Started",
         "Log": "System",
-        "EventId": 1000
+        "EventId": 1000,
+        "Description": ""
     },
     {
-        "Id": 12,
         "Name": "Antimalware Scan Completed",
         "Log": "System",
-        "EventId": 1001
+        "EventId": 1001,
+        "Description": ""
     },
     {
-        "Id": 13,
         "Name": "Antimalware Signature Version Update",
         "Log": "System",
-        "EventId": 2000
+        "EventId": 2000,
+        "Description": ""
     },
     {
-        "Id": 14,
         "Name": "Malware Detected",
         "Log": "System",
-        "EventId": 1116
+        "EventId": 1116,
+        "Description": ""
     },
     {
-        "Id": 15,
         "Name": "Antimalware Action Taken",
         "Log": "System",
-        "EventId": 1117
+        "EventId": 1117,
+        "Description": ""
     },
     {
-        "Id": 16,
         "Name": "Antimalware Deleted Item from Quarantine",
         "Log": "System",
-        "EventId": 1011
+        "EventId": 1011,
+        "Description": ""
     },
     {
-        "Id": 17,
         "Name": "Task Scheduler Task Completed",
         "Log": "Microsoft-Windows-TaskScheduler",
-        "EventId": 102
+        "EventId": 102,
+        "Description": ""
     },
     {
-        "Id": 18,
         "Name": "Task Scheduler Action Completed",
         "Log": "Microsoft-Windows-TaskScheduler",
-        "EventId": 201
+        "EventId": 201,
+        "Description": ""
     },
     {
-        "Id": 19,
         "Name": "Task Scheduler Action Startd",
         "Log": "Microsoft-Windows-TaskScheduler",
-        "EventId": 200
+        "EventId": 200,
+        "Description": ""
     },
     {
-        "Id": 20,
         "Name": "Task Scheduler Created Task Process",
         "Log": "Microsoft-Windows-TaskScheduler",
-        "EventId": 129
+        "EventId": 129,
+        "Description": ""
     },
     {
-        "Id": 21,
         "Name": "Windows Defender Scan Started",
         "Log": "Microsoft-Windows-Windows Defender",
-        "EventId": 1000
+        "EventId": 1000,
+        "Description": ""
     },
     {
-        "Id": 22,
         "Name": "Windows Defender Scan Completed",
         "Log": "Microsoft-Windows-Windows Defender",
-        "EventId": 1001
+        "EventId": 1001,
+        "Description": ""
     },
     {
-        "Id": 23,
-        "Name": "Windows Defender Malware Detected",
+        "Name": "Windows Defender malware found",
         "Log": "Microsoft-Windows-Windows Defender",
-        "EventId": 1006
+        "EventId": 1006,
+        "Description": "The antimalware engine found malware or other potentially unwanted software"
     },
     {
-        "Id": 24,
-        "Name": "Windows Defender Malware or Other Unwanted Software Detected",
+        "Name": "Windows Defender peformed action",
         "Log": "Microsoft-Windows-Windows Defender",
-        "EventId": 1116
+        "EventId": 1007,
+        "Description": "The antimalware platform performed an action to protect your system from malware or other potentially unwanted software"
     },
     {
-        "Id": 25,
+        "Name": "Windows Defender malware detected",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1116,
+        "Description": "The antimalware platform detected malware or other potentially unwanted software"
+    },
+    {
+        "Name": "Windows Defender peformed action",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1117,
+        "Description": "The antimalware platform performed an action to protect your system from malware or other potentially unwanted software"
+    },
+    {
         "Name": "Windows Server Feature Added",
         "Log": "Microsoft-Windows-ServerManager-DeploymentProvider",
-        "EventId": 204
+        "EventId": 204,
+        "Description": ""
     },
     {
-        "Id": 26,
         "Name": "Windows Server Feature Removed",
         "Log": "Microsoft-Windows-ServerManager-DeploymentProvider",
-        "EventId": 304
+        "EventId": 304,
+        "Description": ""
     },
     {
-        "Id": 27,
         "Name": "Failed logon attempt",
         "Log": "Security",
-        "EventId": 4625
+        "EventId": 4625,
+        "Description": ""
     },
     {
-        "Id": 28,
         "Name": "Restart or shutdown",
         "Log": "System",
-        "EventId": 1074
+        "EventId": 1074,
+        "Description": ""
     },
     {
-        "Id": 29,
         "Name": "Process created",
         "Log": "Security",
-        "EventId": 4688
+        "EventId": 4688,
+        "Description": ""
     },
     {
-        "Id": 30,
         "Name": "Process exited",
         "Log": "Security",
-        "EventId": 4689
+        "EventId": 4689,
+        "Description": ""
     }
 ]

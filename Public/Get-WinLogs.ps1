@@ -32,6 +32,7 @@ function Get-WinLogs {
         Version:  0.1.0 | Last Edit: 2022-07-16
         - 0.1.0 - Initial version
         - 0.1.1 - Added StartTime, EndTime, and Data parameters
+        - 0.1.2 - Updated EventTable variable and supporting code
         Comments: <Comment(s)>
         General notes
         https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent
@@ -42,7 +43,7 @@ function Get-WinLogs {
         [switch] $List,
 
         [Parameter(Mandatory, HelpMessage = 'Event Table Id', ParameterSetName = '__evt')]
-        [ValidateScript({ $EventTable.Id -contains $_ })]
+        [ValidateScript({ $_ -GT 0 -AND $_ -LE $EventTable.Count })]
         [int] $Id,
 
         [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = '__evt')]
@@ -66,13 +67,26 @@ function Get-WinLogs {
         [ValidateNotNullOrEmpty()]
         [System.String[]] $Data
     )
+    Begin {
+        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
+        # CREATE EVENT LIST
+        $eventList = for ($i = 1; $i -LT $EventTable.Count; $i++) {
+            [PSCustomObject] @{
+                Id          = $i
+                Name        = $EventTable[$i].Name
+                EventId     = $EventTable[$i].EventId
+                Log         = $EventTable[$i].Log
+                Description = $EventTable[$i].Description
+            }
+        }
+    }
     Process {
-        $eventTable = Get-Content -Raw -Path $PSScriptRoot\EventTable.json | ConvertFrom-Json
-
+        # LIST OR GET EVENTS
         switch ($PSCmdlet.ParameterSetName) {
             '__lst' {
-                $eventTable | Select-Object -Property Id, Name, EventId, Log
+                # OUTPUT EVENT LIST
+                $eventList | Format-Table -AutoSize
             }
             '__evt' {
                 # SET EVENT PARAMETERS HASHTABLE
@@ -97,7 +111,7 @@ function Get-WinLogs {
                 } #>
 
                 # ADD EVENT ID
-                $e = $eventTable.Where({ $_.Id -eq $Id }) #| Where-Object Id -EQ $Id
+                $e = $EventTable[$Id] #.Where({ $_.Id -eq $Id })
                 $filterHash = @{ ID = $e.EventId }
 
                 # ADD LOG NAME OR PROVIDER
