@@ -49,7 +49,7 @@ function Convert-Hexadecimal {
                 # CONVERT DECIMAL TO HEXADECIMAL
                 #'{0:X}' -f 4248
                 #[System.String]::Format('{0:X}', 4248)
-                [System.Convert]::ToString($Decimal, 16)
+                ('0x{0}' -f ([System.Convert]::ToString($Decimal, 16)))
             }
         }
     }
