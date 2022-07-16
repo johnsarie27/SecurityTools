@@ -60,42 +60,6 @@
         "Description": ""
     },
     {
-        "Name": "Antimalware Scan Started",
-        "Log": "System",
-        "EventId": 1000,
-        "Description": ""
-    },
-    {
-        "Name": "Antimalware Scan Completed",
-        "Log": "System",
-        "EventId": 1001,
-        "Description": ""
-    },
-    {
-        "Name": "Antimalware Signature Version Update",
-        "Log": "System",
-        "EventId": 2000,
-        "Description": ""
-    },
-    {
-        "Name": "Malware Detected",
-        "Log": "System",
-        "EventId": 1116,
-        "Description": ""
-    },
-    {
-        "Name": "Antimalware Action Taken",
-        "Log": "System",
-        "EventId": 1117,
-        "Description": ""
-    },
-    {
-        "Name": "Antimalware Deleted Item from Quarantine",
-        "Log": "System",
-        "EventId": 1011,
-        "Description": ""
-    },
-    {
         "Name": "Task Scheduler Task Completed",
         "Log": "Microsoft-Windows-TaskScheduler",
         "EventId": 102,
@@ -132,25 +96,25 @@
         "Description": ""
     },
     {
-        "Name": "Windows Defender malware found",
+        "Name": "Windows Defender Malware Found",
         "Log": "Microsoft-Windows-Windows Defender",
         "EventId": 1006,
         "Description": "The antimalware engine found malware or other potentially unwanted software"
     },
     {
-        "Name": "Windows Defender peformed action",
+        "Name": "Windows Defender Peformed Action",
         "Log": "Microsoft-Windows-Windows Defender",
         "EventId": 1007,
         "Description": "The antimalware platform performed an action to protect your system from malware or other potentially unwanted software"
     },
     {
-        "Name": "Windows Defender malware detected",
+        "Name": "Windows Defender Malware Detected",
         "Log": "Microsoft-Windows-Windows Defender",
         "EventId": 1116,
         "Description": "The antimalware platform detected malware or other potentially unwanted software"
     },
     {
-        "Name": "Windows Defender peformed action",
+        "Name": "Windows Defender Peformed Action",
         "Log": "Microsoft-Windows-Windows Defender",
         "EventId": 1117,
         "Description": "The antimalware platform performed an action to protect your system from malware or other potentially unwanted software"
@@ -168,25 +132,25 @@
         "Description": ""
     },
     {
-        "Name": "Failed logon attempt",
+        "Name": "Failed Logon Attempt",
         "Log": "Security",
         "EventId": 4625,
         "Description": ""
     },
     {
-        "Name": "Restart or shutdown",
+        "Name": "Restart or Shutdown",
         "Log": "System",
         "EventId": 1074,
         "Description": ""
     },
     {
-        "Name": "Process created",
+        "Name": "Process Created",
         "Log": "Security",
         "EventId": 4688,
         "Description": ""
     },
     {
-        "Name": "Process exited",
+        "Name": "Process Exited",
         "Log": "Security",
         "EventId": 4689,
         "Description": ""

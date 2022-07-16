@@ -1,0 +1,38 @@
+[
+    {
+        "Name": "Antimalware Scan Started",
+        "Log": "System",
+        "EventId": 1000,
+        "Description": ""
+    },
+    {
+        "Name": "Antimalware Scan Completed",
+        "Log": "System",
+        "EventId": 1001,
+        "Description": ""
+    },
+    {
+        "Name": "Antimalware Signature Version Update",
+        "Log": "System",
+        "EventId": 2000,
+        "Description": ""
+    },
+    {
+        "Name": "Malware Detected",
+        "Log": "System",
+        "EventId": 1116,
+        "Description": ""
+    },
+    {
+        "Name": "Antimalware Action Taken",
+        "Log": "System",
+        "EventId": 1117,
+        "Description": ""
+    },
+    {
+        "Name": "Antimalware Deleted Item from Quarantine",
+        "Log": "System",
+        "EventId": 1011,
+        "Description": ""
+    }
+]
