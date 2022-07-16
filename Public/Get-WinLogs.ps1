@@ -45,7 +45,7 @@ function Get-WinLogs {
 
         switch ($PSCmdlet.ParameterSetName) {
             '__list' {
-                $eventTable | Select-Object -Property Id, Name
+                $eventTable | Select-Object -Property Id, Name, EventId, Log
             }
             '__events' {
                 $eventParams = @{ }
