@@ -166,5 +166,17 @@
         "Name": "Restart or shutdown",
         "Log": "System",
         "EventId": 1074
+    },
+    {
+        "Id": 29,
+        "Name": "Process created",
+        "Log": "Security",
+        "EventId": 4688
+    },
+    {
+        "Id": 30,
+        "Name": "Process exited",
+        "Log": "Security",
+        "EventId": 4689
     }
 ]

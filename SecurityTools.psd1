@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.7.27'
+    ModuleVersion     = '0.8.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -81,6 +81,7 @@
     FunctionsToExport = @(
         'Compare-Lists'
         'Convert-Epoch'
+        'Convert-Hexadecimal'
         'Convert-SecureKey'
         'Convert-TimeZone'
         'ConvertFrom-GZipString'
