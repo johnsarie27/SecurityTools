@@ -22,7 +22,7 @@ function Get-RandomAlphanumericString {
     [CmdletBinding()]
     Param(
         [Parameter(HelpMessage = 'String length')]
-        [int] $Length = 8
+        [System.Int32] $Length = 8
     )
 
     Process {

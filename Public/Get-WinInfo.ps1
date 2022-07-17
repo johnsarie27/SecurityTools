@@ -23,18 +23,18 @@ function Get-WinInfo {
     [CmdletBinding(DefaultParameterSetName = '__list')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'List available classes', ParameterSetName = '__list')]
-        [switch] $List,
+        [System.Management.Automation.SwitchParameter] $List,
 
         [Parameter(Mandatory, HelpMessage = 'Class Id', ParameterSetName = '__info')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({ $InfoModel.Classes.Id -contains $_ })]
-        [int] $Id,
+        [System.Int32] $Id,
 
         [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = '__info')]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({ Test-Connection -ComputerName $_ -Count 1 -Quiet })]
         [Alias('CN')]
-        [string] $ComputerName
+        [System.String] $ComputerName
     )
 
     Process {

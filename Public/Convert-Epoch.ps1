@@ -24,15 +24,15 @@ function Convert-Epoch {
     Param(
         [Parameter(Position = 0, ParameterSetName = '__dt', ValueFromPipeline, HelpMessage = 'DateTime object')]
         [ValidateNotNullOrEmpty()]
-        [datetime] $Date = (Get-Date),
+        [System.DateTime] $Date = (Get-Date),
 
         [Parameter(Mandatory, Position = 0, ParameterSetName = '__sc', HelpMessage = 'EPOCH Time in seconds')]
         [ValidateNotNullOrEmpty()]
-        [Int64] $Seconds, # 1618614176
+        [System.Int64] $Seconds, # 1618614176
 
         [Parameter(Mandatory, Position = 0, ParameterSetName = '__ms', HelpMessage = 'EPOCH Time in milliseconds')]
         [ValidateNotNullOrEmpty()]
-        [Int64] $Milliseconds # 1618614176000
+        [System.Int64] $Milliseconds # 1618614176000
     )
     Process {
         switch ($PSCmdlet.ParameterSetName) {

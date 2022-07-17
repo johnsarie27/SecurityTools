@@ -33,7 +33,7 @@ function Compare-Lists {
         [Parameter(Mandatory, ParameterSetName = "__file", HelpMessage = 'Path to CSV file containing lists')]
         [ValidateScript( {Test-Path $_ -PathType 'Leaf' -Include "*.csv"})]
         [Alias('FilePath', 'File', 'Data', 'DataFile')]
-        [String] $Path,
+        [System.String] $Path,
 
         [Parameter(Mandatory, ParameterSetName = "__list", HelpMessage = 'First list for comparisson')]
         [ValidateNotNullOrEmpty()]

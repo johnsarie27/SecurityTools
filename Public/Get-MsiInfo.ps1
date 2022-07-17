@@ -25,11 +25,11 @@ function Get-MsiInfo {
         [parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [System.IO.FileInfo] $Path,
- 
+
         [parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [ValidateSet("ProductCode", "ProductVersion", "ProductName", "Manufacturer", "ProductLanguage", "FullVersion")]
-        [string] $Property
+        [System.String] $Property
     )
 
     Process {
@@ -42,16 +42,16 @@ function Get-MsiInfo {
             $view.GetType().InvokeMember("Execute", "InvokeMethod", $null, $view, $null)
             $record = $view.GetType().InvokeMember("Fetch", "InvokeMethod", $null, $view, $null)
             $value = $record.GetType().InvokeMember("StringData", "GetProperty", $null, $record, 1)
- 
+
             # COMMIT DATABASE AND CLOSE VIEW
             $msiDatabase.GetType().InvokeMember("Commit", "InvokeMethod", $null, $msiDatabase, $null)
-            $view.GetType().InvokeMember("Close", "InvokeMethod", $null, $view, $null)           
+            $view.GetType().InvokeMember("Close", "InvokeMethod", $null, $view, $null)
             $msiDatabase = $null
             $view = $null
- 
+
             # RETURN THE VALUE
             return $value
-        } 
+        }
         catch {
             Throw $_.Exception.Message
         }

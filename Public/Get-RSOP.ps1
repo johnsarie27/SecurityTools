@@ -25,15 +25,15 @@ function Get-RSOP {
     Param(
         [Parameter(Mandatory, HelpMessage = 'Path to report file')]
         [ValidateScript({ Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) -PathType Container })]
-        [string] $Path,
+        [System.String] $Path,
 
         [Parameter(ValueFromPipeline, HelpMessage = 'Computer name')]
         [ValidateNotNullOrEmpty()]
-        [string] $Computer,
+        [System.String] $Computer,
 
         [Parameter(HelpMessage = 'Report type output')]
         [ValidateSet('HTML', 'XML')]
-        [string] $ReportType = 'HTML'
+        [System.String] $ReportType = 'HTML'
     )
 
     Process {

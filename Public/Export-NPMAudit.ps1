@@ -22,11 +22,11 @@ function Export-NPMAudit {
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Path to NPM Audit file in JSON format')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.json" })]
-        [string] $Path,
+        [System.String] $Path,
 
         [Parameter(HelpMessage = 'Path to output directory')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [string] $OutputDirectory = "$HOME\Desktop"
+        [System.String] $OutputDirectory = "$HOME\Desktop"
     )
     Begin {
         # GET CONTENT FROM NPM AUDIT FILE

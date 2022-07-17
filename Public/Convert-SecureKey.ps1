@@ -35,11 +35,11 @@ function Convert-SecureKey {
     Param(
         [Parameter(Mandatory, ParameterSetName = '_retrieve', HelpMessage = 'Path to secure Clixml file')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.xml" })]
-        [string] $Path,
+        [System.String] $Path,
 
         [Parameter(Mandatory, ParameterSetName = '_create', HelpMessage = 'Username')]
         [ValidateNotNullOrEmpty()]
-        [string] $Username,
+        [System.String] $Username,
 
         [Parameter(ParameterSetName = '_create', HelpMessage = 'Enter SecureString')]
         [ValidateNotNullOrEmpty()]
@@ -48,13 +48,13 @@ function Convert-SecureKey {
         [Parameter(Mandatory, ParameterSetName = '_create', HelpMessage = 'Path to new credential XML file')]
         [ValidateScript({ Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) })]
         [ValidateScript({ [System.IO.Path]::GetExtension($_) -eq '.xml' })]
-        [string] $DestinationPath,
+        [System.String] $DestinationPath,
 
         [Parameter(ParameterSetName = '_create', HelpMessage = 'Return new credential object')]
-        [switch] $PassThru,
+        [System.Management.Automation.SwitchParameter] $PassThru,
 
         [Parameter(ParameterSetName = '_create', HelpMessage = 'Overwrite existing file')]
-        [switch] $Force
+        [System.Management.Automation.SwitchParameter] $Force
     )
 
     Process {

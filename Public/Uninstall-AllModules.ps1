@@ -18,14 +18,14 @@ function Uninstall-AllModules {
     ========================================================================= #>
     Param(
         [Parameter(Mandatory)]
-        [string] $TargetModule,
+        [System.String] $TargetModule,
 
         [Parameter(Mandatory)]
-        [string] $Version,
+        [System.String] $Version,
 
-        [switch] $Force,
+        [System.String] $Force,
 
-        [switch] $WhatIf
+        [System.String] $WhatIf
     )
 
     $AllModules = @()

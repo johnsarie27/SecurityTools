@@ -28,7 +28,7 @@
         [Parameter(ValueFromPipeline, HelpMessage='Computer name')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
         [Alias('CN')]
-        [String[]] $ComputerName = $env:COMPUTERNAME
+        [System.String[]] $ComputerName = $env:COMPUTERNAME
     )
 
     Begin {

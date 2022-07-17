@@ -33,28 +33,28 @@ function Export-ScanReportAggregate {
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
         [Alias('DestinationPath')]
-        [string] $OutputDirectory = "$HOME\Desktop",
+        [System.String] $OutputDirectory = "$HOME\Desktop",
 
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
         [Alias('NessusScan')]
-        [string] $NessusSystemScan,
+        [System.String] $NessusSystemScan,
 
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
-        [string] $NessusWebScan,
+        [System.String] $NessusWebScan,
 
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
-        [string] $AlertLogicWebScan,
+        [System.String] $AlertLogicWebScan,
 
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xlsx" })]
-        [string] $DatabaseScan,
+        [System.String] $DatabaseScan,
 
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
-        [string] $AcunetixScan
+        [System.String] $AcunetixScan
     )
 
     Begin {

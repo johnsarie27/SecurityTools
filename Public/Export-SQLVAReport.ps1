@@ -30,20 +30,20 @@ function Export-SQLVAReport {
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'SQL server name')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
         [Alias('SN', 'Server')]
-        [string] $ServerName,
+        [System.String] $ServerName,
 
         [Parameter(HelpMessage = 'Path to baseline file in JSON format')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include *.json })]
         [Alias('BP', 'Baseline')]
-        [string] $BaselinePath,
+        [System.String] $BaselinePath,
 
         [Parameter(HelpMessage = 'Output directory')]
         [ValidateScript( { Test-Path -Path $_ -PathType Container })]
         [Alias('DestinationPath')]
-        [string] $OutputDirectory = "D:\MSSQL-VA",
+        [System.String] $OutputDirectory = "D:\MSSQL-VA",
 
         [Parameter(HelpMessage = 'Return path to report directory')]
-        [switch] $PassThru
+        [System.Management.Automation.SwitchParameter] $PassThru
     )
 
     Begin {

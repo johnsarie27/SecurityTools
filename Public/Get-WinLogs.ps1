@@ -40,20 +40,20 @@ function Get-WinLogs {
     [CmdletBinding(DefaultParameterSetName = '__lst')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'List available events', ParameterSetName = '__lst')]
-        [switch] $List,
+        [System.Management.Automation.SwitchParameter] $List,
 
         [Parameter(Mandatory, HelpMessage = 'Event Table Id', ParameterSetName = '__evt')]
         [ValidateScript({ $_ -GT 0 -AND $_ -LE $EventTable.Count })]
-        [int] $Id,
+        [System.Int32] $Id,
 
         [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = '__evt')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Count 1 -Quiet })]
         [Alias('CN')]
-        [string] $ComputerName,
+        [System.String] $ComputerName,
 
         [Parameter(HelpMessage = 'Number of results to return', ParameterSetName = '__evt')]
         [ValidateNotNullOrEmpty()]
-        [int] $Results = 10,
+        [System.Int32] $Results = 10,
 
         [Parameter(HelpMessage = 'Start time for event serach', ParameterSetName = '__evt')]
         [ValidateNotNullOrEmpty()]

@@ -29,19 +29,19 @@ function Get-Software {
     Param(
         [Parameter(HelpMessage = "Software name")]
         [ValidateNotNullOrEmpty()]
-        [string] $Name,
+        [System.String] $Name,
 
         [Parameter(ValueFromPipeline, HelpMessage = 'Computer name')]
         [ValidateScript( { Test-Connection -ComputerName $_ -Quiet -Count 1 })]
         [Alias('CN')]
-        [String] $ComputerName,
+        [System.String] $ComputerName,
 
         [Parameter(HelpMessage = 'Exclude user software registry hives')]
         [Alias('NoUsers')]
-        [switch] $ExcludeUsers,
+        [System.Management.Automation.SwitchParameter] $ExcludeUsers,
 
         [Parameter(HelpMessage = 'Return registry objects with all properties')]
-        [switch] $All
+        [System.Management.Automation.SwitchParameter] $All
     )
 
     Begin {

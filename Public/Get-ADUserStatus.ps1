@@ -20,7 +20,7 @@ function Get-ADUserStatus {
     Param(
         [Parameter(Mandatory, HelpMessage = 'AD User Identity')]
         [ValidateNotNullOrEmpty()]
-        [string] $Identity
+        [System.String] $Identity
     )
     Process {
         $props = @(

@@ -26,11 +26,11 @@ function Get-DomainRegistration {
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Target Domain')]
         [ValidateNotNullOrEmpty()]
-        [string] $Domain,
+        [System.String] $Domain,
 
         [Parameter(Mandatory, HelpMessage = 'API Key')]
         [ValidateNotNullOrEmpty()]
-        [string] $ApiKey
+        [System.String] $ApiKey
     )
 
     Begin {

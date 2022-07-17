@@ -26,12 +26,12 @@ function Get-Weather {
     Param(
         [Parameter(HelpMessage = 'City')]
         [ValidateNotNullOrEmpty()]
-        [string] $City,
+        [System.String] $City,
 
         [Parameter(HelpMessage = 'Predefined format')]
         #[ValidateRange(1,4)]
         [ValidateSet(1,2,3,4,'Sun')]
-        [string] $Format
+        [System.String] $Format
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"

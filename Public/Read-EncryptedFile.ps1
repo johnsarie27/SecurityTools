@@ -26,13 +26,13 @@ function Read-EncryptedFile {
     Param(
         [Parameter(Mandatory)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf })]
-        [string] $Path,
+        [System.String] $Path,
 
         [Parameter(Mandatory, ParameterSetName = '__key')]
-        [string] $Key,
+        [System.String] $Key,
 
         [Parameter(Mandatory, ParameterSetName = '__keybytes')]
-        [byte[]] $KeyBytes
+        [System.Byte[]] $KeyBytes
     )
     Process {
         try {

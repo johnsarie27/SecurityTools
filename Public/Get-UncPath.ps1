@@ -26,15 +26,15 @@ function Get-UncPath {
     Param(
         [Parameter(Mandatory, HelpMessage = 'Local path')]
         [ValidatePattern("[A-Z]:\\.+")]
-        [string] $Path,
+        [System.String] $Path,
 
         [Parameter(HelpMessage = 'Targer server hostname')]
         #[ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 2 })]
         [Alias('HostName', 'CN', 'Computer', 'Host', 'Target')]
-        [string] $ComputerName,
+        [System.String] $ComputerName,
 
         [Parameter(HelpMessage = 'Use UNUX-style path')]
-        [switch] $Unix
+        [System.Management.Automation.SwitchParameter] $Unix
     )
 
     if ( -not $PSBoundParameters.ContainsKey('ComputerName') ) { $ComputerName = ( hostname ) }

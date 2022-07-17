@@ -28,19 +28,19 @@ function Invoke-InfoGraphicScan {
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Path to HTML file')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.html" })]
-        [string[]] $Path,
+        [System.String[]] $Path,
 
         [Parameter(Mandatory, HelpMessage = 'Report data JSON line number')]
         [ValidateRange(1, 999)]
-        [int] $DataLine,
+        [System.Int32] $DataLine,
 
         [Parameter(HelpMessage = 'Report data JSON line number')]
         [ValidateRange(1, 999)]
-        [int] $TitleLine = 6,
+        [System.Int32] $TitleLine = 6,
 
         [Parameter(HelpMessage = 'Temporary directory')]
         [ValidateScript({ Test-Path -Path (Split-Path -Path $_) -PathType Container })]
-        [string] $TempPath = "$env:TEMP\infograph_scan"
+        [System.String] $TempPath = "$env:TEMP\infograph_scan"
     )
     Begin {
         # CREATE TEMP DIRECTORY IF NOT EXIST

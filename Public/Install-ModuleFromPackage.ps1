@@ -27,7 +27,7 @@ function Install-ModuleFromPackage {
         [Parameter(Mandatory, HelpMessage = 'Path to module archive file')]
         [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.zip" })]
         [Alias('DataFile', 'File')]
-        [string] $Path
+        [System.String] $Path
     )
 
     # SET VARS

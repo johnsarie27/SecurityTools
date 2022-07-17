@@ -30,7 +30,7 @@ function Export-SQLVAReportAggregate {
         )]
         [ValidateScript({ Test-Path -Path "$_\*" -Include "*.xlsx" })]
         [Alias('IP', 'Directory')]
-        [string] $InputPath,
+        [System.String] $InputPath,
 
         [Parameter(
             Mandatory, ParameterSetName = 'zip',
@@ -38,16 +38,16 @@ function Export-SQLVAReportAggregate {
         )]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.zip" })]
         [Alias('Zip', 'ZP')]
-        [string] $ZipPath,
+        [System.String] $ZipPath,
 
         [Parameter(HelpMessage = 'Path to output report file')]
         [ValidateScript({ Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) })]
         [ValidateScript({ [System.IO.Path]::GetExtension($_) -eq '.xlsx' })]
         [Alias('DP')]
-        [string] $DestinationPath,
+        [System.String] $DestinationPath,
 
         [Parameter(HelpMessage = 'Return path to aggreate report')]
-        [switch] $PassThru
+        [System.Management.Automation.SwitchParameter] $PassThru
     )
 
     Begin {

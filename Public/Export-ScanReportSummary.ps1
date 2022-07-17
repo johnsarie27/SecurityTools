@@ -31,28 +31,28 @@ function Export-ScanReportSummary {
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) })]
         [ValidateScript({ [System.IO.Path]::GetExtension($_) -eq '.xlsx' })]
-        [string] $DestinationPath,
+        [System.String] $DestinationPath,
 
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
         [Alias('NessusScan')]
-        [string] $NessusSystemScan,
+        [System.String] $NessusSystemScan,
 
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
-        [string] $NessusWebScan,
+        [System.String] $NessusWebScan,
 
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.csv" })]
-        [string] $AlertLogicWebScan,
+        [System.String] $AlertLogicWebScan,
 
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.xlsx })]
-        [string] $DatabaseScan,
+        [System.String] $DatabaseScan,
 
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter *.csv })]
-        [string] $AcunetixScan
+        [System.String] $AcunetixScan
     )
 
     Begin {

@@ -30,15 +30,15 @@ function Test-Performance {
         [Parameter(Mandatory, HelpMessage='ScriptBlock to test performance')]
         [ValidateNotNullOrEmpty()]
         [Alias('SB')]
-        [scriptblock] $ScriptBlock,
+        [System.Management.Automation.ScriptBlock] $ScriptBlock,
 
         [Parameter(HelpMessage = 'Number of test runs')]
         [ValidateRange(10, 10000)]
-        [Int32] $Runs = 10,
+        [System.Int32] $Runs = 10,
 
         [Parameter(HelpMessage = 'Show all run results in milliseconds')]
         [Alias('All', 'ShowAll')]
-        [switch] $ShowResults
+        [System.Management.Automation.SwitchParameter] $ShowResults
     )
 
     # CREATE COLLECTION

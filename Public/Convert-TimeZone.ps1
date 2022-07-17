@@ -27,19 +27,19 @@ function Convert-TimeZone {
     Param(
         [Parameter(ValueFromPipeline, HelpMessage = 'Time to convert')] #Mandatory,
         [ValidateScript({ [System.DateTime]::Parse($_) })]
-        [string[]] $Time = (Get-Date),
+        [System.String[]] $Time = (Get-Date),
 
         [Parameter(HelpMessage = 'Source time zone (default is local)')]
         #[ValidateScript({ (Get-TimeZone -ListAvailable | Where-Object DisplayName -Match '\(US').Id })]
         [ValidateSet('Local', 'UTC', 'Pacific', 'Mountain', 'Central', 'Eastern', 'GMT')]
         [Alias('Source')]
-        [string] $SourceTimeZone = 'Local',
+        [System.String] $SourceTimeZone = 'Local',
 
         [Parameter(Mandatory, HelpMessage = 'Target time zone (default is UTC)')]
         #[ValidateScript({ (Get-TimeZone -ListAvailable | Where-Object DisplayName -Match '\(US').Id })]
         [ValidateSet('Local', 'UTC', 'Pacific', 'Mountain', 'Central', 'Eastern', 'GMT')]
         [Alias('Target')]
-        [string] $TargetTimeZone = 'UTC'
+        [System.String] $TargetTimeZone = 'UTC'
     )
     Begin {
         # FIND OS

@@ -27,17 +27,17 @@ function Write-EncryptedFile {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeLine)]
-        [string[]] $Content,
+        [System.String[]] $Content,
 
         [Parameter(Mandatory)]
         [ValidateScript({ Test-Path -Path ([System.IO.Path]::GetDirectoryName($_)) -PathType Container })]
-        [string] $Path,
+        [System.String] $Path,
 
         [Parameter(Mandatory, ParameterSetName = '__key')]
-        [string] $Key,
+        [System.String] $Key,
 
         [Parameter(Mandatory, ParameterSetName = '__keybytes')]
-        [byte[]] $KeyBytes
+        [System.Byte[]] $KeyBytes
     )
     Begin {
         try {

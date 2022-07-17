@@ -29,14 +29,14 @@ function Get-DirItemAges {
         [Parameter(Mandatory, HelpMessage = 'Target directory')]
         [ValidateScript( {Test-Path -Path $_ -PathType Container})]
         [Alias('Directory', 'Folder')]
-        [string] $Path,
+        [System.String] $Path,
 
         [Parameter(HelpMessage = 'Sample age to measure files create before/after')]
         [ValidateRange(1, 365)]
-        [int] $AgeInDays = 7,
+        [System.Int32] $AgeInDays = 7,
 
         [Parameter(HelpMessage = 'Do not recurse through children directories')]
-        [switch] $NoRecurse
+        [System.Management.Automation.SwitchParameter] $NoRecurse
     )
 
     if ( $NoRecurse ) { $Deep = $false } else { $Deep = $true }

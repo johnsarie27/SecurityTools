@@ -5,7 +5,7 @@ function ConvertFrom-GZipString {
     .DESCRIPTION
         Decompresses a Base64 GZipped string
     .PARAMETER String
-        A Base64 encoded GZipped string
+        Base64 encoded GZipped string
     .INPUTS
         System.String.
     .OUTPUTS

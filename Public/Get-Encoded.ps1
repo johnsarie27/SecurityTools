@@ -25,11 +25,11 @@ function Get-Encoded {
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Plain text string')]
         [ValidateNotNullOrEmpty()]
-        [string] $String,
+        [System.String] $String,
 
         [Parameter(Position = 1, HelpMessage = 'Encoding')]
         [ValidateSet('Base64', 'URL')]
-        [string] $Encoding = 'Base64'
+        [System.String] $Encoding = 'Base64'
     )
     Process {
         if ($Encoding -EQ 'Base64') {

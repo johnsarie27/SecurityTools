@@ -22,11 +22,11 @@ function Export-VeracodeReport {
     Param(
         [Parameter(Mandatory, HelpMessage = 'XML file for Veracode scan report')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.xml" })]
-        [string] $VeracodeXML,
+        [System.String] $VeracodeXML,
 
         [Parameter(HelpMessage = 'Output directory')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [string] $OutputDirectory = "$HOME\Desktop"
+        [System.String] $OutputDirectory = "$HOME\Desktop"
     )
     Begin {
         [xml] $xml = Get-Content -Path $VeracodeXML

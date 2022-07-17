@@ -29,7 +29,7 @@ function Expand-URL {
 
         [Parameter(Mandatory, HelpMessage = 'API Key')]
         [ValidateNotNullOrEmpty()]
-        [string] $ApiKey
+        [System.String] $ApiKey
     )
     Begin {
         Write-Verbose "Starting $($MyInvocation.Mycommand)"

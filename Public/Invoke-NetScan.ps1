@@ -23,10 +23,10 @@ function Invoke-NetScan {
     Param(
         [Parameter(Mandatory, HelpMessage = 'IP addresses to scan')]
         [ValidatePattern('(\d{1,3}\.){3}\d{1,3}')]
-        [string[]] $IP,
+        [System.String[]] $IP,
 
         [Parameter(HelpMessage = 'Resolve hostname')]
-        [switch] $ResolveHostname
+        [System.Management.Automation.SwitchParameter] $ResolveHostname
     )
 
     Begin {

@@ -21,11 +21,11 @@ function Get-StringHash {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'String to hash')]
-        [string] $String,
+        [System.String] $String,
 
         [Parameter(HelpMessage = 'Hashing algorithm to use')]
         [ValidateSet('MD5', 'SHA1', 'SHA256', 'SHA512')]
-        [string] $Algorithm = 'SHA256'
+        [System.String] $Algorithm = 'SHA256'
     )
 
     Process {

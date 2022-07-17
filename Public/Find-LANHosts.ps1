@@ -24,11 +24,11 @@ function Find-LANHost {
     [Cmdletbinding()]
     Param (
         [Parameter(Mandatory, Position = 1, HelpMessage = 'IP addresses to scan')]
-        [string[]] $IP,
+        [System.String[]] $IP,
 
         [Parameter(Position = 2, HelpMessage = 'Delay in milliseconds between packet send')]
         [ValidateRange(0, 15000)]
-        [int] $DelayMS = 2,
+        [System.Int32] $DelayMS = 2,
 
         [Parameter(HelpMessage = 'Clear ARP cache before scanning')]
         [ValidateScript({
@@ -40,7 +40,7 @@ function Find-LANHost {
                 Throw "Must be running an elevated prompt to use ClearARPCache"
             }
         })]
-        [switch] $ClearARPCache
+        [System.Management.Automation.SwitchParameter] $ClearARPCache
     )
 
     $ASCIIEncoding = New-Object System.Text.ASCIIEncoding

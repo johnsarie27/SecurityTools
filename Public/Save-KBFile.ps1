@@ -31,11 +31,11 @@ function Save-KBFile {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [string[]] $Name,
-        [string] $Path = ".",
-        [string] $FilePath,
+        [System.String[]] $Name,
+        [System.String] $Path = ".",
+        [System.String] $FilePath,
         [ValidateSet("x64", "x86", "All")]
-        [string] $Architecture = "x64"
+        [System.String] $Architecture = "x64"
     )
     begin {
         function Get-KBLink {

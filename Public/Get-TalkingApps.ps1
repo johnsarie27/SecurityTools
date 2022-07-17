@@ -21,7 +21,7 @@ function Get-TalkingApps {
         [Parameter(ValueFromPipeline, HelpMessage = 'Target computer name')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Count 1 -Quiet })]
         [Alias('Name', 'Computer', 'Host', 'HostName', 'CN')]
-        [string] $ComputerName
+        [System.String] $ComputerName
     )
 
     Begin {

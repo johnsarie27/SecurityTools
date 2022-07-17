@@ -23,7 +23,7 @@ function Get-SavedHistory {
     Param(
         [Parameter(Mandatory, HelpMessage = 'Search phrase')]
         [ValidateNotNullOrEmpty()]
-        [string] $Search
+        [System.String] $Search
     )
 
     Begin {

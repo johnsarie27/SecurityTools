@@ -25,7 +25,7 @@ function Get-ActiveGWUser {
         [ValidateScript( { Test-Connection -ComputerName $_ -Quiet -Count 1 })]
         [ValidateNotNullOrEmpty()]
         [Alias('Name', 'CN', 'Computer', 'System', 'Target')]
-        [string] $ComputerName
+        [System.String] $ComputerName
     )
 
     Begin {

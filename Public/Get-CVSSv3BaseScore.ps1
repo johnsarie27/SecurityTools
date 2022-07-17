@@ -22,7 +22,7 @@ function Get-CVSSv3BaseScore {
         [Parameter(ValueFromPipeline, Mandatory, HelpMessage = 'CVE ID')]
         [ValidatePattern('CVE-\d{4}\-\d+')]
         #[ValidateScript({ $_ -match 'CVE-\d{4}\-\d+' })]
-        [string[]] $CVE
+        [System.String[]] $CVE
     )
 
     Begin {

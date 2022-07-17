@@ -25,18 +25,18 @@ function Get-DirStats {
     Param(
         [Parameter(Mandatory, HelpMessage = 'Directory to evaluate')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [string] $Path,
+        [System.String] $Path,
 
         [Parameter(HelpMessage = 'Minimum file size to search for')]
         [ValidateRange(0, 10)]
-        [double] $SizeInGb = 1,
+        [System.Double] $SizeInGb = 1,
 
         [Parameter(HelpMessage = 'Output report directory')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [string] $OutputDirectory,
+        [System.String] $OutputDirectory,
 
         [Parameter(HelpMessage = 'Skip total calculations')]
-        [switch] $NoTotals,
+        [System.Management.Automation.SwitchParameter] $NoTotals,
 
         [Parameter(HelpMessage = 'Measure all files of any size')]
         [switch] $All

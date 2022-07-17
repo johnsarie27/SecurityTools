@@ -39,9 +39,8 @@ function Get-WhoIs {
                     $true
                 }
             })]
-        [string[]] $IPAddress
+        [System.String[]] $IPAddress
     )
-
     Begin {
         Write-Verbose "Starting $($MyInvocation.Mycommand)"
         $baseURL = 'http://whois.arin.net/rest'
@@ -49,7 +48,6 @@ function Get-WhoIs {
         $header = @{ "Accept" = "application/xml" }
 
     } #begin
-
     Process {
         foreach ( $ip in $IPAddress ) {
             Write-Verbose -Message "Getting WhoIs information for $ip"
@@ -79,7 +77,6 @@ function Get-WhoIs {
             } #If $r.net
         }
     } #Process
-
     End {
         Write-Verbose "Ending $($MyInvocation.Mycommand)"
     } #end

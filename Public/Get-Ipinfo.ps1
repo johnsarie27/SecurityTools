@@ -23,7 +23,7 @@ function Get-Ipinfo {
         [Parameter(Position = 0, Mandatory, ValueFromPipeline, HelpMessage = 'Enter an IPV4 address')]
         [ValidateNotNullOrEmpty()]
         [ValidatePattern('^(\d{1,3}\.){3}\d{1,3}$')]
-        [string[]] $IPAddress
+        [System.String[]] $IPAddress
     )
 
     Begin {

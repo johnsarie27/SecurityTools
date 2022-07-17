@@ -18,7 +18,7 @@ function Get-LoggedOnUser {
         [ValidateScript( { Test-Connection -ComputerName $_ -Quiet -Count 1 })]
         [ValidateNotNullOrEmpty()]
         [Alias('Hostname', 'Host', 'Computer', 'CN')]
-        [string] $ComputerName
+        [System.String] $ComputerName
     )
 
     if ( $PSBoundParameters.ContainsKey('ComputerName') ) {

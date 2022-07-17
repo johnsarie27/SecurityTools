@@ -22,11 +22,11 @@ function Export-WebScan {
     Param(
         [Parameter(Mandatory, HelpMessage = 'Path to Acunetix report file in XML format')]
         [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.xml" })]
-        [string] $Path,
+        [System.String] $Path,
 
         [Parameter(HelpMessage = 'Path to output directory')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [string] $OutputDirectory = "$HOME\Desktop"
+        [System.String] $OutputDirectory = "$HOME\Desktop"
     )
 
     Begin {
