@@ -8,7 +8,7 @@ function Get-PatchTuesday {
         The month to check
     .PARAMETER Year
         The year to check
-    .PARAMETER WeekDay
+    .PARAMETER DayOfWeek
         Day of week
     .PARAMETER WeekOfMonth
         Week of month
@@ -25,30 +25,37 @@ function Get-PatchTuesday {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(HelpMessage = 'Target month')]
-        [string] $Month = (Get-Date).Month,
+        [Parameter(HelpMessage = 'Month')]
+        [ValidateRange(1, 12)]
+        [System.Int32] $Month = (Get-Date).Month,
 
-        [Parameter(HelpMessage = 'Target year')]
-        [string] $Year = (Get-Date).Year,
+        [Parameter(HelpMessage = 'Year')]
+        [ValidateRange(1900, 2301)]
+        [System.Int32] $Year = (Get-Date).Year,
 
-        [Parameter(HelpMessage = 'Day of Week')]
+        [Parameter(HelpMessage = 'Day of week')]
         [ValidateSet('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')]
-        [String] $WeekDay = 'Tuesday',
+        [Alias('WeekDay')]
+        [System.String] $DayOfWeek = 'Tuesday',
 
         [Parameter(HelpMessage = 'Week of month')]
         [ValidateRange(1, 5)]
-        [int] $WeekOfMonth = 2
+        [System.Int32] $WeekOfMonth = 2
     )
-
     Process {
-        # GET BOTH THE FIRST AND LAST DAYS OF THE MONTH
-        $firstDayOfMonth = [datetime] ('{0}/1/{1}' -f $Month, $Year)
-        #$firstDayOfMonth = Get-Date (Get-Date) -Day 1 -Hour 0 -Minute 0 -Second 0
+        # GET FIRST OF THE MONTH
+        $firstDayOfMonth = Get-Date -Month $Month -Year $Year -Day 1 -Hour 0 -Minute 0 -Second 0
+        Write-Verbose -Message ('First day of month: {0}' -f $firstDayOfMonth)
+
+        # GET LAST DAY OF MONTH
         $lastDayOfMonth = $firstDayOfMonth.AddMonths(1).AddSeconds(-1)
+        Write-Verbose -Message ('Last day of month: {0}' -f $lastDayOfMonth)
 
         # GET THE SECOND TUESDAY OF THE MONTH
         $n = $WeekOfMonth - 1
-        (0..($lastDayOfMonth.Day) | ForEach-Object { $firstDayOfMonth.AddDays($_) } | Where-Object { $_.DayOfWeek -eq $WeekDay })[$n]
+
+        (0..($lastDayOfMonth.Day) | ForEach-Object { $firstDayOfMonth.AddDays($_) }
+            | Where-Object { $_.DayOfWeek -eq $DayOfWeek })[$n]
         <# $daysOfMonth = foreach ( $day in 0..($lastDayOfMonth.Day) ) { $firstDayOfMonth.AddDays($day) }
         $daysOfMonth | Where-Object -FilterScript { $_.DayOfWeek -eq $WeekDay } | Select-Object -Skip $n -First 1 #>
     }
