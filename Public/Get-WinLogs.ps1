@@ -46,7 +46,7 @@ function Get-WinLogs {
         [ValidateScript({ $_ -GT 0 -AND $_ -LE $EventTable.Count })]
         [System.Int32] $Id,
 
-        [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = '__evt')]
+        [Parameter(HelpMessage = 'Hostname of target computer', ParameterSetName = '__evt')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Count 1 -Quiet })]
         [Alias('CN')]
         [System.String] $ComputerName,
