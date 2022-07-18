@@ -51,12 +51,17 @@ function Get-PatchTuesday {
         $lastDayOfMonth = $firstDayOfMonth.AddMonths(1).AddSeconds(-1)
         Write-Verbose -Message ('Last day of month: {0}' -f $lastDayOfMonth)
 
-        # GET THE SECOND TUESDAY OF THE MONTH
+        # SET NUMBER OF WEEKS TO SKIP
         $n = $WeekOfMonth - 1
 
+        <# # GET THE SECOND TUESDAY OF THE MONTH
         (0..($lastDayOfMonth.Day) | ForEach-Object { $firstDayOfMonth.AddDays($_) }
-            | Where-Object { $_.DayOfWeek -eq $DayOfWeek })[$n]
-        <# $daysOfMonth = foreach ( $day in 0..($lastDayOfMonth.Day) ) { $firstDayOfMonth.AddDays($day) }
-        $daysOfMonth | Where-Object -FilterScript { $_.DayOfWeek -eq $WeekDay } | Select-Object -Skip $n -First 1 #>
+            | Where-Object { $_.DayOfWeek -eq $DayOfWeek })[$n] #>
+
+        # GET EACH DAY OF THE MONTH
+        $daysOfMonth = foreach ( $day in 0..($lastDayOfMonth.Day-1) ) { $firstDayOfMonth.AddDays($day) }
+
+        # GET ALL DAYS OF THE WEEK IN THE SPECIFIED MONTH, SKIP UNSELECT WEEKS AND OUTPUT SELECTED WEEK
+        $daysOfMonth | Where-Object { $_.DayOfWeek -EQ $DayOfWeek } | Select-Object -Skip $n -First 1
     }
 }
