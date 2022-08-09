@@ -6,13 +6,15 @@ function Get-CountryCode {
         Get country from 2- or 3-letter country code
     .PARAMETER Code
         Country code (2- or 3-letter)
+    .PARAMETER Country
+        Country name
     .INPUTS
-        Inputs (if any)
+        None.
     .OUTPUTS
-        Output (if any)
+        System.Object.
     .EXAMPLE
-        PS C:\> <example usage>
-        Explanation of what the example does
+        PS C:\> Get-CountryCode AS
+        Returns the country data for "American Somoa"
     .NOTES
         Name:     Get-CountryCode
         Author:   Justin Johns
@@ -20,12 +22,19 @@ function Get-CountryCode {
         - <VersionNotes> (or remove this line if no version notes)
         Comments: <Comment(s)>
         General notes
+        https://www.iso.org/obp/ui/#search
+        https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
+        https://datahub.io/core/country-list
     ========================================================================= #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = '__cde')]
     Param(
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Country code (2- or 3-letter)')]
+        [Parameter(Mandatory, Position = 0, ParameterSetName = '__cde', HelpMessage = 'Country code (2- or 3-letter)')]
         [ValidatePattern('^[A-Z]{2,3}$')]
-        [System.String] $Code
+        [System.String] $Code,
+
+        [Parameter(Mandatory, Position = 0, ParameterSetName = '__cty', HelpMessage = 'Country name')]
+        [ValidatePattern('^[\w\s-]+$')]
+        [System.String] $Country
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
@@ -37,8 +46,16 @@ function Get-CountryCode {
         $data = Invoke-RestMethod -Uri $uri | ConvertFrom-Csv
     }
     Process {
-        # CHECK CODE LENGTH
-        if ($Code.Length -EQ 2) { $data.Where({ $_.'Alpha-2 code' -EQ $Code }) }
-        else { $data.Where({ $_.'Alpha-3 code' -EQ $Code }) }
+        switch ($PSCmdlet.ParameterSetName) {
+            '__cde' {
+                # CHECK CODE LENGTH
+                if ($Code.Length -EQ 2) { $data.Where({ $_.'Alpha-2 code' -EQ $Code }) }
+                else { $data.Where({ $_.'Alpha-3 code' -EQ $Code }) }
+            }
+            '__cty' {
+                # MATCH COUNTRY
+                $data.Where({ $_.'English short name' -Like "*$Country*" })
+            }
+        }
     }
 }
