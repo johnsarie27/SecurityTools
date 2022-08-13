@@ -22,7 +22,9 @@ function Get-KEVList {
         Version:  0.1.0 | Last Edit: 2022-08-13
         - 0.1.0 - Initial version
         - 0.1.1 - Added dynamic parameter
-        Comments: <Comment(s)>
+        Comments: This function was written in order to learn how to use dynamic
+        parameters. The dynamic parameter can be replaced with a single
+        parameter named OutputDirectory.
         General notes
         https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_parameters
     ========================================================================= #>
