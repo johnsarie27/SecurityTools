@@ -19,7 +19,7 @@ function Get-CVSSv3BaseScore {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(ValueFromPipeline, Mandatory, HelpMessage = 'CVE ID')]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'CVE ID')]
         [ValidatePattern('CVE-\d{4}\-\d+')]
         #[ValidateScript({ $_ -match 'CVE-\d{4}\-\d+' })]
         [System.String[]] $CVE
