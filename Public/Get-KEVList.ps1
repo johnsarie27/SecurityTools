@@ -4,9 +4,9 @@ function Get-KEVList {
         Get Known Exploited Vulnerability list
     .DESCRIPTION
         Get Known Exploited Vulnerabilities as array of objects or download as
-        CSV file
-    .PARAMETER DownloadCSV
-        Download CSV file
+        CSV or JSON file
+    .PARAMETER Format
+        Format to download catalog
     .PARAMETER OutputDirectory
         Output Directory
     .INPUTS
@@ -22,6 +22,7 @@ function Get-KEVList {
         Version:  0.1.0 | Last Edit: 2022-08-13
         - 0.1.0 - Initial version
         - 0.1.1 - Added dynamic parameter
+        - 0.1.2 - Added output format options CSV, JSON, and Schema
         Comments: This function was written in order to learn how to use dynamic
         parameters. The dynamic parameter can be replaced with a single
         parameter named OutputDirectory.
@@ -30,11 +31,12 @@ function Get-KEVList {
     ========================================================================= #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory = $false, HelpMessage = 'Download CSV file')]
-        [System.Management.Automation.SwitchParameter] $DownloadCSV
+        [Parameter(Mandatory = $false, HelpMessage = 'Format to download catalog')]
+        [ValidateSet('CSV', 'JSON', 'Schema')]
+        [System.String] $Format
     )
     DynamicParam {
-        if ($PSBoundParameters.ContainsKey('DownloadCSV')) {
+        if ($PSBoundParameters.ContainsKey('Format')) {
             # SET DYNAMIC PARAMETERS
             $dynamicParams = @{
                 OutputDirectory = @{
@@ -78,7 +80,6 @@ function Get-KEVList {
     }
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
-        # $schema = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities_schema.json'
 
         # VALIDATE OUTPUTDIRECTORY PARAMETER
         if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
@@ -88,9 +89,13 @@ function Get-KEVList {
         }
     }
     Process {
-        if ($PSBoundParameters.ContainsKey('DownloadCSV')) {
+        if ($PSBoundParameters.ContainsKey('Format')) {
             # SET URI
-            $uri = 'https://www.cisa.gov/sites/default/files/csv/known_exploited_vulnerabilities.csv'
+            $uri = switch ($Format) {
+                'CSV' { 'https://www.cisa.gov/sites/default/files/csv/known_exploited_vulnerabilities.csv' }
+                'JSON' { 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json' }
+                'Schema' { 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities_schema.json' }
+            }
 
             # SET OUTPUT PATH
             $outFile = Join-Path -Path $PSBoundParameters['OutputDirectory'] -ChildPath (Split-Path -Path $uri -Leaf)
