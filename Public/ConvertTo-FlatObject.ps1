@@ -42,7 +42,7 @@ function ConvertTo-FlatObject {
 
         [Parameter(HelpMessage = 'Base')]
         [ValidateSet("", 0, 1)]
-        [System.Object] $Base = 1,
+        [System.Object] $Base = 0,
 
         [Parameter(HelpMessage = 'Depth')]
         [System.Int16] $Depth = 5,
