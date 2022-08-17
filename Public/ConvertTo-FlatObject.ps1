@@ -1,28 +1,36 @@
 function ConvertTo-FlatObject {
     <# =========================================================================
     .SYNOPSIS
-        Short description
+        Flattends a nested object into a single level object
     .DESCRIPTION
-        Long description
-    .PARAMETER Path
-        Parameter description (if any)
+        Flattends a nested object into a single level object
+    .PARAMETER Object
+        The object to be flatten
+    .PARAMETER Separator
+        The separator used between the recursive property names
+    .PARAMETER Base
+        The first index name of an embedded array:
+        - 1, arrays will be 1 based: <Parent>.1, <Parent>.2, <Parent>.3, …
+        - 0, arrays will be 0 based: <Parent>.0, <Parent>.1, <Parent>.2, …
+        - "", the first item in an array will be unnamed and than followed with 1: <Parent>, <Parent>.1, <Parent>.2, …
+    .PARAMETER Depth
+        The maximal depth of flattening a recursive property. Any negative value will result in an unlimited depth and could cause a infinitive loop.
     .INPUTS
-        Inputs (if any)
+        System.Object.
     .OUTPUTS
-        Output (if any)
+        System.Object.
     .EXAMPLE
         PS C:\> <example usage>
         Explanation of what the example does
     .NOTES
         Name:     ConvertTo-FlatObject
-        Author:   Justin Johns
         Version:  0.1.0 | Last Edit: 2022-08-17
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
+        Based on the articles below:
         https://powersnippets.com/convertto-flatobject/
         https://github.com/EvotecIT/PSSharedGoods/blob/master/Public/Converts/ConvertTo-FlatObject.ps1
-        https://github.com/RamblingCookieMonster/PowerShell/blob/master/ConvertTo-FlatObject.ps1
     ========================================================================= #>
     [CmdletBinding()]
     Param(
@@ -34,7 +42,7 @@ function ConvertTo-FlatObject {
 
         [Parameter(HelpMessage = 'Base')]
         [ValidateSet("", 0, 1)]
-        $Base = 1,
+        [System.Object] $Base = 1,
 
         [Parameter(HelpMessage = 'Depth')]
         [System.Int16] $Depth = 5,
