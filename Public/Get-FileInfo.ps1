@@ -16,8 +16,9 @@ function Get-FileInfo {
     .NOTES
         Name:     Get-FileInfo
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-08-23
+        Version:  0.1.1 | Last Edit: 2022-08-23
         - 0.1.0 - Initial version
+        - 0.1.1 - Replaced file with web lookup for file signatures
         Comments: <Comment(s)>
         General notes
         https://en.wikipedia.org/wiki/List_of_file_signatures
@@ -28,10 +29,17 @@ function Get-FileInfo {
         [ValidatePattern('^[A-Za-z0-9\s]+$')]
         [System.String] $Signature
     )
-    Process {
+    Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
+        # SET URI
+        $uri = 'https://gist.githubusercontent.com/johnsarie27/819dec131420d02a9404a0479759eb59/raw/2796f5d3e58a272b876285a1eea08614114e9f1f/FileSignatures.json'
+
+        # GET DATA
+        $fileSigs = Invoke-RestMethod -Uri $uri
+    }
+    Process {
         # LOOKUP VALUE
-        $FileSignatures | Where-Object Hex_signature -Match $Signature
+        $fileSigs | Where-Object Hex_signature -Match $Signature
     }
 }

@@ -12,11 +12,7 @@ New-Variable -Name 'InfoModel' -Option ReadOnly -Value (
     Get-Content -Raw -Path "$PSScriptRoot\Public\InformationModel.json" | ConvertFrom-Json
 )
 
-New-Variable -Name 'FileSignatures' -Option ReadOnly -Value (
-    Get-Content -Raw -Path "$PSScriptRoot\Public\FileSignatures.json" | ConvertFrom-Json
-)
-
 # EXPORT MEMBERS
 # THESE ARE SPECIFIED IN THE MODULE MANIFEST AND THEREFORE DON'T NEED TO BE LISTED HERE
 #Export-ModuleMember -Function *
-Export-ModuleMember -Variable 'EventTable', 'FileSignatures', 'InfoModel'
+Export-ModuleMember -Variable 'EventTable', 'InfoModel'

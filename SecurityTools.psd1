@@ -142,7 +142,6 @@
     # Variables to export from this module
     VariablesToExport = @(
         'EventTable'
-        'FileSignatures'
         'InformationModel'
     )
 

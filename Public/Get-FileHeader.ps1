@@ -19,7 +19,7 @@ function Get-FileHeader {
     .NOTES
         Name:     Get-FileHeader
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-08-23
+        Version:  0.1.1 | Last Edit: 2022-08-23
         - 0.1.0 - Initial version
         - 0.1.1 - Added parameter for number of bytes to return
         Comments: <Comment(s)>
