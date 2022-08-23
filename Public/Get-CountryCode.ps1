@@ -18,8 +18,9 @@ function Get-CountryCode {
     .NOTES
         Name:     Get-CountryCode
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-08-08
-        - <VersionNotes> (or remove this line if no version notes)
+        Version:  0.1.1 | Last Edit: 2022-08-23
+        - 0.1.0 - Initial version
+        - 0.1.1 - Added global variable to prevent repeated web requests
         Comments: <Comment(s)>
         General notes
         https://www.iso.org/obp/ui/#search
@@ -39,22 +40,28 @@ function Get-CountryCode {
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
-        # SET URI
-        $uri = 'https://gist.githubusercontent.com/johnsarie27/1ab851a8c0e06687ae1a49acf3498f82/raw/4bda0600fc609c0df774d20a9e5623a22394215d/ISO-3166.csv'
+        # CHECK FOR FILE SIGNATURE VARIABLE
+        if (-Not (Get-Variable -Name 'CountryCodes' -ErrorAction Ignore)) {
 
-        # GET COUNTRY CODE DATA
-        $data = Invoke-RestMethod -Uri $uri | ConvertFrom-Csv
+            Write-Verbose -Message 'Setting "CountryCodes" variable'
+
+            # SET URI
+            $uri = 'https://gist.githubusercontent.com/johnsarie27/1ab851a8c0e06687ae1a49acf3498f82/raw/4bda0600fc609c0df774d20a9e5623a22394215d/ISO-3166.csv'
+
+            # CREATE VARIABLE AS GLOBAL
+            New-Variable -Name 'CountryCodes' -Scope Global -Value (Invoke-RestMethod -Uri $uri | ConvertFrom-Csv)
+        }
     }
     Process {
         switch ($PSCmdlet.ParameterSetName) {
             '__cde' {
                 # CHECK CODE LENGTH
-                if ($Code.Length -EQ 2) { $data.Where({ $_.'Alpha-2 code' -EQ $Code }) }
-                else { $data.Where({ $_.'Alpha-3 code' -EQ $Code }) }
+                if ($Code.Length -EQ 2) { $CountryCodes.Where({ $_.'Alpha-2 code' -EQ $Code }) }
+                else { $CountryCodes.Where({ $_.'Alpha-3 code' -EQ $Code }) }
             }
             '__cty' {
                 # MATCH COUNTRY
-                $data.Where({ $_.'English short name' -Like "*$Country*" })
+                $CountryCodes.Where({ $_.'English short name' -Like "*$Country*" })
             }
         }
     }
