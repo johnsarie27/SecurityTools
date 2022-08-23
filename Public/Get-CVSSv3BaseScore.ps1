@@ -24,12 +24,10 @@ function Get-CVSSv3BaseScore {
         #[ValidateScript({ $_ -match 'CVE-\d{4}\-\d+' })]
         [System.String[]] $CVE
     )
-
     Begin {
         $baseUri = "https://nvd.nist.gov/vuln/detail/{0}"
         $pattern = 'class="label\slabel-\w+">(\d+\.\d+)\s(\w+)</a>'
     }
-
     Process {
         foreach ( $c in $CVE ) {
             $uri = $baseUri -f $c

@@ -25,14 +25,12 @@ function Get-Ipinfo {
         [ValidatePattern('^(\d{1,3}\.){3}\d{1,3}$')]
         [System.String[]] $IPAddress
     )
-
     Begin {
         Write-Verbose "Starting $($MyInvocation.Mycommand)"
 
         $baseUrl = "https://ipinfo.io/"
         $headers = @{ accept = "application/json" }
     }
-
     Process {
         foreach ( $ip in $IPAddress ) {
             $url = '{0}{1}' -f $baseUrl, $ip

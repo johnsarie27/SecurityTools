@@ -43,7 +43,6 @@ function Get-Software {
         [Parameter(HelpMessage = 'Return registry objects with all properties')]
         [System.Management.Automation.SwitchParameter] $All
     )
-
     Begin {
         # SET VARS FOR REMOTE CALLS
         if ( $PSBoundParameters.ContainsKey('All') ) { $GetAll = $true } else { $GetAll = $false }
@@ -109,7 +108,6 @@ function Get-Software {
         # SET PARAM HASH
         $Splat = @{ ScriptBlock = $ScriptBlock }
     }
-
     Process {
         # CHECK FOR LOCAL SYSTEM OR NO COMPUTERNAME
         if ( !$PSBoundParameters.ContainsKey('ComputerName') -or $ComputerName -eq $env:COMPUTERNAME ) {
