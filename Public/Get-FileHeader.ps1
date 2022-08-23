@@ -10,9 +10,9 @@ function Get-FileHeader {
     .PARAMETER Bytes
         Number of bytes
     .INPUTS
-        System.String
+        System.String.
     .OUTPUTS
-        System.String
+        System.String.
     .EXAMPLE
         PS C:\> Get-FileHeader -Path "C:\myFile.xlsx"
         Returns the first 4 bytes as hex
@@ -43,6 +43,9 @@ function Get-FileHeader {
         $fileBytes = [System.IO.File]::ReadAllBytes($Path)
 
         # CONVERT FIRST 4 BYTES TO HEX
-        0..($Bytes-1) | ForEach-Object -Process { '{0:X2}' -f $fileBytes[$_] }
+        $header = 0..($Bytes-1) | ForEach-Object -Process { '{0:X2}' -f $fileBytes[$_] }
+
+        # RETURN HEADER AS STRING
+        $header -join ' '
     }
 }
