@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.8.4'
+    ModuleVersion     = '0.8.5'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -106,6 +106,7 @@
         'Get-DomainRegistration'
         'Get-Encoded'
         'Get-FileHeader'
+        'Get-FileInfo'
         'Get-FolderSize'
         'Get-Ipinfo'
         'Get-KEVList'
@@ -141,6 +142,7 @@
     # Variables to export from this module
     VariablesToExport = @(
         'EventTable'
+        'FileSignatures'
         'InformationModel'
     )
 
