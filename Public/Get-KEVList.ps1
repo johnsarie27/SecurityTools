@@ -27,6 +27,8 @@ function Get-KEVList {
         parameters. The dynamic parameter can be replaced with a single
         parameter named OutputDirectory.
         General notes
+        https://cyber.dhs.gov/bod/22-01/
+        https://www.cisa.gov/known-exploited-vulnerabilities
         https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_parameters
     ========================================================================= #>
     [CmdletBinding()]
