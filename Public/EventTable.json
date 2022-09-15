@@ -24,6 +24,18 @@
         "Description": ""
     },
     {
+        "Name": "MSP Patch Installed",
+        "Log": "Application",
+        "EventId": 1036,
+        "Description": "Windows Installer installed an update... Installation success or error status: %5."
+    },
+    {
+        "Name": "MSP Patch Installed Successfully",
+        "Log": "Application",
+        "EventId": 1022,
+        "Description": "Product: %1 - Update '%2' installed successfully..."
+    },
+    {
         "Name": "Event Log Started",
         "Log": "System",
         "EventId": 6005,
