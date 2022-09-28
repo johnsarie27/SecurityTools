@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.8.6'
+    ModuleVersion     = '0.8.7'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -86,6 +86,7 @@
         'Convert-TimeZone'
         'ConvertFrom-GZipString'
         'ConvertTo-FlatObject'
+        'ConvertTo-MarkdownTable'
         'Expand-URL'
         'Export-NPMAudit'
         'Export-ScanReportAggregate'
