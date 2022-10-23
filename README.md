@@ -18,6 +18,10 @@ Other functions were written to help review and triage web traffic.
 
 ## Lastest Version Notes
 
+### v0.8.8
+
+- Added function Get-AlternateDataStream
+
 ### v0.8.7
 
 - Added function Get-KEVList
