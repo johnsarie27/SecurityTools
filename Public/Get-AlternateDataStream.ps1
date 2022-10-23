@@ -42,9 +42,9 @@ function Get-AlternateDataStream {
 
         # SET DESIRED PROPERTIES
         $props = @(
-            @{ Name = "Path"; Expression = { $_.filename } }
+            @{ Name = "Path"; Expression = { $_.FileName } }
             'Stream'
-            @{ Name = "Size"; Expression = { $_.length } }
+            @{ Name = "Size"; Expression = { $_.Length } }
         )
 
         # SET WHERE STATEMENT
