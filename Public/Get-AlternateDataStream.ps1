@@ -29,6 +29,13 @@ function Get-AlternateDataStream {
 
         General notes:
         https://jdhitsolutions.com/blog/scripting/8888/friday-fun-with-powershell-and-alternate-data-streams/
+
+        Zone.Identifiers
+        0 = Local computer
+        1 = Local intranet
+        2 = Trusted sites
+        3 = Internet
+        4 = Restricted sites
     ========================================================================= #>
     [CmdletBinding()]
     Param(
