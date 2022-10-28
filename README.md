@@ -18,6 +18,12 @@ Other functions were written to help review and triage web traffic.
 
 ## Lastest Version Notes
 
+### v0.8.9
+
+- Renamed function from Get-RandomAlphanumericString to Get-RandomString
+- Added parameters for excluding character types to Get-RandomString
+- Added inclusion of special characters to Get-RandomString
+
 ### v0.8.8
 
 - Added function Get-AlternateDataStream

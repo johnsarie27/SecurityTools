@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.8.8'
+    ModuleVersion     = '0.8.9'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -116,7 +116,7 @@
         'Get-MsiInfo'
         'Get-Object'
         'Get-PatchTuesday'
-        'Get-RandomAlphanumericString'
+        'Get-RandomString'
         'Get-RSOP'
         'Get-SavedHistory'
         'Get-Software'
