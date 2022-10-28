@@ -6,6 +6,8 @@ function Get-RandomString {
         Generate a random string
     .PARAMETER Length
         String length (default of 8 characters)
+    .PARAMETER ExcludeCharacter
+        Exclude specified character
     .PARAMETER ExcludeNumber
         Exclude numbers
     .PARAMETER ExcludeLowercase
@@ -31,6 +33,9 @@ function Get-RandomString {
     Param(
         [Parameter(HelpMessage = 'String length')]
         [System.Int32] $Length = 8,
+
+        [Parameter(HelpMessage = 'Exclude specified character')]
+        [System.String[]] $ExcludeCharacter,
 
         [Parameter(HelpMessage = 'Exclude numbers')]
         [System.Management.Automation.SwitchParameter] $ExcludeNumber,
@@ -67,7 +72,10 @@ function Get-RandomString {
         if ($PSBoundParameters.ContainsKey('ExcludeSpecial')) { $allSets.Remove('spcl')  }
 
         # SET CHARACTER SET
-        $charSet = foreach ($s in $allSets.GetEnumerator()) { $allSets[$s.Key] }
+        [System.Collections.Generic.List[System.Char]] $charSet = foreach ($s in $allSets.GetEnumerator()) { $allSets[$s.Key] }
+
+        # REMOVE EXCLUDED CHARACTERS
+        foreach ($i in $ExcludeCharacter) { $charSet.Remove($i) | Out-Null }
     }
     Process {
         $chars = for ($i=1; $i -LE $Length; $i++) { [System.Char] (Get-Random -InputObject $charSet -Count 1) }
