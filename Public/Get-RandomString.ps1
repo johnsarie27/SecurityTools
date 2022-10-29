@@ -24,10 +24,13 @@ function Get-RandomString {
         PS C:\> Get-RandomString -Length 20
         Generates a random string of 20 characters
     .NOTES
-        General notes
-        This function was taken from Marcus Gelderman (see link below)
-        Some modifications have been made for code clarity
-        https://gist.github.com/marcgeld/4891bbb6e72d7fdb577920a6420c1dfb
+        Name:     Get-RandomString
+        Author:   Justin Johns
+        Version:  0.1.1 | Last Edit: 2022-10-28
+        - 0.1.1 - Updated comments
+        - 0.1.0 - Initial version
+
+        General notes:
     ========================================================================= #>
     [CmdletBinding()]
     Param(
@@ -78,6 +81,9 @@ function Get-RandomString {
         foreach ($i in $ExcludeCharacter) { $charSet.Remove($i) | Out-Null }
     }
     Process {
+        # THIS ONLY USES EACH CHARACTER FROM $charSet ONCE
+        #$chars = $charSet | Get-Random -Count $Length | ForEach-Object { [System.Char] $_ }
+
         $chars = for ($i=1; $i -LE $Length; $i++) { [System.Char] (Get-Random -InputObject $charSet -Count 1) }
         -join $chars
     }
