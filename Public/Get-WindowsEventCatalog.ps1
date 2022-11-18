@@ -25,7 +25,7 @@ function Get-WindowsEventCatalog {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
         # SET URI
-        $uri = 'https://gist.githubusercontent.com/johnsarie27/5519dd08bae06b8b6271ac168e28e06a/raw/895db2a7844578ac2c5b22a73dd4b0c9c7327711/windows_signatures_850.csv'
+        $uri = 'https://gist.githubusercontent.com/johnsarie27/5519dd08bae06b8b6271ac168e28e06a/raw/670c357a50c22d121bc839b09d1aca9dd16854e6/windows_signatures_850.csv'
     }
     Process {
         Invoke-RestMethod -Uri $uri | ConvertFrom-Csv
