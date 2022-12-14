@@ -20,10 +20,15 @@ function Get-Software {
         PS C:\> Get-Software -All
         This returns all properties of the registry keys holding the software inventory
     .NOTES
-        General notes
+        Name:     Get-Software
+        Author:   Justin Johns
+        Version:  0.1.1 | Last Edit: 2022-12-14
+        - 0.1.1 - Converted local vars to camel case, removed function alias "gs"
+        - 0.1.0 - Initial version
+        General notes:
         https://4sysops.com/archives/find-the-product-guid-of-installed-software-with-powershell/
     ========================================================================= #>
-    [Alias('gs')]
+    #[Alias('gs')]
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding()]
     Param(
@@ -45,14 +50,14 @@ function Get-Software {
     )
     Begin {
         # SET VARS FOR REMOTE CALLS
-        if ( $PSBoundParameters.ContainsKey('All') ) { $GetAll = $true } else { $GetAll = $false }
-        if ( $PSBoundParameters.ContainsKey('Name') ) { $GetName = $true } else { $GetName = $false }
-        if ( $PSBoundParameters.ContainsKey('ExcludeUsers') ) { $GetUsers = $false } else { $GetUsers = $true }
+        if ( $PSBoundParameters.ContainsKey('All') ) { $getAll = $true } else { $getAll = $false }
+        if ( $PSBoundParameters.ContainsKey('Name') ) { $getName = $true } else { $getName = $false }
+        if ( $PSBoundParameters.ContainsKey('ExcludeUsers') ) { $getUsers = $false } else { $getUsers = $true }
 
         # CREATE SCRIPTBLOCK
-        $ScriptBlock = {
+        $scriptBlock = {
             # SET UNINSTALL REGISTRY HIVE PATH
-            $UninstallKeys = @(
+            $uninstallKeys = @(
                 "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
                 "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
             )
@@ -63,7 +68,7 @@ function Get-Software {
             if ( $isAdmin ) { Write-Verbose 'Current user has admin privileges' }
 
             # GET USER KEYS
-            if ( $true -eq $Using:GetUsers -and $isAdmin ) {
+            if ( $true -eq $Using:getUsers -and $isAdmin ) {
                 # ADD NEW PSDRIVE FOR HKEY CURRENT USER HIVE
                 New-PSDrive -Name HKU -PSProvider Registry -Root Registry::HKEY_USERS | Out-Null
 
@@ -72,7 +77,7 @@ function Get-Software {
                     if ( $key.Name -match 'S-\d-\d+-(\d+-){1,14}\d+$' ) {
                         $path = 'HKU:\{0}\Software\Microsoft\Windows\CurrentVersion\Uninstall' -f $key.PSChildName
                         if ( Test-Path $path ) {
-                            $UninstallKeys += $path
+                            $uninstallKeys += $path
                         }
                     }
                 }
@@ -82,16 +87,16 @@ function Get-Software {
             }
 
             # SET WHERE STATEMENT
-            if ( $true -eq $Using:GetName ) { $Where = { $_.GetValue('DisplayName') -like "*$Using:Name*" } }
-            else { $Where = { $_.GetValue('DisplayName') } }
+            if ( $true -eq $Using:getName ) { $where = { $_.GetValue('DisplayName') -like "*$Using:Name*" } }
+            else { $where = { $_.GetValue('DisplayName') } }
 
             # GET SOFTWARE REGISTRY KEYS
-            if ( $true -eq $Using:GetAll ) {
-                Get-ChildItem -Path $UninstallKeys | Where-Object $Where
+            if ( $true -eq $Using:getAll ) {
+                Get-ChildItem -Path $uninstallKeys | Where-Object $where
             }
             else {
                 # SET PROPERTIES
-                $Properties = @(
+                $properties = @(
                     @{N = 'GUID'; E = { $_.PSChildName } },
                     @{N = 'Name'; E = { $_.GetValue('DisplayName') } },
                     @{N = 'Version'; E = { $_.GetValue('DisplayVersion') } },
@@ -101,30 +106,31 @@ function Get-Software {
                 )
 
                 # GET SPECIFIED PROPERTIES
-                Get-ChildItem -Path $UninstallKeys | Where-Object $Where | Select-Object -Property $Properties
+                Get-ChildItem -Path $uninstallKeys | Where-Object $where | Select-Object -Property $properties
             }
         }
 
         # SET PARAM HASH
-        $Splat = @{ ScriptBlock = $ScriptBlock }
+        $splat = @{ ScriptBlock = $scriptBlock }
     }
     Process {
         # CHECK FOR LOCAL SYSTEM OR NO COMPUTERNAME
         if ( !$PSBoundParameters.ContainsKey('ComputerName') -or $ComputerName -eq $env:COMPUTERNAME ) {
             # EXECUTE LOCALLY
-            #$Software = Invoke-Expression -Command $ScriptBlock.ToString().Replace('Using:', '')
-            $String = $ScriptBlock -replace 'Using:', ''
-            $Splat['ScriptBlock'] = [Scriptblock]::Create($String)
-        } else {
+            #$software = Invoke-Expression -Command $scriptBlock.ToString().Replace('Using:', '')
+            $string = $scriptBlock -replace 'Using:', ''
+            $splat['ScriptBlock'] = [System.Management.Automation.ScriptBlock]::Create($string)
+        }
+        else {
             # ADD COMPUTERNAME IF PROVIDED
-            $Splat['ComputerName'] = $ComputerName
+            $splat['ComputerName'] = $ComputerName
         }
 
         # EXECUTE COMMAND
-        $Software = Invoke-Command @Splat
+        $software = Invoke-Command @splat
 
         # RETURN
-        if ( $GetAll ) { $Software }
-        else { $Software | Sort-Object -Property Name }
+        if ( $getAll ) { $software }
+        else { $software | Sort-Object -Property Name }
     }
 }
