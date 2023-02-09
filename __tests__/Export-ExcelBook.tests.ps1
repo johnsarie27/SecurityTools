@@ -1,4 +1,4 @@
-#Requires -Modules Pester
+#Requires -Modules @{ ModuleName = 'Pester'; ModuleVersion = '5.4.0' }
 
 Import-Module -Name $PSScriptRoot\..\SecurityTools.psd1 -Force
 Import-Module "C:\Program Files\WindowsPowerShell\Modules\Pester\4.8.1\Pester.psd1"

@@ -1,4 +1,4 @@
-#Requires -Modules Pester
+#Requires -Modules @{ ModuleName = 'Pester'; ModuleVersion = '5.4.0' }
 
 Import-Module -Name $PSScriptRoot\..\SecurityTools.psd1 -Force
 
@@ -19,7 +19,7 @@ Describe -Name "Convert-TimeZone" -Fixture {
             $convert.Pacific | Should -Be (Get-Date -Date '10/5/2011 8:00:00 AM')
         }
     }
-    
+
     Context -Name "converts multiple times" -Fixture {
         It -Name "converts times through pipeline" -Test {
             $convert = $time, $time2, $time3 | Convert-TimeZone -SourceTimeZone Pacific -TargetTimeZone Mountain
@@ -37,7 +37,7 @@ Describe -Name "Convert-TimeZone" -Fixture {
             $time3 = Get-Date -Date "2050-06-01 4:20pm"
         }
     }
-    
+
     BeforeAll {
         $time = Get-Date -Date "2011-10-05 3:00pm"
     }
