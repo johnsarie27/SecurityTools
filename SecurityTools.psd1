@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.8.10'
+    ModuleVersion     = '0.8.11'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -136,6 +136,7 @@
         'Save-KBFile'
         'Test-Performance'
         'Uninstall-AllModules'
+        'Uninstall-MSI'
         'Write-EncryptedFile'
     )
 
