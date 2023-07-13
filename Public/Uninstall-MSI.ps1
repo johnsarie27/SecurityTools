@@ -25,7 +25,7 @@ function Uninstall-MSI {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Product ID')]
-        [ValidatePattern('\{?[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}\}?')]
+        [ValidatePattern('[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}')]
         [System.String] $ProductId
     )
     Begin {
