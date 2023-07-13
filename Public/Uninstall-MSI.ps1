@@ -16,7 +16,8 @@ function Uninstall-MSI {
     .NOTES
         Name:     Uninstall-MSI
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2023-03-23
+        Version:  0.1.1 | Last Edit: 2023-07-13
+        - 0.1.1 - Updated parameter argument validation
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
@@ -24,7 +25,7 @@ function Uninstall-MSI {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Product ID')]
-        [ValidatePattern('\{[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}\}')]
+        [ValidatePattern('\{?[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}\}?')]
         [System.String] $ProductId
     )
     Begin {
