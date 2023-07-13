@@ -11,7 +11,7 @@ function Uninstall-MSI {
     .OUTPUTS
         None.
     .EXAMPLE
-        PS C:\> Uninstall-MSI -ProductId '{109A5A16-E09E-4B82-A784-D1780F1190D6}'
+        PS C:\> Uninstall-MSI -ProductId '109A5A16-E09E-4B82-A784-D1780F1190D6'
         Remove installed package with ID '{109A5A16-E09E-4B82-A784-D1780F1190D6}'
     .NOTES
         Name:     Uninstall-MSI
