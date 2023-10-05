@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.8.11'
+    ModuleVersion     = '0.8.12'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -50,7 +50,7 @@
     # Modules that must be imported into the global environment prior to importing this module
     RequiredModules   = @(
         'ImportExcel'
-        'SqlServer'
+        #'SqlServer'
         #'ActiveDirectory' # FOR Get-ADUserStatus
         #'GroupPolicy' # FOR Get-RSOP
         #'PSNetAddressing'
@@ -97,7 +97,7 @@
         'Export-WebScan'
         'Find-LANHost'
         'Find-ServerPendingReboot'
-        'Get-ActiveGWUser'
+        'Get-ActiveGatewayUser'
         'Get-ADUserStatus'
         'Get-AlternateDataStream'
         'Get-CountryCode'
@@ -150,7 +150,7 @@
     )
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport   = @('gs', 'wl')
+    AliasesToExport   = @('gs', 'wl', 'Get-ActiveGWUser')
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()

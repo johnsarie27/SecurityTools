@@ -1,4 +1,4 @@
-function Get-ActiveGWUser {
+function Get-ActiveGatewayUser {
     <# =========================================================================
     .SYNOPSIS
         Get users actively connected to the remote desktop gateway
@@ -19,7 +19,7 @@ function Get-ActiveGWUser {
     ========================================================================= #>
     [CmdletBinding()]
     [OutputType([System.Management.Automation.PSObject])]
-
+    [Alias('Get-ActiveGWUser')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Remote desktop gateway server' )]
         [ValidateScript( { Test-Connection -ComputerName $_ -Quiet -Count 1 })]
@@ -27,7 +27,6 @@ function Get-ActiveGWUser {
         [Alias('Name', 'CN', 'Computer', 'System', 'Target')]
         [System.String] $ComputerName
     )
-
     Begin {
         # SET QUERY PARAMS
         $ParamHash = @{
@@ -50,12 +49,10 @@ function Get-ActiveGWUser {
             'ConnectedResource'
         )
     }
-
     Process {
         # GET DATA
         $Users = Get-CimInstance @ParamHash
     }
-
     End {
         # RETURN RESULTS WITH SELECTED PROPERTIES
         $Users | Select-Object -Property $PropertyList
