@@ -26,7 +26,8 @@ function Get-RandomString {
     .NOTES
         Name:     Get-RandomString
         Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2022-10-28
+        Version:  0.1.2 | Last Edit: 2023-10-20
+        - 0.1.2 - Fixed special character set
         - 0.1.1 - Updated comments
         - 0.1.0 - Initial version
 
@@ -62,10 +63,15 @@ function Get-RandomString {
 
         # SET ALL SETS
         $allSets = @{
-            nums = 0x30..0x39
-            lowr = 0x61..0x7A
-            uppr = 0x41..0x5A
-            spcl = 0x21..0x7E
+            nums = 0x30..0x39 # NUMBERS
+            lowr = 0x61..0x7A # LOWER-CASE
+            uppr = 0x41..0x5A # UPPER-CASE
+            #spcl = 0x21..0x7E # EVERYTHING (INCLUDING SPECIAL)
+            #spc1 = 0x21..0x2F # SPECIAL CHARS SET 1
+            #spc2 = 0x3A..0x40 # SPECIAL CHARS SET 2
+            #spc3 = 0x5B..0x60 # SPECIAL CHARS SET 3
+            #spc4 = 0x7B..0x7E # SPECIAL CHARS SET 4
+            spcl = 0x21..0x2F + 0x3A..0x40 + 0x5B..0x60 + 0x7B..0x7E # SPECIAL
         }
 
         # REMOVE CHARACTER SETS
