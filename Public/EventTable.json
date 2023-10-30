@@ -48,6 +48,12 @@
         "Description": ""
     },
     {
+        "Name": "Audit Log Was Cleared",
+        "Log": "Security",
+        "EventId": 1102,
+        "Description": ""
+    },
+    {
         "Name": "User Account Created",
         "Log": "Security",
         "EventId": 4720,
