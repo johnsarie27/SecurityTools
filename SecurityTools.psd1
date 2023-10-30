@@ -85,6 +85,7 @@
         'Convert-SecureKey'
         'Convert-TimeZone'
         'ConvertFrom-GZipString'
+        'ConvertFrom-IISLog'
         'ConvertTo-FlatObject'
         'ConvertTo-Hex'
         'ConvertTo-MarkdownTable'
