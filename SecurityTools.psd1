@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.8.15'
+    ModuleVersion     = '0.8.16'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -119,7 +119,6 @@
         'Get-MsiInfo'
         'Get-Object'
         'Get-PatchTuesday'
-        'Get-RandomString'
         'Get-RSOP'
         'Get-SavedHistory'
         'Get-Software'
@@ -134,6 +133,7 @@
         'Install-ModuleFromPackage'
         'Invoke-InfoGraphicScan'
         'Invoke-NetScan'
+        'New-RandomString'
         'Out-MeasureResult'
         'Read-EncryptedFile'
         'Save-KBFile'
@@ -153,7 +153,11 @@
     )
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport   = @('gs', 'wl', 'Get-ActiveGWUser')
+    # ITEMS MUST BE LISTED HERE IN THE PSD1 FILE AS WELL AS THE PSM1 FILE TO SUCCESSFULLY EXPORT THEM
+    AliasesToExport   = @(
+        'Get-ActiveGWUser'
+        'Get-RandomString'
+    )
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()

@@ -1,3 +1,9 @@
+# ==============================================================================
+# Filename: SecurityTools.psm1
+# Version:  0.1.1 | Updated: 2023-11-03
+# Author:   Justin Johns
+# ==============================================================================
+
 # IMPORT ALL FUNCTIONS
 foreach ( $directory in @('Public', 'Private') ) {
     foreach ( $fn in (Get-ChildItem -Path "$PSScriptRoot\$directory\*.ps1") ) { . $fn.FullName }
@@ -13,7 +19,7 @@ New-Variable -Name 'InfoModel' -Option ReadOnly -Value (
 )
 
 # EXPORT MEMBERS
-# THESE ARE SPECIFIED IN THE MODULE MANIFEST AND THEREFORE DON'T NEED TO BE LISTED HERE
 #Export-ModuleMember -Function *
+# THESE ITEMS MUST BE LISTED BOTH IN THE MODULE MANIFEST AND BELOW TO BE MADE AVAILABLE AFTER LOADING THE MODULE
 Export-ModuleMember -Variable 'EventTable', 'InfoModel'
-Export-ModuleMember -Alias 'Get-ActiveGWUser'
+Export-ModuleMember -Alias 'Get-ActiveGWUser', 'Get-RandomString'
