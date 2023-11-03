@@ -29,10 +29,11 @@ function Get-WinLogs {
     .NOTES
         Name:     Get-WinLogs
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-07-16
-        - 0.1.0 - Initial version
-        - 0.1.1 - Added StartTime, EndTime, and Data parameters
+        Version:  0.1.3 | Last Edit: 2023-11-03
+        - 0.1.3 - Updated list of LogName items
         - 0.1.2 - Updated EventTable variable and supporting code
+        - 0.1.1 - Added StartTime, EndTime, and Data parameters
+        - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
         https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent
@@ -115,7 +116,11 @@ function Get-WinLogs {
                 $filterHash = @{ ID = $e.EventId }
 
                 # ADD LOG NAME OR PROVIDER
-                $logNames = @('Application', 'Security', 'Setup', 'System')
+                $logNames = @(
+                    'Application', 'Security', 'Setup', 'System'
+                    'Microsoft-Windows-AppLocker/EXE and DLL'
+                    'Microsoft-Windows-AppLocker/MSI and Script'
+                )
                 if ( $e.Log -in $logNames ) { $filterHash['LogName'] = $e.Log }
                 else { $filterHash['ProviderName'] = $e.Log }
 

@@ -172,5 +172,53 @@
         "Log": "Security",
         "EventId": 4689,
         "Description": ""
+    },
+    {
+        "Name": "AppLocker policy conversion failed",
+        "Log": "Microsoft-Windows-AppLocker/EXE and DLL",
+        "EventId": 8000,
+        "Description": ""
+    },
+    {
+        "Name": "AppLocker policy applied successfully",
+        "Log": "Microsoft-Windows-AppLocker/EXE and DLL",
+        "EventId": 8001,
+        "Description": ""
+    },
+    {
+        "Name": "AppLocker: EXE or DLL was allowed to run",
+        "Log": "Microsoft-Windows-AppLocker/EXE and DLL",
+        "EventId": 8002,
+        "Description": ""
+    },
+    {
+        "Name": "AppLocker: EXE or DLL would have been prevented from running",
+        "Log": "Microsoft-Windows-AppLocker/EXE and DLL",
+        "EventId": 8003,
+        "Description": "If the AppLocker policy was in ENFORCED mode the file would have been prevented from running"
+    },
+    {
+        "Name": "AppLocker: EXE or DLL was prevented from running",
+        "Log": "Microsoft-Windows-AppLocker/EXE and DLL",
+        "EventId": 8004,
+        "Description": ""
+    },
+    {
+        "Name": "AppLocker: MSI or MSP was allowed to run",
+        "Log": "Microsoft-Windows-AppLocker/MSI and Script",
+        "EventId": 8005,
+        "Description": ""
+    },
+    {
+        "Name": "AppLocker: MSI or MSP would have been prevented from running",
+        "Log": "Microsoft-Windows-AppLocker/MSI and Script",
+        "EventId": 8006,
+        "Description": "If the AppLocker policy was in ENFORCED mode the file would have been prevented from running"
+    },
+    {
+        "Name": "AppLocker: MSI or MSP was prevented from running",
+        "Log": "Microsoft-Windows-AppLocker/MSI and Script",
+        "EventId": 8007,
+        "Description": ""
     }
 ]
