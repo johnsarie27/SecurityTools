@@ -1,4 +1,4 @@
-function Get-RandomString {
+function New-RandomString {
     <# =========================================================================
     .SYNOPSIS
         Get random string
@@ -21,12 +21,13 @@ function Get-RandomString {
     .OUTPUTS
         System.String.
     .EXAMPLE
-        PS C:\> Get-RandomString -Length 20
+        PS C:\> New-RandomString -Length 20
         Generates a random string of 20 characters
     .NOTES
-        Name:     Get-RandomString
+        Name:     New-RandomString
         Author:   Justin Johns
-        Version:  0.1.2 | Last Edit: 2023-10-20
+        Version:  0.1.3 | Last Edit: 2023-11-03
+        - 0.1.3 - Renamed function to use the proper verb
         - 0.1.2 - Fixed special character set
         - 0.1.1 - Updated comments
         - 0.1.0 - Initial version
@@ -34,6 +35,7 @@ function Get-RandomString {
         General notes:
     ========================================================================= #>
     [CmdletBinding()]
+    [Alias('Get-RandomString')]
     Param(
         [Parameter(HelpMessage = 'String length')]
         [System.Int32] $Length = 8,
