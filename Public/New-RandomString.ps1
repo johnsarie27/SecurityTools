@@ -26,13 +26,16 @@ function New-RandomString {
     .NOTES
         Name:     New-RandomString
         Author:   Justin Johns
-        Version:  0.1.3 | Last Edit: 2023-11-03
-        - 0.1.3 - Renamed function to use the proper verb
+        Version:  0.1.4 | Last Edit: 2023-11-17
+        - 0.1.4 - Using Get-SecureRandom for PS 7.4.0 or above
+        - 0.1.3 - (2023-11-03) Renamed function to use the proper verb
         - 0.1.2 - Fixed special character set
         - 0.1.1 - Updated comments
         - 0.1.0 - Initial version
 
         General notes:
+        https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-random?view=powershell-7.4
+        https://learn.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Get-SecureRandom?view=powershell-7.4
     ========================================================================= #>
     [CmdletBinding()]
     [Alias('Get-RandomString')]
@@ -92,7 +95,17 @@ function New-RandomString {
         # THIS ONLY USES EACH CHARACTER FROM $charSet ONCE
         #$chars = $charSet | Get-Random -Count $Length | ForEach-Object { [System.Char] $_ }
 
-        $chars = for ($i=1; $i -LE $Length; $i++) { [System.Char] (Get-Random -InputObject $charSet -Count 1) }
+        # PS 7.4.0 INTRODUCED A
+        $chars = if ($PSVersionTable.PSVersion -GE ([System.Version] '7.4.0')) {
+            # "Get-SecureRandom" GENERATES CRYPTOGRAPHICALLY SECURE RANDOMNESS AND USES THE RandomNumverGenerator CLASS
+            Write-Verbose -Message 'Using cryptographically secure random generator...'
+            for ($i = 1; $i -LE $Length; $i++) { [System.Char] (Get-SecureRandom -InputObject $charSet -Count 1) }
+        }
+        else {
+            # "Get-Random" DOES NOT ENSURE CRYPTOGRAPHICALLY SECURE RANDOMNESS
+            Write-Warning -Message 'Older version of PowerShell detected. It is recommended to use PS 7.4.0 or newer to ensure cryptographically secure randomness.'
+            for ($i = 1; $i -LE $Length; $i++) { [System.Char] (Get-Random -InputObject $charSet -Count 1) }
+        }
         -join $chars
     }
 }
