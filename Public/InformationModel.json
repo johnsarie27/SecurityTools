@@ -92,13 +92,6 @@
             "Filters": null,
             "Comments": "SCCM Client Cache",
             "PowerShell": ""
-        },
-        {
-            "Namespace": "root/CIMV2",
-            "ClassName": "",
-            "Filters": null,
-            "Comments": "",
-            "PowerShell": ""
         }
     ]
 }
