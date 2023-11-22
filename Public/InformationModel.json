@@ -1,9 +1,8 @@
 {
     "Schema": "2020-07-04",
-    "Updated": "2020-09-05",
+    "Updated": "2023-11-22",
     "Classes": [
         {
-            "Id": 0,
             "Namespace": "root/CIMV2",
             "ClassName": "cim_process",
             "Filters": null,
@@ -11,7 +10,6 @@
             "PowerShell": "Get-Process"
         },
         {
-            "Id": 1,
             "Namespace": "root/CIMV2",
             "ClassName": "win32_startupcommand",
             "Filters": null,
@@ -19,7 +17,6 @@
             "PowerShell": ""
         },
         {
-            "Id": 2,
             "Namespace": "root/CIMV2",
             "ClassName": "win32_networkloginprofile",
             "Filters": null,
@@ -27,7 +24,6 @@
             "PowerShell": "Get-LocalUser"
         },
         {
-            "Id": 3,
             "Namespace": "root/CIMV2",
             "ClassName": "win32_ntlogevent",
             "Filters": "\"logfile='security'\"",
@@ -35,7 +31,6 @@
             "PowerShell": ""
         },
         {
-            "Id": 4,
             "Namespace": "root/CIMV2",
             "ClassName": "win32_systemdriver",
             "Filters": null,
@@ -43,7 +38,6 @@
             "PowerShell": ""
         },
         {
-            "Id": 5,
             "Namespace": "root\\securitycenter2",
             "ClassName": "antivirusproduct",
             "Filters": null,
@@ -51,7 +45,6 @@
             "PowerShell": ""
         },
         {
-            "Id": 6,
             "Namespace": "root/CIMV2",
             "ClassName": "win32_environment",
             "Filters": null,
@@ -59,7 +52,6 @@
             "PowerShell": "Get-ChildItem -Path Env:"
         },
         {
-            "Id": 7,
             "Namespace": "root/CIMV2",
             "ClassName": "win32_networkadapterconfiguration",
             "Filters": null,
@@ -67,7 +59,6 @@
             "PowerShell": ""
         },
         {
-            "Id": 8,
             "Namespace": "root/CIMV2",
             "ClassName": "win32_quickfixengineering",
             "Filters": null,
@@ -75,7 +66,6 @@
             "PowerShell": "Get-HotFix"
         },
         {
-            "Id": 9,
             "Namespace": "root/CIMV2",
             "ClassName": "win32_computersystem",
             "Filters": null,
@@ -83,7 +73,6 @@
             "PowerShell": "Get-ComputerInfo"
         },
         {
-            "Id": 10,
             "Namespace": "root/CIMV2",
             "ClassName": "win32_logicaldisk",
             "Filters": null,
@@ -91,7 +80,6 @@
             "PowerShell": "Get-Volume (not) Get-Disk"
         },
         {
-            "Id": 11,
             "Namespace": "root/CIMV2",
             "ClassName": "win32_bios",
             "Filters": null,
@@ -99,7 +87,6 @@
             "PowerShell": ""
         },
         {
-            "Id": 12,
             "Namespace": "root/CCM/SoftMgmtAgent",
             "ClassName": "CacheConfig",
             "Filters": null,
@@ -107,7 +94,6 @@
             "PowerShell": ""
         },
         {
-            "Id": 13,
             "Namespace": "root/CIMV2",
             "ClassName": "",
             "Filters": null,

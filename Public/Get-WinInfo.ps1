@@ -18,7 +18,14 @@ function Get-WinInfo {
         PS C:\> Get-WinInfo -List
         List available classes to pull information from
     .NOTES
+        Name:     Get-WinInfo
+        Author:   Justin Johns
+        Version:  0.1.1 | Last Edit: 2023-11-22
+        - 0.1.1 - Usability updates
+        - 0.1.0 - Initial version
+        Comments: <Comment(s)>
         General notes
+        https://learn.microsoft.com/en-us/powershell/module/cimcmdlets/get-ciminstance
     ========================================================================= #>
     [CmdletBinding(DefaultParameterSetName = '__list')]
     Param(
@@ -27,7 +34,7 @@ function Get-WinInfo {
 
         [Parameter(Mandatory, HelpMessage = 'Class Id', ParameterSetName = '__info')]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({ $InfoModel.Classes.Id -contains $_ })]
+        [ValidateScript({ $_ -GT 0 -and $_ -LE $InfoModel.Classes.Count })]
         [System.Int32] $Id,
 
         [Parameter(ValueFromPipeline, HelpMessage = 'Hostname of target computer', ParameterSetName = '__info')]
@@ -36,16 +43,28 @@ function Get-WinInfo {
         [Alias('CN')]
         [System.String] $ComputerName
     )
+    Begin {
+        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
+        # CREATE EVENT LIST
+        $infoList = for ($i = 0; $i -LT $InfoModel.Classes.Count; $i++) {
+            [PSCustomObject] @{
+                Id        = ($i + 1)
+                Namespace = $InfoModel.Classes[$i].Namespace
+                ClassName = $InfoModel.Classes[$i].ClassName
+                Filters   = $InfoModel.Classes[$i].Filters
+                Comments  = $InfoModel.Classes[$i].Comments
+            }
+        }
+    }
     Process {
-        $infoModel = Get-Content -Raw -Path "$PSScriptRoot\InformationModel.json" | ConvertFrom-Json
-
+        # LIST OR GET INFORMATION
         switch ($PSCmdlet.ParameterSetName) {
             '__list' {
-                $infoModel.Classes | Select-Object -Property Id, Comments
+                $infoList | Format-Table -AutoSize
             }
             '__info' {
-                $im = $infoModel.Classes.Where({ $_.Id -EQ $Id })
+                $im = $InfoModel.Classes[($Id - 1)]
 
                 $cimParams = @{
                     Namespace = $im.Namespace
