@@ -61,20 +61,26 @@ function Get-WinInfo {
         # LIST OR GET INFORMATION
         switch ($PSCmdlet.ParameterSetName) {
             '__list' {
+                # LIST ALL INFORMATION MODEL OBJECTS
                 $infoList | Format-Table -AutoSize
             }
             '__info' {
+                # SET INFORMATION MODEL SELECTION
                 $im = $InfoModel.Classes[($Id - 1)]
 
+                # SET CIM PARAMETERS
                 $cimParams = @{
                     Namespace = $im.Namespace
                     ClassName = $im.ClassName
                 }
 
+                # ADD FILTERS IF ANY
                 if ( $im.Filters ) { $cimParams.Add('Filter', $im.Filters) }
 
+                # ADD TARGET COMPUTER IF PROVIDED
                 if ( $PSBoundParameters.ContainsKey('ComputerName') ) { $cimParams.Add('ComputerName', $ComputerName) }
 
+                # GET CIM INFORMATION
                 Get-CimInstance @cimParams
             }
         }
