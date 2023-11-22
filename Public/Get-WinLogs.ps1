@@ -29,8 +29,9 @@ function Get-WinLogs {
     .NOTES
         Name:     Get-WinLogs
         Author:   Justin Johns
-        Version:  0.1.3 | Last Edit: 2023-11-03
-        - 0.1.3 - Updated list of LogName items
+        Version:  0.1.4 | Last Edit: 2023-11-22
+        - 0.1.4 - (2023-11-22) Fixed bug in list parameter
+        - 0.1.3 - (2023-11-03) Updated list of LogName items
         - 0.1.2 - Updated EventTable variable and supporting code
         - 0.1.1 - Added StartTime, EndTime, and Data parameters
         - 0.1.0 - Initial version
@@ -72,9 +73,9 @@ function Get-WinLogs {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
         # CREATE EVENT LIST
-        $eventList = for ($i = 1; $i -LT $EventTable.Count; $i++) {
+        $eventList = for ($i = 0; $i -LT $EventTable.Count; $i++) {
             [PSCustomObject] @{
-                Id          = $i
+                Id          = ($i + 1)
                 Name        = $EventTable[$i].Name
                 EventId     = $EventTable[$i].EventId
                 Log         = $EventTable[$i].Log
@@ -112,7 +113,7 @@ function Get-WinLogs {
                 } #>
 
                 # ADD EVENT ID
-                $e = $EventTable[$Id] #.Where({ $_.Id -eq $Id })
+                $e = $EventTable[($Id - 1)]
                 $filterHash = @{ ID = $e.EventId }
 
                 # ADD LOG NAME OR PROVIDER
