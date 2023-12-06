@@ -1,6 +1,11 @@
-#Requires -Modules @{ ModuleName = 'Pester'; ModuleVersion = '5.4.0' }
-
-Import-Module -Name $PSScriptRoot\..\..\SecurityTools.psd1 -Force
+BeforeDiscovery {
+    # Taken with love from @juneb_get_help (https://raw.githubusercontent.com/juneb/PesterTDD/master/Module.Help.Tests.ps1)
+    # Import module
+    if (-not (Get-Module -Name $env:BHProjectName -ListAvailable)) {
+        Import-Module -Name $env:BHPSModuleManifest -ErrorAction 'Stop' -Force
+    }
+    $Cmdlets = Get-Command -Module $env:BHProjectName -CommandType 'Cmdlet', 'Function' -ErrorAction 'Stop'
+}
 
 Describe -Name "Get-Software" -Fixture {
     It -Name "should not fail" -Test {
