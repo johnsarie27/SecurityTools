@@ -1,0 +1,19 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "editor.formatOnSave": true,
+    "editor.tabCompletion": "on",
+    "editor.tabSize": 4,
+    "editor.trimAutoWhitespace": true,
+    "files.autoSave": "afterDelay",
+    "files.defaultLanguage": "powershell",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "powershell.codeFormatting.ignoreOneLineBlock": true,
+    "powershell.scriptAnalysis.settingsPath": ".vscode//analyzersettings.psd1",
+    "powershell.codeFormatting.openBraceOnSameLine": true,
+    "powershell.codeFormatting.newLineAfterOpenBrace": true,
+    "powershell.codeFormatting.newLineAfterCloseBrace": true,
+    "powershell.codeFormatting.whitespaceAroundOperator": true,
+    "powershell.codeFormatting.autoCorrectAliases": true,
+    "powershell.codeFormatting.alignPropertyValuePairs": true
+}

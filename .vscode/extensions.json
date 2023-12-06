@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "ms-vscode.powershell",
+        "davidanson.vscode-markdownlint"
+    ]
+}

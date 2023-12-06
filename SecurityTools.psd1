@@ -49,7 +49,7 @@
 
     # Modules that must be imported into the global environment prior to importing this module
     RequiredModules   = @(
-        'ImportExcel'
+        #'ImportExcel'
         #'SqlServer'
         #'ActiveDirectory' # FOR Get-ADUserStatus
         #'GroupPolicy' # FOR Get-RSOP
@@ -65,7 +65,7 @@
     # ScriptsToProcess = @()
 
     # Type files (.ps1xml) to be loaded when importing this module
-    TypesToProcess = @(
+    TypesToProcess    = @(
         'ADUser.types.ps1xml'
         'Process.types.ps1xml'
         'Service.types.ps1xml'
