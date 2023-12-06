@@ -1,5 +1,5 @@
 function Get-DirItemAges {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Generate age information for a directory of files and sub-files
     .DESCRIPTION
@@ -23,7 +23,7 @@ function Get-DirItemAges {
     .LINK
         https://blogs.technet.microsoft.com/pstips/2017/05/20/display-friendly-file-sizes-in-powershell/
         https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-6
-    ========================================================================= #>
+    #>
 
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target directory')]

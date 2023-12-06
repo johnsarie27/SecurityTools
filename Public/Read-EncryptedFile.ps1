@@ -1,5 +1,5 @@
 function Read-EncryptedFile {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Read encrypted file
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Read-EncryptedFile {
         General notes
         This function was written by Tim Curwick in PowerShell Conference Book 2
         (minor changes made)
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory)]

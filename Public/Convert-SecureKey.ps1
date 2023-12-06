@@ -1,5 +1,5 @@
 function Convert-SecureKey {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Convert string to PSCredential object or store as CliXML
     .DESCRIPTION
@@ -30,7 +30,7 @@ function Convert-SecureKey {
         it was created. It cannot be accessed by another user or computer. The
         article below has more information based on a different Cmdlet.
         https://www.randomizedharmony.com/blog/2018/11/25/using-credentials-in-production-scripts
-    ========================================================================= #>
+    #>
     [CmdletBinding(DefaultParameterSetName = '_retrieve')]
     Param(
         [Parameter(Mandatory, ParameterSetName = '_retrieve', HelpMessage = 'Path to secure Clixml file')]

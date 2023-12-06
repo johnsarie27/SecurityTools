@@ -1,5 +1,5 @@
 function Get-WindowsEventCatalog {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get catalog of Windows Events
     .DESCRIPTION
@@ -18,7 +18,7 @@ function Get-WindowsEventCatalog {
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param()
     Begin {

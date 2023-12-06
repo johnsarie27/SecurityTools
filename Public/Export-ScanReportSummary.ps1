@@ -1,5 +1,5 @@
 function Export-ScanReportSummary {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Summarize scan results into a single report
     .DESCRIPTION
@@ -25,7 +25,7 @@ function Export-ScanReportSummary {
         PS C:\> Export-ScanReportSummary -NessusSystemScan $Sys -AlertLogicWebScan $Web
         Merge and aggregate data from $Sys and $Web scans and return an Excel
         spreadsheet file.
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $false)]

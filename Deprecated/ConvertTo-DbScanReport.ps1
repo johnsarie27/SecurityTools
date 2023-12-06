@@ -1,5 +1,5 @@
 function ConvertTo-DbScanReport {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Format JSON output from SQL DB scan report
     .DESCRIPTION
@@ -16,7 +16,7 @@ function ConvertTo-DbScanReport {
         PS C:\> Get-ChildItem -Path $Folder | ConvertTo-DbScanReport -BaselinePath $Path
         Combine and format all reports in $Folder using baseline $Path
     .NOTES
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Parent folder of db scan report(s)')]

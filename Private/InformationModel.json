@@ -1,0 +1,97 @@
+{
+    "Schema": "2020-07-04",
+    "Updated": "2023-11-22",
+    "Classes": [
+        {
+            "Namespace": "root/CIMV2",
+            "ClassName": "cim_process",
+            "Filters": null,
+            "Comments": "Process information",
+            "PowerShell": "Get-Process"
+        },
+        {
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_startupcommand",
+            "Filters": null,
+            "Comments": "Windows startup items",
+            "PowerShell": ""
+        },
+        {
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_networkloginprofile",
+            "Filters": null,
+            "Comments": "Windows login profile info",
+            "PowerShell": "Get-LocalUser"
+        },
+        {
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_ntlogevent",
+            "Filters": "\"logfile='security'\"",
+            "Comments": "Windows event log info",
+            "PowerShell": ""
+        },
+        {
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_systemdriver",
+            "Filters": null,
+            "Comments": "Driver info",
+            "PowerShell": ""
+        },
+        {
+            "Namespace": "root\\securitycenter2",
+            "ClassName": "antivirusproduct",
+            "Filters": null,
+            "Comments": "Antivirus software info",
+            "PowerShell": ""
+        },
+        {
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_environment",
+            "Filters": null,
+            "Comments": "Environment variables",
+            "PowerShell": "Get-ChildItem -Path Env:"
+        },
+        {
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_networkadapterconfiguration",
+            "Filters": null,
+            "Comments": "Network adapter info",
+            "PowerShell": ""
+        },
+        {
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_quickfixengineering",
+            "Filters": null,
+            "Comments": "Windows patches info",
+            "PowerShell": "Get-HotFix"
+        },
+        {
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_computersystem",
+            "Filters": null,
+            "Comments": "General computer info",
+            "PowerShell": "Get-ComputerInfo"
+        },
+        {
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_logicaldisk",
+            "Filters": null,
+            "Comments": "Logical disk info",
+            "PowerShell": "Get-Volume (not) Get-Disk"
+        },
+        {
+            "Namespace": "root/CIMV2",
+            "ClassName": "win32_bios",
+            "Filters": null,
+            "Comments": "Bios info",
+            "PowerShell": ""
+        },
+        {
+            "Namespace": "root/CCM/SoftMgmtAgent",
+            "ClassName": "CacheConfig",
+            "Filters": null,
+            "Comments": "SCCM Client Cache",
+            "PowerShell": ""
+        }
+    ]
+}

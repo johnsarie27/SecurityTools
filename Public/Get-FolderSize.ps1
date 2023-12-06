@@ -1,5 +1,5 @@
 function Get-FolderSize {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Returns the size of folders in MB and GB.
     .DESCRIPTION
@@ -75,7 +75,7 @@ function Get-FolderSize {
         Comments: <Comment(s)>
         General notes
         https://www.gngrninja.com/script-ninja/2016/5/24/powershell-calculating-folder-sizes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $false, Position = 0, HelpMessage = 'Base path')]

@@ -1,5 +1,5 @@
 function Write-EncryptedFile {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Create encrypted file
     .DESCRIPTION
@@ -23,7 +23,7 @@ function Write-EncryptedFile {
         General notes
         This function was written by Tim Curwick in PowerShell Conference Book 2
         (minor changes made)
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeLine)]

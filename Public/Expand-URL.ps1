@@ -1,18 +1,20 @@
 function Expand-URL {
-    <# =========================================================================
+    <#
     .SYNOPSIS
-        Short description
+        Expand URL
     .DESCRIPTION
-        Long description
-    .PARAMETER abc
-        Parameter description (if any)
+        Expand shortened URL
+    .PARAMETER URL
+        URL to expand
+    .PARAMETER ApiKey
+        API Key
     .INPUTS
-        Inputs (if any)
+        None.
     .OUTPUTS
-        Output (if any)
+        System.String.
     .EXAMPLE
-        PS C:\> <example usage>
-        Explanation of what the example does
+        PS C:\> Expand-URL -URL http://bitly.com/somethinghere
+        Show destination URL target for bitly shortened or redirected URL
     .NOTES
         Name: Expand-URL
         Author: Justin Johns
@@ -20,7 +22,7 @@ function Expand-URL {
         - <VersionNotes> (or remove this line if no version notes)
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'URL to expand')]

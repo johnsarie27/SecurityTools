@@ -1,5 +1,5 @@
 function Uninstall-MSI {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Uninstall existing MSI application
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Uninstall-MSI {
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Product ID')]

@@ -1,5 +1,5 @@
 function Format-Disk {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Format or reformat disk
     .DESCRIPTION
@@ -16,7 +16,7 @@ function Format-Disk {
         System.Object.
     .NOTES
         if ( (Get-Disk -Number $Number).Size -le 2199023255552 ) { $PS = 'MBR' } else { $PS = 'GPT' }
-    ========================================================================= #>
+    #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter(

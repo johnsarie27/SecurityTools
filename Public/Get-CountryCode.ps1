@@ -1,5 +1,5 @@
 function Get-CountryCode {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Country Code
     .DESCRIPTION
@@ -26,7 +26,7 @@ function Get-CountryCode {
         https://www.iso.org/obp/ui/#search
         https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
         https://datahub.io/core/country-list
-    ========================================================================= #>
+    #>
     [CmdletBinding(DefaultParameterSetName = '__cde')]
     Param(
         [Parameter(Mandatory, Position = 0, ParameterSetName = '__cde', HelpMessage = 'Country code (2- or 3-letter)')]

@@ -1,5 +1,5 @@
 function Export-NPMAudit {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Export vulnerability report
     .DESCRIPTION
@@ -17,7 +17,7 @@ function Export-NPMAudit {
         Explanation of what the example does
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Path to NPM Audit file in JSON format')]

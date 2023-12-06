@@ -1,5 +1,5 @@
 function Invoke-NetScan {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Scan for active hosts
     .DESCRIPTION
@@ -18,7 +18,7 @@ function Invoke-NetScan {
         Get all IP's on the network 192.168.1.0 and scan for active hosts including hostname info
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'IP addresses to scan')]

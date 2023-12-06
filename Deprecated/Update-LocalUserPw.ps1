@@ -1,5 +1,5 @@
 function Update-LocalUserPw {
-    <# =============================================================================
+    <#====
     .SYNOPSIS
         Update local user password
     .DESCRIPTION
@@ -23,7 +23,7 @@ function Update-LocalUserPw {
         -- CMDLETS --
         Using "Get-LocalUser -Name "$UserName" | Set-LocalUser -Password $Pw" does
         not work with PowerShell versions prior to 5.1.
-    ============================================================================= #>
+    ====#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory, HelpMessage = 'PowerShell Credential')]

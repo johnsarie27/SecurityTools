@@ -1,5 +1,5 @@
 function Get-DomainRegistration {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get domain registration info
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Get-DomainRegistration {
         API token required
         https://rdap.verisign.com/com/v1/domain/<DOMAIN>
         https://domainsrdap.googleapis.com/v1/domain/<DOMAIN>
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Target Domain')]

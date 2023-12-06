@@ -1,5 +1,5 @@
 function Get-TalkingApps {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Windows processes with open network connections
     .DESCRIPTION
@@ -16,7 +16,7 @@ function Get-TalkingApps {
         This assumes that the identity executing the function has permissions
         to run the cmdlet Get-NetTCPConnection on the remote system when using
         the ComputerName parameter.
-    ========================================================================= #>
+    #>
     Param(
         [Parameter(ValueFromPipeline, HelpMessage = 'Target computer name')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Count 1 -Quiet })]

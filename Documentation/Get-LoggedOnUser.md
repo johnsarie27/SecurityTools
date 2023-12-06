@@ -1,37 +1,28 @@
----
-external help file: SecurityTools-help.xml
-Module Name: SecurityTools
-online version:
-schema: 2.0.0
----
-
 # Get-LoggedOnUser
 
 ## SYNOPSIS
-Display all logged on users
+Show all users currently logged onto system
 
 ## SYNTAX
 
 ```
-Get-LoggedOnUser [[-ComputerName] <String>] [<CommonParameters>]
+Get-LoggedOnUser [[-ComputerName] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Display all logged on users
+This function gets all user sessions on a remote system.
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> Get-LoggedOnUser -ComputerName MyServer
+### EXAMPLE 1
 ```
-
-Show all users logged onto MyServer
+Get-ConnectedUser -ComputerName $Computer
+```
 
 ## PARAMETERS
 
 ### -ComputerName
-Target hostname
+Hostname or IP address of target system to find users.
 
 ```yaml
 Type: String
@@ -39,23 +30,36 @@ Parameter Sets: (All)
 Aliases: Hostname, Host, Computer, CN
 
 Required: False
-Position: 0
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
-### System.String
-
+### System.String.
 ## OUTPUTS
 
-### System.Object
+### System.String.
 ## NOTES
 
 ## RELATED LINKS

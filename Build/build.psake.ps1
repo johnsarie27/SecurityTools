@@ -86,10 +86,8 @@ Task 'CombineFunctionsAndStage' -depends 'Setup' {
         Join-Path -Path $ProjectRoot -ChildPath 'README.md'
         Join-Path -Path $ProjectRoot -ChildPath ($env:BHProjectName + '.psd1')
         Join-Path -Path $ProjectRoot -ChildPath ($env:BHProjectName + '.psm1')
-        Join-Path -Path $ProjectRoot -ChildPath ('*.ps1xml')
     )
     Copy-Item -Path $pathsToCopy -Destination $StagingModulePath -Recurse
-    Get-ChildItem -Path $ProjectRoot -Filter '*.ps1xml' | Copy-Item -Destination $StagingModulePath
 
     # Copy existing manifest
     #Copy-Item -Path $env:BHPSModuleManifest -Destination $StagingModulePath -Recurse
@@ -102,7 +100,7 @@ Task 'ImportStagingModule' -depends 'Init', 'CombineFunctionsAndStage' {
 
     # Reload module
     if (Get-Module -Name $env:BHProjectName) {
-        Remove-Module -Name $env:BHProjectName
+        Remove-Module -Name $env:BHProjectName -Force
     }
     # Global scope used for UpdateDocumentation (PlatyPS)
     Import-Module -Name $StagingModulePath -ErrorAction 'Stop' -Force -Global

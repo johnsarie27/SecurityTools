@@ -1,5 +1,5 @@
 function Get-ADUserStatus {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get user status
     .DESCRIPTION
@@ -15,7 +15,7 @@ function Get-ADUserStatus {
         Gets the status information for user jsmith
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'AD User Identity')]

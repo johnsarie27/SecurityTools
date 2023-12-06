@@ -1,5 +1,5 @@
 function Compare-Lists {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Compare 2 lists as input objects or in a CSV file.
     .DESCRIPTION
@@ -25,22 +25,22 @@ function Compare-Lists {
         PS C:\> Compare-Lists -ListA $ListA -ListB $ListB
     .NOTES
         Remove $compSheet section and have use Import-Csv with two lists?
-    ========================================================================= #>
+    #>
     [CmdletBinding(DefaultParameterSetName = "__list")]
     [OutputType([System.Collections.Generic.List`1[System.Object]])]
 
     Param(
-        [Parameter(Mandatory, ParameterSetName = "__file", HelpMessage = 'Path to CSV file containing lists')]
-        [ValidateScript( {Test-Path $_ -PathType 'Leaf' -Include "*.csv"})]
+        [Parameter(Mandatory = $true, ParameterSetName = "__file", HelpMessage = 'Path to CSV file containing lists')]
+        [ValidateScript({ Test-Path $_ -PathType 'Leaf' -Include "*.csv" })]
         [Alias('FilePath', 'File', 'Data', 'DataFile')]
         [System.String] $Path,
 
-        [Parameter(Mandatory, ParameterSetName = "__list", HelpMessage = 'First list for comparisson')]
+        [Parameter(Mandatory = $true, ParameterSetName = "__list", HelpMessage = 'First list for comparisson')]
         [ValidateNotNullOrEmpty()]
         [Alias('List1', 'A')]
         [System.Object[]] $ListA,
 
-        [Parameter(Mandatory, ParameterSetName = "__list", HelpMessage = 'Second list for comparisson')]
+        [Parameter(Mandatory = $true, ParameterSetName = "__list", HelpMessage = 'Second list for comparisson')]
         [ValidateNotNullOrEmpty()]
         [Alias('List2', 'B')]
         [System.Object[]] $ListB

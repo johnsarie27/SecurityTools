@@ -6,7 +6,7 @@
 # ==============================================================================
 
 function Install-ModuleFromPackage {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Install module from GitHub download
     .DESCRIPTION
@@ -22,7 +22,7 @@ function Install-ModuleFromPackage {
         Extracts contents of zip and copies to Windows module directory then removes zip.
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     Param(
         [Parameter(Mandatory, HelpMessage = 'Path to module archive file')]
         [ValidateScript( { Test-Path -Path $_ -PathType Leaf -Include "*.zip" })]

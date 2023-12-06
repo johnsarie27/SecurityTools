@@ -1,5 +1,5 @@
 function Get-LoggedOnUser {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Show all users currently logged onto system
     .DESCRIPTION
@@ -12,7 +12,7 @@ function Get-LoggedOnUser {
         System.String.
     .EXAMPLE
         PS C:\> Get-ConnectedUser -ComputerName $Computer
-    ========================================================================= #>
+    #>
     Param(
         [Parameter(HelpMessage = 'Target hostname')]
         [ValidateScript( { Test-Connection -ComputerName $_ -Quiet -Count 1 })]

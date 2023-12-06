@@ -1,5 +1,5 @@
 function Get-SavedHistory {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Find command matching search term(s)
     .DESCRIPTION
@@ -16,7 +16,7 @@ function Get-SavedHistory {
         PS C:\> Get-SavedHistory -Search "ELBLoadBalancer -Name"
     .NOTES
         See article: https://serverfault.com/questions/891265/how-to-search-powershell-command-history-from-previous-sessions
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     [OutputType([System.Object[]])]
 

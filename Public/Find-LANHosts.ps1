@@ -1,5 +1,5 @@
 function Find-LANHost {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Find LAN hosts
     .DESCRIPTION
@@ -20,7 +20,7 @@ function Find-LANHost {
     .NOTES
         General notes
         https://xkln.net/blog/layer-2-host-discovery-with-powershell-in-under-a-second/
-    ========================================================================= #>
+    #>
     [Cmdletbinding()]
     Param (
         [Parameter(Mandatory, Position = 1, HelpMessage = 'IP addresses to scan')]

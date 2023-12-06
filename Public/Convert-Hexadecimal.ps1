@@ -1,5 +1,5 @@
 function Convert-Hexadecimal {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Convert hexadeciaml
     .DESCRIPTION
@@ -22,7 +22,7 @@ function Convert-Hexadecimal {
         - <VersionNotes> (or remove this line if no version notes)
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding(DefaultParameterSetName = '__dcm')]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Hexadecimal value', ParameterSetName = '__hex')]

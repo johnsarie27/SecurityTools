@@ -11,11 +11,11 @@ foreach ( $directory in @('Public', 'Private') ) {
 
 # VARIABLES
 New-Variable -Name 'EventTable' -Option ReadOnly -Value (
-    Get-Content -Raw -Path "$PSScriptRoot\Public\EventTable.json" | ConvertFrom-Json
+    Get-Content -Raw -Path "$PSScriptRoot\Private\EventTable.json" | ConvertFrom-Json
 )
 
 New-Variable -Name 'InfoModel' -Option ReadOnly -Value (
-    Get-Content -Raw -Path "$PSScriptRoot\Public\InformationModel.json" | ConvertFrom-Json
+    Get-Content -Raw -Path "$PSScriptRoot\Private\InformationModel.json" | ConvertFrom-Json
 )
 
 # EXPORT MEMBERS

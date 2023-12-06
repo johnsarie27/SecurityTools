@@ -1,5 +1,5 @@
 ﻿function Find-ServerPendingReboot {
-    <# =============================================================================
+    <#====
     .SYNOPSIS
         Check if a server is pending reboot
     .DESCRIPTION
@@ -22,7 +22,7 @@
         modifications including formatting for ease of reading.
 
         https://gallery.technet.microsoft.com/scriptcenter/How-to-check-if-any-4b1e53f2
-    ============================================================================= #>
+    ====#>
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline, HelpMessage='Computer name')]

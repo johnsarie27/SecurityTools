@@ -1,5 +1,5 @@
 function Get-RSOP {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Generate a Resultant Set of Policy report
     .DESCRIPTION
@@ -20,7 +20,7 @@ function Get-RSOP {
     .NOTES
         General notes
         THIS FUNCTION REQUIRES MODULE GroupPolicy
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Path to report file')]

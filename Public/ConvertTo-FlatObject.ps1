@@ -1,5 +1,5 @@
 function ConvertTo-FlatObject {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Flattends a nested object into a single level object
     .DESCRIPTION
@@ -31,7 +31,7 @@ function ConvertTo-FlatObject {
         Based on the articles below:
         https://powersnippets.com/convertto-flatobject/
         https://github.com/EvotecIT/PSSharedGoods/blob/master/Public/Converts/ConvertTo-FlatObject.ps1
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeLine, HelpMessage = 'Object to convert')]

@@ -1,0 +1,224 @@
+[
+    {
+        "Name": "RDGW Logon",
+        "Log": "Microsoft-Windows-TerminalServices-Gateway",
+        "EventId": 302,
+        "Description": ""
+    },
+    {
+        "Name": "RDGW Logoff",
+        "Log": "Microsoft-Windows-TerminalServices-Gateway",
+        "EventId": 303,
+        "Description": ""
+    },
+    {
+        "Name": "Software Installed",
+        "Log": "Application",
+        "EventId": 11707,
+        "Description": ""
+    },
+    {
+        "Name": "Software Uninstalled",
+        "Log": "Application",
+        "EventId": 11724,
+        "Description": ""
+    },
+    {
+        "Name": "MSP Patch Installed",
+        "Log": "Application",
+        "EventId": 1036,
+        "Description": "Windows Installer installed an update... Installation success or error status: %5."
+    },
+    {
+        "Name": "MSP Patch Installed Successfully",
+        "Log": "Application",
+        "EventId": 1022,
+        "Description": "Product: %1 - Update '%2' installed successfully..."
+    },
+    {
+        "Name": "Event Log Started",
+        "Log": "System",
+        "EventId": 6005,
+        "Description": ""
+    },
+    {
+        "Name": "Event Log Stopped",
+        "Log": "System",
+        "EventId": 6006,
+        "Description": ""
+    },
+    {
+        "Name": "Audit Log Was Cleared",
+        "Log": "Security",
+        "EventId": 1102,
+        "Description": ""
+    },
+    {
+        "Name": "User Account Created",
+        "Log": "Security",
+        "EventId": 4720,
+        "Description": ""
+    },
+    {
+        "Name": "User Account Deleted",
+        "Log": "Security",
+        "EventId": 4726,
+        "Description": ""
+    },
+    {
+        "Name": "RDP Session",
+        "Log": "Microsoft-Windows-TerminalServices-LocalSessionManager",
+        "EventId": 21,
+        "Description": ""
+    },
+    {
+        "Name": "BitLocker Encryption",
+        "Log": "System",
+        "EventId": 24667,
+        "Description": ""
+    },
+    {
+        "Name": "Task Scheduler Task Completed",
+        "Log": "Microsoft-Windows-TaskScheduler",
+        "EventId": 102,
+        "Description": ""
+    },
+    {
+        "Name": "Task Scheduler Action Completed",
+        "Log": "Microsoft-Windows-TaskScheduler",
+        "EventId": 201,
+        "Description": ""
+    },
+    {
+        "Name": "Task Scheduler Action Startd",
+        "Log": "Microsoft-Windows-TaskScheduler",
+        "EventId": 200,
+        "Description": ""
+    },
+    {
+        "Name": "Task Scheduler Created Task Process",
+        "Log": "Microsoft-Windows-TaskScheduler",
+        "EventId": 129,
+        "Description": ""
+    },
+    {
+        "Name": "Windows Defender Scan Started",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1000,
+        "Description": ""
+    },
+    {
+        "Name": "Windows Defender Scan Completed",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1001,
+        "Description": ""
+    },
+    {
+        "Name": "Windows Defender Malware Found",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1006,
+        "Description": "The antimalware engine found malware or other potentially unwanted software"
+    },
+    {
+        "Name": "Windows Defender Peformed Action",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1007,
+        "Description": "The antimalware platform performed an action to protect your system from malware or other potentially unwanted software"
+    },
+    {
+        "Name": "Windows Defender Malware Detected",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1116,
+        "Description": "The antimalware platform detected malware or other potentially unwanted software"
+    },
+    {
+        "Name": "Windows Defender Peformed Action",
+        "Log": "Microsoft-Windows-Windows Defender",
+        "EventId": 1117,
+        "Description": "The antimalware platform performed an action to protect your system from malware or other potentially unwanted software"
+    },
+    {
+        "Name": "Windows Server Feature Added",
+        "Log": "Microsoft-Windows-ServerManager-DeploymentProvider",
+        "EventId": 204,
+        "Description": ""
+    },
+    {
+        "Name": "Windows Server Feature Removed",
+        "Log": "Microsoft-Windows-ServerManager-DeploymentProvider",
+        "EventId": 304,
+        "Description": ""
+    },
+    {
+        "Name": "Failed Logon Attempt",
+        "Log": "Security",
+        "EventId": 4625,
+        "Description": ""
+    },
+    {
+        "Name": "Restart or Shutdown",
+        "Log": "System",
+        "EventId": 1074,
+        "Description": ""
+    },
+    {
+        "Name": "Process Created",
+        "Log": "Security",
+        "EventId": 4688,
+        "Description": ""
+    },
+    {
+        "Name": "Process Exited",
+        "Log": "Security",
+        "EventId": 4689,
+        "Description": ""
+    },
+    {
+        "Name": "AppLocker policy conversion failed",
+        "Log": "Microsoft-Windows-AppLocker/EXE and DLL",
+        "EventId": 8000,
+        "Description": ""
+    },
+    {
+        "Name": "AppLocker policy applied successfully",
+        "Log": "Microsoft-Windows-AppLocker/EXE and DLL",
+        "EventId": 8001,
+        "Description": ""
+    },
+    {
+        "Name": "AppLocker: EXE or DLL was allowed to run",
+        "Log": "Microsoft-Windows-AppLocker/EXE and DLL",
+        "EventId": 8002,
+        "Description": ""
+    },
+    {
+        "Name": "AppLocker: EXE or DLL would have been prevented from running",
+        "Log": "Microsoft-Windows-AppLocker/EXE and DLL",
+        "EventId": 8003,
+        "Description": "If the AppLocker policy was in ENFORCED mode the file would have been prevented from running"
+    },
+    {
+        "Name": "AppLocker: EXE or DLL was prevented from running",
+        "Log": "Microsoft-Windows-AppLocker/EXE and DLL",
+        "EventId": 8004,
+        "Description": ""
+    },
+    {
+        "Name": "AppLocker: MSI or MSP was allowed to run",
+        "Log": "Microsoft-Windows-AppLocker/MSI and Script",
+        "EventId": 8005,
+        "Description": ""
+    },
+    {
+        "Name": "AppLocker: MSI or MSP would have been prevented from running",
+        "Log": "Microsoft-Windows-AppLocker/MSI and Script",
+        "EventId": 8006,
+        "Description": "If the AppLocker policy was in ENFORCED mode the file would have been prevented from running"
+    },
+    {
+        "Name": "AppLocker: MSI or MSP was prevented from running",
+        "Log": "Microsoft-Windows-AppLocker/MSI and Script",
+        "EventId": 8007,
+        "Description": ""
+    }
+]

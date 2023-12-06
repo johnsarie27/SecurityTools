@@ -1,5 +1,5 @@
 function ConvertTo-MarkdownTable {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Convert array of objects to Markdown table
     .DESCRIPTION
@@ -23,7 +23,7 @@ function ConvertTo-MarkdownTable {
         Comments: <Comment(s)>
         General notes:
         https://stackoverflow.com/questions/69010143/convert-powershell-output-to-a-markdown-file
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Input object')]

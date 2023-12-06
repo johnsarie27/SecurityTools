@@ -1,10 +1,3 @@
----
-external help file: SecurityTools-help.xml
-Module Name: SecurityTools
-online version:
-schema: 2.0.0
----
-
 # Convert-SecureKey
 
 ## SYNOPSIS
@@ -12,44 +5,43 @@ Convert string to PSCredential object or store as CliXML
 
 ## SYNTAX
 
-### create (Default)
+### _retrieve (Default)
 ```
-Convert-SecureKey [-Create] [-Password <SecureString>] [<CommonParameters>]
+Convert-SecureKey -Path <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
-### retrieve
+### _create
 ```
-Convert-SecureKey [-Retrieve] [-Path <String>] [<CommonParameters>]
+Convert-SecureKey -Username <String> [-SecurePassword <SecureString>] -DestinationPath <String> [-PassThru]
+ [-Force] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This simple function will either create a PSCredential object and store it as XML or retrieve a PSCredential object
- from a Clixml file.
+This simple function will either create a PSCredential object and store it
+as XML or retrieve a PSCredential object from a Clixml file.
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> Convert-SecureKey -Create
+### EXAMPLE 1
+```
+-- EXAMPLE 1 --
+PS C:\> Convert-SecureKey -Username 'Password' -DestinationPath "$HOME\Documents\Creds.xml"
 ```
 
-Create a Secure String object
-
-### Example 2
-```powershell
-PS C:\> Convert-SecureKey -Create -Password ('SuperSecure' | ConvertTo-SecureString -AsPlainText -Force)
+### EXAMPLE 2
 ```
-
-Convert string variable to Secure String object then write the object to a CliXml file
+-- EXAMPLE 2 --
+PS C:\> Convert-SecureKey -Path C:\Store\Credentials.xml
+```
 
 ## PARAMETERS
 
-### -Create
-Create CliXML object with SecureString object
+### -Path
+Path to CliXML file containing Credential object
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: create
+Type: String
+Parameter Sets: _retrieve
 Aliases:
 
 Required: True
@@ -59,42 +51,42 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Password
-Password in SecureString type format
+### -Username
+Username
+
+```yaml
+Type: String
+Parameter Sets: _create
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SecurePassword
+Enter SecureString
 
 ```yaml
 Type: SecureString
-Parameter Sets: create
+Parameter Sets: _create
 Aliases:
 
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -Path
-Path to CliXML file containing SecureString object password
-
-```yaml
-Type: String
-Parameter Sets: retrieve
-Aliases: File
-
-Required: True
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Retrieve
-Retrieve SecureString object in CliXML file and convert to string
+### -DestinationPath
+Path to directory for new credential file
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: retrieve
+Type: String
+Parameter Sets: _create
 Aliases:
 
 Required: True
@@ -104,15 +96,45 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SavePath
-Path to save new CliXML object
+### -PassThru
+Return new credential object
 
 ```yaml
-Type: String
-Parameter Sets: create
-Aliases: Folder
+Type: SwitchParameter
+Parameter Sets: _create
+Aliases:
 
-Required: True
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Force
+Overwrite existing file
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: _create
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -120,19 +142,20 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
-### System.Security.SecureString
-
-### System.String
-
+### None.
 ## OUTPUTS
 
-### System.Object
-
+### System.PSCredential.
 ## NOTES
+It appears that the Clixml file is locked to the user and computer where
+it was created.
+It cannot be accessed by another user or computer.
+The
+article below has more information based on a different Cmdlet.
+https://www.randomizedharmony.com/blog/2018/11/25/using-credentials-in-production-scripts
 
 ## RELATED LINKS

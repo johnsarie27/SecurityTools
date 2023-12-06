@@ -1,9 +1,17 @@
 function Uninstall-AllModules {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Uninstall all dependent modules
     .DESCRIPTION
         Uninstall a module and all dependent modules
+    .PARAMETER TargetModule
+        TargetModule
+    .PARAMETER Version
+        Version
+    .PARAMETER Force
+        Force
+    .PARAMETER WhatIf
+        WhatIf
     .EXAMPLE
         PS C:\> Uninstall-AllModules -TargetModule AzureRM -Version 4.4.1 -Force
         Remove an older version of Azure PowerShell.
@@ -11,11 +19,10 @@ function Uninstall-AllModules {
         System.String.
     .OUTPUTS
         None.
-    .LINK
-        https://docs.microsoft.com/en-us/powershell/azure/uninstall-azurerm-ps?view=azurermps-6.13.0
     .NOTES
         This function was written by Microsoft. See link above for details.
-    ========================================================================= #>
+        https://docs.microsoft.com/en-us/powershell/azure/uninstall-azurerm-ps?view=azurermps-6.13.0
+    #>
     Param(
         [Parameter(Mandatory)]
         [System.String] $TargetModule,
@@ -34,7 +41,7 @@ function Uninstall-AllModules {
     $target = Find-Module $TargetModule -RequiredVersion $version
     $target.Dependencies | ForEach-Object {
         if ($_.requiredVersion) {
-            $AllModules += New-Object -TypeName psobject -Property @{name = $_.name; version = $_.requiredVersion}
+            $AllModules += New-Object -TypeName psobject -Property @{name = $_.name; version = $_.requiredVersion }
         }
         else {
             # Assume minimum version
@@ -43,14 +50,14 @@ function Uninstall-AllModules {
             # see if the requested version was installed as a dependency earlier.
             $candidate = Get-InstalledModule $_.name -RequiredVersion $version
             if ($candidate) {
-                $AllModules += New-Object -TypeName psobject -Property @{name = $_.name; version = $version}
+                $AllModules += New-Object -TypeName psobject -Property @{name = $_.name; version = $version }
             }
             else {
                 Write-Warning ("Could not find uninstall candidate for {0}:{1} - module may require manual uninstall" -f $_.name, $version)
             }
         }
     }
-    $AllModules += New-Object -TypeName psobject -Property @{name = $TargetModule; version = $Version}
+    $AllModules += New-Object -TypeName psobject -Property @{name = $TargetModule; version = $Version }
 
     foreach ($module in $AllModules) {
         Write-Output ('Uninstalling {0} version {1}...' -f $module.name, $module.version)

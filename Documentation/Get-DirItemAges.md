@@ -1,10 +1,3 @@
----
-external help file: SecurityTools-help.xml
-Module Name: SecurityTools
-online version:
-schema: 2.0.0
----
-
 # Get-DirItemAges
 
 ## SYNOPSIS
@@ -13,7 +6,8 @@ Generate age information for a directory of files and sub-files
 ## SYNTAX
 
 ```
-Get-DirItemAges [-Path] <String> [[-AgeInDays] <Int32>] [-NoRecurse] [<CommonParameters>]
+Get-DirItemAges [-Path] <String> [[-AgeInDays] <Int32>] [-NoRecurse] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -21,17 +15,32 @@ This function generates a report of content details for a given folder.
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> Get-DirItemAges -Directory 'D:\Database\logs' -AgeInDays 7
+### EXAMPLE 1
 ```
-
+Get-DirItemAges -Directory 'D:\Database\logs' -AgeInDays 7
 Get all content details for D:\Database\logs using 7 day measurement
+```
 
 ## PARAMETERS
 
+### -Path
+Full path to the target directory for which the report should be
+generated.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: Directory, Folder
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -AgeInDays
-Sample age to measure files create before/after
+Sample age to measure number of files created since.
 
 ```yaml
 Type: Int32
@@ -39,14 +48,15 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
-Default value: None
+Position: 2
+Default value: 7
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -NoRecurse
-Do not recurse through children directories
+This switch parameter causes the scan of only the first level of
+folders.
 
 ```yaml
 Type: SwitchParameter
@@ -55,40 +65,44 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Path
-Target directory
+### -ProgressAction
+{{ Fill ProgressAction Description }}
 
 ```yaml
-Type: String
+Type: ActionPreference
 Parameter Sets: (All)
-Aliases: Directory, Folder
+Aliases: proga
 
-Required: True
-Position: 0
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
-### System.String
-
-### System.Int
-
+### System.String.
+### System.Int.
 ## OUTPUTS
 
-### System.Object
-
+### System.Object.
 ## NOTES
 
 ## RELATED LINKS
+
+[https://blogs.technet.microsoft.com/pstips/2017/05/20/display-friendly-file-sizes-in-powershell/
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-6](https://blogs.technet.microsoft.com/pstips/2017/05/20/display-friendly-file-sizes-in-powershell/
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-6)
+
+[https://blogs.technet.microsoft.com/pstips/2017/05/20/display-friendly-file-sizes-in-powershell/
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-6]()
+

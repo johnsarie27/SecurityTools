@@ -1,61 +1,69 @@
----
-external help file: SecurityTools-help.xml
-Module Name: SecurityTools
-online version:
-schema: 2.0.0
----
-
 # Get-SavedHistory
 
 ## SYNOPSIS
-Get command history matching word or phrase
+Find command matching search term(s)
 
 ## SYNTAX
 
 ```
-Get-SavedHistory [-Phrase] <String> [<CommonParameters>]
+Get-SavedHistory [-Search] <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This function will return results of commands run and stored in the HistorySavePath property of Get-PSReadLineOption Cmdlet. This typically traverses sessions and windows other than that currently running.
+Search for commands in the stored session history for PowerShell that
+match the provided keyword(s).
+If no keywards are provided all unique
+commands will be returned.
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> Get-SavedHistory -Phrase "ELBLoadBalancer -Name" -Results 100
+### EXAMPLE 1
 ```
-
-Show the last 100 commands run using the phrase "ELBLoadBalancer -Name"
+Get-SavedHistory -Search "ELBLoadBalancer -Name"
+```
 
 ## PARAMETERS
 
-### -Phrase
-Search phrase
+### -Search
+Search term or phrase (best results with a contiguous phrase)
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Search, Terms
+Aliases:
 
 Required: True
-Position: 0
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
-### System.String
-
+### System.String.
 ## OUTPUTS
 
-### System.Object
+### System.Object[].
 ## NOTES
+See article: https://serverfault.com/questions/891265/how-to-search-powershell-command-history-from-previous-sessions
 
 ## RELATED LINKS

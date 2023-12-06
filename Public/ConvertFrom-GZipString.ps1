@@ -1,5 +1,5 @@
 function ConvertFrom-GZipString {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Decompresses a Base64 GZipped string
     .DESCRIPTION
@@ -23,7 +23,7 @@ function ConvertFrom-GZipString {
         Comments: <Comment(s)>
         General notes
         https://www.dorkbrain.com/docs/2017/09/02/gzip-in-powershell/
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline)]

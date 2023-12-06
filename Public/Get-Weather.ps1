@@ -1,5 +1,5 @@
 function Get-Weather {
-    <# =========================================================================
+    <#
     .DESCRIPTION
         Get weather conditions
     .PARAMETER City
@@ -21,7 +21,7 @@ function Get-Weather {
         Comments: <Comment(s)>
         General notes
         https://github.com/chubin/wttr.in
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(HelpMessage = 'City')]

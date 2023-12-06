@@ -1,82 +1,67 @@
----
-external help file: SecurityTools-help.xml
-Module Name: SecurityTools
-online version:
-schema: 2.0.0
----
-
 # Get-ADUserStatus
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get user status
 
 ## SYNTAX
 
-### username (Default)
 ```
-Get-ADUserStatus -UserName <String> [<CommonParameters>]
-```
-
-### fragment
-```
-Get-ADUserStatus -PartialName <String> [<CommonParameters>]
+Get-ADUserStatus [-Identity] <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get user status information including password and logon details
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+### EXAMPLE 1
 ```
-
-{{ Add example description here }}
+Get-ADUserStatus -Identity jsmith
+Gets the status information for user jsmith
+```
 
 ## PARAMETERS
 
-### -PartialName
-Part of user's name
+### -Identity
+AD User Identity
 
 ```yaml
 Type: String
-Parameter Sets: fragment
-Aliases: Name, Fragment
+Parameter Sets: (All)
+Aliases:
 
 Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UserName
-User account name
-
-```yaml
-Type: String
-Parameter Sets: username
-Aliases: User
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
-### System.String
-
+### None.
 ## OUTPUTS
 
-### System.Object
+### System.Object.
 ## NOTES
+General notes
 
 ## RELATED LINKS

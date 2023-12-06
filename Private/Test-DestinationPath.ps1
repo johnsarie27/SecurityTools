@@ -1,5 +1,5 @@
 function Test-DestinationPath {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Test for a proper destination path
     .DESCRIPTION
@@ -17,7 +17,7 @@ function Test-DestinationPath {
         Returns path if path can be used as destination path
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [OutputType([System.String])]
     [CmdletBinding()]
     Param(

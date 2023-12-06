@@ -1,5 +1,5 @@
 function Test-Performance {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Test performance of script block
     .DESCRIPTION
@@ -24,7 +24,7 @@ function Test-Performance {
         AvgMilliseconds : 3824
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage='ScriptBlock to test performance')]

@@ -1,5 +1,5 @@
 function Update-LocalUserPassword {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Change the password for a local user
     .DESCRIPTION
@@ -25,7 +25,7 @@ function Update-LocalUserPassword {
     .NOTES
         This function has not yet been tested!!!
         https://www.petri.com/how-to-change-user-password-with-powershell
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'PowerShell Credential')]

@@ -1,5 +1,5 @@
 function Get-UncPath {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Generate UNC path from local or relative path
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Get-UncPath {
         PS C:\> Get-UncPath -Path 'C:\Temp\Share'
     .EXAMPLE
         PS C:\> Get-UncPath -Path 'D:\Share' -Unix -ComputerName 'MyServer'
-    ========================================================================= #>
+    #>
 
     Param(
         [Parameter(Mandatory, HelpMessage = 'Local path')]

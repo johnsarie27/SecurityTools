@@ -1,5 +1,5 @@
 function Export-SQLVAReportAggregate {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Aggregate results from SQL Vulnerability Assessment scans
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Export-SQLVAReportAggregate {
         Combine all scans in C:\MyScans folder into a single report and output to the desktop.
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding(DefaultParameterSetName = 'folder')]
     Param(
         [Parameter(

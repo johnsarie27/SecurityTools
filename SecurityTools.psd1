@@ -66,9 +66,9 @@
 
     # Type files (.ps1xml) to be loaded when importing this module
     TypesToProcess    = @(
-        'ADUser.types.ps1xml'
-        'Process.types.ps1xml'
-        'Service.types.ps1xml'
+        './Private/ADUser.types.ps1xml'
+        './Private/Process.types.ps1xml'
+        './Private/Service.types.ps1xml'
     )
 
     # Format files (.ps1xml) to be loaded when importing this module

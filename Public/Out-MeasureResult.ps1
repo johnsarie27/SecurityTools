@@ -1,5 +1,5 @@
 function Out-MeasureResult {
-    <# =========================================================================
+    <#
     .Synopsis
         Outputs an object that shows maximum, minimum and average of an collection of
         System.TimeSpan objects.
@@ -29,7 +29,7 @@ function Out-MeasureResult {
     .NOTES
         This function comes from the chapter Increasing PowerShell Performance
         in the "PowerShell Conference Book"
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(ValueFromPipeline)]

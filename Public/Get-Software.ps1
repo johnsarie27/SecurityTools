@@ -1,5 +1,5 @@
 function Get-Software {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get all installed software
     .DESCRIPTION
@@ -27,7 +27,7 @@ function Get-Software {
         - 0.1.0 - Initial version
         General notes:
         https://4sysops.com/archives/find-the-product-guid-of-installed-software-with-powershell/
-    ========================================================================= #>
+    #>
     #[Alias('gs')]
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding()]

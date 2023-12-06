@@ -1,5 +1,5 @@
 function Get-DirStats {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get directory statistics
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Get-DirStats {
         System.Object.
     .EXAMPLE
         PS C:\> Get-DirStats -Path C:\MyData -SizeInGb 4
-    ========================================================================= #>
+    #>
     Param(
         [Parameter(Mandatory, HelpMessage = 'Directory to evaluate')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]

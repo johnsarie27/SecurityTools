@@ -1,34 +1,87 @@
----
-external help file: SecurityTools-help.xml
-Module Name: SecurityTools
-online version:
-schema: 2.0.0
----
-
 # Get-DirStats
 
 ## SYNOPSIS
-Show directory statistics for a given directory
+Get directory statistics
 
 ## SYNTAX
 
 ```
-Get-DirStats [[-Path] <String>] [[-SizeInGb] <Int32>] [-All] [-Totals] [<CommonParameters>]
+Get-DirStats [-Path] <String> [[-SizeInGb] <Double>] [[-OutputDirectory] <String>] [-NoTotals] [-All]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This function will display all files and folders in a given directory that are greater than or equal to a given size in GB. The defaul is 1GB.
+Get summary of all files and folders in specified directory that are
+greater than or equal to specified size (defaul size is 1GB).
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> Get-DirStats -Path C:\MyData -SizeInGb 4
+### EXAMPLE 1
+```
+Get-DirStats -Path C:\MyData -SizeInGb 4
 ```
 
-Show objects that are greater than 4GB in C:\MyData
-
 ## PARAMETERS
+
+### -Path
+Target folder
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SizeInGb
+Threshold for which to measure file and folder sizes
+
+```yaml
+Type: Double
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: 1
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OutputDirectory
+Output report directory (directory must already exist)
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NoTotals
+Skip calculatation of file size totals and number of files totals
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -All
 Measure all files of any size
@@ -40,48 +93,18 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Path
-Directory to evaluate
+### -ProgressAction
+{{ Fill ProgressAction Description }}
 
 ```yaml
-Type: String
+Type: ActionPreference
 Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -SizeInGb
-Minimum file size to search for
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Totals
-Show totals at end
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
+Aliases: proga
 
 Required: False
 Position: Named
@@ -91,18 +114,14 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
-### System.String
-
-### System.Int
-
+### None.
 ## OUTPUTS
 
-### System.Object
+### System.Object.
 ## NOTES
 
 ## RELATED LINKS

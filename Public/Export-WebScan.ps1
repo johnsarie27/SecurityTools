@@ -1,5 +1,5 @@
 function Export-WebScan {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Export vulnerability report
     .DESCRIPTION
@@ -17,7 +17,7 @@ function Export-WebScan {
         Processes the Acunetix XML report and produces an Excel Spreadsheet of the results
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Path to Acunetix report file in XML format')]

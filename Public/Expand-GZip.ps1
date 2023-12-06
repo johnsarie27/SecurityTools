@@ -1,5 +1,5 @@
 function Expand-GZip {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Expand GZip compressed file
     .DESCRIPTION
@@ -23,7 +23,7 @@ function Expand-GZip {
         Comments: <Comment(s)>
         General notes:
         https://social.technet.microsoft.com/Forums/windowsserver/en-US/5aa53fef-5229-4313-a035-8b3a38ab93f5/unzip-gz-files-using-powershell?forum=winserverpowershell
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Path to GZip file')]

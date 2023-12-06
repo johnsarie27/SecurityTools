@@ -1,5 +1,5 @@
 function Get-FileInfo {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get file information
     .DESCRIPTION
@@ -23,7 +23,7 @@ function Get-FileInfo {
         Comments: <Comment(s)>
         General notes
         https://en.wikipedia.org/wiki/List_of_file_signatures
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'File signature')]

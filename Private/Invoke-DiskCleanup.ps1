@@ -1,5 +1,5 @@
 function Invoke-DiskCleanup {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Short description
     .DESCRIPTION
@@ -23,7 +23,7 @@ function Invoke-DiskCleanup {
         http://www.theservergeeks.com/how-todisk-cleanup-using-powershell/
         https://stackoverflow.com/questions/28852786/automate-process-of-disk-cleanup-cleanmgr-exe-without-user-intervention
         https://github.com/adbertram/Random-PowerShell-Work/blob/master/File-Folder%20Management/Invoke-WindowsDiskCleanup.ps1
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param()
     Begin {
