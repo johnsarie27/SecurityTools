@@ -40,8 +40,8 @@ Describe -Name "Convert-SecureKey" -Fixture {
     }
 
     BeforeAll {
-        New-Item -Path '/tmp/Temp/' -ItemType Directory -Force
-        $Path = '/tmp/Temp/Temp.xml'
+        New-Item -Path 'Temp:/test/' -ItemType Directory -Force
+        $Path = 'Temp:/test/secure_key.xml' # "TestDrive:\test.csv"
         $SecurePW = ConvertTo-SecureString -String 'SuperPassword123' -AsPlainText -Force
     }
 

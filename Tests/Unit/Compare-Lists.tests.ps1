@@ -54,7 +54,7 @@ Describe -Name "Compare-Lists" -Fixture {
                 if ( $b[$i] ) { $new['B'] = $b[$i].ProcessName } else { $new['B'] = '' }
                 $List += [PSCustomObject] $new
             }
-            $Path = '/tmp/test.csv' # "TestDrive:\test.csv" OR "$HOME\Desktop\test.csv"
+            $Path = 'Temp:/test_compare_list.csv' # "TestDrive:\test.csv" OR "$HOME\Desktop\test.csv"
             $List | Export-Csv -Path $Path
         }
     }
