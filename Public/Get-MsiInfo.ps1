@@ -1,5 +1,5 @@
 function Get-MsiInfo {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get MSI information
     .DESCRIPTION
@@ -19,7 +19,7 @@ function Get-MsiInfo {
         General notes
         This function was originally written by Nickolaj Andersen (see link below)
         https://www.scconfigmgr.com/2014/08/22/how-to-get-msi-file-information-with-powershell/
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [parameter(Mandatory = $true)]

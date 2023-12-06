@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.8.18'
+    ModuleVersion     = '0.9.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -65,10 +65,10 @@
     # ScriptsToProcess = @()
 
     # Type files (.ps1xml) to be loaded when importing this module
-    TypesToProcess = @(
-        'ADUser.types.ps1xml'
-        'Process.types.ps1xml'
-        'Service.types.ps1xml'
+    TypesToProcess    = @(
+        './Private/ADUser.types.ps1xml'
+        './Private/Process.types.ps1xml'
+        './Private/Service.types.ps1xml'
     )
 
     # Format files (.ps1xml) to be loaded when importing this module

@@ -1,5 +1,5 @@
 function Revoke-SupersededCert {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Revoke smart card certificates that have been superseded
     .DESCRIPTION
@@ -18,7 +18,7 @@ function Revoke-SupersededCert {
         Revoke all card certificates where a duplicate with a later expiration exists.
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Certificate objects')]

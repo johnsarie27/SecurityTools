@@ -1,5 +1,5 @@
 function Get-CVSSv3BaseScore {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get CVSS v3 score for the given CVE ID
     .DESCRIPTION
@@ -16,7 +16,7 @@ function Get-CVSSv3BaseScore {
         Scrapes the NVD NIST page and returns CVSS v3 score for CVE "CVE-2020-2659"
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'CVE ID')]

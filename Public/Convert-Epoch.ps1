@@ -1,5 +1,5 @@
 function Convert-Epoch {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Convert epoch
     .DESCRIPTION
@@ -19,7 +19,7 @@ function Convert-Epoch {
         Converts epoch time to date/time object
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding(DefaultParameterSetName = '__dt')]
     Param(
         [Parameter(Position = 0, ParameterSetName = '__dt', ValueFromPipeline, HelpMessage = 'DateTime object')]

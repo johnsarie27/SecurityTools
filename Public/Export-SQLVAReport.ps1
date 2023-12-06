@@ -1,5 +1,5 @@
 function Export-SQLVAReport {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         This function is used to scan SQL Server DBs for Vulnerabilities
     .DESCRIPTION
@@ -24,7 +24,7 @@ function Export-SQLVAReport {
     .NOTES
         General notes
         https://docs.microsoft.com/en-us/sql/relational-databases/security/sql-vulnerability-assessment?view=sql-server-2017
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'SQL server name')]

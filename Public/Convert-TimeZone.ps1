@@ -1,5 +1,5 @@
 function Convert-TimeZone {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Convert US time zones
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Convert-TimeZone {
         [DateTime]::UtcNow
         $DateTimeObject.ToLocalTime()
         $DateTimeObject.ToUniversalTime()
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     [OutputType([System.Object[]])]
     Param(

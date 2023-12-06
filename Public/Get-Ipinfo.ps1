@@ -1,5 +1,5 @@
 function Get-Ipinfo {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get IP address info
     .DESCRIPTION
@@ -17,7 +17,7 @@ function Get-Ipinfo {
         General notes
         https://ipinfo.io/
         To get more data (e.g., ASN or Company info) a token must be used
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline, HelpMessage = 'Enter an IPV4 address')]

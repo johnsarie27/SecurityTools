@@ -1,5 +1,5 @@
 function ConvertTo-Hex {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Convert Char to Hex
     .DESCRIPTION
@@ -22,7 +22,7 @@ function ConvertTo-Hex {
         Comments: <Comment(s)>
         TO CONVERT FROM HEX TO CHAR USE THE CODE BELOW
         [System.Char] 0x21
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, Position = 0, HelpMessage = 'Character')]

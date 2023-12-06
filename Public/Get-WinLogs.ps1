@@ -1,5 +1,5 @@
 function Get-WinLogs {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Windows Event Viewer logs
     .DESCRIPTION
@@ -38,7 +38,7 @@ function Get-WinLogs {
         Comments: <Comment(s)>
         General notes
         https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent
-    ========================================================================= #>
+    #>
     [CmdletBinding(DefaultParameterSetName = '__lst')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'List available events', ParameterSetName = '__lst')]

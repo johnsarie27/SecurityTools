@@ -1,5 +1,5 @@
 function Get-ActiveSmartCardCert {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get all active smart card certificates
     .DESCRIPTION
@@ -21,7 +21,7 @@ function Get-ActiveSmartCardCert {
         $Config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
         $CA = $Config.Domain.CA.Subordinate
         $CT = ($Config.Domain.CA.Templates | Where-Object Name -EQ 'SmartCard').Value
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Ceritificate Authority server')]

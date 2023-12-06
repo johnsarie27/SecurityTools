@@ -1,5 +1,5 @@
 function Get-AlternateDataStream {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get alternate data streams
     .DESCRIPTION
@@ -36,7 +36,7 @@ function Get-AlternateDataStream {
         2 = Trusted sites
         3 = Internet
         4 = Restricted sites
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(ValueFromPipeline, Position = 0, HelpMessage = 'File path')]

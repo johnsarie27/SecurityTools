@@ -1,5 +1,5 @@
 function Get-WinInfo {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Windows information
     .DESCRIPTION
@@ -26,7 +26,7 @@ function Get-WinInfo {
         Comments: <Comment(s)>
         General notes
         https://learn.microsoft.com/en-us/powershell/module/cimcmdlets/get-ciminstance
-    ========================================================================= #>
+    #>
     [CmdletBinding(DefaultParameterSetName = '__list')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'List available classes', ParameterSetName = '__list')]

@@ -1,5 +1,5 @@
 function Get-StringHash {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Generate hash
     .DESCRIPTION
@@ -17,7 +17,7 @@ function Get-StringHash {
         Generate the SHA256 hash value of "String"
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'String to hash')]

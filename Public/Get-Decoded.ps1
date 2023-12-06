@@ -1,5 +1,5 @@
 function Get-Decoded {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Decode string from Base64 or URL encoding
     .PARAMETER String
@@ -20,7 +20,7 @@ function Get-Decoded {
         - Changed class used to perform URL decoding
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Base64 encoded string')]

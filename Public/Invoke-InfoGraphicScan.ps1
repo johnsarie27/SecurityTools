@@ -1,5 +1,5 @@
 function Invoke-InfoGraphicScan {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Invoke InfoGraphic scan
     .DESCRIPTION
@@ -23,7 +23,7 @@ function Invoke-InfoGraphicScan {
         HTML file code and validation status of report data JSON.
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Path to HTML file')]

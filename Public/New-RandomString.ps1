@@ -1,5 +1,5 @@
 function New-RandomString {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get random string
     .DESCRIPTION
@@ -36,7 +36,7 @@ function New-RandomString {
         General notes:
         https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-random?view=powershell-7.4
         https://learn.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Get-SecureRandom?view=powershell-7.4
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     [Alias('Get-RandomString')]
     Param(

@@ -1,5 +1,5 @@
 function Get-PatchTuesday {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get the Patch Tuesday of a month
     .DESCRIPTION
@@ -22,7 +22,7 @@ function Get-PatchTuesday {
         Get-PatchTue June 2015
     .Notes
         https://gallery.technet.microsoft.com/scriptcenter/Find-Patch-Tuesday-using-94484479
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(HelpMessage = 'Month')]

@@ -1,5 +1,5 @@
 function Export-ExcelBook {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Export data to Microsoft Excel spreadsheet
     .DESCRIPTION
@@ -30,7 +30,7 @@ function Export-ExcelBook {
         Write the Windows Service to an Excel spreadsheet with tab name "Services" and freeze the top row
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Array of data objects')]

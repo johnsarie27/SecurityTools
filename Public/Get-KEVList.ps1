@@ -1,5 +1,5 @@
 function Get-KEVList {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get Known Exploited Vulnerability list
     .DESCRIPTION
@@ -30,7 +30,7 @@ function Get-KEVList {
         https://cyber.dhs.gov/bod/22-01/
         https://www.cisa.gov/known-exploited-vulnerabilities
         https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_parameters
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $false, HelpMessage = 'Format to download catalog')]

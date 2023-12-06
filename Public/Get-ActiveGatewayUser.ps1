@@ -1,5 +1,5 @@
 function Get-ActiveGatewayUser {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get users actively connected to the remote desktop gateway
     .DESCRIPTION
@@ -16,7 +16,7 @@ function Get-ActiveGatewayUser {
         Get all users connected through the RDGW "Gateway"
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     [OutputType([System.Management.Automation.PSObject])]
     [Alias('Get-ActiveGWUser')]

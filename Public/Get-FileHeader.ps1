@@ -1,5 +1,5 @@
 function Get-FileHeader {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get file header
     .DESCRIPTION
@@ -25,7 +25,7 @@ function Get-FileHeader {
         Comments: <Comment(s)>
         General notes
         https://stackoverflow.com/questions/26194071/recognize-file-types-in-powershell
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'File path')]

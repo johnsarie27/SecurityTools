@@ -1,5 +1,5 @@
 function Export-VeracodeReport {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Export vulnerability report
     .DESCRIPTION
@@ -17,7 +17,7 @@ function Export-VeracodeReport {
         Explanation of what the example does
     .NOTES
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'XML file for Veracode scan report')]

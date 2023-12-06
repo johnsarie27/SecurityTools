@@ -1,7 +1,7 @@
 #Requires -Modules AWS.Tools.EC2
 
 function Invoke-SDelete {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Securely erase disk using SDelete
     .DESCRIPTION
@@ -23,7 +23,7 @@ function Invoke-SDelete {
         General notes
         try using Start-Process -AsJob and -Wait till jobs are all done (or)
         use PS7 with Start-Process -Wait and Foreach-Object -Parallel
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Disk to be cleaned')]

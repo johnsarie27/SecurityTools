@@ -1,5 +1,5 @@
 function Get-WhoIs {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get WhoIs information
     .DESCRIPTION
@@ -17,7 +17,7 @@ function Get-WhoIs {
         General notes
         I took this from the link below. I've made some minor modifications.
         https://www.powershellgallery.com/packages/PSScriptTools/2.9.0/Content/functions%5CGet-WhoIs.ps1
-    ========================================================================= #>
+    #>
     [cmdletbinding()]
     [OutputType("WhoIsResult")]
     Param (
