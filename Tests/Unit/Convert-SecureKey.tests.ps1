@@ -44,4 +44,8 @@ Describe -Name "Convert-SecureKey" -Fixture {
         $Path = '/tmp/Temp/Temp.xml'
         $SecurePW = ConvertTo-SecureString -String 'SuperPassword123' -AsPlainText -Force
     }
+
+    AfterAll {
+        Remove-Item -Path $Path -Force
+    }
 }

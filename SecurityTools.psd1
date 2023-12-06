@@ -49,7 +49,7 @@
 
     # Modules that must be imported into the global environment prior to importing this module
     RequiredModules   = @(
-        #'ImportExcel'
+        'ImportExcel'
         #'SqlServer'
         #'ActiveDirectory' # FOR Get-ADUserStatus
         #'GroupPolicy' # FOR Get-RSOP
