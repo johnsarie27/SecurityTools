@@ -2,6 +2,8 @@ function Get-Decoded {
     <#
     .SYNOPSIS
         Decode string from Base64 or URL encoding
+    .DESCRIPTION
+        Decode string from Base64 or URL encoding
     .PARAMETER String
         Encoded string
     .PARAMETER Encoding

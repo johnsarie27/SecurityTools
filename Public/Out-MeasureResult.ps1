@@ -3,6 +3,11 @@ function Out-MeasureResult {
     .Synopsis
         Outputs an object that shows maximum, minimum and average of an collection of
         System.TimeSpan objects.
+    .DESCRIPTION
+        Outputs an object that shows maximum, minimum and average of an collection of
+        System.TimeSpan objects.
+    .PARAMETER Measurement
+        Array of System.TimeSpan objects to measure
     .EXAMPLE
         $measured = [System.Collections.Generic.List[System.TimeSpan]]::new()
         foreach ($run in (0..9)) {
@@ -35,11 +40,9 @@ function Out-MeasureResult {
         [Parameter(ValueFromPipeline)]
         [System.Timespan[]] $Measurement
     )
-
     Begin {
         $list = [System.Collections.Generic.List[System.TimeSpan]]::new()
     }
-
     Process {
         if ($Measurement -is [array]) {
             $list.AddRange($Measurement)
@@ -48,7 +51,6 @@ function Out-MeasureResult {
             $list.Add($Measurement)
         }
     }
-
     End {
         $max = ($list | Measure-Object -Property Ticks -Maximum).Maximum
         $min = ($list | Measure-Object -Property Ticks -Minimum).Minimum

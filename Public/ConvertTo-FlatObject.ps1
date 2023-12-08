@@ -15,6 +15,12 @@ function ConvertTo-FlatObject {
         - "", the first item in an array will be unnamed and than followed with 1: <Parent>, <Parent>.1, <Parent>.2, …
     .PARAMETER Depth
         The maximal depth of flattening a recursive property. Any negative value will result in an unlimited depth and could cause a infinitive loop.
+    .PARAMETER ExcludeProperty
+        Property to exclude
+    .PARAMETER Path
+        Path
+    .PARAMETER OutputObject
+        Output Object
     .INPUTS
         System.Object.
     .OUTPUTS

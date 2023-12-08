@@ -2,6 +2,8 @@ function Get-Encoded {
     <#
     .SYNOPSIS
         Encode string to Base64 or URL encoding
+    .DESCRIPTION
+        Encode string to Base64 or URL encoding
     .PARAMETER String
         Plain text string
     .PARAMETER Encoding
