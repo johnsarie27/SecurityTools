@@ -1,10 +1,10 @@
 ﻿function Find-ServerPendingReboot {
-    <#====
+    <#
     .SYNOPSIS
         Check if a server is pending reboot
     .DESCRIPTION
         Check if a server is pending reboot
-    .PARAMETER  ComputerName
+    .PARAMETER ComputerName
         Gets the server reboot status on the specified computer.
     .EXAMPLE
         C:\PS> C:\Script\FindServerIsPendingReboot.ps1 -ComputerName "WIN-VU0S8","WIN-FJ6FH","WIN-FJDSH","WIN-FG3FH"
@@ -22,10 +22,10 @@
         modifications including formatting for ease of reading.
 
         https://gallery.technet.microsoft.com/scriptcenter/How-to-check-if-any-4b1e53f2
-    ====#>
+    #>
     [CmdletBinding()]
     param (
-        [Parameter(ValueFromPipeline, HelpMessage='Computer name')]
+        [Parameter(ValueFromPipeline, HelpMessage = 'Computer name')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
         [Alias('CN')]
         [System.String[]] $ComputerName = $env:COMPUTERNAME
@@ -56,8 +56,8 @@
         foreach ($cn in $ComputerName) {
             # SET INITIAL VALUE FOR REBOOT VARIABLES
             $pendingFile = $false
-            $autoUpdate  = $false
-            $cbs         = $false
+            $autoUpdate = $false
+            $cbs = $false
             $sccmPending = $false
 
             # DETERMINE IF TARGET SYSTEM IS LOCAL OR REMOTE

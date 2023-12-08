@@ -4,8 +4,8 @@ function Get-Ipinfo {
         Get IP address info
     .DESCRIPTION
         Get IP address info
-    .PARAMETER abc
-        Target IP address
+    .PARAMETER IPAddress
+        IPV4 address
     .INPUTS
         System.String[].
     .OUTPUTS
@@ -20,7 +20,7 @@ function Get-Ipinfo {
     #>
     [CmdletBinding()]
     Param(
-        [Parameter(Position = 0, Mandatory, ValueFromPipeline, HelpMessage = 'Enter an IPV4 address')]
+        [Parameter(Position = 0, Mandatory, ValueFromPipeline, HelpMessage = 'IPV4 address')]
         [ValidateNotNullOrEmpty()]
         [ValidatePattern('^(\d{1,3}\.){3}\d{1,3}$')]
         [System.String[]] $IPAddress

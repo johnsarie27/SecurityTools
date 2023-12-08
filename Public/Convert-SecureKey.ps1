@@ -9,12 +9,14 @@ function Convert-SecureKey {
         Path to CliXML file containing Credential object
     .PARAMETER Username
         Username
-    .PARAMETER Password
+    .PARAMETER SecurePassword
         Password in SecureString type format
     .PARAMETER DestinationPath
         Path to directory for new credential file
     .PARAMETER PassThru
         Return new credential object
+    .PARAMETER Force
+        Overwrite existing file
     .INPUTS
         None.
     .OUTPUTS
