@@ -7,14 +7,12 @@ Aggregate results from SQL Vulnerability Assessment scans
 
 ### folder (Default)
 ```
-Export-SQLVAReportAggregate -InputPath <String> [-DestinationPath <String>] [-PassThru]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Export-SQLVAReportAggregate -InputPath <String> [-DestinationPath <String>] [-PassThru] [<CommonParameters>]
 ```
 
 ### zip
 ```
-Export-SQLVAReportAggregate -ZipPath <String> [-DestinationPath <String>] [-PassThru]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Export-SQLVAReportAggregate -ZipPath <String> [-DestinationPath <String>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -86,21 +84,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

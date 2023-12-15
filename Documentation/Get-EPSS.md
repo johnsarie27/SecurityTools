@@ -1,54 +1,39 @@
-# Export-NPMAudit
+# Get-EPSS
 
 ## SYNOPSIS
-Export vulnerability report
+Get EPSS information
 
 ## SYNTAX
 
 ```
-Export-NPMAudit [-Path] <String> [[-OutputDirectory] <String>] [<CommonParameters>]
+Get-EPSS [[-CVE] <String[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Export vulnerability report from provided NPM Audit JSON report
+Get EPSS information or score for specific CVE
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Export-NPMAudit -Path C:\temp\npmaudit.json
-Explanation of what the example does
+Get-EPSS -CVE 'CVE-2022-27225'
+Get the EPSS score for CVE 'CVE-2022-27225'
 ```
 
 ## PARAMETERS
 
-### -Path
-Path to NPM Audit report file in JSON format
+### -CVE
+Common Vulnerability Enumeration (CVE) ID
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -OutputDirectory
-Path to output directory
-
-```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
-Default value: "$HOME\Desktop"
-Accept pipeline input: False
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -60,8 +45,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### System.String.
 ## OUTPUTS
 
-### None.
+### System.Object.
 ## NOTES
+Name:     Get-EPSS
+Author:   Justin Johns
+Version:  0.1.0 | Last Edit: 2023-12-15
+- 0.1.0 - Initial version
+Comments: \<Comment(s)\>
 General notes
 
 ## RELATED LINKS

@@ -7,17 +7,17 @@ Convert epoch
 
 ### __dt (Default)
 ```
-Convert-Epoch [[-Date] <DateTime>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Convert-Epoch [[-Date] <DateTime>] [<CommonParameters>]
 ```
 
 ### __sc
 ```
-Convert-Epoch [-Seconds] <Int64> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Convert-Epoch [-Seconds] <Int64> [<CommonParameters>]
 ```
 
 ### __ms
 ```
-Convert-Epoch [-Milliseconds] <Int64> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Convert-Epoch [-Milliseconds] <Int64> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -74,21 +74,6 @@ Aliases:
 Required: True
 Position: 1
 Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

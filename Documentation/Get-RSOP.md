@@ -6,8 +6,7 @@ Generate a Resultant Set of Policy report
 ## SYNTAX
 
 ```
-Get-RSOP [-Path] <String> [[-Computer] <String>] [[-ReportType] <String>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Get-RSOP [-Path] <String> [[-Computer] <String>] [[-ReportType] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -64,21 +63,6 @@ Aliases:
 Required: False
 Position: 3
 Default value: HTML
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

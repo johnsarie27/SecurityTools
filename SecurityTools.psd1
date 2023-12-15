@@ -110,6 +110,7 @@
         'Get-DirStats'
         'Get-DomainRegistration'
         'Get-Encoded'
+        'Get-EPSS'
         'Get-FileHeader'
         'Get-FileInfo'
         'Get-FolderSize'

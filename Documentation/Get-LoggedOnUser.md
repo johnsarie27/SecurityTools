@@ -6,7 +6,7 @@ Show all users currently logged onto system
 ## SYNTAX
 
 ```
-Get-LoggedOnUser [[-ComputerName] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-LoggedOnUser [[-ComputerName] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -31,21 +31,6 @@ Aliases: Hostname, Host, Computer, CN
 
 Required: False
 Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

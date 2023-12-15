@@ -18,21 +18,25 @@ Other functions were written to help review and triage web traffic.
 
 ## Lastest Version Notes
 
-### v0.8.9
-
-- Renamed function from Get-RandomAlphanumericString to Get-RandomString
-- Added parameters for excluding character types to Get-RandomString
-- Added inclusion of special characters to Get-RandomString
-
-### v0.8.8
-
-- Added function Get-AlternateDataStream
-
-### v0.8.7
-
-- Added function Get-KEVList
+See release information for version notes
 
 ## Disclaimer
 
 Feel free to create issues or pull requests, however, this project is developed
 for use by a specific team of engineers, not for broad use.
+
+## Repo layout
+
+* [Public](./Public) -  functions that are available when using the module
+* [Private](./Private) - functions/tools that are used internally by the module
+* [Documentation](./Documentation) - help files for each cmdlet
+* [Tests](./Tests) - Pester tests
+* [Build](./Build) - tools to handle automated testing/builds
+
+## Contributions, Feature Requests, and Feedback
+
+To start, please read the [contribution guide](CONTRIBUTING.md).
+
+* Read the current content and help us fix any spelling mistakes or grammatical errors.
+* Choose an existing [issue](https://github.com/PS-MCS/MCS/issues) and submit a pull request to fix it.
+* Open a new issue to report an opportunity for improvement.

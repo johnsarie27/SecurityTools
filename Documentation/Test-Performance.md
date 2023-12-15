@@ -6,8 +6,7 @@ Test performance of script block
 ## SYNTAX
 
 ```
-Test-Performance [-ScriptBlock] <ScriptBlock> [[-Runs] <Int32>] [-ShowResults]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Test-Performance [-ScriptBlock] <ScriptBlock> [[-Runs] <Int32>] [-ShowResults] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -69,21 +68,6 @@ Aliases: All, ShowAll
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -7,8 +7,7 @@ Flattends a nested object into a single level object
 
 ```
 ConvertTo-FlatObject [-Object] <Object[]> [-Separator <String>] [-Base <Object>] [-Depth <Int16>]
- [-ExcludeProperty <String[]>] [-Path <String[]>] [-OutputObject <IDictionary>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-ExcludeProperty <String[]>] [-Path <String[]>] [-OutputObject <IDictionary>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -104,7 +103,7 @@ Accept wildcard characters: False
 ```
 
 ### -Path
-{{ Fill Path Description }}
+Path
 
 ```yaml
 Type: String[]
@@ -119,27 +118,12 @@ Accept wildcard characters: False
 ```
 
 ### -OutputObject
-{{ Fill OutputObject Description }}
+Output Object
 
 ```yaml
 Type: IDictionary
 Parameter Sets: (All)
 Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
 
 Required: False
 Position: Named

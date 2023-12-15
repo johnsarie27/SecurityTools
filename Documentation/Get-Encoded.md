@@ -6,11 +6,11 @@ Encode string to Base64 or URL encoding
 ## SYNTAX
 
 ```
-Get-Encoded [-String] <String> [[-Encoding] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-Encoded [-String] <String> [[-Encoding] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Encode string to Base64 or URL encoding
 
 ## EXAMPLES
 
@@ -48,21 +48,6 @@ Aliases:
 Required: False
 Position: 2
 Default value: Base64
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
