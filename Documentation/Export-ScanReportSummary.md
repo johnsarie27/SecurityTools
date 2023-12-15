@@ -8,7 +8,7 @@ Summarize scan results into a single report
 ```
 Export-ScanReportSummary [[-DestinationPath] <String>] [[-NessusSystemScan] <String>]
  [[-NessusWebScan] <String>] [[-AlertLogicWebScan] <String>] [[-DatabaseScan] <String>]
- [[-AcunetixScan] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-AcunetixScan] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -111,21 +111,6 @@ Aliases:
 
 Required: False
 Position: 6
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

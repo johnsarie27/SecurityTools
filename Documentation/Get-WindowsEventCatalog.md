@@ -6,7 +6,7 @@ Get catalog of Windows Events
 ## SYNTAX
 
 ```
-Get-WindowsEventCatalog [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-WindowsEventCatalog [-UseRemoteData] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -22,17 +22,17 @@ Returns catalog of Windows Events
 
 ## PARAMETERS
 
-### -ProgressAction
-{{ Fill ProgressAction Description }}
+### -UseRemoteData
+Get data from remote source
 
 ```yaml
-Type: ActionPreference
+Type: SwitchParameter
 Parameter Sets: (All)
-Aliases: proga
+Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -49,8 +49,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 Name:     Get-WindowsEventCatalog
 Author:   Justin Johns
-Version:  0.1.0 | Last Edit: 2022-11-16
-- 0.1.0 - Initial version
+Version:  0.1.1 | Last Edit: 2023-12-15
+- 0.1.1 - Updates for data location options
+- 0.1.0 - (2022-11-16) Initial version
 Comments: \<Comment(s)\>
 General notes
 

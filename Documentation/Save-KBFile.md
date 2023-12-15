@@ -7,7 +7,7 @@ Downloads patches from Microsoft
 
 ```
 Save-KBFile [-Name] <String[]> [[-Path] <String>] [[-FilePath] <String>] [[-Architecture] <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -93,21 +93,6 @@ Aliases:
 Required: False
 Position: 4
 Default value: X64
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

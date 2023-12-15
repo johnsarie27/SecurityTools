@@ -7,7 +7,7 @@ Convert US time zones
 
 ```
 Convert-TimeZone [[-Time] <String[]>] [[-SourceTimeZone] <String>] [-TargetTimeZone] <String>
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -64,21 +64,6 @@ Aliases: Target
 Required: True
 Position: 3
 Default value: UTC
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

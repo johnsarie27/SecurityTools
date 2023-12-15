@@ -6,7 +6,7 @@ Get users actively connected to the remote desktop gateway
 ## SYNTAX
 
 ```
-Get-ActiveGatewayUser [-ComputerName] <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-ActiveGatewayUser [-ComputerName] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,21 +33,6 @@ Aliases: Name, CN, Computer, System, Target
 
 Required: True
 Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

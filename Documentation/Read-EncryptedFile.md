@@ -7,12 +7,12 @@ Read encrypted file
 
 ### __key
 ```
-Read-EncryptedFile -Path <String> -Key <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Read-EncryptedFile -Path <String> -Key <String> [<CommonParameters>]
 ```
 
 ### __keybytes
 ```
-Read-EncryptedFile -Path <String> -KeyBytes <Byte[]> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Read-EncryptedFile -Path <String> -KeyBytes <Byte[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -67,21 +67,6 @@ Parameter Sets: __keybytes
 Aliases:
 
 Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

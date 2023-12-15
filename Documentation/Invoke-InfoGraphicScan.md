@@ -7,7 +7,7 @@ Invoke InfoGraphic scan
 
 ```
 Invoke-InfoGraphicScan [-Path] <String[]> [-DataLine] <Int32> [[-TitleLine] <Int32>] [[-TempPath] <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -81,21 +81,6 @@ Aliases:
 Required: False
 Position: 4
 Default value: "$env:TEMP\infograph_scan"
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

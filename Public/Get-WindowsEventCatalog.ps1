@@ -4,6 +4,8 @@ function Get-WindowsEventCatalog {
         Get catalog of Windows Events
     .DESCRIPTION
         Get catalog of Windows Events
+    .PARAMETER UseRemoteData
+        Get data from remote source
     .INPUTS
         None.
     .OUTPUTS

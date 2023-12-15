@@ -7,13 +7,13 @@ Convert string to PSCredential object or store as CliXML
 
 ### _retrieve (Default)
 ```
-Convert-SecureKey -Path <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Convert-SecureKey -Path <String> [<CommonParameters>]
 ```
 
 ### _create
 ```
 Convert-SecureKey -Username <String> [-SecurePassword <SecureString>] -DestinationPath <String> [-PassThru]
- [-Force] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-Force] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -67,7 +67,7 @@ Accept wildcard characters: False
 ```
 
 ### -SecurePassword
-Enter SecureString
+Password in SecureString type format
 
 ```yaml
 Type: SecureString
@@ -122,21 +122,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

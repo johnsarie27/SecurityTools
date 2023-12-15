@@ -6,7 +6,7 @@ Convert array of objects to Markdown table
 ## SYNTAX
 
 ```
-ConvertTo-MarkdownTable [-InputObject] <Object> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ConvertTo-MarkdownTable [-InputObject] <Object> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,21 +35,6 @@ Required: True
 Position: 1
 Default value: None
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

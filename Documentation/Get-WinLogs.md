@@ -7,13 +7,13 @@ Get Windows Event Viewer logs
 
 ### __lst (Default)
 ```
-Get-WinLogs [-List] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-WinLogs [-List] [<CommonParameters>]
 ```
 
 ### __evt
 ```
 Get-WinLogs -Id <Int32> [-ComputerName <String>] [-Results <Int32>] [-StartTime <DateTime>]
- [-EndTime <DateTime>] [-Data <String[]>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-EndTime <DateTime>] [-Data <String[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -127,21 +127,6 @@ String to search for in event data
 Type: String[]
 Parameter Sets: __evt
 Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
 
 Required: False
 Position: Named

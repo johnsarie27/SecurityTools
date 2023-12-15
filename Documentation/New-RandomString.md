@@ -7,7 +7,7 @@ Get random string
 
 ```
 New-RandomString [[-Length] <Int32>] [[-ExcludeCharacter] <String[]>] [-ExcludeNumber] [-ExcludeLowercase]
- [-ExcludeUppercase] [-ExcludeSpecial] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-ExcludeUppercase] [-ExcludeSpecial] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -109,21 +109,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

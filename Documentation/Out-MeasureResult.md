@@ -7,11 +7,12 @@ System.TimeSpan objects.
 ## SYNTAX
 
 ```
-Out-MeasureResult [[-Measurement] <TimeSpan[]>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Out-MeasureResult [[-Measurement] <TimeSpan[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Outputs an object that shows maximum, minimum and average of an collection of
+System.TimeSpan objects.
 
 ## EXAMPLES
 
@@ -41,7 +42,7 @@ AvgMilliseconds : 2241,86343
 ## PARAMETERS
 
 ### -Measurement
-{{ Fill Measurement Description }}
+Array of System.TimeSpan objects to measure
 
 ```yaml
 Type: TimeSpan[]
@@ -52,21 +53,6 @@ Required: False
 Position: 1
 Default value: None
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

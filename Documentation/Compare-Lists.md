@@ -7,12 +7,12 @@ Compare 2 lists as input objects or in a CSV file.
 
 ### __list (Default)
 ```
-Compare-Lists -ListA <Object[]> -ListB <Object[]> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Compare-Lists -ListA <Object[]> -ListB <Object[]> [<CommonParameters>]
 ```
 
 ### __file
 ```
-Compare-Lists -Path <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Compare-Lists -Path <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -79,21 +79,6 @@ Parameter Sets: __list
 Aliases: List2, B
 
 Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

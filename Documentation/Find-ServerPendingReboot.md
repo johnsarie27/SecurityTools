@@ -1,30 +1,37 @@
 # Find-ServerPendingReboot
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Check if a server is pending reboot
 
 ## SYNTAX
 
 ```
-Find-ServerPendingReboot [[-ComputerName] <String[]>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Find-ServerPendingReboot [[-ComputerName] <String[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Check if a server is pending reboot
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+### EXAMPLE 1
+```
+C:\Script\FindServerIsPendingReboot.ps1 -ComputerName "WIN-VU0S8","WIN-FJ6FH","WIN-FJDSH","WIN-FG3FH"
 ```
 
-{{ Add example description here }}
+ComputerName                                          RebootIsPending
+------------                                          ---------------
+WIN-VU0S8                                             False
+WIN-FJ6FH                                             True
+WIN-FJDSH                                             True
+WIN-FG3FH                                             True
+
+This command will get the reboot status on the specified remote computers.
 
 ## PARAMETERS
 
 ### -ComputerName
-Computer name
+Gets the server reboot status on the specified computer.
 
 ```yaml
 Type: String[]
@@ -32,24 +39,9 @@ Parameter Sets: (All)
 Aliases: CN
 
 Required: False
-Position: 0
-Default value: None
+Position: 1
+Default value: $env:COMPUTERNAME
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -58,10 +50,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.String[]
 ## OUTPUTS
 
-### System.Object
 ## NOTES
+This script was taken from the site listed below.
+I've made several
+modifications including formatting for ease of reading.
+
+https://gallery.technet.microsoft.com/scriptcenter/How-to-check-if-any-4b1e53f2
 
 ## RELATED LINKS
