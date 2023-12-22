@@ -29,6 +29,9 @@ function Update-GitHubModule {
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+
+        # SET PLATFORM TEMP
+        $tempDir = if ($IsWindows) { $env:TEMP } else { '/tmp/' }
     }
     Process {
         # GET MODULE
@@ -51,7 +54,7 @@ function Update-GitHubModule {
         }
         else {
             # SET TEMPORARY PATH
-            $tempPath = Join-Path -Path $env:TEMP -ChildPath ('{0}.zip' -f $Repository)
+            $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
 
             # DOWNLOAD MODULE
             Invoke-WebRequest -Uri $releaseInfo.assets_url -OutFile $tempPath

@@ -59,6 +59,9 @@ function Install-GitHubModule {
         }
 
         Write-Verbose -Message ('Module home: "{0}"' -f $moduleHome)
+
+        # SET PLATFORM TEMP
+        $tempDir = if ($IsWindows) { $env:TEMP } else { '/tmp/' }
     }
     Process {
         # GET INSTALLED MODULE
@@ -71,7 +74,7 @@ function Install-GitHubModule {
         }
         else {
             # SET PATHS
-            $tempPath = Join-Path -Path $env:TEMP -ChildPath ('{0}.zip' -f $Repository)
+            $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
 
             # GET LATEST RELEASE INFORMATION
             $releaseInfo = Invoke-RestMethod -Uri ('https://api.github.com/repos/{0}/{1}/releases/latest' -f $Account, $Repository) -ErrorAction Stop
