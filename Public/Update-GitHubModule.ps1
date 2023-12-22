@@ -56,20 +56,20 @@ function Update-GitHubModule {
             # SHOULD PROCESS
             if ($PSCmdlet.ShouldProcess($module.Name, "Uninstall application")) {
                 # REMOVE EXISTING MODULE
-                Remove-Item -Path $module.ModuleBase -Recurse -Force -Confirm:$false
+                #Remove-Item -Path $module.ModuleBase -Recurse -Force -Confirm:$false
 
                 # SET TEMPORARY PATH
                 $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
 
                 # DOWNLOAD MODULE
-                Invoke-WebRequest -Uri $releaseInfo.assets_url -OutFile $tempPath
+                Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
 
-                # DECOMPRESS MODULE TO MODULE PATH
+                # DECOMPRESS MODULE TO MODULE PATH. "-Force" OVERWRITES EXISTING DATA
                 Expand-Archive -Path $tempPath -DestinationPath (Split-Path -Path $module.ModuleBase) -Force
 
                 # UNBLOCK MODULE
-                Get-ChildItem -Path $module.ModuleBase -Recurse | Unblock-File
-                Write-Output -InputObject 'Module updated successfully'
+                if ($IsWindows) { Get-ChildItem -Path $module.ModuleBase -Recurse | Unblock-File }
+                if ($LASTEXITCODE -EQ 0) { Write-Output -InputObject 'Module updated successfully' }
             }
         }
     }

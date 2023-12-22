@@ -42,26 +42,20 @@ function Install-GitHubModule {
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
+        # SET PLATFORM VARIABLES
+        if ($IsWindows) { $tempDir = $env:TEMP; $splitChar = ';' }
+        else { $tempDir = '/tmp/'; $splitChar = ':' }
+
+        # HAVEN'T TESTED MAC YET
+        if ($IsMacOS) { throw 'Needs testing' }
+
         # SET DEFAULT MODULE HOME PATH
-        $moduleHome = switch ($PSVersionTable.PSVersion.Major) {
-            7 {
-                switch ($Scope) {
-                    'AllUsers' { "$env:ProgramFiles\PowerShell\Modules" }
-                    'CurrentUser' { "$env:USERPROFILE\Documents\PowerShell\Modules" }
-                }
-            }
-            5 {
-                switch ($Scope) {
-                    'AllUsers' { "$env:ProgramFiles\WindowsPowerShell\Modules" }
-                    'CurrentUser' { "$env:USERPROFILE\Documents\WindowsPowerShell\Modules" }
-                }
-            }
+        $moduleHome = switch ($Scope) {
+            'CurrentUser' { ($env:PSModulePath.Split("$splitChar"))[0] }
+            'AllUsers' { ($env:PSModulePath.Split("$splitChar"))[1] }
         }
 
         Write-Verbose -Message ('Module home: "{0}"' -f $moduleHome)
-
-        # SET PLATFORM TEMP
-        $tempDir = if ($IsWindows) { $env:TEMP } else { '/tmp/' }
     }
     Process {
         # GET INSTALLED MODULE
@@ -80,13 +74,14 @@ function Install-GitHubModule {
             $releaseInfo = Invoke-RestMethod -Uri ('https://api.github.com/repos/{0}/{1}/releases/latest' -f $Account, $Repository) -ErrorAction Stop
 
             # DOWNLOAD MODULE
-            Invoke-WebRequest -Uri $releaseInfo.assets_url -OutFile $tempPath
+            Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
 
             # DECOMPRESS MODULE TO MODULE PATH
             Expand-Archive -Path $tempPath -DestinationPath $moduleHome -Force
 
             # UNBLOCK MODULE
-            Get-ChildItem -Path (Join-Path -Path $moduleHome -ChildPath $Repository) -Recurse | Unblock-File
+            if ($IsWindows) { Get-ChildItem -Path (Join-Path -Path $moduleHome -ChildPath $Repository) -Recurse | Unblock-File }
+            if ($LASTEXITCODE -EQ 0) { Write-Output -InputObject 'Module installed successfully' }
         }
     }
     End {
