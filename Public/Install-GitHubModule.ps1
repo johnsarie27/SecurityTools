@@ -1,27 +1,28 @@
 function Install-GitHubModule {
     <#
     .SYNOPSIS
-        Short description
+        Install PowerShell module from GitHub repository
     .DESCRIPTION
-        Long description
+        Install PowerShell module from GitHub repository
     .PARAMETER Account
         GitHub account or organization name
     .PARAMETER Repository
         Repository name
+    .PARAMETER Scope
+        Module scope
     .INPUTS
-        Inputs (if any)
+        None.
     .OUTPUTS
-        Output (if any)
+        None.
     .EXAMPLE
         PS C:\> Install-GitHubModule -Account 'johnsarie27' -Repository 'SecurityTools'
-        Explanation of what the example does
+        Installs SecurityTools module in the CurrentUser scope
     .NOTES
         Name:     Install-GitHubModule
         Author:   Justin Johns
         Version:  0.1.0 | Last Edit: 2023-12-22
         - 0.1.0 - Initial version
-        Comments: <Comment(s)>
-        General notes
+        Comments:
     #>
     [CmdletBinding()]
     Param(
