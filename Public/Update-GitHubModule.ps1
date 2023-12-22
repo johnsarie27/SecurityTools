@@ -29,9 +29,6 @@ function Update-GitHubModule {
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
-
-        # SET ERROR PREFERENCE FOR FUNCTION
-        $ErrorActionPreference = 'Stop'
     }
     Process {
         # GET MODULE
@@ -39,13 +36,14 @@ function Update-GitHubModule {
 
         # SET URI
         Write-Verbose -Message ('Project URI: "{0}"' -f $module.ProjectUri.AbsoluteUri)
-        $uri = 'https://api.{0}/repos{1}/release/latest' -f $module.ProjectUri.Host, $module.ProjectUri.LocalPath
+        $uri = 'https://api.{0}/repos{1}/releases/latest' -f $module.ProjectUri.Host, $module.ProjectUri.LocalPath
+        Write-Verbose -Message ('Release URI: "{0}"' -f $uri)
 
         # GET LATEST RELEASE INFORMATION
         $releaseInfo = Invoke-RestMethod -Uri $uri
 
         # VALIDATE VERSIONS
-        if ($insMod.Version -GE ([System.Version] $releaseInfo.tag_name.TrimStart('v'))) {
+        if ($module.Version -GE ([System.Version] $releaseInfo.tag_name.TrimStart('v'))) {
             # OUTPUT RESPONSE
             Write-Verbose -Message ('Installed module version: [{0}]' -f $module.Version.ToString())
             Write-Verbose -Message ('Current release package version: [{0}]' -f $releaseInfo.tag_name.TrimStart('v'))
@@ -67,6 +65,6 @@ function Update-GitHubModule {
     }
     End {
         # REMOVE TEMPORARY ZIP FILE
-        Remove-Item -Path $tempPath -Force -Confirm:$false
+        if ($tempPath) { Remove-Item -Path $tempPath -Force -Confirm:$false -ErrorAction SilentlyContinue }
     }
 }
