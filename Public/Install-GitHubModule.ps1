@@ -71,22 +71,33 @@ function Install-GitHubModule {
             $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
 
             # GET LATEST RELEASE INFORMATION
+            Write-Verbose -Message 'Getting repo release information...'
             $releaseInfo = Invoke-RestMethod -Uri ('https://api.github.com/repos/{0}/{1}/releases/latest' -f $Account, $Repository) -ErrorAction Stop
 
             # DOWNLOAD MODULE
+            Write-Verbose -Message 'Downloading module package...'
             Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
 
             # DECOMPRESS MODULE TO MODULE PATH
+            Write-Verbose -Message 'Expanding package archive...'
             Expand-Archive -Path $tempPath -DestinationPath $moduleHome -Force
 
             # UNBLOCK MODULE
-            if ($IsWindows) { Get-ChildItem -Path (Join-Path -Path $moduleHome -ChildPath $Repository) -Recurse | Unblock-File }
-            if ($LASTEXITCODE -EQ 0) { Write-Output -InputObject 'Module installed successfully' }
+            if ($IsWindows) {
+                Write-Verbose -Message 'Unblocking files...'
+                Get-ChildItem -Path (Join-Path -Path $moduleHome -ChildPath $Repository) -Recurse | Unblock-File
+            }
+
+            # VALIDATE INSTALL
+            if (Test-Path -Path (Join-Path -Path $moduleHome -ChildPath $Repository) -PathType Container) {
+                Write-Output -InputObject 'Module installed successfully'
+            }
         }
     }
     End {
         # REMOVE TEMPORARY ZIP FILE
         if ($tempPath -and (Test-Path -Path $tempPath)) {
+            Write-Verbose -Message 'Cleanup: removing package archive...'
             Remove-Item -Path $tempPath -Force -Confirm:$false -ErrorAction SilentlyContinue
         }
     }
