@@ -46,16 +46,22 @@ function Update-GitHubModule {
         Write-Verbose -Message 'Getting repo release information...'
         $releaseInfo = Invoke-RestMethod -Uri $uri
 
+        # SET LATEST RELEASE VERSION
+        $releaseVer = [System.Version] $releaseInfo.tag_name.TrimStart('v')
+
         # VALIDATE VERSIONS
-        if ($module.Version -GE ([System.Version] $releaseInfo.tag_name.TrimStart('v'))) {
+        if ($module.Version -GE $releaseVer) {
             # OUTPUT RESPONSE
             Write-Verbose -Message ('Installed module version: [{0}]' -f $module.Version.ToString())
             Write-Verbose -Message ('Current release package version: [{0}]' -f $releaseInfo.tag_name.TrimStart('v'))
             Write-Output -InputObject ('Installed module version is same or greater than current release')
         }
         else {
+            # WRITE OUTPUT
+            Write-Output -InputObject ('Installed version "{0}" will be replaced by current version "{1}"' -f $module.Version.ToString(), $releaseVer.ToString())
+
             # SHOULD PROCESS
-            if ($PSCmdlet.ShouldProcess($module.Name, "Uninstall application")) {
+            if ($PSCmdlet.ShouldProcess($module.Name, "Overwrite module")) {
                 # REMOVE EXISTING MODULE
                 #Remove-Item -Path $module.ModuleBase -Recurse -Force -Confirm:$false
 
