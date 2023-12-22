@@ -32,50 +32,63 @@ function Install-GitHubModule {
         [Parameter(Mandatory = $true, Position = 1, HelpMessage = 'Repository name')]
         [Alias('Repo')]
         [ValidateNotNullOrEmpty()]
-        [System.String] $Repository
+        [System.String] $Repository,
+
+        [Parameter(Mandatory = $false, Position = 2, HelpMessage = 'Module home folder')]
+        [ValidateSet('AllUsers', 'CurrentUser')]
+        [System.String] $Scope = 'CurrentUser'
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
-        # SET PATH HASHTABLE
-        $pathHash = @{
-            PS5Global = "$env:ProgramFiles\WindowsPowerShell\Modules"
-            PS5User   = "$env:USERPROFILE\Documents\WindowsPowerShell\Modules"
-            PS7Global = "$env:ProgramFiles\PowerShell\Modules"
-            PS7User   = "$env:USERPROFILE\Documents\PowerShell\Modules"
+        # SET DEFAULT MODULE HOME PATH
+        $moduleHome = switch ($PSVersionTable.PSVersion.Major) {
+            7 {
+                switch ($Scope) {
+                    'AllUsers' { "$env:ProgramFiles\PowerShell\Modules" }
+                    'CurrentUser' { "$env:USERPROFILE\Documents\PowerShell\Modules" }
+                }
+            }
+            5 {
+                switch ($Scope) {
+                    'AllUsers' { "$env:ProgramFiles\WindowsPowerShell\Modules" }
+                    'CurrentUser' { "$env:USERPROFILE\Documents\WindowsPowerShell\Modules" }
+                }
+            }
         }
+
+        Write-Verbose -Message ('Module home: "{0}"' -f $moduleHome)
     }
     Process {
-        # GET LATEST RELEASE INFORMATION
-        $request = Invoke-RestMethod -Uri ('https://api.github.com/repos/{0}/{1}/releases/latest' -f $Account, $Repository)
-
         # GET INSTALLED MODULE
-        $insMod = Get-Module -ListAvailable -Name $Repository -ErrorAction SilentlyContinue
-
-        $insMod.ProjectUri
+        $hasModule = Get-Module -ListAvailable -Name $Repository
 
         # VALIDATE VERSIONS
-        if ($insMod.Version -GE ([System.Version] $request.tag_name.TrimStart('v'))) {
+        if ($hasModule) {
             # OUTPUT RESPONSE
-            Write-Output -InputObject ('Installed module version is same or greater than current release')
+            Write-Warning -Message ('Module already installed. Use "Update-GitHubModule" to upgrade.')
         }
         else {
             # SET PATHS
             $tempPath = Join-Path -Path $env:TEMP -ChildPath ('{0}.zip' -f $Repository)
-            $modPath = Split-Path -Path $insMod.ModuleBase
+
+            # GET LATEST RELEASE INFORMATION
+            $releaseInfo = Invoke-RestMethod -Uri ('https://api.github.com/repos/{0}/{1}/releases/latest' -f $Account, $Repository) -ErrorAction Stop
 
             # DOWNLOAD MODULE
-            Invoke-WebRequest -Uri $request.assets_url -OutFile $tempPath
+            Invoke-WebRequest -Uri $releaseInfo.assets_url -OutFile $tempPath
 
             # DECOMPRESS MODULE TO MODULE PATH
-            Expand-Archive -Force -Path ($Repository + '.zip') -DestinationPath $modPath
+            Expand-Archive -Path $tempPath -DestinationPath $moduleHome -Force
 
             # UNBLOCK MODULE
-            Get-ChildItem -Path (Join-Path -Path $modPath -ChildPath $Repository) -Recurse | Unblock-File
+            Get-ChildItem -Path (Join-Path -Path $moduleHome -ChildPath $Repository) -Recurse | Unblock-File
         }
-
     }
     End {
-
+        # REMOVE TEMPORARY ZIP FILE
+        if ($tempPath -and (Test-Path -Path $tempPath)) {
+            Remove-Item -Path $tempPath -Force -Confirm:$false -ErrorAction SilentlyContinue
+        }
     }
 }

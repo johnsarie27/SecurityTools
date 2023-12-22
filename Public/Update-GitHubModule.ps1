@@ -65,6 +65,8 @@ function Update-GitHubModule {
     }
     End {
         # REMOVE TEMPORARY ZIP FILE
-        if ($tempPath) { Remove-Item -Path $tempPath -Force -Confirm:$false -ErrorAction SilentlyContinue }
+        if ($tempPath -and (Test-Path -Path $tempPath)) {
+            Remove-Item -Path $tempPath -Force -Confirm:$false -ErrorAction SilentlyContinue
+        }
     }
 }
