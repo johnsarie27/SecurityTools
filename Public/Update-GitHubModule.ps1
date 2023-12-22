@@ -21,7 +21,7 @@ function Update-GitHubModule {
         Comments:
         - This function assumes that currently installed module has the project URI property set correctly
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Module name')]
         [ValidateScript({ $null -NE (Get-Module -ListAvailable -Name $_) })]
@@ -53,17 +53,24 @@ function Update-GitHubModule {
             Write-Output -InputObject ('Installed module version is same or greater than current release')
         }
         else {
-            # SET TEMPORARY PATH
-            $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
+            # SHOULD PROCESS
+            if ($PSCmdlet.ShouldProcess($module.Name, "Uninstall application")) {
+                # REMOVE EXISTING MODULE
+                Remove-Item -Path $module.ModuleBase -Recurse -Force -Confirm:$false
 
-            # DOWNLOAD MODULE
-            Invoke-WebRequest -Uri $releaseInfo.assets_url -OutFile $tempPath
+                # SET TEMPORARY PATH
+                $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
 
-            # DECOMPRESS MODULE TO MODULE PATH
-            Expand-Archive -Path $tempPath -DestinationPath (Split-Path -Path $module.ModuleBase) -Force
+                # DOWNLOAD MODULE
+                Invoke-WebRequest -Uri $releaseInfo.assets_url -OutFile $tempPath
 
-            # UNBLOCK MODULE
-            Get-ChildItem -Path $module.ModuleBase -Recurse | Unblock-File
+                # DECOMPRESS MODULE TO MODULE PATH
+                Expand-Archive -Path $tempPath -DestinationPath (Split-Path -Path $module.ModuleBase) -Force
+
+                # UNBLOCK MODULE
+                Get-ChildItem -Path $module.ModuleBase -Recurse | Unblock-File
+                Write-Output -InputObject 'Module updated successfully'
+            }
         }
     }
     End {
