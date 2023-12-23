@@ -66,7 +66,7 @@ function Update-GitHubModule {
                 #Remove-Item -Path $module.ModuleBase -Recurse -Force -Confirm:$false
 
                 # SET TEMPORARY PATH
-                $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
+                $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $module.Name)
 
                 # DOWNLOAD MODULE
                 Write-Verbose -Message 'Downloading module package...'
