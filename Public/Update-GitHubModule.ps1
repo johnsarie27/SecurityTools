@@ -31,7 +31,7 @@ function Update-GitHubModule {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
         # SET PLATFORM TEMP
-        $tempDir = if ($IsWindows) { $env:TEMP } else { '/tmp/' }
+        $tempDir = if ($IsWindows) { $env:TEMP } elseif ($IsMacOS) { $Env:TMPDIR } else { '/tmp/' }
     }
     Process {
         # GET MODULE

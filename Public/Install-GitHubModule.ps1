@@ -44,10 +44,8 @@ function Install-GitHubModule {
 
         # SET PLATFORM VARIABLES
         if ($IsWindows) { $tempDir = $env:TEMP; $splitChar = ';' }
-        else { $tempDir = '/tmp/'; $splitChar = ':' }
-
-        # HAVEN'T TESTED MAC YET
-        if ($IsMacOS) { throw 'Needs testing' }
+        if ($IsLinux) { $tempDir = '/tmp/'; $splitChar = ':' }
+        if ($IsMacOS) { $tempDir = $Env:TMPDIR; $splitChar = ':' }
 
         # SET DEFAULT MODULE HOME PATH
         $moduleHome = switch ($Scope) {
