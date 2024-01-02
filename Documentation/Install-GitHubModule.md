@@ -79,7 +79,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 Name:     Install-GitHubModule
 Author:   Justin Johns
-Version:  0.1.0 | Last Edit: 2023-12-22
+Version:  0.1.0 | Last Edit: 2024-01-02
 - 0.1.0 - Initial version
 Comments:
 
