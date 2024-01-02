@@ -16,7 +16,7 @@ function Update-GitHubModule {
     .NOTES
         Name:     Update-GitHubModule
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2023-12-22
+        Version:  0.1.0 | Last Edit: 2024-02-02
         - 0.1.0 - Initial version
         Comments:
         - This function assumes that currently installed module has the project URI property set correctly
@@ -37,10 +37,19 @@ function Update-GitHubModule {
         # GET MODULE
         $module = Get-Module -ListAvailable -Name $Name
 
-        # SET URI
-        Write-Verbose -Message ('Project URI: "{0}"' -f $module.ProjectUri.AbsoluteUri)
-        $uri = 'https://api.{0}/repos{1}/releases/latest' -f $module.ProjectUri.Host, $module.ProjectUri.LocalPath
-        Write-Verbose -Message ('Release URI: "{0}"' -f $uri)
+        # VALIDATE PRE-EXISTENCE OF MODULE
+        if (-Not $module) { throw ('Module "{0}" not found!' -f $Name) }
+
+        # VALIDATE PROJECT URI PROPERTY
+        if ($module.ProjectUri.AbsoluteUri) {
+            # SET URI
+            Write-Verbose -Message ('Project URI: "{0}"' -f $module.ProjectUri.AbsoluteUri)
+            $uri = 'https://api.{0}/repos{1}/releases/latest' -f $module.ProjectUri.Host, $module.ProjectUri.LocalPath
+            Write-Verbose -Message ('Release URI: "{0}"' -f $uri)
+        }
+        else {
+            throw ('Module "{0}" does not contain property "ProjectUri"!' -f $module.Name)
+        }
 
         # GET LATEST RELEASE INFORMATION
         Write-Verbose -Message 'Getting repo release information...'
