@@ -34,11 +34,8 @@ function Update-GitHubModule {
         $tempDir = if ($IsWindows) { $env:TEMP } elseif ($IsMacOS) { $Env:TMPDIR } else { '/tmp/' }
     }
     Process {
-        # GET MODULE
+        # GET MODULE: MODULE PRE-EXISTENCE VALIDATED IN PARAMETER ARGUMENT
         $module = Get-Module -ListAvailable -Name $Name
-
-        # VALIDATE PRE-EXISTENCE OF MODULE
-        if (-Not $module) { throw ('Module "{0}" not found!' -f $Name) }
 
         # VALIDATE PROJECT URI PROPERTY
         if ($module.ProjectUri.AbsoluteUri) {
