@@ -20,7 +20,7 @@ function Install-GitHubModule {
     .NOTES
         Name:     Install-GitHubModule
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2023-12-22
+        Version:  0.1.0 | Last Edit: 2024-01-02
         - 0.1.0 - Initial version
         Comments:
     #>
@@ -62,7 +62,7 @@ function Install-GitHubModule {
         # VALIDATE VERSIONS
         if ($hasModule) {
             # OUTPUT RESPONSE
-            Write-Warning -Message ('Module already installed. Use "Update-GitHubModule" to upgrade.')
+            Write-Warning -Message ('Module already installed. Please use "Update-GitHubModule" to upgrade module.')
         }
         else {
             # SET PATHS

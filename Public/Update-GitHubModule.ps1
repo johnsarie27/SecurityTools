@@ -92,8 +92,8 @@ function Update-GitHubModule {
                 }
 
                 # VALIDATE UPDATE
-                if (Test-Path -Path $module.ModuleBase -PathType Container) {
-                    Write-Output -InputObject 'Module updated successfully'
+                if ((Get-Module -ListAvailable -Name $Name).Version -EQ $releaseVer) {
+                    Write-Output -InputObject ('Module successfully updated to version "{0}"' -f $releaseVer)
                 }
             }
         }
