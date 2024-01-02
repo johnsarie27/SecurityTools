@@ -131,6 +131,7 @@
         'Get-WindowsEventCatalog'
         'Get-WinInfo'
         'Get-WinLogs'
+        'Install-GitHubModule'
         'Install-ModuleFromPackage'
         'Invoke-InfoGraphicScan'
         'Invoke-NetScan'
@@ -141,6 +142,7 @@
         'Test-Performance'
         'Uninstall-AllModules'
         'Uninstall-MSI'
+        'Update-GitHubModule'
         'Write-EncryptedFile'
     )
 
