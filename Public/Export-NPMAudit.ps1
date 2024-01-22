@@ -20,7 +20,7 @@ function Export-NPMAudit {
     #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Path to NPM Audit file in JSON format')]
+        [Parameter(Mandatory, HelpMessage = 'Path to NPM Audit file in JSON format')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.json" })]
         [System.String] $Path,
 
