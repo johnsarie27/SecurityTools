@@ -55,10 +55,14 @@ function Update-ModuleFromZip {
                 Expand-Archive -Path $Path -DestinationPath (Split-Path -Path $module.ModuleBase)
 
                 # SHOULD PROCESS
-                if ($PSCmdlet.ShouldProcess($module.Name, "Trust module")) {
+                if ($PSCmdlet.ShouldProcess($module.Name, "Trust module") -and ($IsLinux -or $IsMacOS)) {
+
                     # TRUST MODULE
                     Get-ChildItem -Path $module.ModuleBase -Recurse | Unblock-File -Confirm:$false
                 }
+
+                # LOG SUCCESS
+                if ($? -eq $true) { Write-Verbose -Message 'Module installed successfully.' }
             }
         }
     }

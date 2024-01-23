@@ -69,7 +69,7 @@ function Install-ModuleFromZip {
             }
             else {
                 # SHOULD PROCESS
-                if ($PSCmdlet.ShouldProcess($module.Name, "Trust module")) {
+                if ($PSCmdlet.ShouldProcess($module.Name, "Trust module") -and ($IsLinux -or $IsMacOS)) {
 
                     # TRUST MODULE
                     Get-ChildItem -Path $module.ModuleBase -Recurse | Unblock-File -Confirm:$false
@@ -80,6 +80,9 @@ function Install-ModuleFromZip {
                     # SIGN SCRIPT FILES
                     #Set-AuthenticodeSignature -FilePath $Scripts.FullName -Certificate $MyCert
                 }
+
+                # LOG SUCCESS
+                if ($? -eq $true) { Write-Verbose -Message 'Module installed successfully.' }
             }
         }
     }
