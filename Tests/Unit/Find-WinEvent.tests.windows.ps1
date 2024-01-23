@@ -7,16 +7,16 @@ BeforeDiscovery {
     $Cmdlets = Get-Command -Module $env:BHProjectName -CommandType 'Cmdlet', 'Function' -ErrorAction 'Stop'
 }
 
-Describe -Name "Get-WinLogs" -Fixture {
+Describe -Name "Find-WinEvent" -Fixture {
     It -Name "lists available options" -Test {
-        Get-WinLogs -List | Should -BeOfType PSCustomObject
+        Find-WinEvent -List | Should -BeOfType PSCustomObject
     }
 
     It -Name "should return EventLogRecord" -Test {
-        Get-WinLogs -Id 5 -Results 5 | Should -BeOfType System.Diagnostics.Eventing.Reader.EventLogRecord
+        Find-WinEvent -Id 5 -Results 5 | Should -BeOfType System.Diagnostics.Eventing.Reader.EventLogRecord
     }
 
     It -Name "should return 5 objects" -Test {
-        Get-WinLogs -Id 3 -Results 5 | Should -HaveCount 5
+        Find-WinEvent -Id 3 -Results 5 | Should -HaveCount 5
     }
 }

@@ -100,6 +100,7 @@
         'Export-WebScan'
         'Find-LANHost'
         'Find-ServerPendingReboot'
+        'Find-WinEvent'
         'Get-ActiveGatewayUser'
         'Get-ADUserStatus'
         'Get-AlternateDataStream'
@@ -130,7 +131,6 @@
         'Get-WhoIs'
         'Get-WindowsEventCatalog'
         'Get-WinInfo'
-        'Get-WinLogs'
         'Install-GitHubModule'
         'Install-ModuleFromPackage'
         'Invoke-InfoGraphicScan'
@@ -162,6 +162,7 @@
         'Get-DirItemAges'
         'Get-DirStats'
         'Get-RandomString'
+        'Get-WinLogs'
     )
 
     # DSC resources to export from this module
