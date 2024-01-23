@@ -124,7 +124,7 @@
         'Get-SavedHistory'
         'Get-Software'
         'Get-StringHash'
-        'Get-TalkingApps'
+        'Get-TCPConnection'
         'Get-UncPath'
         'Get-Weather'
         'Get-WhoIs'
