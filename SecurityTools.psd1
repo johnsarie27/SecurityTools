@@ -132,7 +132,7 @@
         'Get-WindowsEventCatalog'
         'Get-WinInfo'
         'Install-GitHubModule'
-        'Install-ModuleFromPackage'
+        'Install-ModuleFromZip'
         'Invoke-InfoGraphicScan'
         'Invoke-NetScan'
         'New-RandomString'
