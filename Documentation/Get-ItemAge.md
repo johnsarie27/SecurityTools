@@ -1,7 +1,6 @@
 # Get-ItemAge
 
 ## SYNOPSIS
-
 Generate age information for a directory of files and sub-files
 
 ## SYNTAX
@@ -11,13 +10,11 @@ Get-ItemAge [-Path] <String> [[-AgeInDays] <Int32>] [-NoRecurse] [<CommonParamet
 ```
 
 ## DESCRIPTION
-
 This function generates a report of content details for a given folder.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-
 ```
 Get-ItemAge -Directory 'D:\Database\logs' -AgeInDays 7
 Get all content details for D:\Database\logs using 7 day measurement
@@ -26,7 +23,6 @@ Get all content details for D:\Database\logs using 7 day measurement
 ## PARAMETERS
 
 ### -Path
-
 Full path to the target directory for which the report should be
 generated.
 
@@ -43,7 +39,6 @@ Accept wildcard characters: False
 ```
 
 ### -AgeInDays
-
 Sample age to measure number of files created since.
 
 ```yaml
@@ -59,7 +54,6 @@ Accept wildcard characters: False
 ```
 
 ### -NoRecurse
-
 This switch parameter causes the scan of only the first level of
 folders.
 
@@ -76,22 +70,17 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
-### System.String
-
-### System.Int
-
+### System.String.
+### System.Int.
 ## OUTPUTS
 
-### System.Object
-
+### System.Object.
 ## NOTES
-
-<https://blogs.technet.microsoft.com/pstips/2017/05/20/display-friendly-file-sizes-in-powershell/>
-<https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-6>
+https://blogs.technet.microsoft.com/pstips/2017/05/20/display-friendly-file-sizes-in-powershell/
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-6
 
 ## RELATED LINKS
