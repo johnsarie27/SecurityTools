@@ -106,8 +106,7 @@
         'Get-CountryCode'
         'Get-CVSSv3BaseScore'
         'Get-Decoded'
-        'Get-DirItemAges'
-        'Get-DirStats'
+        'Get-DirectoryReport'
         'Get-DomainRegistration'
         'Get-Encoded'
         'Get-EPSS'
@@ -115,6 +114,7 @@
         'Get-FileInfo'
         'Get-FolderSize'
         'Get-Ipinfo'
+        'Get-ItemAge'
         'Get-KEVList'
         'Get-LoggedOnUser'
         'Get-MsiInfo'
@@ -159,6 +159,8 @@
     AliasesToExport   = @(
         'Compare-Lists'
         'Get-ActiveGWUser'
+        'Get-DirItemAges'
+        'Get-DirStats'
         'Get-RandomString'
     )
 
