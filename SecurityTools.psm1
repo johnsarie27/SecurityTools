@@ -1,6 +1,6 @@
 # ==============================================================================
 # Filename: SecurityTools.psm1
-# Version:  0.1.1 | Updated: 2023-11-03
+# Version:  0.1.2 | Updated: 2024-01-22
 # Author:   Justin Johns
 # ==============================================================================
 
@@ -21,5 +21,5 @@ New-Variable -Name 'InfoModel' -Option ReadOnly -Value (
 # EXPORT MEMBERS
 #Export-ModuleMember -Function *
 # THESE ITEMS MUST BE LISTED BOTH IN THE MODULE MANIFEST AND BELOW TO BE MADE AVAILABLE AFTER LOADING THE MODULE
-Export-ModuleMember -Variable 'EventTable', 'InfoModel'
-Export-ModuleMember -Alias 'Get-ActiveGWUser', 'Get-RandomString'
+Export-ModuleMember -Variable *
+Export-ModuleMember -Alias *

@@ -24,6 +24,7 @@ function Get-Decoded {
         General notes
     #>
     [CmdletBinding()]
+    [OutputType('System.String')]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Base64 encoded string')]
         [ValidateNotNullOrEmpty()]

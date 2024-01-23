@@ -24,6 +24,7 @@ function Get-Encoded {
         General notes
     #>
     [CmdletBinding()]
+    [OutputType('System.String')]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Plain text string')]
         [ValidateNotNullOrEmpty()]

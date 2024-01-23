@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.9.2'
+    ModuleVersion     = '0.9.3'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -79,7 +79,7 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
-        'Compare-Lists'
+        'Compare-List'
         'Convert-Epoch'
         'Convert-Hexadecimal'
         'Convert-SecureKey'
@@ -100,14 +100,14 @@
         'Export-WebScan'
         'Find-LANHost'
         'Find-ServerPendingReboot'
+        'Find-WinEvent'
         'Get-ActiveGatewayUser'
         'Get-ADUserStatus'
         'Get-AlternateDataStream'
         'Get-CountryCode'
         'Get-CVSSv3BaseScore'
         'Get-Decoded'
-        'Get-DirItemAges'
-        'Get-DirStats'
+        'Get-DirectoryReport'
         'Get-DomainRegistration'
         'Get-Encoded'
         'Get-EPSS'
@@ -115,6 +115,7 @@
         'Get-FileInfo'
         'Get-FolderSize'
         'Get-Ipinfo'
+        'Get-ItemAge'
         'Get-KEVList'
         'Get-LoggedOnUser'
         'Get-MsiInfo'
@@ -124,13 +125,12 @@
         'Get-SavedHistory'
         'Get-Software'
         'Get-StringHash'
-        'Get-TalkingApps'
+        'Get-TCPConnection'
         'Get-UncPath'
         'Get-Weather'
         'Get-WhoIs'
         'Get-WindowsEventCatalog'
         'Get-WinInfo'
-        'Get-WinLogs'
         'Install-GitHubModule'
         'Install-ModuleFromPackage'
         'Invoke-InfoGraphicScan'
@@ -140,7 +140,6 @@
         'Read-EncryptedFile'
         'Save-KBFile'
         'Test-Performance'
-        'Uninstall-AllModules'
         'Uninstall-MSI'
         'Update-GitHubModule'
         'Write-EncryptedFile'
@@ -158,8 +157,12 @@
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     # ITEMS MUST BE LISTED HERE IN THE PSD1 FILE AS WELL AS THE PSM1 FILE TO SUCCESSFULLY EXPORT THEM
     AliasesToExport   = @(
+        'Compare-Lists'
         'Get-ActiveGWUser'
+        'Get-DirItemAges'
+        'Get-DirStats'
         'Get-RandomString'
+        'Get-WinLogs'
     )
 
     # DSC resources to export from this module

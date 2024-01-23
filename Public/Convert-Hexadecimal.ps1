@@ -24,6 +24,7 @@ function Convert-Hexadecimal {
         General notes
     #>
     [CmdletBinding(DefaultParameterSetName = '__dcm')]
+    [OutputType('System.String')]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Hexadecimal value', ParameterSetName = '__hex')]
         [ValidateNotNullOrEmpty()]
