@@ -142,6 +142,7 @@
         'Test-Performance'
         'Uninstall-MSI'
         'Update-GitHubModule'
+        'Update-ModuleFromZip'
         'Write-EncryptedFile'
     )
 
