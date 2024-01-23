@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.9.3'
+    ModuleVersion     = '0.9.4'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -67,6 +67,7 @@
     # Type files (.ps1xml) to be loaded when importing this module
     TypesToProcess    = @(
         './Private/ADUser.types.ps1xml'
+        './Private/CimInstance.types.ps1xml'
         './Private/Process.types.ps1xml'
         './Private/Service.types.ps1xml'
     )
@@ -125,7 +126,6 @@
         'Get-SavedHistory'
         'Get-Software'
         'Get-StringHash'
-        'Get-TCPConnection'
         'Get-UncPath'
         'Get-Weather'
         'Get-WhoIs'
