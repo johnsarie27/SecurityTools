@@ -7,41 +7,41 @@ BeforeDiscovery {
     $Cmdlets = Get-Command -Module $env:BHProjectName -CommandType 'Cmdlet', 'Function' -ErrorAction 'Stop'
 }
 
-Describe -Name "Compare-Lists" -Fixture {
+Describe -Name "Compare-List" -Fixture {
     Context -Name "__list parameter set" -Fixture {
         It -Name "compares two arrays of strings" -Test {
             $a = 'run', 'jump', 'walk'
             $b = 'run', 'jump', 'swim', 'hike'
-            $compare = Compare-Lists -ListA $a -ListB $b
+            $compare = Compare-List -ListA $a -ListB $b
             $compare.DUPLICATES | Should -Contain 'run'
         }
 
         It -Name "compares two arrays of objects" -Test {
             $a = Get-Process | Select-Object -First 5
             $b = $a | Select-Object -First 2
-            $compare = Compare-Lists -ListA $a -ListB $b
+            $compare = Compare-List -ListA $a -ListB $b
             $compare.'LIST-A' | Should -HaveCount 3
         }
 
         It -Name "should not throw an error" -Test {
             $a = 'run', 'jump', 'walk'
             $b = 'run', 'jump', 'swim', 'hike'
-            { Compare-Lists -ListA $a -ListB $b } | Should -Not -Throw
+            { Compare-List -ListA $a -ListB $b } | Should -Not -Throw
         }
     }
 
     Context -Name "__file parameter set" -Fixture {
         It -Name "should not throw an error" -Test {
-            { Compare-Lists -Path $Path } | Should -Not -Throw
+            { Compare-List -Path $Path } | Should -Not -Throw
         }
 
         It -Name "compares string data in a csv" -Test {
-            $compare = Compare-Lists -Path $Path
+            $compare = Compare-List -Path $Path
             $compare.Count | Should -Be ($a.Count - $b.Count)
         }
 
         It -Name "contains accurate count in comparisson" -Test {
-            $compare = Compare-Lists -Path $Path
+            $compare = Compare-List -Path $Path
             $compare.DUPLICATES | Should -Contain $b[0].ProcessName
         }
 

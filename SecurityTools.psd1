@@ -79,7 +79,7 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
-        'Compare-Lists'
+        'Compare-List'
         'Convert-Epoch'
         'Convert-Hexadecimal'
         'Convert-SecureKey'
@@ -157,6 +157,7 @@
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     # ITEMS MUST BE LISTED HERE IN THE PSD1 FILE AS WELL AS THE PSM1 FILE TO SUCCESSFULLY EXPORT THEM
     AliasesToExport   = @(
+        'Compare-Lists'
         'Get-ActiveGWUser'
         'Get-RandomString'
     )
