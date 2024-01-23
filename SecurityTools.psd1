@@ -132,7 +132,7 @@
         'Get-WindowsEventCatalog'
         'Get-WinInfo'
         'Install-GitHubModule'
-        'Install-ModuleFromPackage'
+        'Install-ModuleFromZip'
         'Invoke-InfoGraphicScan'
         'Invoke-NetScan'
         'New-RandomString'
@@ -142,6 +142,7 @@
         'Test-Performance'
         'Uninstall-MSI'
         'Update-GitHubModule'
+        'Update-ModuleFromZip'
         'Write-EncryptedFile'
     )
 
