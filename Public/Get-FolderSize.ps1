@@ -77,6 +77,7 @@ function Get-FolderSize {
         https://www.gngrninja.com/script-ninja/2016/5/24/powershell-calculating-folder-sizes
     #>
     [CmdletBinding()]
+    [OutputType('System.Collections.ArrayList')]
     Param(
         [Parameter(Mandatory = $false, Position = 0, HelpMessage = 'Base path')]
         [System.String[]] $Path = 'C:\',
