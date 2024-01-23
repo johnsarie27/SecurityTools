@@ -1,29 +1,29 @@
-# Install-ModuleFromZip
+# Update-ModuleFromZip
 
 ## SYNOPSIS
-Install module from GitHub download
+Short description
 
 ## SYNTAX
 
 ```
-Install-ModuleFromZip [-Path] <String> [[-Scope] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Update-ModuleFromZip [-Name] <String> [-Path] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Install module from GitHub download
+Long description
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Install-ModuleFromZip -Path .\SecurityTools.zip
-Extracts contents of zip and copies to Windows module directory then removes zip.
+Update-ModuleFromZip -Name SecurityTools -Path "$HOME\Desktop\SecurityTools.zip"
+Updates the module "SecurityTools" using the local zip file
 ```
 
 ## PARAMETERS
 
-### -Path
-Path to zip file
+### -Name
+Module name
 
 ```yaml
 Type: String
@@ -37,17 +37,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Scope
-Module scope
+### -Path
+Path to zipped module
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 2
-Default value: CurrentUser
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -93,12 +93,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### None.
 ## NOTES
-Name:     Install-ModuleFromZip
+Name:     Update-ModuleFromZip
 Author:   Justin Johns
-Version:  0.1.1 | Last Edit: 2024-01-23
-- 0.1.1 - (2024-01-23) Renamed function from Install-ModuleFromPackage, cleanup
-- 0.1.0 - (2019-03-13) Initial version
+Version:  0.1.0 | Last Edit: 2024-01-23
+- 0.1.0 - Initial version
 Comments: \<Comment(s)\>
-The zip should contain the module folder with the appropriate items inside.
+General notes
 
 ## RELATED LINKS
