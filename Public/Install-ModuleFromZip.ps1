@@ -69,7 +69,7 @@ function Install-ModuleFromZip {
             }
             else {
                 # SHOULD PROCESS
-                if ($PSCmdlet.ShouldProcess($module.Name, "Trust module") -and ($IsLinux -or $IsMacOS)) {
+                if ($PSCmdlet.ShouldProcess($module.Name, "Trust module") -and ($IsWindows -or $IsMacOS)) {
 
                     # TRUST MODULE
                     Get-ChildItem -Path $module.ModuleBase -Recurse | Unblock-File -Confirm:$false
