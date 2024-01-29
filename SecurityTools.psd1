@@ -122,6 +122,7 @@
         'Get-MsiInfo'
         'Get-Object'
         'Get-PatchTuesday'
+        'Get-QRCode'
         'Get-RSOP'
         'Get-SavedHistory'
         'Get-Software'
