@@ -1,29 +1,44 @@
-# Export-WebScan
+# Compress-URL
 
 ## SYNOPSIS
-Export vulnerability report
+Compress URL
 
 ## SYNTAX
 
 ```
-Export-WebScan [-Path] <String> [[-OutputDirectory] <String>] [<CommonParameters>]
+Compress-URL [-URL] <Uri> [-ApiKey] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Export vulnerability report from provided Acunetix XML report
+Get shortened URL
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Export-WebScan -Path C:\myReport.xml
-Processes the Acunetix XML report and produces an Excel Spreadsheet of the results
+Compress-URL -URL 'https://www.google.com'
+Get a shortened URL for 'https://www.google.com'
 ```
 
 ## PARAMETERS
 
-### -Path
-Path to Acunetix report file in XML format
+### -URL
+URL to compress
+
+```yaml
+Type: Uri
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -ApiKey
+API Key
 
 ```yaml
 Type: String
@@ -31,23 +46,8 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OutputDirectory
-Path to output directory
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
 Position: 2
-Default value: "$HOME\Desktop"
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -57,11 +57,16 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.String.
+### None.
 ## OUTPUTS
 
-### None.
+### System.Object.
 ## NOTES
+Name: Compress-URL
+Author: Justin Johns
+Version: 0.1.0 | Last Edit: 2024-01-28
+- 0.1.0 - (2024-01-28) Initial version
 General notes
+https://onesimpleapi.com/docs/url-shortener
 
 ## RELATED LINKS

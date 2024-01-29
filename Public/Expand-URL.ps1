@@ -11,17 +11,18 @@ function Expand-URL {
     .INPUTS
         None.
     .OUTPUTS
-        System.String.
+        System.Object.
     .EXAMPLE
-        PS C:\> Expand-URL -URL http://bitly.com/somethinghere
+        PS C:\> Expand-URL -URL 'https://tinyurl.com/RedlandsStake' # https://t.co/Q0uEt49I5D
         Show destination URL target for bitly shortened or redirected URL
     .NOTES
         Name: Expand-URL
         Author: Justin Johns
-        Version: 0.1.0 | Last Edit: 2022-01-10 [0.1.0]
-        - <VersionNotes> (or remove this line if no version notes)
-        Comments: <Comment(s)>
+        Version: 0.1.0 | Last Edit: 2024-01-28 [0.1.1]
+        - 0.1.1 - (2024-01-28) Moved query arguments to the request body
+        - 0.1.0 - (2022-01-10) Initial version
         General notes
+        https://onesimpleapi.com/docs/url-unshorten
     #>
     [CmdletBinding()]
     Param(
@@ -35,12 +36,20 @@ function Expand-URL {
     )
     Begin {
         Write-Verbose "Starting $($MyInvocation.Mycommand)"
-
-        $baseUrl = 'https://onesimpleapi.com/api/unshorten?token={0}&url={1}'
     }
     Process {
-        $fullUri = $baseUrl -f $ApiKey, $URL
+        # SET REQUEST PARAMETERS
+        $restParams = @{
+            Uri    = 'https://onesimpleapi.com/api/unshorten'
+            Method = 'POST'
+            Body   = @{
+                token  = $ApiKey
+                output = 'json'
+                url    = $URL
+            }
+        }
 
-        Invoke-RestMethod -Uri $fullUri
+        # SEND REQUEST
+        Invoke-RestMethod @restParams
     }
 }

@@ -81,6 +81,7 @@
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
         'Compare-List'
+        'Compress-URL'
         'Convert-Epoch'
         'Convert-Hexadecimal'
         'Convert-SecureKey'
@@ -122,6 +123,7 @@
         'Get-MsiInfo'
         'Get-Object'
         'Get-PatchTuesday'
+        'Get-QRCode'
         'Get-RSOP'
         'Get-SavedHistory'
         'Get-Software'
