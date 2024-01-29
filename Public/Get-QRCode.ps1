@@ -20,7 +20,6 @@ function Get-QRCode {
         Author: Justin Johns
         Version: 0.1.0 | Last Edit: 2024-01-28 [0.1.0]
         - 0.1.0 - Initial version
-        Comments: <Comment(s)>
         General notes
         https://onesimpleapi.com/docs/qr-code
     #>
@@ -36,18 +35,23 @@ function Get-QRCode {
     )
     Begin {
         Write-Verbose "Starting $($MyInvocation.Mycommand)"
-
-        # SET BASE URI
-        $baseUrl = 'https://onesimpleapi.com/api/qr_code?token={0}&output=json&message={1}'
     }
     Process {
-        # ADD PARAMETERS TO BASE URI
-        $fullUri = $baseUrl -f $ApiKey, $URL
+        # SET REQUEST PARAMETERS
+        $restParams = @{
+            Uri    = 'https://onesimpleapi.com/api/qr_code'
+            Method = 'POST'
+            Body   = @{
+                token   = $ApiKey
+                output  = 'json'
+                message = $URL
+            }
+        }
 
         # LOG URI
-        Write-Verbose -Message ('Uri: "{0}"' -f $fullUri)
+        Write-Verbose -Message ('Uri: "{0}"' -f $restParams['Uri'])
 
         # SEND REQUEST
-        Invoke-RestMethod -Uri $fullUri
+        Invoke-RestMethod @restParams
     }
 }
