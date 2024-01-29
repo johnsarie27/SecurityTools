@@ -16,7 +16,7 @@ Expand shortened URL
 
 ### EXAMPLE 1
 ```
-Expand-URL -URL http://bitly.com/somethinghere
+Expand-URL -URL 'https://tinyurl.com/RedlandsStake' # https://t.co/Q0uEt49I5D
 Show destination URL target for bitly shortened or redirected URL
 ```
 
@@ -60,13 +60,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None.
 ## OUTPUTS
 
-### System.String.
+### System.Object.
 ## NOTES
 Name: Expand-URL
 Author: Justin Johns
-Version: 0.1.0 | Last Edit: 2022-01-10 \[0.1.0\]
-- \<VersionNotes\> (or remove this line if no version notes)
-Comments: \<Comment(s)\>
+Version: 0.1.0 | Last Edit: 2024-01-28 \[0.1.1\]
+- 0.1.1 - (2024-01-28) Moved query arguments to the request body
+- 0.1.0 - (2022-01-10) Initial version
 General notes
+https://onesimpleapi.com/docs/url-unshorten
 
 ## RELATED LINKS
