@@ -11,7 +11,7 @@ function Expand-URL {
     .INPUTS
         None.
     .OUTPUTS
-        System.String.
+        System.Object.
     .EXAMPLE
         PS C:\> Expand-URL -URL 'https://tinyurl.com/RedlandsStake' # https://t.co/Q0uEt49I5D
         Show destination URL target for bitly shortened or redirected URL
@@ -43,8 +43,9 @@ function Expand-URL {
             Uri    = 'https://onesimpleapi.com/api/unshorten'
             Method = 'POST'
             Body   = @{
-                token = $ApiKey
-                url   = $URL
+                token  = $ApiKey
+                output = 'json'
+                url    = $URL
             }
         }
 
