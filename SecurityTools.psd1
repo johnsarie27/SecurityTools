@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.9.6'
+    ModuleVersion     = '0.9.7'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -81,7 +81,6 @@
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
         'Compare-List'
-        'Compress-URL'
         'Convert-Epoch'
         'Convert-Hexadecimal'
         'Convert-SecureKey'
@@ -123,7 +122,6 @@
         'Get-MsiInfo'
         'Get-Object'
         'Get-PatchTuesday'
-        'Get-QRCode'
         'Get-RSOP'
         'Get-SavedHistory'
         'Get-Software'
@@ -204,5 +202,7 @@
     # HelpInfoURI = ''
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
+    # DefaultCommandPrefix = ''
+}
     # DefaultCommandPrefix = ''
 }
