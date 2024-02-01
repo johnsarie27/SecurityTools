@@ -39,13 +39,13 @@
         "Name": "MsiInstaller starting",
         "Log": "Application",
         "EventId": 1040,
-        "Description": "This event signals the start of an installation process by the Windows installer"
+        "Description": "For ProviderName 'MsiInstaller', this event signals the start of an installation process by the Windows installer"
     },
     {
         "Name": "MsiInstaller ending",
         "Log": "Application",
         "EventId": 1042,
-        "Description": "This event signals the end of an installation process by the Windows installer"
+        "Description": "For ProviderName 'MsiInstaller', this event signals the end of an installation process by the Windows installer"
     },
     {
         "Name": "Event Log Started",
