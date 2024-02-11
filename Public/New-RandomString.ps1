@@ -103,7 +103,7 @@ function New-RandomString {
         }
         else {
             # "Get-Random" DOES NOT ENSURE CRYPTOGRAPHICALLY SECURE RANDOMNESS
-            Write-Warning -Message 'Older version of PowerShell detected. It is recommended to use PS 7.4.0 or newer to ensure cryptographically secure randomness.'
+            Write-Warning -Message 'PowerShell 7.4.0 or newer is recommended to ensure cryptographically secure randomness.'
             $chars = for ($i = 1; $i -LE $Length; $i++) { [System.Char] (Get-Random -InputObject $charSet -Count 1) }
         }
         -join $chars
