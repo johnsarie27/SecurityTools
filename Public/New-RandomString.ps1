@@ -80,10 +80,10 @@ function New-RandomString {
         }
 
         # REMOVE CHARACTER SETS
-        if ($PSBoundParameters.ContainsKey('ExcludeNumber')) { $allSets.Remove('nums')  }
-        if ($PSBoundParameters.ContainsKey('ExcludeLowercase')) { $allSets.Remove('lowr')  }
-        if ($PSBoundParameters.ContainsKey('ExcludeUppercase')) { $allSets.Remove('uppr')  }
-        if ($PSBoundParameters.ContainsKey('ExcludeSpecial')) { $allSets.Remove('spcl')  }
+        if ($PSBoundParameters.ContainsKey('ExcludeNumber')) { $allSets.Remove('nums') }
+        if ($PSBoundParameters.ContainsKey('ExcludeLowercase')) { $allSets.Remove('lowr') }
+        if ($PSBoundParameters.ContainsKey('ExcludeUppercase')) { $allSets.Remove('uppr') }
+        if ($PSBoundParameters.ContainsKey('ExcludeSpecial')) { $allSets.Remove('spcl') }
 
         # SET CHARACTER SET
         [System.Collections.Generic.List[System.Char]] $charSet = foreach ($s in $allSets.GetEnumerator()) { $allSets[$s.Key] }
@@ -96,16 +96,18 @@ function New-RandomString {
         #$chars = $charSet | Get-Random -Count $Length | ForEach-Object { [System.Char] $_ }
 
         # PS 7.4.0 INTRODUCED A
-        $chars = if ($PSVersionTable.PSVersion -GE ([System.Version] '7.4.0')) {
+        if ($PSVersionTable.PSVersion -GE ([System.Version] '7.4.0')) {
             # "Get-SecureRandom" GENERATES CRYPTOGRAPHICALLY SECURE RANDOMNESS AND USES THE RandomNumverGenerator CLASS
             Write-Verbose -Message 'Using cryptographically secure random generator...'
-            for ($i = 1; $i -LE $Length; $i++) { [System.Char] (Get-SecureRandom -InputObject $charSet -Count 1) }
+            $chars = for ($i = 1; $i -LE $Length; $i++) { [System.Char] (Get-SecureRandom -InputObject $charSet -Count 1) }
         }
         else {
             # "Get-Random" DOES NOT ENSURE CRYPTOGRAPHICALLY SECURE RANDOMNESS
-            Write-Warning -Message 'Older version of PowerShell detected. It is recommended to use PS 7.4.0 or newer to ensure cryptographically secure randomness.'
-            for ($i = 1; $i -LE $Length; $i++) { [System.Char] (Get-Random -InputObject $charSet -Count 1) }
+            Write-Warning -Message 'PowerShell 7.4.0 or newer is recommended to ensure cryptographically secure randomness.'
+            $chars = for ($i = 1; $i -LE $Length; $i++) { [System.Char] (Get-Random -InputObject $charSet -Count 1) }
         }
+
+        # JOIN CHARACTERS AND RETURN STRING
         -join $chars
     }
 }
