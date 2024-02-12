@@ -106,6 +106,8 @@ function New-RandomString {
             Write-Warning -Message 'PowerShell 7.4.0 or newer is recommended to ensure cryptographically secure randomness.'
             $chars = for ($i = 1; $i -LE $Length; $i++) { [System.Char] (Get-Random -InputObject $charSet -Count 1) }
         }
+
+        # JOIN CHARACTERS AND RETURN STRING
         -join $chars
     }
 }
