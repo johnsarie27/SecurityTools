@@ -16,10 +16,10 @@ Test performance of script block over given number of executions
 
 ### EXAMPLE 1
 ```
-Test-Performance -SB $S
+Test-Performance -ScriptBlock { Get-Process | Sort-Object -Property CPU -Descending | Select-Object -First 10 }
 ```
 
-Run ScriptBlock $S 10 times and returns statistical results as shown below:
+Run ScriptBlock 10 times and returns statistical results as shown below:
 
 MaxMilliseconds : 3897
 MinMilliseconds : 3756
@@ -33,7 +33,7 @@ ScriptBlock to test performance
 ```yaml
 Type: ScriptBlock
 Parameter Sets: (All)
-Aliases: SB
+Aliases:
 
 Required: True
 Position: 1
@@ -63,7 +63,7 @@ Show all run results in milliseconds
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases: All, ShowAll
+Aliases:
 
 Required: False
 Position: Named
