@@ -61,7 +61,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### Accepts an System.TimeSpan object or a collection of System.TimeSpan objects
+### System.TimeSpan.
 ## OUTPUTS
 
 ## NOTES

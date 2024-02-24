@@ -30,7 +30,7 @@ function Out-MeasureResult {
         AvgMilliseconds : 2241,86343
 
     .INPUTS
-        Accepts an System.TimeSpan object or a collection of System.TimeSpan objects
+        System.TimeSpan.
     .NOTES
         This function comes from the chapter Increasing PowerShell Performance
         in the "PowerShell Conference Book"
@@ -41,15 +41,12 @@ function Out-MeasureResult {
         [System.Timespan[]] $Measurement
     )
     Begin {
+        # CREATE LIST COLLECTION
         $list = [System.Collections.Generic.List[System.TimeSpan]]::new()
     }
     Process {
-        if ($Measurement -is [array]) {
-            $list.AddRange($Measurement)
-        }
-        else {
-            $list.Add($Measurement)
-        }
+        if ($Measurement -is [array]) { $list.AddRange($Measurement) }
+        else { $list.Add($Measurement) }
     }
     End {
         $max = ($list | Measure-Object -Property Ticks -Maximum).Maximum
