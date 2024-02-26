@@ -6,7 +6,7 @@ Test performance of script block
 ## SYNTAX
 
 ```
-Test-Performance [-ScriptBlock] <ScriptBlock> [[-Runs] <Int32>] [-ShowResults] [<CommonParameters>]
+Test-Performance [-ScriptBlock] <ScriptBlock> [[-Iterations] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -42,32 +42,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Runs
-Number of test runs
+### -Iterations
+Number of test iterations
 
 ```yaml
 Type: Int32
 Parameter Sets: (All)
-Aliases:
+Aliases: Runs
 
 Required: False
 Position: 2
 Default value: 10
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ShowResults
-Show all run results in milliseconds
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
