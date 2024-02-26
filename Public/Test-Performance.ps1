@@ -6,10 +6,8 @@ function Test-Performance {
         Test performance of script block over given number of executions
     .PARAMETER ScriptBlock
         ScriptBlock to test performance
-    .PARAMETER Runs
-        Number of test runs
-    .PARAMETER ShowResults
-        Show all run results in milliseconds
+    .PARAMETER Iterations
+        Number of test iterations
     .INPUTS
         None.
     .OUTPUTS
@@ -31,12 +29,10 @@ function Test-Performance {
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.ScriptBlock] $ScriptBlock,
 
-        [Parameter(HelpMessage = 'Number of test runs')]
+        [Parameter(HelpMessage = 'Number of test iterations')]
         [ValidateRange(3, 10000)]
-        [System.Int32] $Runs = 10,
-
-        [Parameter(HelpMessage = 'Show all run results in milliseconds')]
-        [System.Management.Automation.SwitchParameter] $ShowResults
+        [Alias('Runs')]
+        [System.Int32] $Iterations = 10
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
@@ -46,7 +42,7 @@ function Test-Performance {
     }
     Process {
         # LOOP THROUGH TEST 10 TIMES
-        foreach ($run in (0..$Runs)) {
+        for ($i = 1; $i -LE $Iterations; $i++) {
 
             # RUN GARBAGE COLLECTION
             [System.GC]::Collect()
@@ -61,14 +57,13 @@ function Test-Performance {
         # GET RESULTS
         $results = $measurements | Out-MeasureResult
 
-        # CONFIRM REQUESTED RETURN
-        if ($PSBoundParameters.ContainsKey('ShowResults')) {
-            # ADD ALL MEASUREMENTS TO RESULTS
-            $results | Add-Member -NotePropertyMembers @{ Measurements = $measurements.TotalMilliseconds }
-        }
-    }
-    End {
+        # ADD ALL MEASUREMENTS TO RESULTS
+        $results | Add-Member -NotePropertyMembers @{ Measurements = $measurements.TotalMilliseconds }
+
         # RETURN RESULTS
         $results
+    }
+    End {
+        Write-Verbose -Message "Ending $($MyInvocation.Mycommand)"
     }
 }
