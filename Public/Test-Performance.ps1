@@ -8,8 +8,6 @@ function Test-Performance {
         ScriptBlock to test performance
     .PARAMETER Iterations
         Number of test iterations
-    .PARAMETER ShowResults
-        Show all run results in milliseconds
     .INPUTS
         None.
     .OUTPUTS
@@ -34,10 +32,7 @@ function Test-Performance {
         [Parameter(HelpMessage = 'Number of test iterations')]
         [ValidateRange(3, 10000)]
         [Alias('Runs')]
-        [System.Int32] $Iterations = 10,
-
-        [Parameter(HelpMessage = 'Show all run results in milliseconds')]
-        [System.Management.Automation.SwitchParameter] $ShowResults
+        [System.Int32] $Iterations = 10
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
@@ -62,14 +57,13 @@ function Test-Performance {
         # GET RESULTS
         $results = $measurements | Out-MeasureResult
 
-        # CONFIRM REQUESTED RETURN
-        if ($PSBoundParameters.ContainsKey('ShowResults')) {
-            # ADD ALL MEASUREMENTS TO RESULTS
-            $results | Add-Member -NotePropertyMembers @{ Measurements = $measurements.TotalMilliseconds }
-        }
-    }
-    End {
+        # ADD ALL MEASUREMENTS TO RESULTS
+        $results | Add-Member -NotePropertyMembers @{ Measurements = $measurements.TotalMilliseconds }
+
         # RETURN RESULTS
         $results
+    }
+    End {
+        Write-Verbose -Message "Ending $($MyInvocation.Mycommand)"
     }
 }
