@@ -1,5 +1,5 @@
 function Get-PublicIP {
-    <# =========================================================================
+    <#
     .SYNOPSIS
         Get public IP address
     .DESCRIPTION
@@ -18,7 +18,7 @@ function Get-PublicIP {
         - 0.1.0 - Initial version
         Comments: <Comment(s)>
         General notes
-    ========================================================================= #>
+    #>
     [CmdletBinding()]
     Param()
     Begin {
