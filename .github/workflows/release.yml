@@ -48,7 +48,7 @@ jobs:
           path: "Artifacts"
           if-no-files-found: error
 
-      - uses: softprops/action-gh-release@v1 # release
+      - uses: softprops/action-gh-release@v2 # release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           generate_release_notes: true
