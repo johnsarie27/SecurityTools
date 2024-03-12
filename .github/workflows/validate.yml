@@ -28,7 +28,7 @@ jobs:
       - shell: pwsh # pester
         run: .\Build\build.ps1 -TaskList 'Test'
 
-      - uses: actions/upload-artifact@v3 # publish pester results
+      - uses: actions/upload-artifact@v4 # publish pester results
         with:
           name: Pester Results
           path: "Artifacts/**/Test-*.xml"
