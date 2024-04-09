@@ -14,25 +14,37 @@ function Get-LoggedOnUser {
         PS C:\> Get-ConnectedUser -ComputerName $Computer
     #>
     Param(
-        [Parameter(HelpMessage = 'Target hostname')]
-        [ValidateScript( { Test-Connection -ComputerName $_ -Quiet -Count 1 })]
-        [ValidateNotNullOrEmpty()]
-        [Alias('Hostname', 'Host', 'Computer', 'CN')]
+        [Parameter(HelpMessage = 'Target computer name')]
+        [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
+        [Alias('CN')]
         [System.String] $ComputerName
     )
+    Begin {
+        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
-    if ( $PSBoundParameters.ContainsKey('ComputerName') ) {
-        if (
-            ( $ComputerName -eq 'localhost' ) -or
-            ( $ComputerName -eq '127.0.0.1' ) -or
-            ( $ComputerName -eq $env:COMPUTERNAME ) -or
-            ( $ComputerName -eq '::1' )
-        ) { query user }
+        # SET SELF REFERENCE
+        $self = @('localhost', '127.0.0.1', $env:COMPUTERNAME, '::1')
+    }
+    Process {
+        # CHECK FOR COMPUTERNAME PARAMETER
+        if ($PSBoundParameters.ContainsKey('ComputerName') -and $ComputerName -notin $self) {
+            # OPEN REMOTE SESSION
+            $session = New-PSSession -ComputerName $ComputerName
+
+            # GET TEXT UTILITY
+            $hasModule = Get-Module -ListAvailable -Name 'Microsoft.PowerShell.TextUtility' -PSSession $session
+
+            # EXECUTE REMOTELY
+            if ($hasModule) { Invoke-Command -Session $session -ScriptBlock { query user | ConvertFrom-TextTable } }
+            else { Invoke-Command -Session $session -ScriptBlock { query user } }
+        }
         else {
-            $Session = New-PSSession -ComputerName $ComputerName
-            $Response = Invoke-Command -Session $Session -ScriptBlock { query user }
-            $Response
+            # GET TEXT UTILITY
+            $hasModule = Get-Module -ListAvailable -Name 'Microsoft.PowerShell.TextUtility'
+
+            # EXECUTE LOCALLY
+            if ($hasModule) { Invoke-Command -ScriptBlock { query user | ConvertFrom-TextTable } }
+            else { Invoke-Command -ScriptBlock { query user } }
         }
     }
-    else { query user }
 }
