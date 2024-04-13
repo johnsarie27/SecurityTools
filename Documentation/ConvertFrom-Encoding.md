@@ -1,4 +1,4 @@
-# Get-Decoded
+# ConvertFrom-Encoding
 
 ## SYNOPSIS
 Decode string from Base64 or URL encoding
@@ -6,7 +6,7 @@ Decode string from Base64 or URL encoding
 ## SYNTAX
 
 ```
-Get-Decoded [-String] <String> [[-Encoding] <String>] [<CommonParameters>]
+ConvertFrom-Encoding [-String] <String> [[-Encoding] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -16,7 +16,7 @@ Decode string from Base64 or URL encoding
 
 ### EXAMPLE 1
 ```
-Get-Decoded -String $encodedString
+ConvertFrom-Encoding -String $encodedString
 Decode $encodedString from Base64
 ```
 
@@ -62,7 +62,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.String.
 ## NOTES
-Name: Get-Decoded
+Name: ConvertFrom-Encoding
 Author: Justin Johns
 Version: 0.1.1 | Last Edit: 2022-01-11 \[0.1.1\]
 - Changed class used to perform URL decoding

@@ -1,4 +1,4 @@
-# Get-Encoded
+# ConvertTo-Encoding
 
 ## SYNOPSIS
 Encode string to Base64 or URL encoding
@@ -6,7 +6,7 @@ Encode string to Base64 or URL encoding
 ## SYNTAX
 
 ```
-Get-Encoded [-String] <String> [[-Encoding] <String>] [<CommonParameters>]
+ConvertTo-Encoding [-String] <String> [[-Encoding] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -16,7 +16,7 @@ Encode string to Base64 or URL encoding
 
 ### EXAMPLE 1
 ```
-Get-Encoded -String 'https://google.com/' -Encoding URL
+ConvertTo-Encoding -String 'https://google.com/' -Encoding URL
 URL encode 'https://google.com/'
 ```
 
@@ -62,7 +62,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.String.
 ## NOTES
-Name: Get-Encoded
+Name: ConvertTo-Encoding
 Author: Justin Johns
 Version: 0.1.1 | Last Edit: 2022-01-11 \[0.1.1\]
 - Changed class used to perform URL encoding

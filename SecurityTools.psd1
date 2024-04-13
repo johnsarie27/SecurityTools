@@ -9,7 +9,7 @@
     RootModule        = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.9.11'
+    ModuleVersion     = '0.9.12'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -82,12 +82,14 @@
     FunctionsToExport = @(
         'Compare-List'
         'Compress-URL'
+        'ConvertFrom-Encoding'
         'Convert-Epoch'
         'Convert-Hexadecimal'
         'Convert-SecureKey'
         'Convert-TimeZone'
         'ConvertFrom-GZipString'
         'ConvertFrom-IISLog'
+        'ConvertTo-Encoding'
         'ConvertTo-FlatObject'
         'ConvertTo-Hex'
         'ConvertTo-MarkdownTable'
@@ -108,10 +110,8 @@
         'Get-AlternateDataStream'
         'Get-CountryCode'
         'Get-CVSSv3BaseScore'
-        'Get-Decoded'
         'Get-DirectoryReport'
         'Get-DomainRegistration'
-        'Get-Encoded'
         'Get-EPSS'
         'Get-FileHeader'
         'Get-FileInfo'
