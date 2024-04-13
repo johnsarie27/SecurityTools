@@ -27,7 +27,7 @@ Hostname or IP address of target system to find users.
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Hostname, Host, Computer, CN
+Aliases: CN
 
 Required: False
 Position: 1
