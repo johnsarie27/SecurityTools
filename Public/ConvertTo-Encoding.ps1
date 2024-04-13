@@ -1,4 +1,4 @@
-function Get-Encoded {
+function ConvertTo-Encoding {
     <#
     .SYNOPSIS
         Encode string to Base64 or URL encoding
@@ -13,10 +13,10 @@ function Get-Encoded {
     .OUTPUTS
         System.String.
     .EXAMPLE
-        PS C:\> Get-Encoded -String 'https://google.com/' -Encoding URL
+        PS C:\> ConvertTo-Encoding -String 'https://google.com/' -Encoding URL
         URL encode 'https://google.com/'
     .NOTES
-        Name: Get-Encoded
+        Name: ConvertTo-Encoding
         Author: Justin Johns
         Version: 0.1.1 | Last Edit: 2022-01-11 [0.1.1]
         - Changed class used to perform URL encoding
@@ -26,22 +26,24 @@ function Get-Encoded {
     [CmdletBinding()]
     [OutputType('System.String')]
     Param(
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Plain text string')]
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline, HelpMessage = 'Plain text string')]
         [ValidateNotNullOrEmpty()]
         [System.String] $String,
 
-        [Parameter(Position = 1, HelpMessage = 'Encoding')]
+        [Parameter(Mandatory = $false, Position = 1, HelpMessage = 'Encoding')]
         [ValidateSet('Base64', 'URL')]
         [System.String] $Encoding = 'Base64'
     )
     Process {
-        if ($Encoding -EQ 'Base64') {
-            $bytes = [System.Text.Encoding]::UTF8.GetBytes($String)
-            [System.Convert]::ToBase64String($bytes)
-        }
-        if ($Encoding -EQ 'URL') {
-            #[System.Web.HttpUtility]::UrlEncode($String)
-            [System.Uri]::EscapeDataString($String)
+        switch ($Encoding) {
+            'Base64' {
+                $bytes = [System.Text.Encoding]::UTF8.GetBytes($String)
+                [System.Convert]::ToBase64String($bytes)
+            }
+            'URL' {
+                #[System.Web.HttpUtility]::UrlEncode($String)
+                [System.Uri]::EscapeDataString($String)
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-function Get-Decoded {
+function ConvertFrom-Encoding {
     <#
     .SYNOPSIS
         Decode string from Base64 or URL encoding
@@ -13,10 +13,10 @@ function Get-Decoded {
     .OUTPUTS
         System.String.
     .EXAMPLE
-        PS C:\> Get-Decoded -String $encodedString
+        PS C:\> ConvConvertFrom-Encoding -String $encodedString
         Decode $encodedString from Base64
     .NOTES
-        Name: Get-Decoded
+        Name: ConvConvertFrom-Encoding
         Author: Justin Johns
         Version: 0.1.1 | Last Edit: 2022-01-11 [0.1.1]
         - Changed class used to perform URL decoding
@@ -35,13 +35,15 @@ function Get-Decoded {
         [System.String] $Encoding = 'Base64'
     )
     Process {
-        if ($Encoding -EQ 'Base64') {
-            $bytes = [System.Convert]::FromBase64String($String)
-            [System.Text.Encoding]::UTF8.GetString($bytes)
-        }
-        if ($Encoding -EQ 'URL') {
-            #[System.Web.HttpUtility]::UrlDecode($String)
-            [System.Uri]::UnescapeDataString($String)
+        switch ($Encoding) {
+            'Base64' {
+                $bytes = [System.Convert]::FromBase64String($String)
+                [System.Text.Encoding]::UTF8.GetString($bytes)
+            }
+            'URL' {
+                #[System.Web.HttpUtility]::UrlDecode($String)
+                [System.Uri]::UnescapeDataString($String)
+            }
         }
     }
 }
