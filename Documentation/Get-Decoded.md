@@ -1,4 +1,4 @@
-# ConvConvertFrom-Encoding
+# ConvertFrom-Encoding
 
 ## SYNOPSIS
 
@@ -7,7 +7,7 @@ Decode string from Base64 or URL encoding
 ## SYNTAX
 
 ```
-ConvConvertFrom-Encoding [-String] <String> [[-Encoding] <String>] [<CommonParameters>]
+ConvertFrom-Encoding [-String] <String> [[-Encoding] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -19,7 +19,7 @@ Decode string from Base64 or URL encoding
 ### EXAMPLE 1
 
 ```
-ConvConvertFrom-Encoding -String $encodedString
+ConvertFrom-Encoding -String $encodedString
 Decode $encodedString from Base64
 ```
 
@@ -71,7 +71,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 
-Name: ConvConvertFrom-Encoding
+Name: ConvertFrom-Encoding
 Author: Justin Johns
 Version: 0.1.1 | Last Edit: 2022-01-11 \[0.1.1\]
 

@@ -13,10 +13,10 @@ function ConvertFrom-Encoding {
     .OUTPUTS
         System.String.
     .EXAMPLE
-        PS C:\> ConvConvertFrom-Encoding -String $encodedString
+        PS C:\> ConvertFrom-Encoding -String $encodedString
         Decode $encodedString from Base64
     .NOTES
-        Name: ConvConvertFrom-Encoding
+        Name: ConvertFrom-Encoding
         Author: Justin Johns
         Version: 0.1.1 | Last Edit: 2022-01-11 [0.1.1]
         - Changed class used to perform URL decoding
