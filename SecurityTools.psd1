@@ -82,11 +82,11 @@
     FunctionsToExport = @(
         'Compare-List'
         'Compress-URL'
-        'ConvertFrom-Encoding'
         'Convert-Epoch'
         'Convert-Hexadecimal'
         'Convert-SecureKey'
         'Convert-TimeZone'
+        'ConvertFrom-Encoding'
         'ConvertFrom-GZipString'
         'ConvertFrom-IISLog'
         'ConvertTo-Base64String'
