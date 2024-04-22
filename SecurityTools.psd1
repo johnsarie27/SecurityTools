@@ -6,31 +6,31 @@
 
 @{
     # Script module or binary module file associated with this manifest.
-    RootModule        = 'SecurityTools.psm1'
+    RootModule           = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.9.14'
+    ModuleVersion        = '0.9.14'
 
     # Supported PSEditions
-    # CompatiblePSEditions = @()
+    CompatiblePSEditions = @('Core', 'Desktop')
 
     # ID used to uniquely identify this module
-    GUID              = '46425f03-e6da-4deb-957c-c2dba2b2b777'
+    GUID                 = '46425f03-e6da-4deb-957c-c2dba2b2b777'
 
     # Author of this module
-    Author            = 'Justin Johns'
+    Author               = 'Justin Johns'
 
     # Company or vendor of this module
     # CompanyName = 'Unknown'
 
     # Copyright statement for this module
-    Copyright         = '(c) 2018 Justin Johns. All rights reserved.'
+    Copyright            = '(c) 2018 Justin Johns. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = 'Functions used in reporting and management of security devices and resources.'
+    Description          = 'Functions used in reporting and management of security devices and resources.'
 
     # Minimum version of the Windows PowerShell engine required by this module
-    PowerShellVersion = '5.1'
+    PowerShellVersion    = '5.1'
 
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''
@@ -48,7 +48,7 @@
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules   = @(
+    RequiredModules      = @(
         'ImportExcel'
         #'SqlServer'
         #'ActiveDirectory' # FOR Get-ADUserStatus
@@ -65,7 +65,7 @@
     # ScriptsToProcess = @()
 
     # Type files (.ps1xml) to be loaded when importing this module
-    TypesToProcess    = @(
+    TypesToProcess       = @(
         './Private/ADUser.types.ps1xml'
         './Private/CimInstance.types.ps1xml'
         './Private/Process.types.ps1xml'
@@ -79,7 +79,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = @(
+    FunctionsToExport    = @(
         'Compare-List'
         'Compress-URL'
         'Convert-Epoch'
@@ -150,17 +150,17 @@
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-    CmdletsToExport   = @()
+    CmdletsToExport      = @()
 
     # Variables to export from this module
-    VariablesToExport = @(
-        'EventTable'
-        'InfoModel'
+    VariablesToExport    = @(
+        #'EventTable'
+        #'InfoModel'
     )
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     # ITEMS MUST BE LISTED HERE IN THE PSD1 FILE AS WELL AS THE PSM1 FILE TO SUCCESSFULLY EXPORT THEM
-    AliasesToExport   = @(
+    AliasesToExport      = @(
         'Compare-Lists'
         'Get-ActiveGWUser'
         'Get-DirItemAges'
@@ -179,14 +179,14 @@
     # FileList = @()
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
-    PrivateData       = @{
+    PrivateData          = @{
 
         PSData = @{
             # Tags applied to this module. These help with module discovery in online galleries.
-            # Tags = @()
+            Tags       = @('Security', 'Tools')
 
             # A URL to the license for this module.
-            # LicenseUri = ''
+            LicenseUri = 'https://github.com/johnsarie27/SecurityTools/blob/master/LICENSE'
 
             # A URL to the main website for this project.
             ProjectUri = 'https://github.com/johnsarie27/SecurityTools'
