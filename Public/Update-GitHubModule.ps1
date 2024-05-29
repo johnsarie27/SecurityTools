@@ -25,7 +25,10 @@ function Update-GitHubModule {
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Module name')]
         [ValidateScript({ $null -NE (Get-Module -ListAvailable -Name $_) })]
-        [System.String] $Name
+        [System.String] $Name,
+
+        [Parameter(Mandatory = $false, position = 1, HelpMessage = 'Replace current version')]
+        [System.Management.Automation.SwitchParameter] $Replace
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
@@ -35,7 +38,10 @@ function Update-GitHubModule {
     }
     Process {
         # GET MODULE: MODULE PRE-EXISTENCE VALIDATED IN PARAMETER ARGUMENT
-        $module = Get-Module -ListAvailable -Name $Name
+        $getModule = Get-Module -ListAvailable -Name $Name
+
+        # IF MULTIPLE VERSIONS, USE LATEST
+        $module = ($getModule | Sort-Object Version -Descending)[0]
 
         # VALIDATE PROJECT URI PROPERTY
         if ($module.ProjectUri.AbsoluteUri) {
@@ -59,40 +65,49 @@ function Update-GitHubModule {
         if ($module.Version -GE $releaseVer) {
             # OUTPUT RESPONSE
             Write-Verbose -Message ('Installed module version: [{0}]' -f $module.Version.ToString())
-            Write-Verbose -Message ('Current release package version: [{0}]' -f $releaseInfo.tag_name.TrimStart('v'))
+            Write-Verbose -Message ('Current release package version: [{0}]' -f $releaseVer.ToString())
             Write-Output -InputObject ('Installed module version is same or greater than current release')
         }
         else {
-            # WRITE OUTPUT
-            Write-Output -InputObject ('Installed version "{0}" will be replaced by current version "{1}"' -f $module.Version.ToString(), $releaseVer.ToString())
 
-            # SHOULD PROCESS
-            if ($PSCmdlet.ShouldProcess($module.Name, "Overwrite module")) {
-                # REMOVE EXISTING MODULE
-                #Remove-Item -Path $module.ModuleBase -Recurse -Force -Confirm:$false
+            # SET TEMPORARY PATH
+            $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $module.Name)
 
-                # SET TEMPORARY PATH
-                $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $module.Name)
+            # DOWNLOAD MODULE
+            Write-Verbose -Message 'Downloading module package...'
+            Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
 
-                # DOWNLOAD MODULE
-                Write-Verbose -Message 'Downloading module package...'
-                Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
+            # NEW MODULE BASE
+            $newBase = Join-Path -Path (Split-Path -Parent $module.ModuleBase) -ChildPath $releaseVer.ToString()
 
-                # DECOMPRESS MODULE TO MODULE PATH. "-Force" OVERWRITES EXISTING DATA
-                Write-Verbose -Message 'Expanding package archive...'
-                Expand-Archive -Path $tempPath -DestinationPath (Split-Path -Path $module.ModuleBase) -Force
+            if ($Replace) {
+                # WRITE OUTPUT
+                Write-Output -InputObject ('Installed version "{0}" will be replaced by current version "{1}"' -f $module.Version.ToString(), $releaseVer.ToString())
 
-                # UNBLOCK MODULE
-                if ($IsWindows) {
-                    Write-Verbose -Message 'Unblocking files...'
-                    Get-ChildItem -Path $module.ModuleBase -Recurse | Unblock-File
-                }
-
-                # VALIDATE UPDATE
-                if ((Get-Module -ListAvailable -Name $Name).Version -EQ $releaseVer) {
-                    Write-Output -InputObject ('Module successfully updated to version "{0}"' -f $releaseVer)
+                # SHOULD PROCESS
+                if ($PSCmdlet.ShouldProcess($module.Name, "Replace module version")) {
+                    # REMOVE EXISTING MODULE
+                    Remove-Item -Path $module.ModuleBase -Recurse -Force -Confirm:$false
                 }
             }
+
+            # DECOMPRESS MODULE TO MODULE PATH
+            Write-Verbose -Message 'Expanding package archive...'
+            Expand-Archive -Path $tempPath -DestinationPath $newBase
+
+            # UNBLOCK MODULE
+            if ($IsWindows) {
+                Write-Verbose -Message 'Unblocking files...'
+                Get-ChildItem -Path $newBase -Recurse | Unblock-File
+            }
+
+            # VALIDATE UPDATE
+            $getModule = Get-Module -ListAvailable -Name $Name
+            $module = ($getModule | Sort-Object Version -Descending)[0]
+            if ($module.Version -EQ $releaseVer) {
+                Write-Output -InputObject ('Module successfully updated to version "{0}"' -f $releaseVer)
+            }
+
         }
     }
     End {
