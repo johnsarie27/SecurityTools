@@ -20,7 +20,8 @@ function Install-GitHubModule {
     .NOTES
         Name:     Install-GitHubModule
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2024-01-02
+        Version:  0.1.1 | Last Edit: 2024-05-30
+        - 0.1.1 - Update output to use version directories
         - 0.1.0 - Initial version
         Comments:
     #>

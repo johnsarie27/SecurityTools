@@ -16,7 +16,8 @@ function Update-GitHubModule {
     .NOTES
         Name:     Update-GitHubModule
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2024-02-02
+        Version:  0.1.1 | Last Edit: 2024-05-30
+        - 0.1.1 - Add functionality to allow multiple module versions, keeping a 'replace' option
         - 0.1.0 - Initial version
         Comments:
         - This function assumes that currently installed module has the project URI property set correctly
