@@ -12,7 +12,12 @@ function Update-GitHubModule {
         None.
     .EXAMPLE
         PS C:\> Update-GitHubModule -Name 'SecurityTools'
-        Checks published version is newer than installed, downloads, extracts, and unblocks SecurityTools module package from GitHub
+        Checks published version is newer than installed. Then downloads SecurityTools module package from GitHub
+        and extracts & unblocks as a new version.
+
+        PS C:\> Update-GitHubModule -Name 'SecurityTools' -Replace
+        Checks published version is newer than installed. Removes the old version. Then downloads SecurityTools
+        module package from GitHub and extracts & unblocks the new version.
     .NOTES
         Name:     Update-GitHubModule
         Author:   Justin Johns
