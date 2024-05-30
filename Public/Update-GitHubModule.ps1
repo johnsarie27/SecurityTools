@@ -78,7 +78,7 @@ function Update-GitHubModule {
             Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
 
             # NEW MODULE BASE
-            $newBase = Join-Path -Path (Split-Path -Parent $module.ModuleBase) -ChildPath $releaseVer.ToString()
+            $modulePath = Split-Path -Parent $module.ModuleBase
 
             if ($Replace) {
                 # WRITE OUTPUT
@@ -93,12 +93,15 @@ function Update-GitHubModule {
 
             # DECOMPRESS MODULE TO MODULE PATH
             Write-Verbose -Message 'Expanding package archive...'
-            Expand-Archive -Path $tempPath -DestinationPath $newBase
+            Expand-Archive -Path $tempPath -DestinationPath $modulePath
+
+            # RENAME FOLDER TO VERSION NUMBER
+            Rename-Item -Path (Join-Path -Path $modulePath -ChildPath $module.Name) -NewName $releaseVer.ToString()
 
             # UNBLOCK MODULE
             if ($IsWindows) {
                 Write-Verbose -Message 'Unblocking files...'
-                Get-ChildItem -Path $newBase -Recurse | Unblock-File
+                Get-ChildItem -Path (Join-Path -Path $modulePath -ChildPath $releaseVer.ToString()) -Recurse | Unblock-File
             }
 
             # VALIDATE UPDATE
