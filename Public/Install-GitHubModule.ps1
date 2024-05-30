@@ -65,12 +65,16 @@ function Install-GitHubModule {
             Write-Warning -Message ('Module already installed. Please use "Update-GitHubModule" to upgrade module.')
         }
         else {
-            # SET PATHS
-            $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
-
             # GET LATEST RELEASE INFORMATION
             Write-Verbose -Message 'Getting repo release information...'
             $releaseInfo = Invoke-RestMethod -Uri ('https://api.github.com/repos/{0}/{1}/releases/latest' -f $Account, $Repository) -ErrorAction Stop
+
+            # SET LATEST RELEASE VERSION
+            $releaseVer = [System.Version] $releaseInfo.tag_name.TrimStart('v')
+
+            # SET PATHS
+            $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
+            $modulePath = Join-Path -Path $moduleHome -ChildPath $Repository
 
             # DOWNLOAD MODULE
             Write-Verbose -Message 'Downloading module package...'
@@ -78,16 +82,19 @@ function Install-GitHubModule {
 
             # DECOMPRESS MODULE TO MODULE PATH
             Write-Verbose -Message 'Expanding package archive...'
-            Expand-Archive -Path $tempPath -DestinationPath $moduleHome -Force
+            Expand-Archive -Path $tempPath -DestinationPath $modulePath -Force
+
+            # RENAME FOLDER TO VERSION NUMBER
+            Rename-Item -Path (Join-Path -Path $modulePath -ChildPath $Repository) -NewName $releaseVer.ToString()
 
             # UNBLOCK MODULE
             if ($IsWindows) {
                 Write-Verbose -Message 'Unblocking files...'
-                Get-ChildItem -Path (Join-Path -Path $moduleHome -ChildPath $Repository) -Recurse | Unblock-File
+                Get-ChildItem -Path $modulePath -Recurse | Unblock-File
             }
 
             # VALIDATE INSTALL
-            if (Test-Path -Path (Join-Path -Path $moduleHome -ChildPath $Repository) -PathType Container) {
+            if (Test-Path -Path $modulePath -PathType Container) {
                 Write-Output -InputObject 'Module installed successfully'
             }
         }
