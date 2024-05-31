@@ -23,7 +23,7 @@ function Update-GitHubModule {
     .NOTES
         Name:     Update-GitHubModule
         Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2024-05-30
+        Version:  0.1.1 | Last Edit: 2024-05-31
         - 0.1.1 - Add functionality to allow multiple module versions, keeping a 'replace' option
         - 0.1.0 - Initial version
         Comments:
@@ -93,23 +93,42 @@ function Update-GitHubModule {
                 Write-Output -InputObject ('Installed version "{0}" will be replaced by current version "{1}"' -f $module.Version.ToString(), $releaseVer.ToString())
 
                 # SHOULD PROCESS
-                if ($PSCmdlet.ShouldProcess($module.Name, "Replace module version")) {
+                if ($PSCmdlet.ShouldProcess($module.Name, "Install new module version, remove old module version, and trust module")) {
+
+                    # DECOMPRESS MODULE TO MODULE PATH
+                    Write-Verbose -Message 'Expanding package archive...'
+                    Expand-Archive -Path $tempPath -DestinationPath $modulePath
+
+                    # RENAME FOLDER TO VERSION NUMBER
+                    Rename-Item -Path (Join-Path -Path $modulePath -ChildPath $module.Name) -NewName $releaseVer.ToString()
+
                     # REMOVE EXISTING MODULE
                     Remove-Item -Path $module.ModuleBase -Recurse -Force -Confirm:$false
+
+                    # UNBLOCK MODULE
+                    if ($IsWindows -or $IsMacOS) {
+                        Write-Verbose -Message 'Unblocking files...'
+                        Get-ChildItem -Path (Join-Path -Path $modulePath -ChildPath $releaseVer.ToString()) -Recurse | Unblock-File
+                    }
                 }
             }
+            else {
+                # SHOULD PROCESS
+                if ($PSCmdlet.ShouldProcess($module.Name, "Install new module version and trust module")) {
 
-            # DECOMPRESS MODULE TO MODULE PATH
-            Write-Verbose -Message 'Expanding package archive...'
-            Expand-Archive -Path $tempPath -DestinationPath $modulePath
+                    # DECOMPRESS MODULE TO MODULE PATH
+                    Write-Verbose -Message 'Expanding package archive...'
+                    Expand-Archive -Path $tempPath -DestinationPath $modulePath
 
-            # RENAME FOLDER TO VERSION NUMBER
-            Rename-Item -Path (Join-Path -Path $modulePath -ChildPath $module.Name) -NewName $releaseVer.ToString()
+                    # RENAME FOLDER TO VERSION NUMBER
+                    Rename-Item -Path (Join-Path -Path $modulePath -ChildPath $module.Name) -NewName $releaseVer.ToString()
 
-            # UNBLOCK MODULE
-            if ($IsWindows) {
-                Write-Verbose -Message 'Unblocking files...'
-                Get-ChildItem -Path (Join-Path -Path $modulePath -ChildPath $releaseVer.ToString()) -Recurse | Unblock-File
+                    if ($IsWindows -or $IsMacOS) {
+                        # UNBLOCK MODULE
+                        Write-Verbose -Message 'Unblocking files...'
+                        Get-ChildItem -Path (Join-Path -Path $modulePath -ChildPath $releaseVer.ToString()) -Recurse | Unblock-File
+                    }
+                }
             }
 
             # VALIDATE UPDATE
