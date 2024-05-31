@@ -69,6 +69,10 @@ function Install-ModuleFromZip {
             $psData = Import-PowerShellDataFile -Path $psDataFile.FullName
             $moduleName = Split-Path $psDataFile -LeafBase
             $moduleVersion = [System.Version] $psData.ModuleVersion
+            $fullyQualifiedName = @{
+                ModuleName      = $moduleName
+                RequiredVersion = $moduleVersion.ToString()
+            }
 
             # RENAME MODULE FOLDER TO VERSION NUMBER
             Rename-Item -Path (Get-ChildItem $tempPath).FullName -NewName $moduleVersion.ToString()
@@ -100,7 +104,7 @@ function Install-ModuleFromZip {
             # CHECK FOR INPUT VERSION
             if ($getModule.Version -contains $moduleVersion) {
                 # THIS VERSION IS ALREADY INSTALLED
-                Write-Warning -Message ('"{0}" version "{1}" is already installed.' -f $moduleName, $moduleVersion.ToString())
+                Write-Warning -Message ('"{0}" version "{1}" is already installed. No changes have been made.' -f $moduleName, $moduleVersion.ToString())
             }
             elseif ($getModule.Version -notcontains $moduleVersion) {
                 # THIS VERSION IS NOT INSTALLED
@@ -132,19 +136,21 @@ function Install-ModuleFromZip {
                     }
 
                     # VALIDATE MODULE
-                    if (Get-Module -Name $moduleName) {
-                        Write-Output -InputObject 'Module installed successfully'
+                    if (Get-Module -FullyQualifiedName $fullyQualifiedName -ListAvailable) {
+                        Write-Output 'Module installed successfully'
                     }
                 }
                 else {
                     # INSTALL VERSION
-                    Write-Output ('Version "{0}" will be installed. Other versions will not be affected.')
+                    Write-Output ('Version "{0}" will be installed. Other versions will not be affected.' -f $moduleVersion.ToString())
 
                     # SHOULD PROCESS
                     if ($PSCmdlet.ShouldProcess($Path, "Install module from local package and trust module")) {
 
                         # INSTALL MODULE IN MODULE PATH
                         Write-Verbose -Message 'Installing module...'
+                        Write-Verbose -Message $moduleFolder.FullName
+                        Write-Verbose -Message $modulePath
                         Move-Item -Path $moduleFolder.FullName -Destination $modulePath
 
                         # UNBLOCK MODULE
@@ -155,8 +161,8 @@ function Install-ModuleFromZip {
                     }
 
                     # VALIDATE MODULE
-                    if (Get-Module -Name $moduleName) {
-                        Write-Output -InputObject 'Module installed successfully'
+                    if (Get-Module -FullyQualifiedName $fullyQualifiedName -ListAvailable) {
+                        Write-Output 'Module installed successfully'
                     }
                 }
             }
@@ -170,7 +176,9 @@ function Install-ModuleFromZip {
 
                 # INSTALL MODULE IN MODULE PATH
                 Write-Verbose -Message 'Installing module...'
-                Move-Item -Path $moduleFolder.FullName -Destination $modulePath
+                Write-Verbose -Message $moduleFolder.FullName
+                Write-Verbose -Message $modulePath
+                Move-Item -Path $tempPath -Destination $modulePath
 
                 # UNBLOCK MODULE
                 if ($IsWindows -or $IsMacOS) {
@@ -180,8 +188,8 @@ function Install-ModuleFromZip {
             }
 
             # VALIDATE MODULE
-            if (Get-Module -Name $moduleName) {
-                Write-Output -InputObject 'Module installed successfully'
+            if (Get-Module -FullyQualifiedName $fullyQualifiedName -ListAvailable) {
+                Write-Output 'Module installed successfully'
             }
         }
     }
@@ -189,7 +197,7 @@ function Install-ModuleFromZip {
         # REMOVE TEMPORARY ZIP FILE
         if ($tempPath -and (Test-Path -Path $tempPath)) {
             Write-Verbose -Message 'Cleanup: removing package archive...'
-            Remove-Item -Path $tempPath -Force -Confirm:$false -ErrorAction SilentlyContinue
+            Remove-Item -Path $tempPath -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
         }
     }
 }
