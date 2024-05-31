@@ -5,7 +5,9 @@ function Update-GitHubModule {
     .DESCRIPTION
         Downloads, extracts, and unblocks module files from GitHub release
     .PARAMETER Name
-        Mdoule name
+        Module name
+    .PARAMETER Replace
+        Replace current module version
     .INPUTS
         None.
     .OUTPUTS
