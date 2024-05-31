@@ -78,7 +78,7 @@ function Install-GitHubModule {
             $modulePath = Join-Path -Path $moduleHome -ChildPath $Repository
 
             # SHOULD PROCESS
-            if ($PSCmdlet.ShouldProcess($module.Name, "Download module package, install module, and trust module")) {
+            if ($PSCmdlet.ShouldProcess($releaseInfo.assets[0].browser_download_url, "Download module package, install module, and trust module")) {
 
                 # DOWNLOAD MODULE
                 Write-Verbose -Message 'Downloading module package...'
