@@ -25,7 +25,7 @@ function Install-GitHubModule {
         - 0.1.0 - Initial version
         Comments:
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'GitHub account or organization name')]
         [ValidateNotNullOrEmpty()]
@@ -77,27 +77,34 @@ function Install-GitHubModule {
             $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
             $modulePath = Join-Path -Path $moduleHome -ChildPath $Repository
 
-            # DOWNLOAD MODULE
-            Write-Verbose -Message 'Downloading module package...'
-            Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
+            # SHOULD PROCESS
+            if ($PSCmdlet.ShouldProcess($module.Name, "Download module package, install module, and trust module")) {
 
-            # DECOMPRESS MODULE TO MODULE PATH
-            Write-Verbose -Message 'Expanding package archive...'
-            Expand-Archive -Path $tempPath -DestinationPath $modulePath -Force
+                # DOWNLOAD MODULE
+                Write-Verbose -Message 'Downloading module package...'
+                Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
 
-            # RENAME FOLDER TO VERSION NUMBER
-            Rename-Item -Path (Join-Path -Path $modulePath -ChildPath $Repository) -NewName $releaseVer.ToString()
+                # DECOMPRESS MODULE TO MODULE PATH
+                Write-Verbose -Message 'Expanding package archive...'
+                Expand-Archive -Path $tempPath -DestinationPath $modulePath -Force
 
-            # UNBLOCK MODULE
-            if ($IsWindows) {
-                Write-Verbose -Message 'Unblocking files...'
-                Get-ChildItem -Path $modulePath -Recurse | Unblock-File
+                # RENAME FOLDER TO VERSION NUMBER
+                Rename-Item -Path (Join-Path -Path $modulePath -ChildPath $Repository) -NewName $releaseVer.ToString()
+
+                # UNBLOCK MODULE
+                if ($IsWindows -or $IsMacOS) {
+                    Write-Verbose -Message 'Unblocking files...'
+                    Get-ChildItem -Path $modulePath -Recurse | Unblock-File
+                }
             }
 
             # VALIDATE INSTALL
-            if (Test-Path -Path $modulePath -PathType Container) {
+            if (Get-Module -Name $Repository) {
                 Write-Output -InputObject 'Module installed successfully'
             }
+            # if (Test-Path -Path $modulePath -PathType Container) {
+            #     Write-Output -InputObject 'Module installed successfully'
+            # }
         }
     }
     End {
