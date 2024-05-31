@@ -90,11 +90,11 @@ function Install-ModuleFromZip {
 
         if ($getModule) {
             # THE MODULE IS ALREADY INSTALLED
-            Write-Output ('Module "{0}" identified. Installed versions:' -f $moduleName)
+            Write-Verbose -Message ('Module "{0}" identified. Installed versions:' -f $moduleName)
 
             # LIST VERSIONS
             foreach ($m in $getModule) {
-                Write-Output $m.Version.ToString()
+                Write-Verbose -Message $m.Version.ToString()
             }
 
             # CHECK FOR INPUT VERSION
@@ -104,7 +104,7 @@ function Install-ModuleFromZip {
             }
             elseif ($getModule.Version -notcontains $moduleVersion) {
                 # THIS VERSION IS NOT INSTALLED
-                Write-Output ('Version "{0}" is not installed.' -f $moduleVersion.ToString())
+                Write-Verbose -Message ('Version "{0}" is not installed.' -f $moduleVersion.ToString())
 
                 # IF REPLACE SWITCH
                 if ($Replace) {
