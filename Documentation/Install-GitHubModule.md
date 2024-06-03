@@ -6,7 +6,8 @@ Install PowerShell module from GitHub repository
 ## SYNTAX
 
 ```
-Install-GitHubModule [-Account] <String> [-Repository] <String> [[-Scope] <String>] [<CommonParameters>]
+Install-GitHubModule [-Account] <String> [-Repository] <String> [[-Scope] <String>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -67,6 +68,37 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -78,8 +110,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None.
 ## NOTES
 Name:     Install-GitHubModule
-Author:   Justin Johns
-Version:  0.1.0 | Last Edit: 2024-01-02
+Author:   Justin Johns, Phillip Glodowski
+Version:  0.1.1 | Last Edit: 2024-06-03
+- 0.1.1 - Update output to use version directories
 - 0.1.0 - Initial version
 Comments:
 

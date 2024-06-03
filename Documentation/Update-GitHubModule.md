@@ -6,7 +6,7 @@ Updates a module hosted in GitHub
 ## SYNTAX
 
 ```
-Update-GitHubModule [-Name] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Update-GitHubModule [-Name] <String> [-Replace] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -17,13 +17,21 @@ Downloads, extracts, and unblocks module files from GitHub release
 ### EXAMPLE 1
 ```
 Update-GitHubModule -Name 'SecurityTools'
-Checks published version is newer than installed, downloads, extracts, and unblocks SecurityTools module package from GitHub
+Checks published version is newer than installed. Then downloads SecurityTools module package from GitHub
+and extracts & unblocks as a new version.
+```
+
+### EXAMPLE 2
+```
+Update-GitHubModule -Name 'SecurityTools' -Replace
+Checks published version is newer than installed. Removes the old version. Then downloads SecurityTools
+module package from GitHub and extracts & unblocks the new version.
 ```
 
 ## PARAMETERS
 
 ### -Name
-Mdoule name
+Module name
 
 ```yaml
 Type: String
@@ -33,6 +41,21 @@ Aliases:
 Required: True
 Position: 1
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Replace
+Replace current module version
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -79,8 +102,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None.
 ## NOTES
 Name:     Update-GitHubModule
-Author:   Justin Johns
-Version:  0.1.0 | Last Edit: 2024-02-02
+Author:   Justin Johns, Phillip Glodowski
+Version:  0.1.1 | Last Edit: 2024-06-03
+- 0.1.1 - Add functionality to allow multiple module versions, keeping a 'replace' option
 - 0.1.0 - Initial version
 Comments:
 - This function assumes that currently installed module has the project URI property set correctly
