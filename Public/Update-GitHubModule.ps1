@@ -5,18 +5,26 @@ function Update-GitHubModule {
     .DESCRIPTION
         Downloads, extracts, and unblocks module files from GitHub release
     .PARAMETER Name
-        Mdoule name
+        Module name
+    .PARAMETER Replace
+        Replace current module version
     .INPUTS
         None.
     .OUTPUTS
         None.
     .EXAMPLE
         PS C:\> Update-GitHubModule -Name 'SecurityTools'
-        Checks published version is newer than installed, downloads, extracts, and unblocks SecurityTools module package from GitHub
+        Checks published version is newer than installed. Then downloads SecurityTools module package from GitHub
+        and extracts & unblocks as a new version.
+    .EXAMPLE
+        PS C:\> Update-GitHubModule -Name 'SecurityTools' -Replace
+        Checks published version is newer than installed. Removes the old version. Then downloads SecurityTools
+        module package from GitHub and extracts & unblocks the new version.
     .NOTES
         Name:     Update-GitHubModule
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2024-02-02
+        Version:  0.1.1 | Last Edit: 2024-05-31
+        - 0.1.1 - Add functionality to allow multiple module versions, keeping a 'replace' option
         - 0.1.0 - Initial version
         Comments:
         - This function assumes that currently installed module has the project URI property set correctly
@@ -25,7 +33,10 @@ function Update-GitHubModule {
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Module name')]
         [ValidateScript({ $null -NE (Get-Module -ListAvailable -Name $_) })]
-        [System.String] $Name
+        [System.String] $Name,
+
+        [Parameter(Mandatory = $false, position = 1, HelpMessage = 'Replace current version')]
+        [System.Management.Automation.SwitchParameter] $Replace
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
@@ -34,18 +45,20 @@ function Update-GitHubModule {
         $tempDir = if ($IsWindows) { $env:TEMP } elseif ($IsMacOS) { $Env:TMPDIR } else { '/tmp/' }
     }
     Process {
+
         # GET MODULE: MODULE PRE-EXISTENCE VALIDATED IN PARAMETER ARGUMENT
-        $module = Get-Module -ListAvailable -Name $Name
+        # IF MULTIPLE VERSIONS, USE LATEST
+        $module = (Get-Module -ListAvailable -Name $Name | Sort-Object Version -Descending)[0]
 
         # VALIDATE PROJECT URI PROPERTY
         if ($module.ProjectUri.AbsoluteUri) {
             # SET URI
-            Write-Verbose -Message ('Project URI: "{0}"' -f $module.ProjectUri.AbsoluteUri)
+            Write-Verbose -Message ('Project URI: [{0}]' -f $module.ProjectUri.AbsoluteUri)
             $uri = 'https://api.{0}/repos{1}/releases/latest' -f $module.ProjectUri.Host, $module.ProjectUri.LocalPath
-            Write-Verbose -Message ('Release URI: "{0}"' -f $uri)
+            Write-Verbose -Message ('Release URI: [{0}]' -f $uri)
         }
         else {
-            throw ('Module "{0}" does not contain property "ProjectUri"!' -f $module.Name)
+            throw ('Module [{0}] does not contain property "ProjectUri"!' -f $module.Name)
         }
 
         # GET LATEST RELEASE INFORMATION
@@ -59,40 +72,69 @@ function Update-GitHubModule {
         if ($module.Version -GE $releaseVer) {
             # OUTPUT RESPONSE
             Write-Verbose -Message ('Installed module version: [{0}]' -f $module.Version.ToString())
-            Write-Verbose -Message ('Current release package version: [{0}]' -f $releaseInfo.tag_name.TrimStart('v'))
+            Write-Verbose -Message ('Current release package version: [{0}]' -f $releaseVer.ToString())
             Write-Output -InputObject ('Installed module version is same or greater than current release')
         }
         else {
-            # WRITE OUTPUT
-            Write-Output -InputObject ('Installed version "{0}" will be replaced by current version "{1}"' -f $module.Version.ToString(), $releaseVer.ToString())
 
-            # SHOULD PROCESS
-            if ($PSCmdlet.ShouldProcess($module.Name, "Overwrite module")) {
-                # REMOVE EXISTING MODULE
-                #Remove-Item -Path $module.ModuleBase -Recurse -Force -Confirm:$false
+            # SET TEMPORARY PATH
+            $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $module.Name)
 
-                # SET TEMPORARY PATH
-                $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $module.Name)
+            # DOWNLOAD MODULE
+            Write-Verbose -Message 'Downloading module package...'
+            Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
 
-                # DOWNLOAD MODULE
-                Write-Verbose -Message 'Downloading module package...'
-                Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
+            # NEW MODULE BASE
+            $modulePath = Split-Path -Parent $module.ModuleBase
 
-                # DECOMPRESS MODULE TO MODULE PATH. "-Force" OVERWRITES EXISTING DATA
-                Write-Verbose -Message 'Expanding package archive...'
-                Expand-Archive -Path $tempPath -DestinationPath (Split-Path -Path $module.ModuleBase) -Force
+            if ($Replace) {
+                # WRITE OUTPUT
+                Write-Output -InputObject ('Installed version [{0}] will be replaced by latest version [{1}]' -f $module.Version.ToString(), $releaseVer.ToString())
 
-                # UNBLOCK MODULE
-                if ($IsWindows) {
-                    Write-Verbose -Message 'Unblocking files...'
-                    Get-ChildItem -Path $module.ModuleBase -Recurse | Unblock-File
-                }
+                # SHOULD PROCESS
+                if ($PSCmdlet.ShouldProcess($module.Name, "Install new module version, remove old module version, and trust module")) {
 
-                # VALIDATE UPDATE
-                if ((Get-Module -ListAvailable -Name $Name).Version -EQ $releaseVer) {
-                    Write-Output -InputObject ('Module successfully updated to version "{0}"' -f $releaseVer)
+                    # DECOMPRESS MODULE TO MODULE PATH
+                    Write-Verbose -Message 'Expanding package archive...'
+                    Expand-Archive -Path $tempPath -DestinationPath $modulePath
+
+                    # RENAME FOLDER TO VERSION NUMBER
+                    Rename-Item -Path (Join-Path -Path $modulePath -ChildPath $module.Name) -NewName $releaseVer.ToString()
+
+                    # REMOVE EXISTING MODULE
+                    Remove-Item -Path $module.ModuleBase -Recurse -Force -Confirm:$false
+
+                    # UNBLOCK MODULE
+                    if ($IsWindows -or $IsMacOS) {
+                        Write-Verbose -Message 'Unblocking files...'
+                        Get-ChildItem -Path (Join-Path -Path $modulePath -ChildPath $releaseVer.ToString()) -Recurse | Unblock-File
+                    }
                 }
             }
+            else {
+                # SHOULD PROCESS
+                if ($PSCmdlet.ShouldProcess($module.Name, "Install new module version and trust module")) {
+
+                    # DECOMPRESS MODULE TO MODULE PATH
+                    Write-Verbose -Message 'Expanding package archive...'
+                    Expand-Archive -Path $tempPath -DestinationPath $modulePath
+
+                    # RENAME FOLDER TO VERSION NUMBER
+                    Rename-Item -Path (Join-Path -Path $modulePath -ChildPath $module.Name) -NewName $releaseVer.ToString()
+
+                    if ($IsWindows -or $IsMacOS) {
+                        # UNBLOCK MODULE
+                        Write-Verbose -Message 'Unblocking files...'
+                        Get-ChildItem -Path (Join-Path -Path $modulePath -ChildPath $releaseVer.ToString()) -Recurse | Unblock-File
+                    }
+                }
+            }
+
+            # VALIDATE UPDATE
+            if (Get-Module -FullyQualifiedName @{ModuleName = $module.Name; RequiredVersion = $releaseVer } -ListAvailable) {
+                Write-Output -InputObject ('Module successfully updated to version [{0}]' -f $releaseVer)
+            }
+
         }
     }
     End {

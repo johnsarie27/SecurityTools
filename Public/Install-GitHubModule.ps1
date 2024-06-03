@@ -20,11 +20,12 @@ function Install-GitHubModule {
     .NOTES
         Name:     Install-GitHubModule
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2024-01-02
+        Version:  0.1.1 | Last Edit: 2024-05-31
+        - 0.1.1 - Update output to use version directories
         - 0.1.0 - Initial version
         Comments:
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'GitHub account or organization name')]
         [ValidateNotNullOrEmpty()]
@@ -53,7 +54,7 @@ function Install-GitHubModule {
             'AllUsers' { ($env:PSModulePath.Split("$splitChar"))[1] }
         }
 
-        Write-Verbose -Message ('Module home: "{0}"' -f $moduleHome)
+        Write-Verbose -Message ('Module home: [{0}]' -f $moduleHome)
     }
     Process {
         # GET INSTALLED MODULE
@@ -65,29 +66,40 @@ function Install-GitHubModule {
             Write-Warning -Message ('Module already installed. Please use "Update-GitHubModule" to upgrade module.')
         }
         else {
-            # SET PATHS
-            $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
-
             # GET LATEST RELEASE INFORMATION
             Write-Verbose -Message 'Getting repo release information...'
             $releaseInfo = Invoke-RestMethod -Uri ('https://api.github.com/repos/{0}/{1}/releases/latest' -f $Account, $Repository) -ErrorAction Stop
 
-            # DOWNLOAD MODULE
-            Write-Verbose -Message 'Downloading module package...'
-            Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
+            # SET LATEST RELEASE VERSION
+            $releaseVer = [System.Version] $releaseInfo.tag_name.TrimStart('v')
 
-            # DECOMPRESS MODULE TO MODULE PATH
-            Write-Verbose -Message 'Expanding package archive...'
-            Expand-Archive -Path $tempPath -DestinationPath $moduleHome -Force
+            # SET PATHS
+            $tempPath = Join-Path -Path $tempDir -ChildPath ('{0}.zip' -f $Repository)
+            $modulePath = Join-Path -Path $moduleHome -ChildPath $Repository
 
-            # UNBLOCK MODULE
-            if ($IsWindows) {
-                Write-Verbose -Message 'Unblocking files...'
-                Get-ChildItem -Path (Join-Path -Path $moduleHome -ChildPath $Repository) -Recurse | Unblock-File
+            # SHOULD PROCESS
+            if ($PSCmdlet.ShouldProcess($releaseInfo.assets[0].browser_download_url, "Download module package, install module, and trust module")) {
+
+                # DOWNLOAD MODULE
+                Write-Verbose -Message 'Downloading module package...'
+                Invoke-WebRequest -Uri $releaseInfo.assets[0].browser_download_url -OutFile $tempPath
+
+                # DECOMPRESS MODULE TO MODULE PATH
+                Write-Verbose -Message 'Expanding package archive...'
+                Expand-Archive -Path $tempPath -DestinationPath $modulePath -Force
+
+                # RENAME FOLDER TO VERSION NUMBER
+                Rename-Item -Path (Join-Path -Path $modulePath -ChildPath $Repository) -NewName $releaseVer.ToString()
+
+                # UNBLOCK MODULE
+                if ($IsWindows -or $IsMacOS) {
+                    Write-Verbose -Message 'Unblocking files...'
+                    Get-ChildItem -Path $modulePath -Recurse | Unblock-File
+                }
             }
 
             # VALIDATE INSTALL
-            if (Test-Path -Path (Join-Path -Path $moduleHome -ChildPath $Repository) -PathType Container) {
+            if (Get-Module -FullyQualifiedName @{ ModuleName = $Repository; RequiredVersion = $releaseVer } -ListAvailable) {
                 Write-Output -InputObject 'Module installed successfully'
             }
         }
