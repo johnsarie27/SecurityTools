@@ -6,7 +6,7 @@ Install module from GitHub download
 ## SYNTAX
 
 ```
-Install-ModuleFromZip [-Path] <String> [[-Scope] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Install-ModuleFromZip [-Path] <String> [[-Scope] <String>] [-Replace] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -18,6 +18,14 @@ Install module from GitHub download
 ```
 Install-ModuleFromZip -Path .\SecurityTools.zip
 Extracts contents of zip and copies to Windows module directory then removes zip.
+Other versions of the same module are left in place.
+```
+
+### EXAMPLE 2
+```
+Install-ModuleFromZip -Path .\SecurityTools.zip -Replace
+Extracts contents of zip and copies to Windows module directory then removes zip.
+Removes other versions of the same module.
 ```
 
 ## PARAMETERS
@@ -48,6 +56,21 @@ Aliases:
 Required: False
 Position: 2
 Default value: CurrentUser
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Replace
+Replace current module version
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -94,8 +117,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None.
 ## NOTES
 Name:     Install-ModuleFromZip
-Author:   Justin Johns
-Version:  0.1.1 | Last Edit: 2024-01-23
+Author:   Justin Johns, Phillip Glodowski
+Version:  0.1.2 | Last Edit: 2024-06-03
+- 0.1.2 - (2024-06-03) Checks for and allows multiple module versions on the system
 - 0.1.1 - (2024-01-23) Renamed function from Install-ModuleFromPackage, cleanup
 - 0.1.0 - (2019-03-13) Initial version
 Comments: \<Comment(s)\>
