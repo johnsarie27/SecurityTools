@@ -90,8 +90,8 @@ function Install-ModuleFromZip {
             Write-Verbose -Message ('Version: [{0}]' -f $moduleInfo.RequiredVersion.ToString())
         }
         catch {
-            Write-Output 'Error while inspecting input module archive file.'
             Write-Output $_
+            Throw 'Error while inspecting input module archive file.'
         }
 
         # IS MODULE INSTALLED
