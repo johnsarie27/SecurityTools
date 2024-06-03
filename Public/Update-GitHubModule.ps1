@@ -54,12 +54,12 @@ function Update-GitHubModule {
         # VALIDATE PROJECT URI PROPERTY
         if ($module.ProjectUri.AbsoluteUri) {
             # SET URI
-            Write-Verbose -Message ('Project URI: "{0}"' -f $module.ProjectUri.AbsoluteUri)
+            Write-Verbose -Message ('Project URI: [{0}]' -f $module.ProjectUri.AbsoluteUri)
             $uri = 'https://api.{0}/repos{1}/releases/latest' -f $module.ProjectUri.Host, $module.ProjectUri.LocalPath
-            Write-Verbose -Message ('Release URI: "{0}"' -f $uri)
+            Write-Verbose -Message ('Release URI: [{0}]' -f $uri)
         }
         else {
-            throw ('Module "{0}" does not contain property "ProjectUri"!' -f $module.Name)
+            throw ('Module [{0}] does not contain property "ProjectUri"!' -f $module.Name)
         }
 
         # GET LATEST RELEASE INFORMATION
@@ -90,7 +90,7 @@ function Update-GitHubModule {
 
             if ($Replace) {
                 # WRITE OUTPUT
-                Write-Output -InputObject ('Installed version "{0}" will be replaced by current version "{1}"' -f $module.Version.ToString(), $releaseVer.ToString())
+                Write-Output -InputObject ('Installed version [{0}] will be replaced by latest version [{1}]' -f $module.Version.ToString(), $releaseVer.ToString())
 
                 # SHOULD PROCESS
                 if ($PSCmdlet.ShouldProcess($module.Name, "Install new module version, remove old module version, and trust module")) {
@@ -132,10 +132,13 @@ function Update-GitHubModule {
             }
 
             # VALIDATE UPDATE
-            $getModule = Get-Module -ListAvailable -Name $Name
-            $module = ($getModule | Sort-Object Version -Descending)[0]
-            if ($module.Version -EQ $releaseVer) {
-                Write-Output -InputObject ('Module successfully updated to version "{0}"' -f $releaseVer)
+            # $getModule = Get-Module -ListAvailable -Name $Name
+            # $module = ($getModule | Sort-Object Version -Descending)[0]
+            # if ($module.Version -EQ $releaseVer) {
+            #     Write-Output -InputObject ('Module successfully updated to version "{0}"' -f $releaseVer)
+            # }
+            if (Get-Module -FullyQualifiedName @{ModuleName = $module.Name; RequiredVersion = $releaseVer } -ListAvailable) {
+                Write-Output -InputObject ('Module successfully updated to version [{0}]' -f $releaseVer)
             }
 
         }

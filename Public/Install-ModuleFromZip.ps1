@@ -59,7 +59,7 @@ function Install-ModuleFromZip {
             'AllUsers' { ($env:PSModulePath.Split("$splitChar"))[1] }
         }
 
-        Write-Verbose -Message ('Module home: "{0}"' -f $moduleHome)
+        Write-Verbose -Message ('Module home: [{0}]' -f $moduleHome)
 
         # SET TEMP PATH
         $tempPath = Join-Path -Path $tempDir -ChildPath (Split-Path $Path -LeafBase)

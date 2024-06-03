@@ -54,7 +54,7 @@ function Install-GitHubModule {
             'AllUsers' { ($env:PSModulePath.Split("$splitChar"))[1] }
         }
 
-        Write-Verbose -Message ('Module home: "{0}"' -f $moduleHome)
+        Write-Verbose -Message ('Module home: [{0}]' -f $moduleHome)
     }
     Process {
         # GET INSTALLED MODULE
@@ -102,9 +102,6 @@ function Install-GitHubModule {
             if (Get-Module -Name $Repository) {
                 Write-Output -InputObject 'Module installed successfully'
             }
-            # if (Test-Path -Path $modulePath -PathType Container) {
-            #     Write-Output -InputObject 'Module installed successfully'
-            # }
         }
     }
     End {
