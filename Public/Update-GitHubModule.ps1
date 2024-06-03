@@ -45,11 +45,10 @@ function Update-GitHubModule {
         $tempDir = if ($IsWindows) { $env:TEMP } elseif ($IsMacOS) { $Env:TMPDIR } else { '/tmp/' }
     }
     Process {
-        # GET MODULE: MODULE PRE-EXISTENCE VALIDATED IN PARAMETER ARGUMENT
-        $getModule = Get-Module -ListAvailable -Name $Name
 
+        # GET MODULE: MODULE PRE-EXISTENCE VALIDATED IN PARAMETER ARGUMENT
         # IF MULTIPLE VERSIONS, USE LATEST
-        $module = ($getModule | Sort-Object Version -Descending)[0]
+        $module = (Get-Module -ListAvailable -Name $Name | Sort-Object Version -Descending)[0]
 
         # VALIDATE PROJECT URI PROPERTY
         if ($module.ProjectUri.AbsoluteUri) {
@@ -132,11 +131,6 @@ function Update-GitHubModule {
             }
 
             # VALIDATE UPDATE
-            # $getModule = Get-Module -ListAvailable -Name $Name
-            # $module = ($getModule | Sort-Object Version -Descending)[0]
-            # if ($module.Version -EQ $releaseVer) {
-            #     Write-Output -InputObject ('Module successfully updated to version "{0}"' -f $releaseVer)
-            # }
             if (Get-Module -FullyQualifiedName @{ModuleName = $module.Name; RequiredVersion = $releaseVer } -ListAvailable) {
                 Write-Output -InputObject ('Module successfully updated to version [{0}]' -f $releaseVer)
             }
