@@ -18,7 +18,7 @@ function Install-ModuleFromZip {
         PS C:\> Install-ModuleFromZip -Path .\SecurityTools.zip
         Extracts contents of zip and copies to Windows module directory then removes zip.
         Other versions of the same module are left in place.
-
+    .EXAMPLE
         PS C:\> Install-ModuleFromZip -Path .\SecurityTools.zip -Replace
         Extracts contents of zip and copies to Windows module directory then removes zip.
         Removes other versions of the same module.

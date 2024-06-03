@@ -99,7 +99,7 @@ function Install-GitHubModule {
             }
 
             # VALIDATE INSTALL
-            if (Get-Module -Name $Repository) {
+            if (Get-Module -FullyQualifiedName @{ ModuleName = $Repository; RequiredVersion = $releaseVer } -ListAvailable) {
                 Write-Output -InputObject 'Module installed successfully'
             }
         }
