@@ -19,8 +19,8 @@ function Install-GitHubModule {
         Installs SecurityTools module in the CurrentUser scope
     .NOTES
         Name:     Install-GitHubModule
-        Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2024-05-31
+        Author:   Justin Johns, Phillip Glodowski
+        Version:  0.1.1 | Last Edit: 2024-06-03
         - 0.1.1 - Update output to use version directories
         - 0.1.0 - Initial version
         Comments:

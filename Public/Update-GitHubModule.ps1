@@ -22,8 +22,8 @@ function Update-GitHubModule {
         module package from GitHub and extracts & unblocks the new version.
     .NOTES
         Name:     Update-GitHubModule
-        Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2024-05-31
+        Author:   Justin Johns, Phillip Glodowski
+        Version:  0.1.1 | Last Edit: 2024-06-03
         - 0.1.1 - Add functionality to allow multiple module versions, keeping a 'replace' option
         - 0.1.0 - Initial version
         Comments:
