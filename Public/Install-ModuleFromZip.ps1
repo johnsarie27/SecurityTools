@@ -72,7 +72,7 @@ function Install-ModuleFromZip {
             Expand-Archive -Path $Path -DestinationPath $tempPath
 
             # GET MODULE INFO
-            $psDataFile = Get-ChildItem $tempPath -Recurse | Where-Object Name -Like '*.psd1'
+            $psDataFile = Get-ChildItem $tempPath -Recurse -Filter '*.psd1'
             $psData = Import-PowerShellDataFile -Path $psDataFile.FullName
             $moduleInfo = @{
                 ModuleName      = Split-Path $psDataFile -LeafBase
@@ -100,7 +100,7 @@ function Install-ModuleFromZip {
         if ($getModule) {
             # THE MODULE IS ALREADY INSTALLED
             $versionList = $getModule | ForEach-Object { "$($_.Version)" }
-            Write-Verbose -Message ('Module [{0}] identified. Installed version(s): [{1}]' -f $moduleInfo.ModuleName, ($versionList -join ', '))
+            Write-Warning -Message ('Module [{0}] identified. Installed version(s): [{1}]' -f $moduleInfo.ModuleName, ($versionList -join ', '))
 
             # CHECK FOR INPUT VERSION
             if ($getModule.Version -contains $moduleInfo.RequiredVersion) {
