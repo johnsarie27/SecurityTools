@@ -17,10 +17,16 @@ function Install-ModuleFromZip {
     .EXAMPLE
         PS C:\> Install-ModuleFromZip -Path .\SecurityTools.zip
         Extracts contents of zip and copies to Windows module directory then removes zip.
+        Other versions of the same module are left in place.
+
+        PS C:\> Install-ModuleFromZip -Path .\SecurityTools.zip -Replace
+        Extracts contents of zip and copies to Windows module directory then removes zip.
+        Removes other versions of the same module.
     .NOTES
         Name:     Install-ModuleFromZip
         Author:   Justin Johns
         Version:  0.1.1 | Last Edit: 2024-01-23
+        - 0.1.2 - (2024-06-03) Checks for and allows multiple module versions on the system
         - 0.1.1 - (2024-01-23) Renamed function from Install-ModuleFromPackage, cleanup
         - 0.1.0 - (2019-03-13) Initial version
         Comments: <Comment(s)>
@@ -55,6 +61,7 @@ function Install-ModuleFromZip {
 
         Write-Verbose -Message ('Module home: "{0}"' -f $moduleHome)
 
+        # SET TEMP PATH
         $tempPath = Join-Path -Path $tempDir -ChildPath (Split-Path $Path -LeafBase)
     }
     Process {
@@ -67,22 +74,20 @@ function Install-ModuleFromZip {
             # GET MODULE INFO
             $psDataFile = Get-ChildItem $tempPath -Recurse | Where-Object Name -Like '*.psd1'
             $psData = Import-PowerShellDataFile -Path $psDataFile.FullName
-            $moduleName = Split-Path $psDataFile -LeafBase
-            $moduleVersion = [System.Version] $psData.ModuleVersion
-            $fullyQualifiedName = @{
-                ModuleName      = $moduleName
-                RequiredVersion = $moduleVersion.ToString()
+            $moduleInfo = @{
+                ModuleName      = Split-Path $psDataFile -LeafBase
+                RequiredVersion = [System.Version] $psData.ModuleVersion
             }
 
             # RENAME MODULE FOLDER TO VERSION NUMBER
-            Rename-Item -Path (Get-ChildItem $tempPath).FullName -NewName $moduleVersion.ToString()
+            Rename-Item -Path (Get-ChildItem $tempPath).FullName -NewName $moduleInfo.RequiredVersion.ToString()
             $moduleFolder = Get-ChildItem $tempPath
 
             # SET MODULE PATH
-            $modulePath = Join-Path -Path $moduleHome -ChildPath $moduleName
+            $modulePath = Join-Path -Path $moduleHome -ChildPath $moduleInfo.ModuleName
 
-            Write-Verbose -Message ('Module name: "{0}"' -f $moduleName)
-            Write-Verbose -Message ('Version: "{0}"' -f $moduleVersion.ToString())
+            Write-Verbose -Message ('Module name: [{0}]' -f $moduleInfo.ModuleName)
+            Write-Verbose -Message ('Version: [{0}]' -f $moduleInfo.RequiredVersion.ToString())
         }
         catch {
             Write-Output 'Error while inspecting input module archive file.'
@@ -90,30 +95,24 @@ function Install-ModuleFromZip {
         }
 
         # IS MODULE INSTALLED
-        $getModule = Get-Module -ListAvailable -Name $moduleName
+        $getModule = Get-Module -ListAvailable -Name $moduleInfo.ModuleName
 
         if ($getModule) {
             # THE MODULE IS ALREADY INSTALLED
-            Write-Verbose -Message ('Module "{0}" identified. Installed versions:' -f $moduleName)
-
-            # LIST VERSIONS
-            foreach ($m in $getModule) {
-                Write-Verbose -Message $m.Version.ToString()
-            }
+            $versionList = $getModule | ForEach-Object { "$($_.Version)" }
+            Write-Verbose -Message ('Module [{0}] identified. Installed version(s): [{1}]' -f $moduleInfo.ModuleName, ($versionList -join ', '))
 
             # CHECK FOR INPUT VERSION
-            if ($getModule.Version -contains $moduleVersion) {
+            if ($getModule.Version -contains $moduleInfo.RequiredVersion) {
                 # THIS VERSION IS ALREADY INSTALLED
-                Write-Warning -Message ('"{0}" version "{1}" is already installed. No changes have been made.' -f $moduleName, $moduleVersion.ToString())
+                Write-Warning -Message ('Module [{0}] version [{1}] is already installed. No changes have been made.' -f $moduleInfo.ModuleName, $moduleInfo.RequiredVersion.ToString())
             }
-            elseif ($getModule.Version -notcontains $moduleVersion) {
+            elseif ($getModule.Version -notcontains $moduleInfo.RequiredVersion) {
                 # THIS VERSION IS NOT INSTALLED
-                Write-Verbose -Message ('Version "{0}" is not installed.' -f $moduleVersion.ToString())
-
                 # IF REPLACE SWITCH
                 if ($Replace) {
                     # ALL OTHER VERSIONS WILL BE REMOVED
-                    Write-Warning -Message ('"-Replace" switch specified. Version "{0}" will be installed and all other versions removed.' -f $moduleVersion.ToString())
+                    Write-Warning -Message ('"-Replace" switch specified. Version [{0}] will be installed and all other versions removed.' -f $moduleInfo.RequiredVersion.ToString())
 
                     # SHOULD PROCESS
                     if ($PSCmdlet.ShouldProcess($Path, "Install module from local package, remove other versions, and trust module")) {
@@ -136,21 +135,19 @@ function Install-ModuleFromZip {
                     }
 
                     # VALIDATE MODULE
-                    if (Get-Module -FullyQualifiedName $fullyQualifiedName -ListAvailable) {
+                    if (Get-Module -FullyQualifiedName $moduleInfo -ListAvailable) {
                         Write-Output 'Module installed successfully'
                     }
                 }
                 else {
                     # INSTALL VERSION
-                    Write-Output ('Version "{0}" will be installed. Other versions will not be affected.' -f $moduleVersion.ToString())
+                    Write-Output ('Module [{0}] version [{1}] will be installed. Existing versions will not be affected.' -f $moduleInfo.ModuleName, $moduleInfo.RequiredVersion.ToString())
 
                     # SHOULD PROCESS
                     if ($PSCmdlet.ShouldProcess($Path, "Install module from local package and trust module")) {
 
                         # INSTALL MODULE IN MODULE PATH
                         Write-Verbose -Message 'Installing module...'
-                        Write-Verbose -Message $moduleFolder.FullName
-                        Write-Verbose -Message $modulePath
                         Move-Item -Path $moduleFolder.FullName -Destination $modulePath
 
                         # UNBLOCK MODULE
@@ -161,7 +158,7 @@ function Install-ModuleFromZip {
                     }
 
                     # VALIDATE MODULE
-                    if (Get-Module -FullyQualifiedName $fullyQualifiedName -ListAvailable) {
+                    if (Get-Module -FullyQualifiedName $moduleInfo -ListAvailable) {
                         Write-Output 'Module installed successfully'
                     }
                 }
@@ -169,15 +166,13 @@ function Install-ModuleFromZip {
         }
         else {
             # NO VERSION OF THE MODULE IS INSTALLED
-            Write-Output ('Module "{0}" is not installed.' -f $moduleName)
+            Write-Output ('Module [{0}] version [{1}] will be installed.' -f $moduleInfo.ModuleName, $moduleInfo.RequiredVersion.ToString())
 
             # SHOULD PROCESS
             if ($PSCmdlet.ShouldProcess($Path, "Install module from local package and trust module")) {
 
                 # INSTALL MODULE IN MODULE PATH
                 Write-Verbose -Message 'Installing module...'
-                Write-Verbose -Message $moduleFolder.FullName
-                Write-Verbose -Message $modulePath
                 Move-Item -Path $tempPath -Destination $modulePath
 
                 # UNBLOCK MODULE
@@ -188,7 +183,7 @@ function Install-ModuleFromZip {
             }
 
             # VALIDATE MODULE
-            if (Get-Module -FullyQualifiedName $fullyQualifiedName -ListAvailable) {
+            if (Get-Module -FullyQualifiedName $moduleInfo -ListAvailable) {
                 Write-Output 'Module installed successfully'
             }
         }
