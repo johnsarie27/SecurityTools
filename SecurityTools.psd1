@@ -9,7 +9,7 @@
     RootModule           = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '0.9.16'
+    ModuleVersion        = '0.9.17'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -119,6 +119,7 @@
         'Get-Ipinfo'
         'Get-ItemAge'
         'Get-KEVList'
+        'Get-LatestPowerShell'
         'Get-LoggedOnUser'
         'Get-MsiInfo'
         'Get-Object'
