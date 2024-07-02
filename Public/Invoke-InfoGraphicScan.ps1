@@ -11,6 +11,10 @@ function Invoke-InfoGraphicScan {
         Report data JSON line number
     .PARAMETER TitleLine
         Report title line number
+    .PARAMETER ReplaceText
+        Text to replace
+    .PARAMETER EndText
+        End of JSON to remove
     .PARAMETER TempPath
         Temporary directory
     .INPUTS
@@ -40,11 +44,11 @@ function Invoke-InfoGraphicScan {
         [ValidateRange(1, 999)]
         [System.Int32] $TitleLine,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'Text to repalce')]
+        [Parameter(Mandatory = $true, HelpMessage = 'Text to repalce')]
         [ValidateNotNullOrEmpty()]
         [System.String] $ReplaceText,
 
-        [Parameter(Mandatory = $false, HelpMessage = 'End of JSON to remove')]
+        [Parameter(Mandatory = $true, HelpMessage = 'End of JSON to remove')]
         [ValidateSet(';', ',')]
         [System.String] $EndText,
 
