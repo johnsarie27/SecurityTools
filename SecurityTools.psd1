@@ -137,7 +137,6 @@
         'Get-WinInfo'
         'Install-GitHubModule'
         'Install-ModuleFromZip'
-        'Invoke-InfoGraphicScan'
         'Invoke-NetScan'
         'New-RandomString'
         'Out-MeasureResult'
