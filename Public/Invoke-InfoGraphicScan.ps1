@@ -18,27 +18,37 @@ function Invoke-InfoGraphicScan {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Invoke-InfoGraphicScan -Path C:\temp\100.html -Line 71
-        Invoke scan of InfoGraphic and return custom object with hash of static
-        HTML file code and validation status of report data JSON.
+        PS C:\> Invoke-InfoGraphicScan -Path C:\temp\100.html -DataLine 40 -TitleLine 7 -ReplaceText 'reportDataJson: ' -EndText ';'
+        Invoke scan of InfoGraphic and return custom object with hash of static HTML file code and validation status of report data JSON.
+    .EXAMPLE
+        PS C:\> Get-ChildItem -Path C:\temp -File | Invoke-InfoGraphicScan -DataLine 40 -TitleLine 7 -ReplaceText 'reportDataJson: ' -EndText ';'
+        Compare and thumbprint all HTML files in directory and output results.
     .NOTES
         General notes
     #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Path to HTML file')]
+        [Parameter(Mandatory = $true, ValueFromPipeline, HelpMessage = 'Path to HTML file')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.html" })]
         [System.String[]] $Path,
 
-        [Parameter(Mandatory, HelpMessage = 'Report data JSON line number')]
+        [Parameter(Mandatory = $true, HelpMessage = 'Report data JSON line number')]
         [ValidateRange(1, 999)]
         [System.Int32] $DataLine,
 
-        [Parameter(HelpMessage = 'Report data JSON line number')]
+        [Parameter(Mandatory = $true, HelpMessage = 'Report data JSON line number')]
         [ValidateRange(1, 999)]
-        [System.Int32] $TitleLine = 6,
+        [System.Int32] $TitleLine,
 
-        [Parameter(HelpMessage = 'Temporary directory')]
+        [Parameter(Mandatory = $false, HelpMessage = 'Text to repalce')]
+        [ValidateNotNullOrEmpty()]
+        [System.String] $ReplaceText,
+
+        [Parameter(Mandatory = $false, HelpMessage = 'End of JSON to remove')]
+        [ValidateSet(';', ',')]
+        [System.String] $EndText,
+
+        [Parameter(Mandatory = $false, HelpMessage = 'Temporary directory')]
         [ValidateScript({ Test-Path -Path (Split-Path -Path $_) -PathType Container })]
         [System.String] $TempPath = "$env:TEMP\infograph_scan"
     )
@@ -57,8 +67,8 @@ function Invoke-InfoGraphicScan {
 
             # EXTRACT DATA COMPONENT AND FROM ORIGINAL
             $data = $list[($DataLine - 1)]
-            $data = $data.Replace('const reportDataJson = ', '')
-            $data = $data.TrimEnd(';')
+            $data = $data.Replace($ReplaceText, '') # 'const reportDataJson = ', 'reportDataJson: '
+            $data = $data.TrimEnd($EndText) # ';', ','
 
             # REMOVE TITLE LINE
             $list.RemoveAt(($TitleLine - 1))
