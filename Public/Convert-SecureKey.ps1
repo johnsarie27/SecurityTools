@@ -63,7 +63,7 @@ function Convert-SecureKey {
         if ( $PSCmdlet.ParameterSetName -eq '_create' ) {
 
             if ( (Test-Path -Path $DestinationPath -PathType Leaf) -and !$Force ) {
-                Throw 'File already exists. Use "-Force" to overwrite.'
+                Write-Error -Message 'File already exists. Use "-Force" to overwrite.' -ErrorAction Stop
             }
 
             if ( -not $PSBoundParameters.ContainsKey('SecurePassword') ) {

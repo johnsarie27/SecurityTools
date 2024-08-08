@@ -32,14 +32,14 @@ function Find-LANHost {
 
         [Parameter(HelpMessage = 'Clear ARP cache before scanning')]
         [ValidateScript({
-            $IsAdmin = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-            if ($IsAdmin.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-                $True
-            }
-            else {
-                Throw "Must be running an elevated prompt to use ClearARPCache"
-            }
-        })]
+                $IsAdmin = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+                if ($IsAdmin.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+                    $True
+                }
+                else {
+                    Write-Error -Message 'Must be running an elevated prompt to use ClearARPCache' -ErrorAction Stop
+                }
+            })]
         [System.Management.Automation.SwitchParameter] $ClearARPCache
     )
 

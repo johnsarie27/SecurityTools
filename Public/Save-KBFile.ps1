@@ -87,7 +87,7 @@ function Save-KBFile {
     }
     process {
         if ($Name.Count -gt 0 -and $PSBoundParameters.FilePath) {
-            throw "You can only specify one KB when using FilePath"
+            Write-Error -Message 'You may specify only one KB when using FilePath' -ErrorAction Stop
         }
 
         foreach ($kb in $Name) {
