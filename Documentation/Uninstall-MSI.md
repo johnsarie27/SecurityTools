@@ -80,10 +80,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 Name:     Uninstall-MSI
 Author:   Justin Johns
-Version:  0.1.1 | Last Edit: 2023-07-13
-- 0.1.1 - Updated parameter argument validation
-- 0.1.0 - Initial version
-Comments: \<Comment(s)\>
+Version:  0.1.2 | Last Edit: 2024-08-08
+Comments: (see commit history)
 General notes
 
 ## RELATED LINKS
