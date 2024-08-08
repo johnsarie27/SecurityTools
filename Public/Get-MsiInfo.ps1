@@ -31,7 +31,6 @@ function Get-MsiInfo {
         [ValidateSet("ProductCode", "ProductVersion", "ProductName", "Manufacturer", "ProductLanguage", "FullVersion")]
         [System.String] $Property
     )
-
     Process {
         try {
             # READ PROPERTY FROM MSI DATABASE
@@ -53,10 +52,9 @@ function Get-MsiInfo {
             return $value
         }
         catch {
-            Throw $_.Exception.Message
+            $PSCmdlet.ThrowTerminatingError($PSItem)
         }
     }
-
     End {
         # RUN GARBAGE COLLECTION AND RELEASE COMOBJECT
         [System.Runtime.Interopservices.Marshal]::ReleaseComObject($windowsInstaller) | Out-Null

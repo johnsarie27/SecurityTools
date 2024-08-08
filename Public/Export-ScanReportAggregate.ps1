@@ -63,7 +63,9 @@ function Export-ScanReportAggregate {
         foreach ( $param in $requiredParams ) {
             if ( $param -notin $PSBoundParameters.Keys ) { $fail = $true } else { $fail = $false; break }
         }
-        if ( $fail ) { Throw 'Missing scan reports to aggregate. Please provide at least one scan report.' }
+        if ( $fail ) {
+            Write-Error -Message 'Missing scan reports to aggregate. Please provide at least one scan report.' -ErrorAction Stop
+        }
 
         # SET VARS
         $alProperties = @(

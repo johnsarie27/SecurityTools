@@ -75,7 +75,7 @@ function Write-EncryptedFile {
             if ( $fileStream ) { $fileStream.Close() }
             if ( $crypto ) { $crypto.Clear() }
 
-            throw $_
+            $PSCmdlet.ThrowTerminatingError($PSItem)
         }
 
         # Set first line flag
@@ -98,7 +98,7 @@ function Write-EncryptedFile {
             if ( $fileStream ) { $fileStream.Close() }
             if ( $crypto ) { $crypto.Clear() }
 
-            throw $_
+            $PSCmdlet.ThrowTerminatingError($PSItem)
         }
     }
     End {

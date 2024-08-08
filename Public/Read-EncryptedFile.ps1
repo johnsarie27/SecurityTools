@@ -68,16 +68,11 @@ function Read-EncryptedFile {
             $streamReader.ReadToEnd()
         }
         catch {
-            # Clean up
-            if ( $streamReader ) { $streamReader.Close() }
-            if ( $cryptoStream ) { $cryptoStream.Close() }
-            if ( $fileStream ) { $fileStream.Close() }
-            if ( $crypto ) { $crypto.Clear() }
-
-            throw $_
+            # THROW ORIGINAL ERROR
+            $PSCmdlet.ThrowTerminatingError($PSItem)
         }
         finally {
-            # Clean up
+            # CLEAN UP
             if ( $streamReader ) { $streamReader.Close() }
             if ( $cryptoStream ) { $cryptoStream.Close() }
             if ( $fileStream ) { $fileStream.Close() }

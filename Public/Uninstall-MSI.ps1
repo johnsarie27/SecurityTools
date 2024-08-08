@@ -16,10 +16,8 @@ function Uninstall-MSI {
     .NOTES
         Name:     Uninstall-MSI
         Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2023-07-13
-        - 0.1.1 - Updated parameter argument validation
-        - 0.1.0 - Initial version
-        Comments: <Comment(s)>
+        Version:  0.1.2 | Last Edit: 2024-08-08
+        Comments: (see commit history)
         General notes
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
@@ -56,7 +54,7 @@ function Uninstall-MSI {
 
                 # VALIDATE UNINSTALL AND OUTPUT RESULT
                 if ($uninstall.ExitCode -EQ 0) { Write-Output -InputObject 'Uninstall completed successfully' }
-                else { Throw ('Uninstall failed with exit code: "{0}"' -f $uninstall.ExitCode) }
+                else { Write-Error -Message ('Uninstall failed with exit code: "{0}"' -f $uninstall.ExitCode) -ErrorAction Stop }
             }
         }
         else {

@@ -23,9 +23,8 @@ function Update-GitHubModule {
     .NOTES
         Name:     Update-GitHubModule
         Author:   Justin Johns, Phillip Glodowski
-        Version:  0.1.1 | Last Edit: 2024-06-03
-        - 0.1.1 - Add functionality to allow multiple module versions, keeping a 'replace' option
-        - 0.1.0 - Initial version
+        Version:  0.1.2 | Last Edit: 2024-08-08
+        - (see commit history for more details)
         Comments:
         - This function assumes that currently installed module has the project URI property set correctly
     #>
@@ -58,7 +57,7 @@ function Update-GitHubModule {
             Write-Verbose -Message ('Release URI: [{0}]' -f $uri)
         }
         else {
-            throw ('Module [{0}] does not contain property "ProjectUri"!' -f $module.Name)
+            Write-Error -Message ('Module [{0}] does not contain property "ProjectUri"!' -f $module.Name) -ErrorAction Stop
         }
 
         # GET LATEST RELEASE INFORMATION

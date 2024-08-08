@@ -64,7 +64,9 @@ function Export-ScanReportSummary {
         foreach ( $param in $requiredParams ) {
             if ( $param -notin $PSBoundParameters.Keys ) { $fail = $true } else { $fail = $false; break }
         }
-        if ( $fail ) { Throw 'Missing scan reports to summarize. Please provide at least one scan report.' }
+        if ( $fail ) {
+            Write-Error -Message 'Missing scan reports to summarize. Please provide at least one scan report.' -ErrorAction Stop
+        }
 
         # SET DESTINATION PATH
         if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
