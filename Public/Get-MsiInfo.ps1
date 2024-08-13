@@ -45,7 +45,7 @@ function Get-MsiInfo {
             Write-Verbose -Message 'Open and Read property from MSI database'
             $MsiObj = New-Object -ComObject WindowsInstaller.Installer
             $MsiDb = $MsiObj.GetType().InvokeMember('OpenDatabase', 'InvokeMethod', $null, $MsiObj, @($MsiPath.FullName, 0))
-            $View = $MsiDb.GetType().InvokeMember('OpenView', 'InvokeMethod', $null, $MsiDb, ("SELECT * FROM Property"))
+            $View = $MsiDb.GetType().InvokeMember('OpenView', 'InvokeMethod', $null, $MsiDb, ('SELECT * FROM Property'))
             $View.GetType().InvokeMember('Execute', 'InvokeMethod', $null, $View, $null)
             While ($Record = $View.GetType().InvokeMember('Fetch', 'InvokeMethod', $null, $View, $null)) {
                 $Name = $Record.GetType().InvokeMember('StringData', 'GetProperty', $null, $Record, 1)
