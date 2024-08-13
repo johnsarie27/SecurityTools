@@ -6,18 +6,18 @@ Get MSI information
 ## SYNTAX
 
 ```
-Get-MsiInfo [-Path] <FileInfo> [-Property] <String> [<CommonParameters>]
+Get-MsiInfo [-Path] <FileInfo> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get specific MSI property information
+Get information from MSI file
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-MsiInfo -Path "C:\myMsi.msi" -Property ProductCode
-Returns the product code for myMsi.msi
+Get-MsiInfo -Path "C:\myMsi.msi"
+Returns all available product info for myMsi.msi
 ```
 
 ## PARAMETERS
@@ -33,22 +33,7 @@ Aliases:
 Required: True
 Position: 1
 Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Property
-Desired property to obtain from MSI Database
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
@@ -60,10 +45,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None.
 ## OUTPUTS
 
-### None.
+### System.Object.
 ## NOTES
 General notes
 This function was originally written by Nickolaj Andersen (see link below)
 https://www.scconfigmgr.com/2014/08/22/how-to-get-msi-file-information-with-powershell/
+https://pscode.dev/get-msifileinfo
 
 ## RELATED LINKS
