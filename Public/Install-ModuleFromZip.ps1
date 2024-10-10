@@ -72,7 +72,7 @@ function Install-ModuleFromZip {
             $psDataFile = Get-ChildItem $tempPath -Recurse -Filter '*.psd1'
             $psData = Import-PowerShellDataFile -Path $psDataFile.FullName
             $moduleInfo = @{
-                ModuleName      = ([System.IO.Path]::GetFileNameWithoutExtension($psDataFile))
+                ModuleName      = [System.IO.Path]::GetFileNameWithoutExtension($psDataFile)
                 RequiredVersion = [System.Version] $psData.ModuleVersion
             }
 
