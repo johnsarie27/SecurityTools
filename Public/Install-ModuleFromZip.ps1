@@ -25,7 +25,7 @@ function Install-ModuleFromZip {
     .NOTES
         Name:     Install-ModuleFromZip
         Author:   Justin Johns, Phillip Glodowski
-        Version:  0.1.4 | Last Edit: 2024-10-10
+        Version:  0.1.5 | Last Edit: 2024-10-10
         Comments: (see commit history)
         The zip should contain the module folder with the appropriate items inside.
     #>
@@ -45,10 +45,10 @@ function Install-ModuleFromZip {
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
-        # SET PLATFORM VARIABLES
-        if ($IsWindows) { $tempDir = $env:TEMP; $splitChar = ';' }
+        # SET PLATFORM VARIABLES. THIS SHOULD WORK ON WINDOWS POWERSHELL 5.1 AND CORE
         if ($IsLinux) { $tempDir = '/tmp/'; $splitChar = ':' }
-        if ($IsMacOS) { $tempDir = $Env:TMPDIR; $splitChar = ':' }
+        elseif ($IsMacOS) { $tempDir = $Env:TMPDIR; $splitChar = ':' }
+        else { $tempDir = $env:TEMP; $splitChar = ';' }
 
         # SET DEFAULT MODULE HOME PATH
         $moduleHome = switch ($Scope) {
@@ -125,7 +125,7 @@ function Install-ModuleFromZip {
                         Move-Item -Path $moduleFolder.FullName -Destination $modulePath
 
                         # UNBLOCK MODULE
-                        if ($IsWindows -or $IsMacOS) {
+                        if (-Not $IsLinux) {
                             Write-Verbose -Message 'Unblocking files...'
                             Get-ChildItem -Path $modulePath -Recurse | Unblock-File
                         }
@@ -148,7 +148,7 @@ function Install-ModuleFromZip {
                         Move-Item -Path $moduleFolder.FullName -Destination $modulePath
 
                         # UNBLOCK MODULE
-                        if ($IsWindows -or $IsMacOS) {
+                        if (-Not $IsLinux) {
                             Write-Verbose -Message 'Unblocking files...'
                             Get-ChildItem -Path $modulePath -Recurse | Unblock-File
                         }
@@ -173,7 +173,7 @@ function Install-ModuleFromZip {
                 Move-Item -Path $tempPath -Destination $modulePath
 
                 # UNBLOCK MODULE
-                if ($IsWindows -or $IsMacOS) {
+                if (-Not $IsLinux) {
                     Write-Verbose -Message 'Unblocking files...'
                     Get-ChildItem -Path $modulePath -Recurse | Unblock-File
                 }
