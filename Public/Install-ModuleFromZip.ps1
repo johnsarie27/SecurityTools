@@ -25,7 +25,7 @@ function Install-ModuleFromZip {
     .NOTES
         Name:     Install-ModuleFromZip
         Author:   Justin Johns, Phillip Glodowski
-        Version:  0.1.3 | Last Edit: 2024-08-08
+        Version:  0.1.4 | Last Edit: 2024-10-10
         Comments: (see commit history)
         The zip should contain the module folder with the appropriate items inside.
     #>
@@ -59,7 +59,7 @@ function Install-ModuleFromZip {
         Write-Verbose -Message ('Module home: [{0}]' -f $moduleHome)
 
         # SET TEMP PATH
-        $tempPath = Join-Path -Path $tempDir -ChildPath (Split-Path $Path -LeafBase)
+        $tempPath = Join-Path -Path $tempDir -ChildPath ([System.IO.Path]::GetFileNameWithoutExtension($Path))
     }
     Process {
 
@@ -72,7 +72,7 @@ function Install-ModuleFromZip {
             $psDataFile = Get-ChildItem $tempPath -Recurse -Filter '*.psd1'
             $psData = Import-PowerShellDataFile -Path $psDataFile.FullName
             $moduleInfo = @{
-                ModuleName      = Split-Path $psDataFile -LeafBase
+                ModuleName      = ([System.IO.Path]::GetFileNameWithoutExtension($psDataFile))
                 RequiredVersion = [System.Version] $psData.ModuleVersion
             }
 
