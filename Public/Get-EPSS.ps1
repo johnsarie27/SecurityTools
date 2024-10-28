@@ -17,9 +17,10 @@ function Get-EPSS {
         Name:     Get-EPSS
         Author:   Justin Johns
         Version:  0.1.0 | Last Edit: 2023-12-15
-        - 0.1.0 - Initial version
-        Comments: <Comment(s)>
-        General notes
+        - (see commit history)
+        Comments:
+        https://www.first.org/epss
+        https://www.first.org/epss/api
     #>
     [CmdletBinding()]
     Param(
