@@ -118,7 +118,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 Name:     Install-ModuleFromZip
 Author:   Justin Johns, Phillip Glodowski
-Version:  0.1.4 | Last Edit: 2024-10-10
+Version:  0.1.5 | Last Edit: 2024-10-10
 Comments: (see commit history)
 The zip should contain the module folder with the appropriate items inside.
 

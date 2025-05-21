@@ -20,6 +20,6 @@
     PlatyPS          = '0.14.2'
     psake            = '4.9.0'
     #PSDeploy         = '1.0.5'
-    PSScriptAnalyzer = '1.22.0'
+    PSScriptAnalyzer = '1.23.0'
     ImportExcel      = '7.8.6'
 }
