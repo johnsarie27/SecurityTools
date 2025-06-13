@@ -6,7 +6,7 @@ Expand GZip compressed file
 ## SYNTAX
 
 ```
-Expand-GZip [-Path] <FileInfo> [[-OutputDirectory] <FileInfo>] [<CommonParameters>]
+Expand-GZip [-Path] <FileInfo> [[-OutputDirectory] <DirectoryInfo>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -41,7 +41,7 @@ Accept wildcard characters: False
 Destination directory to extract file to
 
 ```yaml
-Type: FileInfo
+Type: DirectoryInfo
 Parameter Sets: (All)
 Aliases:
 
@@ -64,7 +64,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 Name:     Expand-GZip
 Author:   RiffyRiot
-Version:  0.1.1 | Last Edit: 2025-06-13
+Version:  0.1.2 | Last Edit: 2025-06-13
 - see commit history for version history
 General Notes:
 https://social.technet.microsoft.com/Forums/windowsserver/en-US/5aa53fef-5229-4313-a035-8b3a38ab93f5/unzip-gz-files-using-powershell?forum=winserverpowershell
