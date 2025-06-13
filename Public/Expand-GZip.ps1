@@ -18,7 +18,7 @@ function Expand-GZip {
     .NOTES
         Name:     Expand-GZip
         Author:   RiffyRiot
-        Version:  0.1.1 | Last Edit: 2025-06-13
+        Version:  0.1.2 | Last Edit: 2025-06-13
         - see commit history for version history
         General Notes:
         https://social.technet.microsoft.com/Forums/windowsserver/en-US/5aa53fef-5229-4313-a035-8b3a38ab93f5/unzip-gz-files-using-powershell?forum=winserverpowershell
@@ -31,7 +31,7 @@ function Expand-GZip {
 
         [Parameter(Mandatory = $false, Position = 1, HelpMessage = 'Destination directory to extract file to')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [System.IO.FileInfo] $OutputDirectory
+        [System.IO.DirectoryInfo] $OutputDirectory
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
