@@ -6,8 +6,8 @@ function Expand-GZip {
         Expand GZip compressed file
     .PARAMETER Path
         Path to GZip file
-    .PARAMETER DestinationPath
-        Destination path to extract file to
+    .PARAMETER OutputDirectory
+        Destination directory to extract file to
     .INPUTS
         None.
     .OUTPUTS
@@ -29,19 +29,19 @@ function Expand-GZip {
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include '*.gz' })]
         [System.IO.FileInfo] $Path,
 
-        [Parameter(Mandatory = $false, Position = 1, HelpMessage = 'Destination path to extract file to')]
+        [Parameter(Mandatory = $false, Position = 1, HelpMessage = 'Destination directory to extract file to')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [System.IO.FileInfo] $DestinationPath
+        [System.IO.FileInfo] $OutputDirectory
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
     }
     Process {
         # CHECK FOR DESTINATION PATH
-        if ($PSBoundParameters.ContainsKey('DestinationPath')) {
+        if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
             # SET DESTINATION TO FULL, DECOMPRESSED FILE PATH
-            #$destFullPath = Join-Path -Path $DestinationPath -ChildPath ([System.IO.Path]::GetFileNameWithoutExtension($Path))
-            $destFullPath = Join-Path -Path $DestinationPath -ChildPath (Split-Path -Path $Path -LeafBase)
+            #$destFullPath = Join-Path -Path $OutputDirectory -ChildPath ([System.IO.Path]::GetFileNameWithoutExtension($Path))
+            $destFullPath = Join-Path -Path $OutputDirectory -ChildPath (Split-Path -Path $Path -LeafBase)
         }
         else {
             # IF NO DESTINATION PATH IS PROVIDED, USE THE SAME PATH AS THE GZIP FILE BUT WITHOUT THE .GZ EXTENSION
