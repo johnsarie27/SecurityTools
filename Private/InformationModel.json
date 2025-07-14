@@ -97,7 +97,7 @@
             "Namespace": "root/CIMV2",
             "ClassName": "win32_operatingsystem",
             "Filters": null,
-            "Comments": "Last boot up time",
+            "Comments": "Last boot up time (LastBootUpTime)",
             "PowerShell": ""
         }
     ]
