@@ -9,7 +9,10 @@
     RootModule           = 'SecurityTools.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '0.9.22'
+    ModuleVersion        = '0.9.23'
+    # Major = significant changes, breaking changes or major new features
+    # Minor = new functions or features
+    # Build = bug fixes and minor updates
 
     # Supported PSEditions
     CompatiblePSEditions = @('Core', 'Desktop')
