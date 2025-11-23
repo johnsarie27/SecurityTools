@@ -22,7 +22,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5 # checkout code
+      - uses: actions/checkout@v6 # checkout code
 
       - shell: pwsh # install dependencies
         run: .\Build\build.ps1 -ResolveDependency -TaskList 'Init'
