@@ -232,5 +232,17 @@
         "Log": "Microsoft-Windows-AppLocker/MSI and Script",
         "EventId": 8007,
         "Description": ""
+    },
+    {
+        "Name": "DNS Query Request",
+        "Log": "Microsoft-Windows-DNS-Client/Operational",
+        "EventId": 3006,
+        "Description": "DNS client query request"
+    },
+    {
+        "Name": "DNS Query Response",
+        "Log": "Microsoft-Windows-DNS-Client/Operational",
+        "EventId": 3008,
+        "Description": "DNS client query response"
     }
 ]
