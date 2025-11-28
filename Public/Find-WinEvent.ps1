@@ -71,12 +71,12 @@ function Find-WinEvent {
         # CREATE EVENT LIST
         $eventList = for ($i = 0; $i -LT $EventTable.Count; $i++) {
             [PSCustomObject] @{
-                Id          = ($i + 1)
-                Name        = $EventTable[$i].Name
-                EventId     = $EventTable[$i].EventId
-                Log         = $EventTable[$i].LogName
-                Provider    = $EventTable[$i].ProviderName
-                Description = $EventTable[$i].Description
+                Id           = ($i + 1)
+                Name         = $EventTable[$i].Name
+                EventId      = $EventTable[$i].EventId
+                LogName      = $EventTable[$i].LogName
+                ProviderName = $EventTable[$i].ProviderName
+                Description  = $EventTable[$i].Description
             }
         }
     }
