@@ -74,7 +74,8 @@ function Find-WinEvent {
                 Id          = ($i + 1)
                 Name        = $EventTable[$i].Name
                 EventId     = $EventTable[$i].EventId
-                Log         = $EventTable[$i].Log
+                Log         = $EventTable[$i].LogName
+                Provider    = $EventTable[$i].ProviderName
                 Description = $EventTable[$i].Description
             }
         }
