@@ -42,7 +42,7 @@ jobs:
       - shell: pwsh # compress module
         run: .\Build\build.ps1 -TaskList 'CreateBuildArtifact'
 
-      - uses: actions/upload-artifact@v4 # publish compressed module
+      - uses: actions/upload-artifact@v6 # publish compressed module
         with:
           name: Artifacts
           path: "Artifacts"
