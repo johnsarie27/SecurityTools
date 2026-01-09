@@ -36,9 +36,6 @@ jobs:
       - shell: pwsh # pester
         run: .\Build\build.ps1 -TaskList 'Test'
 
-      - shell: pwsh # build documentation
-        run: .\Build\build.ps1 -TaskList 'UpdateDocumentation'
-
       - shell: pwsh # compress module
         run: .\Build\build.ps1 -TaskList 'CreateBuildArtifact'
 

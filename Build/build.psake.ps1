@@ -27,9 +27,7 @@ Properties {
     #$StagingModulePath = Join-Path -Path $StagingFolder -ChildPath $ProjectName
     $StagingModuleManifestPath = Join-Path -Path $StagingModulePath -ChildPath "$($env:BHProjectName).psd1"
     #$StagingModuleManifestPath = Join-Path -Path $StagingModulePath -ChildPath "$($ProjectName).psd1"
-
-    # Documentation
-    $DocumentationPath = Join-Path -Path $StagingModulePath -ChildPath 'Documentation'
+}
 }
 
 # Define top-level tasks
@@ -62,7 +60,7 @@ Task 'Setup' -depends 'Init' {
 }
 
 # Create a single .psm1 module file containing all functions
-# Copy new module and other supporting files (Documentation / Examples) to Staging folder
+# Copy new module and other supporting files (Examples) to Staging folder
 Task 'CombineFunctionsAndStage' -depends 'Setup' {
     $lines
 
@@ -82,7 +80,6 @@ Task 'CombineFunctionsAndStage' -depends 'Setup' {
     $pathsToCopy = @(
         Join-Path -Path $ProjectRoot -ChildPath 'Private'
         Join-Path -Path $ProjectRoot -ChildPath 'Public'
-        Join-Path -Path $ProjectRoot -ChildPath 'Documentation'
         Join-Path -Path $ProjectRoot -ChildPath 'README.md'
         Join-Path -Path $ProjectRoot -ChildPath ($env:BHProjectName + '.psd1')
         Join-Path -Path $ProjectRoot -ChildPath ($env:BHProjectName + '.psm1')
@@ -102,8 +99,7 @@ Task 'ImportStagingModule' -depends 'Init', 'CombineFunctionsAndStage' {
     if (Get-Module -Name $env:BHProjectName) {
         Remove-Module -Name $env:BHProjectName -Force
     }
-    # Global scope used for UpdateDocumentation (PlatyPS)
-    Import-Module -Name $StagingModulePath -ErrorAction 'Stop' -Force -Global
+    Import-Module -Name $StagingModulePath -ErrorAction 'Stop' -Force
 }
 
 # Run PSScriptAnalyzer against code to ensure quality and best practices are used
@@ -161,48 +157,6 @@ Task 'Test' -depends 'ImportStagingModule' {
     if ($TestResults.FailedCount -gt 0) {
         Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
     }
-}
-
-# Create new Documentation markdown files from comment-based help
-Task 'UpdateDocumentation' -depends 'ImportStagingModule' {
-    $lines
-    Write-Output "Updating Markdown help in Staging folder: [$DocumentationPath]`n"
-
-    # $null = Import-Module -Name $env:BHPSModuleManifest -Global -Force -PassThru -Verbose
-
-    # Cleanup
-    Remove-Item -Path $DocumentationPath -Recurse -Force -ErrorAction 'SilentlyContinue'
-    Start-Sleep -Seconds 5
-    New-Item -Path $DocumentationPath -ItemType 'Directory' | Out-Null
-
-    # Create new Documentation markdown files
-    $platyPSParams = @{
-        Module       = $env:BHProjectName
-        OutputFolder = $DocumentationPath
-        NoMetadata   = $true
-    }
-    New-MarkdownHelp @platyPSParams -ErrorAction 'SilentlyContinue' -Verbose | Out-Null
-
-    # Update index.md
-    Write-Output "Copying index.md...`n"
-    Copy-Item -Path "$env:BHProjectPath\README.md" -Destination "$($DocumentationPath)\index.md" -Force -Verbose | Out-Null
-
-}
-
-# copy documentation markdown files from staging dir to production dir
-Task 'CopyDocumentation' -depends 'UpdateDocumentation' {
-    $lines
-
-    $ProductionDocumentatonPath = Join-Path -Path $ProjectRoot -ChildPath 'Documentation'
-    Write-Output "Copying Markdown help from Staging folder [$DocumentationPath] to Production folder [$ProductionDocumentatonPath]`n"
-
-    # cleanup
-    Remove-Item -Path $ProductionDocumentatonPath -Recurse -Force -ErrorAction 'SilentlyContinue'
-    Start-Sleep -Seconds 5
-    New-Item -Path $ProductionDocumentatonPath -ItemType 'Directory' | Out-Null
-
-    # copy
-    Copy-Item -Path $DocumentationPath/* -Destination $ProductionDocumentatonPath/ -Recurse
 }
 
 # Create a versioned zip file of all staged files

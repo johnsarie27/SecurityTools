@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param (
     [Parameter()]
-    [ValidateSet('Default', 'Init', 'Setup', 'CombineFunctionsAndStage', 'ImportStagingModule', 'Analyze', 'Test', 'UpdateDocumentation', 'CopyDocumentation', 'CreateBuildArtifact', 'Cleanup')]
+    [ValidateSet('Default', 'Init', 'Setup', 'CombineFunctionsAndStage', 'ImportStagingModule', 'Analyze', 'Test', 'CreateBuildArtifact', 'Cleanup')]
     [System.String[]]
     $TaskList = 'Default',
 
@@ -63,13 +63,6 @@ else {
 # Init BuildHelpers
 Set-BuildEnvironment -Force
 
-# temp fix until PlatyPS module is updated to support the ProgressAction common parameter introduced at pwsh 7.4
-$env:BHBuildSystem
-if ($env:BHBuildSystem -ieq 'Unknown') { $PlatyPSPath = '/root/.local/share/powershell/Modules/platyPS/0.14.2/platyPS.psm1' }
-else { $PlatyPSPath = '/home/runner/.local/share/powershell/Modules/platyPS/0.14.2/platyPS.psm1' }
-$FileContent = Get-Content -Path $PlatyPSPath
-$FileContent[2544] = "{0}`r`n{1}" -f "'ProgressAction',", $FileContent[2544]
-$FileContent | Set-Content $PlatyPSPath
 
 # Execute PSake tasts
 $invokePsakeParams = @{

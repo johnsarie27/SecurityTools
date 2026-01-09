@@ -29,7 +29,6 @@ for use by a specific team of engineers, not for broad use.
 
 * [Public](./Public) -  functions that are available when using the module
 * [Private](./Private) - functions/tools that are used internally by the module
-* [Documentation](./Documentation) - help files for each cmdlet
 * [Tests](./Tests) - Pester tests
 * [Build](./Build) - tools to handle automated testing/builds
 
