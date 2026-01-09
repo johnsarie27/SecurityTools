@@ -28,7 +28,6 @@ Properties {
     $StagingModuleManifestPath = Join-Path -Path $StagingModulePath -ChildPath "$($env:BHProjectName).psd1"
     #$StagingModuleManifestPath = Join-Path -Path $StagingModulePath -ChildPath "$($ProjectName).psd1"
 }
-}
 
 # Define top-level tasks
 Task 'Default' -depends 'Test'
