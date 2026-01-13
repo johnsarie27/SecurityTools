@@ -10,7 +10,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5 # checkout code
+      - uses: actions/checkout@v6 # checkout code
 
       - shell: pwsh # install dependencies
         run: .\Build\build.ps1 -ResolveDependency -TaskList 'Init'
@@ -24,7 +24,7 @@ jobs:
       - shell: pwsh # pester
         run: .\Build\build.ps1 -TaskList 'Test'
 
-      - uses: actions/upload-artifact@v4 # publish pester results
+      - uses: actions/upload-artifact@v6 # publish pester results
         with:
           name: Pester Results
           path: "Artifacts/**/Test-*.xml"
