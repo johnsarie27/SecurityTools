@@ -29,12 +29,7 @@ function Find-WinEvent {
     .NOTES
         Name:     Find-WinEvent
         Author:   Justin Johns
-        Version:  0.1.4 | Last Edit: 2023-11-22
-        - 0.1.4 - (2023-11-22) Fixed bug in list parameter
-        - 0.1.3 - (2023-11-03) Updated list of LogName items
-        - 0.1.2 - Updated EventTable variable and supporting code
-        - 0.1.1 - Added StartTime, EndTime, and Data parameters
-        - 0.1.0 - Initial version
+        Version:  0.1.5 | Last Edit: 2025-11-28
         Comments: <Comment(s)>
         General notes
         https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent
@@ -76,11 +71,12 @@ function Find-WinEvent {
         # CREATE EVENT LIST
         $eventList = for ($i = 0; $i -LT $EventTable.Count; $i++) {
             [PSCustomObject] @{
-                Id          = ($i + 1)
-                Name        = $EventTable[$i].Name
-                EventId     = $EventTable[$i].EventId
-                Log         = $EventTable[$i].Log
-                Description = $EventTable[$i].Description
+                Id           = ($i + 1)
+                Name         = $EventTable[$i].Name
+                EventId      = $EventTable[$i].EventId
+                LogName      = $EventTable[$i].LogName
+                ProviderName = $EventTable[$i].ProviderName
+                Description  = $EventTable[$i].Description
             }
         }
     }
@@ -118,13 +114,8 @@ function Find-WinEvent {
                 $filterHash = @{ ID = $e.EventId }
 
                 # ADD LOG NAME OR PROVIDER
-                $logNames = @(
-                    'Application', 'Security', 'Setup', 'System'
-                    'Microsoft-Windows-AppLocker/EXE and DLL'
-                    'Microsoft-Windows-AppLocker/MSI and Script'
-                )
-                if ( $e.Log -in $logNames ) { $filterHash['LogName'] = $e.Log }
-                else { $filterHash['ProviderName'] = $e.Log }
+                if ($e.LogName) { $filterHash['LogName'] = $e.LogName }
+                else { $filterHash['ProviderName'] = $e.ProviderName }
 
                 # ADD START AND END TIMES
                 if ($PSBoundParameters.ContainsKey('StartTime')) { $filterHash['StartTime'] = $StartTime }
