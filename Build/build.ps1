@@ -18,9 +18,9 @@ param (
     $ResolveDependency
 )
 
-Write-Output "`nSTARTED TASKS: $($TaskList -join ',')`n"
+Write-Output -InputObject "`nSTARTED TASKS: $($TaskList -join ',')`n"
 
-Write-Output "`nPowerShell Version Information:"
+Write-Output -InputObject "`nPowerShell Version Information:"
 $PSVersionTable
 
 # Load dependencies
@@ -30,16 +30,16 @@ if ($PSBoundParameters.Keys -contains 'ResolveDependency') {
 
     # Install PSDepend module if it is not already installed
     if (-not (Get-Module -Name 'PSDepend' -ListAvailable)) {
-        Write-Output "`nPSDepend is not yet installed...installing PSDepend now..."
+        Write-Output -InputObject "`nPSDepend is not yet installed...installing PSDepend now..."
         Install-Module -Name 'PSDepend' -Scope 'CurrentUser' -Force
     }
     else {
-        Write-Output "`nPSDepend already installed...skipping."
+        Write-Output -InputObject "`nPSDepend already installed...skipping."
     }
 
     # Install build dependencies
     $psdependencyConfigPath = Join-Path -Path $PSScriptRoot -ChildPath 'depend.psd1'
-    Write-Output "Checking / resolving module dependencies from [$psdependencyConfigPath]..."
+    Write-Output -InputObject "Checking / resolving module dependencies from [$psdependencyConfigPath]..."
     Import-Module -Name 'PSDepend'
     $invokePSDependParams = @{
         Path    = $psdependencyConfigPath
@@ -57,12 +57,14 @@ if ($PSBoundParameters.Keys -contains 'ResolveDependency') {
     $PSBoundParameters.Remove('ResolveDependency')
 }
 else {
-    Write-Output "Skipping dependency check...`n" -ForegroundColor 'Yellow'
+    Write-Output -InputObject "Skipping dependency check...`n"
 }
 
-# Init BuildHelpers
-Set-BuildEnvironment -Force
-
+# Set build environment variables
+$env:BHProjectPath = $PSScriptRoot | Split-Path -Parent
+$manifestFile = Get-ChildItem -Path $env:BHProjectPath -Filter '*.psd1'
+$env:BHProjectName = $manifestFile.BaseName
+$env:BHPSModuleManifest = $manifestFile.FullName
 
 # Execute PSake tasts
 $invokePsakeParams = @{
@@ -71,5 +73,5 @@ $invokePsakeParams = @{
 }
 Invoke-psake @invokePsakeParams @PSBoundParameters
 
-Write-Output "`nFINISHED TASKS: $($TaskList -join ',')"
+Write-Output -InputObject "`nFINISHED TASKS: $($TaskList -join ',')"
 exit ( [int](-not $psake.build_success) )

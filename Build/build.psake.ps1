@@ -92,7 +92,7 @@ Task 'CombineFunctionsAndStage' -depends 'Setup' {
 # Import new module
 Task 'ImportStagingModule' -depends 'Init', 'CombineFunctionsAndStage' {
     $lines
-    Write-Output "Reloading staged module from path: [$StagingModulePath]`n"
+    Write-Output -InputObject "Reloading staged module from path: [$StagingModulePath]`n"
 
     # Reload module
     if (Get-Module -Name $env:BHProjectName) {
@@ -104,7 +104,7 @@ Task 'ImportStagingModule' -depends 'Init', 'CombineFunctionsAndStage' {
 # Run PSScriptAnalyzer against code to ensure quality and best practices are used
 Task 'Analyze' -depends 'ImportStagingModule' {
     $lines
-    Write-Output "Running PSScriptAnalyzer on path: [$StagingModulePath]`n"
+    Write-Output -InputObject "Running PSScriptAnalyzer on path: [$StagingModulePath]`n"
 
     $Results = Invoke-ScriptAnalyzer -Path $StagingModulePath -Recurse -Settings $ScriptAnalyzerSettingsPath -Verbose:$VerbosePreference
     $Results | Select-Object 'RuleName', 'Severity', 'ScriptName', 'Line', 'Message' | Format-List
@@ -180,21 +180,21 @@ Task 'CreateBuildArtifact' -depends 'Init' {
     try {
         $releaseFilename = "$($env:BHProjectName)-v$($manifestVersion.ToString()).zip"
         $releasePath = Join-Path -Path $ArtifactFolder -ChildPath $releaseFilename
-        Write-Output "Creating release artifact [$releasePath] using manifest version [$manifestVersion]" -ForegroundColor 'Yellow'
+        Write-Output -InputObject "Creating release artifact [$releasePath] using manifest version [$manifestVersion]"
         Compress-Archive -Path "$StagingFolder/*" -DestinationPath $releasePath -Force -Verbose -ErrorAction 'Stop'
     }
     catch {
         throw "Could not create release artifact [$releasePath] using manifest version [$manifestVersion]"
     }
 
-    Write-Output "`nFINISHED: Release artifact creation."
+    Write-Output -InputObject "`nFINISHED: Release artifact creation."
 }
 
 # cleanup dirs and files when finished
 Task 'Cleanup' {
     $lines
 
-    Write-Output 'Cleaning leftover/unneeded artifacts'
+    Write-Output -InputObject 'Cleaning leftover/unneeded artifacts'
 
     # cleanup
     Remove-Item -Path $ArtifactFolder -Recurse -Force -ErrorAction 'SilentlyContinue'
