@@ -91,6 +91,6 @@ function Export-SQLVAReport {
 
     End {
         # RETURN PATH TO REPORT FOLDER
-        if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $folder }
+        if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output -InputObject $folder }
     }
 }

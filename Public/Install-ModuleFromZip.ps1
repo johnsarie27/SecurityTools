@@ -133,12 +133,12 @@ function Install-ModuleFromZip {
 
                     # VALIDATE MODULE
                     if (Get-Module -FullyQualifiedName $moduleInfo -ListAvailable) {
-                        Write-Output 'Module installed successfully'
+                        Write-Output -InputObject 'Module installed successfully'
                     }
                 }
                 else {
                     # INSTALL VERSION
-                    Write-Output ('Module [{0}] version [{1}] will be installed. Existing versions will not be affected.' -f $moduleInfo.ModuleName, $moduleInfo.RequiredVersion.ToString())
+                    Write-Output -InputObject ('Module [{0}] version [{1}] will be installed. Existing versions will not be affected.' -f $moduleInfo.ModuleName, $moduleInfo.RequiredVersion.ToString())
 
                     # SHOULD PROCESS
                     if ($PSCmdlet.ShouldProcess($Path, "Install module from local package and trust module")) {
@@ -156,14 +156,14 @@ function Install-ModuleFromZip {
 
                     # VALIDATE MODULE
                     if (Get-Module -FullyQualifiedName $moduleInfo -ListAvailable) {
-                        Write-Output 'Module installed successfully'
+                        Write-Output -InputObject 'Module installed successfully'
                     }
                 }
             }
         }
         else {
             # NO VERSION OF THE MODULE IS INSTALLED
-            Write-Output ('Module [{0}] version [{1}] will be installed.' -f $moduleInfo.ModuleName, $moduleInfo.RequiredVersion.ToString())
+            Write-Output -InputObject ('Module [{0}] version [{1}] will be installed.' -f $moduleInfo.ModuleName, $moduleInfo.RequiredVersion.ToString())
 
             # SHOULD PROCESS
             if ($PSCmdlet.ShouldProcess($Path, "Install module from local package and trust module")) {
@@ -181,7 +181,7 @@ function Install-ModuleFromZip {
 
             # VALIDATE MODULE
             if (Get-Module -FullyQualifiedName $moduleInfo -ListAvailable) {
-                Write-Output 'Module installed successfully'
+                Write-Output -InputObject 'Module installed successfully'
             }
         }
     }

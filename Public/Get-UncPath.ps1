@@ -49,5 +49,5 @@ function Get-UncPath {
         }
         $UncPath
     }
-    else { Write-Output 'Invalid input' }
+    else { Write-Output -InputObject 'Invalid input' }
 }

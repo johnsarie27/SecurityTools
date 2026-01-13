@@ -101,7 +101,7 @@ function Export-SQLVAReportAggregate {
         $Data | Export-Excel @ExcelParams
 
         # RETURN PATH TO REPORT
-        if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output $DestinationPath }
+        if ( $PSBoundParameters.ContainsKey('PassThru') ) { Write-Output -InputObject $DestinationPath }
 
         # REMOVE EXTRACTED FILES
         if ( $ExpandPath ) { Remove-Item -Path $InputPath -Recurse -Force }
