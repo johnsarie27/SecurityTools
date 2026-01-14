@@ -67,5 +67,5 @@ function Find-LANHost {
     $Hosts = $Hosts | Where-Object { $_ -match "dynamic" } | ForEach-Object { ($_.trim() -replace " {1,}", ",") | ConvertFrom-Csv -Header "IP", "MACAddress" }
     $Hosts = $Hosts | Where-Object { $_.IP -in $IP }
 
-    Write-Output $Hosts
+    Write-Output -InputObject $Hosts
 }

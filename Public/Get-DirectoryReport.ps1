@@ -157,14 +157,14 @@ function Get-DirectoryReport {
     End {
         # RETURN RESULTS
         $dir = (Get-Item $Path -Force).FullName
-        Write-Output `n"Directory: $dir"`n
+        Write-Output -InputObject `n"Directory: $dir"`n
         if ( $fileList ) {
-            Write-Output "Files greater than: $SizeInGb GB"
-            Write-Output ( $fileList | Format-Table -AutoSize | Out-String )
+            Write-Output -InputObject "Files greater than: $SizeInGb GB"
+            Write-Output -InputObject ( $fileList | Format-Table -AutoSize | Out-String )
         }
         if ( $folderList ) {
-            Write-Output "Folders greater than: $SizeInGb GB"
-            Write-Output ( $folderList | Format-Table -AutoSize | Out-String )
+            Write-Output -InputObject "Folders greater than: $SizeInGb GB"
+            Write-Output -InputObject ( $folderList | Format-Table -AutoSize | Out-String )
         }
         if ( $warning ) { Write-Warning "One or more directories was not accessible!" }
 
