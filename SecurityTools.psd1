@@ -12,7 +12,7 @@
     # Major = significant changes, breaking changes or major new features
     # Minor = new functions or features
     # Build = bug fixes and minor updates
-    ModuleVersion        = '0.9.25'
+    ModuleVersion        = '0.9.26'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -119,6 +119,7 @@
         'Get-FileHeader'
         'Get-FileInfo'
         'Get-FolderSize'
+        'Get-GreyNoiseIPStatus'
         'Get-Ipinfo'
         'Get-ItemAge'
         'Get-KEVList'
