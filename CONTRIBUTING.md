@@ -67,6 +67,7 @@ Ensure your changes are passing PSScriptAnalyzer and Pester tests.
 ```pwsh
   ./Build/build.ps1 -ResolveDependency -TaskList Test # run pester
   ./Build/build.ps1 -ResolveDependency -TaskList Analyze # run psscriptanalyzer
+  ./Build/build.ps1 -ResolveDependency -TaskList Cleanup # cleanup testing artifacts
 ```
 
 ## Release
