@@ -58,6 +58,54 @@ function Export-ScanReportSummary {
     Begin {
         # CREATE MASTER LIST
         $summaryObjects = [System.Collections.Generic.List[System.Object]]::new()
+        $summaryReport = @()
+
+        # NORMALIZE RISK VALUES TO HIGH, MEDIUM, LOW OR BLANK
+        $normalizeRisk = {
+            param([object]$Value)
+
+            if ($null -eq $Value) { return '' }
+
+            $text = [string]$Value
+            if ([string]::IsNullOrWhiteSpace($text)) { return '' }
+
+            switch -Regex ($text.Trim().ToLowerInvariant()) {
+                '^(none|no risk|informational|info|0)$' { '' ; break }
+                '^(low|1)$' { 'Low' ; break }
+                '^(medium|moderate|2)$' { 'Medium' ; break }
+                '^(high|critical|3|4)$' { 'High' ; break }
+                default { '' }
+            }
+        }
+
+        # MAP CVSS SCORE TO A 3-TIER RISK
+        $riskFromCvss = {
+            param([object]$Score)
+
+            if ($null -eq $Score) { return '' }
+
+            $scoreText = [string]$Score
+            if ([string]::IsNullOrWhiteSpace($scoreText)) { return '' }
+
+            [double]$scoreValue = 0.0
+            $isInvariantParsed = [double]::TryParse(
+                $scoreText,
+                [System.Globalization.NumberStyles]::Float,
+                [System.Globalization.CultureInfo]::InvariantCulture,
+                [ref]$scoreValue
+            )
+
+            if (-not $isInvariantParsed) {
+                $isCurrentParsed = [double]::TryParse($scoreText, [ref]$scoreValue)
+                if (-not $isCurrentParsed) { return '' }
+            }
+
+            if ($scoreValue -ge 7.0) { return 'High' }
+            if ($scoreValue -ge 4.0) { return 'Medium' }
+            if ($scoreValue -gt 0.0) { return 'Low' }
+
+            return ''
+        }
 
         # PROVIDE HELP FOR THE USER WHEN NO SCANS ARE DECLARED
         $requiredParams = @('NessusSystemScan', 'NessusWebScan', 'AlertLogicWebScan', 'DatabaseScan', 'AcunetixScan')
@@ -76,7 +124,7 @@ function Export-ScanReportSummary {
         else {
             # GET LAST MONTH'S REPORT IF EXISTS
             $lastMonth = (Get-Date -Date (Get-Date).AddMonths(-1) -UFormat %b).ToUpper()
-            $summaryReport = Import-Excel -Path $DestinationPath -WorksheetName $lastMonth -ErrorAction SilentlyContinue
+            $summaryReport = @(Import-Excel -Path $DestinationPath -WorksheetName $lastMonth -ErrorAction SilentlyContinue)
         }
     }
 
@@ -100,9 +148,11 @@ function Export-ScanReportSummary {
                 $match = $summaryReport.Where({ $_.Name -eq $object.'Security Check' -and $_.Source -eq 'MSSQL' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                    $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value $match.Notes
                 }
                 else {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+                    $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
                 }
 
                 <# # ADDING THE PROPERTIES BELOW IS SLOWER THAN DEFINING AND SELECTING PROPERTIES
@@ -114,7 +164,8 @@ function Export-ScanReportSummary {
 
             # SET PROPERTY CONVERSION
             $newProps = (
-                'Count', 'TFS', 'Status', 'CVSSv3', 'Risk',
+                'Count', 'TFS', 'Notes', 'Status', 'CVSSv3',
+                @{ Name = 'Risk'; Expression = { $_.Risk } },
                 @{ Name = 'Source'; Expression = { 'MSSQL' } },
                 @{ Name = 'Name'; Expression = { $_.'Security Check' } },
                 @{ Name = 'CVE'; Expression = { $_.ID } }
@@ -138,15 +189,19 @@ function Export-ScanReportSummary {
                 $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'NessusSystem' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                    $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value $match.Notes
                 }
                 else {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+                    $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
                 }
             }
 
             # SET PROPERTY CONVERSION
             $newProps = (
-                'Count', 'TFS', 'Status', 'Name', 'Risk', 'CVE', 'CVSS',
+                'Count', 'TFS', 'Notes', 'Status', 'Name',
+                @{ Name = 'Risk'; Expression = { $_.Risk } },
+                'CVE', 'CVSS',
                 @{ Name = 'Source'; Expression = { 'NessusSystem' } },
                 @{ Name = 'CVSSv3'; Expression = { $_.'CVSS v3.0 Base Score' } }
             )
@@ -169,15 +224,19 @@ function Export-ScanReportSummary {
                 $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'NessusWeb' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                    $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value $match.Notes
                 }
                 else {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+                    $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
                 }
             }
 
             # SET PROPERTY CONVERSION
             $newProps = (
-                'Count', 'TFS', 'Status', 'Name', 'Risk', 'CVE', 'CVSS',
+                'Count', 'TFS', 'Notes', 'Status', 'Name',
+                @{ Name = 'Risk'; Expression = { $_.Risk } },
+                'CVE', 'CVSS',
                 @{ Name = 'Source'; Expression = { 'NessusWeb' } },
                 @{ Name = 'CVSSv3'; Expression = { $_.'CVSS v3.0 Base Score' } }
             )
@@ -213,15 +272,17 @@ function Export-ScanReportSummary {
                 $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'AlertLogic-Web' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                    $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value $match.Notes
                 }
                 else {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+                    $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
                 }
             }
 
             # SET PROPERTY CONVERSION
             $newProps = (
-                'Name', 'Count', 'TFS', 'CVSSv3', 'CVSS', 'CVE',
+                'Name', 'Count', 'TFS', 'Notes', 'CVSSv3', 'CVSS', 'CVE',
                 @{ Name = 'Source'; Expression = { 'AlertLogic-Web' } },
                 @{ Name = 'Status'; Expression = { $_.'Active or inactive' } },
                 @{ Name = 'Risk'; Expression = { $_.'Severity' } }
@@ -245,19 +306,33 @@ function Export-ScanReportSummary {
                 $match = $summaryReport.Where({ $_.Name -eq $object.Name -and $_.Source -eq 'Acunetix' })
                 if ( $match ) {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value $match.TFS
+                    $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value $match.Notes
                 }
                 else {
                     $object | Add-Member -MemberType NoteProperty -Name 'TFS' -Value 0
+                    $object | Add-Member -MemberType NoteProperty -Name 'Notes' -Value ''
                 }
             }
 
             # SET PROPERTY CONVERSION
             $newProps = (
-                'Name', 'Count', 'TFS',
+                'Name', 'Count', 'TFS', 'Notes',
                 @{ Name = 'Source'; Expression = { 'Acunetix' } },
                 @{ Name = 'Status'; Expression = { $_.'IsFalsePositive' } },
                 @{ Name = 'CVE'; Expression = { $_.'CWEList' } },
-                @{ Name = 'Risk'; Expression = { $_.'Severity' } },
+                @{
+                    Name       = 'Risk'
+                    Expression = {
+                        $risk = & $riskFromCvss $_.'CVSS3 Score'
+                        if ([string]::IsNullOrWhiteSpace($risk)) {
+                            $risk = & $riskFromCvss $_.'CVSS Score'
+                        }
+                        if ([string]::IsNullOrWhiteSpace($risk)) {
+                            $risk = $_.'Severity'
+                        }
+                        $risk
+                    }
+                },
                 @{ Name = 'CVSSv3'; Expression = { $_.'CVSS3 Score' } },
                 @{ Name = 'CVSS'; Expression = { $_.'CVSS Score' } }
             )
@@ -303,6 +378,10 @@ function Export-ScanReportSummary {
             'TFS'
             'Notes'
         )
+
+        foreach ( $item in $summaryObjects ) {
+            $item.Risk = & $normalizeRisk $item.Risk
+        }
 
         $summaryObjects | Select-Object -Property $reportProps | Export-Excel @excelParams
     }
