@@ -1,6 +1,5 @@
 # ==============================================================================
 # Filename: SecurityTools.psm1
-# Version:  0.1.3 | Updated: 2024-04-22
 # Author:   Justin Johns
 # ==============================================================================
 
@@ -19,6 +18,10 @@ New-Variable -Name 'InfoModel' -Option ReadOnly -Value (
 )
 
 # EXPORT MEMBERS
-#Export-ModuleMember -Function *
-# THESE ITEMS MUST BE LISTED BOTH IN THE MODULE MANIFEST AND BELOW TO BE MADE AVAILABLE AFTER LOADING THE MODULE
+# Functions are intentionally omitted here. When a module manifest (.psd1) is
+# present, FunctionsToExport in the manifest is the authoritative control over
+# which functions are visible to the caller after Import-Module. Adding
+# -Function * to Export-ModuleMember would be redundant and has no effect when
+# the manifest is present. Variables and aliases are still declared here because
+# they are not controlled by the manifest in the same way.
 Export-ModuleMember -Variable * -Alias *

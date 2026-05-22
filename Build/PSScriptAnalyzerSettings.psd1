@@ -1,7 +1,6 @@
 @{
     ExcludeRules = @(
         'PSAvoidGlobalVars'
-        'PSAvoidUsingConvertToSecureStringWithPlainText'
     )
 
     Severity     = @(

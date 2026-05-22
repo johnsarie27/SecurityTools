@@ -16,7 +16,7 @@ function Uninstall-MSI {
     .NOTES
         Name:     Uninstall-MSI
         Author:   Justin Johns
-        Version:  0.1.2 | Last Edit: 2024-08-08
+        Version:  0.1.3 | Last Edit: 2026-05-21
         Comments: (see commit history)
         General notes
     #>
@@ -28,6 +28,8 @@ function Uninstall-MSI {
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+
+        if (-not $IsWindows) { Write-Error -Message 'Uninstall-MSI requires Windows.' -ErrorAction Stop }
 
         # SET COMMON KEY PATHS
         $uninstallKey = @(

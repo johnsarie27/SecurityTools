@@ -19,7 +19,6 @@ function Get-RSOP {
         Generate a Resultant Set of Policy report for the local system
     .NOTES
         General notes
-        THIS FUNCTION REQUIRES MODULE GroupPolicy
     #>
     [CmdletBinding()]
     Param(
@@ -36,6 +35,9 @@ function Get-RSOP {
         [System.String] $ReportType = 'HTML'
     )
 
+    Begin {
+        Import-Module -Name GroupPolicy -ErrorAction Stop
+    }
     Process {
         if (!$PSBoundParameters.ContainsKey('ReportType')) { $PSBoundParameters.Add('ReportType', $ReportType) }
         Get-GPResultantSetOfPolicy @PSBoundParameters

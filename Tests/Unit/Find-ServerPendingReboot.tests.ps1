@@ -8,11 +8,11 @@ BeforeDiscovery {
 }
 
 Describe -Name "Find-ServerPendingReboot" -Fixture {
-    It -Name "should not throw" -Test {
+    It -Name "should not throw" -Skip:(-not $IsWindows) -Test {
         { Find-ServerPendingReboot } | Should -Not -Throw
     }
 
-    It -Name "should return boolean" -Test {
+    It -Name "should return boolean" -Skip:(-not $IsWindows) -Test {
         { Find-ServerPendingReboot } | Should -Be ($true -or $false)
     }
 }

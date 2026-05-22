@@ -1,3 +1,4 @@
+#Requires -Modules ImportExcel
 function Export-NPMAudit {
     <#
     .SYNOPSIS
