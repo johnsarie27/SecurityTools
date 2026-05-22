@@ -70,6 +70,22 @@ Ensure your changes are passing PSScriptAnalyzer and Pester tests.
   ./Build/build.ps1 -ResolveDependency -TaskList Cleanup # cleanup testing artifacts
 ```
 
+## Pull Requests
+
+Apply one or more labels to your PR at open-time so it is grouped correctly in the auto-generated release notes (configured in [.github/release.yml](.github/release.yml)). Use the label that best describes the user-visible impact:
+
+| Label | Section in release notes |
+| --- | --- |
+| `breaking` / `breaking-change` | Breaking Changes |
+| `enhancement` / `feature` | New Features |
+| `bug` / `fix` | Bug Fixes |
+| `security` | Security |
+| `documentation` / `docs` | Documentation |
+| `ci` / `build` / `dependencies` | CI / Build |
+| _(none / other)_ | Other Changes |
+
+PRs land in the **first** matching category, so order labels by importance (e.g., a `security` + `bug` PR should be labeled with `security` if you want it to appear there). Apply `ignore-for-release` to omit a PR from the notes entirely.
+
 ## Release
 
 This project also includes the necessary tools to automate the release of the module via GitHub Actions. The file [release.yml](.github/workflows/release.yml) handles this task.
