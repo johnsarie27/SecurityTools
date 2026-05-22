@@ -20,7 +20,6 @@ function Get-RSOP {
         Generate a Resultant Set of Policy report for the local system
     .NOTES
         General notes
-        THIS FUNCTION REQUIRES MODULE GroupPolicy
     #>
     [CmdletBinding()]
     Param(

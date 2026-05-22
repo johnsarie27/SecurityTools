@@ -22,9 +22,8 @@ function Get-Software {
     .NOTES
         Name:     Get-Software
         Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2022-12-14
-        - 0.1.1 - Converted local vars to camel case, removed function alias "gs"
-        - 0.1.0 - Initial version
+        Version:  0.1.2 | Last Edit: 2026-05-21
+        Comments: (see commit history)
         General notes:
         https://4sysops.com/archives/find-the-product-guid-of-installed-software-with-powershell/
     #>

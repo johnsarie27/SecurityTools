@@ -20,10 +20,8 @@ function Get-WinInfo {
     .NOTES
         Name:     Get-WinInfo
         Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2023-11-22
-        - 0.1.1 - Usability updates
-        - 0.1.0 - Initial version
-        Comments: <Comment(s)>
+        Version:  0.1.2 | Last Edit: 2026-05-21
+        Comments: (see commit history)
         General notes
         https://learn.microsoft.com/en-us/powershell/module/cimcmdlets/get-ciminstance
     #>
