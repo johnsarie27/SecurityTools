@@ -6,7 +6,7 @@ on:
     branches: ["*"]
     #paths-ignore:
   push:
-    branches: [master]
+    branches: [main]
 
 concurrency:
   group: validate-${{ github.ref }}

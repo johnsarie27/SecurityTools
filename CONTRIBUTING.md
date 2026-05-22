@@ -90,4 +90,4 @@ PRs land in the **first** matching category, so order labels by importance (e.g.
 
 This project also includes the necessary tools to automate the release of the module via GitHub Actions. The file [release.yml](.github/workflows/release.yml) handles this task.
 
-To create a new release of the module, first update the module manifest with the necessary version number and commit that to the master branch. Then, create a new tag with the same version number and push it to GitHub. This will start the build process and publish a new version of the module to the repo.
+To create a new release of the module, first update the module manifest with the necessary version number and commit that to the main branch. Then, create a new tag with the same version number and push it to GitHub. This will start the build process and publish a new version of the module to the repo.
