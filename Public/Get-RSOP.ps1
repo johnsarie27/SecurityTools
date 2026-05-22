@@ -1,4 +1,3 @@
-#Requires -Modules GroupPolicy
 function Get-RSOP {
     <#
     .SYNOPSIS
@@ -36,6 +35,9 @@ function Get-RSOP {
         [System.String] $ReportType = 'HTML'
     )
 
+    Begin {
+        Import-Module -Name GroupPolicy -ErrorAction Stop
+    }
     Process {
         if (!$PSBoundParameters.ContainsKey('ReportType')) { $PSBoundParameters.Add('ReportType', $ReportType) }
         Get-GPResultantSetOfPolicy @PSBoundParameters

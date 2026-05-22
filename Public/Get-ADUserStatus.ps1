@@ -1,4 +1,3 @@
-#Requires -Modules ActiveDirectory
 function Get-ADUserStatus {
     <#
     .SYNOPSIS
@@ -23,6 +22,9 @@ function Get-ADUserStatus {
         [ValidateNotNullOrEmpty()]
         [System.String] $Identity
     )
+    Begin {
+        Import-Module -Name ActiveDirectory -ErrorAction Stop
+    }
     Process {
         $props = @(
             'CN'

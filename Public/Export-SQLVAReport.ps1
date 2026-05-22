@@ -1,4 +1,3 @@
-#Requires -Modules SqlServer
 function Export-SQLVAReport {
     <#
     .SYNOPSIS
@@ -49,7 +48,7 @@ function Export-SQLVAReport {
 
     Begin {
         # IMPORT REQUIRED MODULES
-        Import-Module -Name SqlServer
+        Import-Module -Name SqlServer -ErrorAction Stop
 
         # GET DATE OBJECTS AND SET OUTPUT FOLDER
         $date = Get-Date
