@@ -1,3 +1,4 @@
+#Requires -Modules ActiveDirectory
 function Get-ADUserStatus {
     <#
     .SYNOPSIS

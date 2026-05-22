@@ -1,3 +1,4 @@
+#Requires -Modules GroupPolicy
 function Get-RSOP {
     <#
     .SYNOPSIS

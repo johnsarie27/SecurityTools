@@ -1,3 +1,4 @@
+#Requires -Modules SqlServer
 function Export-SQLVAReport {
     <#
     .SYNOPSIS

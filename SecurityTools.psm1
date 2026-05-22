@@ -19,6 +19,5 @@ New-Variable -Name 'InfoModel' -Option ReadOnly -Value (
 )
 
 # EXPORT MEMBERS
-#Export-ModuleMember -Function *
 # THESE ITEMS MUST BE LISTED BOTH IN THE MODULE MANIFEST AND BELOW TO BE MADE AVAILABLE AFTER LOADING THE MODULE
-Export-ModuleMember -Variable * -Alias *
+Export-ModuleMember -Function * -Variable * -Alias *

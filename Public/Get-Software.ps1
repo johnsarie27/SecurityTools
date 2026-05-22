@@ -49,6 +49,8 @@ function Get-Software {
         [System.Management.Automation.SwitchParameter] $All
     )
     Begin {
+        if (-not $IsWindows) { throw 'Get-Software requires Windows.' }
+
         # SET VARS FOR REMOTE CALLS
         if ( $PSBoundParameters.ContainsKey('All') ) { $getAll = $true } else { $getAll = $false }
         if ( $PSBoundParameters.ContainsKey('Name') ) { $getName = $true } else { $getName = $false }

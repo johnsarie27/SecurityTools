@@ -29,6 +29,8 @@ function Uninstall-MSI {
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
+        if (-not $IsWindows) { throw 'Uninstall-MSI requires Windows.' }
+
         # SET COMMON KEY PATHS
         $uninstallKey = @(
             'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall'
