@@ -53,10 +53,9 @@ Describe -Name 'Get-EPSS' -Fixture {
     }
 
     Context -Name 'multiple CVEs via pipeline' -Fixture {
-        It -Name 'joins multiple CVE IDs into a comma-separated query string' -Test {
+        It -Name 'makes a separate request per CVE piped in' -Test {
             'CVE-2022-27225', 'CVE-2021-44228' | Get-EPSS
-            Should -Invoke -CommandName Invoke-RestMethod -ModuleName $env:BHProjectName `
-                -ParameterFilter { $Uri -like '*CVE-2022-27225,CVE-2021-44228*' }
+            Should -Invoke -CommandName Invoke-RestMethod -ModuleName $env:BHProjectName -Times 2 -Exactly
         }
     }
 
