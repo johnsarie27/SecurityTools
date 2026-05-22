@@ -1,6 +1,6 @@
 # SecurityTools
 
-[![validate](https://github.com/johnsarie27/SecurityTools/actions/workflows/validate.yml/badge.svg?branch=master)](https://github.com/johnsarie27/SecurityTools/actions/workflows/validate.yml)
+[![validate](https://github.com/johnsarie27/SecurityTools/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/johnsarie27/SecurityTools/actions/workflows/validate.yml)
 [![release](https://github.com/johnsarie27/SecurityTools/actions/workflows/release.yml/badge.svg)](https://github.com/johnsarie27/SecurityTools/actions/workflows/release.yml)
 [![License](https://img.shields.io/github/license/johnsarie27/SecurityTools.svg)](LICENSE)
 
