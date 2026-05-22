@@ -5,7 +5,7 @@
 
 To propose changes to the existing functions or the creation of a new one, the process is as follows:
 
-1. Create a new [issue](https://github.com/PS-MCS/MCS/issues/new/choose) using either:
+1. Create a new [issue](https://github.com/johnsarie27/SecurityTools/issues/new/choose) using either:
    - The `new_function_proposal` template if you want to propose a new function.
    - The `update_function_proposal` template if you want to modify a existing function.
 2. Create a new issue
@@ -21,7 +21,7 @@ To propose changes to the existing functions or the creation of a new one, the p
 
 ### Content
 
-The intended purpose of the functions in this module are internal functionality within the secure boundaries, specfically within virtual machines. There should be no dependency on outside libraries.
+The intended purpose of the functions in this module is to support information security, digital forensics, and reporting tasks. External module dependencies are kept to a minimum and must be justified — currently the module requires `ImportExcel` (used by the `Export-*` reporting functions) and optionally uses `SqlServer`, `ActiveDirectory`, and `GroupPolicy` for specific Windows-only functions. New dependencies should be discussed in an issue before being added.
 
 ### Structure
 

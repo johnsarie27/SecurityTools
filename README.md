@@ -37,5 +37,5 @@ for use by a specific team of engineers, not for broad use.
 To start, please read the [contribution guide](CONTRIBUTING.md).
 
 * Read the current content and help us fix any spelling mistakes or grammatical errors.
-* Choose an existing [issue](https://github.com/PS-MCS/MCS/issues) and submit a pull request to fix it.
+* Choose an existing [issue](https://github.com/johnsarie27/SecurityTools/issues) and submit a pull request to fix it.
 * Open a new issue to report an opportunity for improvement.
