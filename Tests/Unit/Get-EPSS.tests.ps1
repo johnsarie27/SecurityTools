@@ -8,9 +8,9 @@ Describe -Name 'Get-EPSS' -Fixture {
 
     BeforeAll {
         $mockResponse = [PSCustomObject] @{
-            status     = 'OK'
-            status-code = 200
-            version    = '1.0'
+            status       = 'OK'
+            'status-code' = 200
+            version      = '1.0'
             access     = 'public'
             total      = 1
             offset     = 0
