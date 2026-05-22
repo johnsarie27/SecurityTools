@@ -2,15 +2,16 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: ''
+labels: bug
 assignees: ''
 
 ---
 
 ## Details
 
-- Module Version
-- CSP
+- Module Version:
+- PowerShell Edition / Version (output of `$PSVersionTable.PSEdition` and `$PSVersionTable.PSVersion`):
+- Operating System:
 
 ## Describe the bug
 

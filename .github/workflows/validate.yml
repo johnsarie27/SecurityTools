@@ -5,6 +5,12 @@ on:
   pull_request:
     branches: ["*"]
     #paths-ignore:
+  push:
+    branches: [master]
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:

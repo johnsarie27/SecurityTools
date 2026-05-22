@@ -56,8 +56,8 @@ function <FunctionName> {
 Follow these steps:
 
 1. Install [Visual Studio Code (VSCode)](https://code.visualstudio.com/).
-2. Open the file [Project.code-workspace](project.code-workspace) from VSCode via the menu `File > Open Workspace...`.
-3. You should be prompted to open the workspace in a dev container. If you are not prompted, open the Command Palette and search for "Remote-Containers: Rebuild and Reopen in Container". When complete, you should be connected to the development container as if it was your local machine.
+2. Open this repository folder in VSCode (`File > Open Folder...`).
+3. You should be prompted to reopen the folder in a dev container. If you are not prompted, open the Command Palette and run "Dev Containers: Rebuild and Reopen in Container". When complete, you should be connected to the development container as if it was your local machine.
 4. You are ready to contribute :+1:
 
 >:alarm_clock: What to verify before pushing the updates?
