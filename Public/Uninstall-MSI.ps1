@@ -29,7 +29,7 @@ function Uninstall-MSI {
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
-        if (-not $IsWindows) { throw 'Uninstall-MSI requires Windows.' }
+        if (-not $IsWindows) { Write-Error -Message 'Uninstall-MSI requires Windows.' -ErrorAction Stop }
 
         # SET COMMON KEY PATHS
         $uninstallKey = @(

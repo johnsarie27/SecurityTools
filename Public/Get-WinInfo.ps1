@@ -46,7 +46,7 @@ function Get-WinInfo {
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
 
-        if (-not $IsWindows) { throw 'Get-WinInfo requires Windows.' }
+        if (-not $IsWindows) { Write-Error -Message 'Get-WinInfo requires Windows.' -ErrorAction Stop }
 
         # CREATE EVENT LIST
         $infoList = for ($i = 0; $i -LT $InfoModel.Classes.Count; $i++) {

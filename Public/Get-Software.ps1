@@ -49,7 +49,7 @@ function Get-Software {
         [System.Management.Automation.SwitchParameter] $All
     )
     Begin {
-        if (-not $IsWindows) { throw 'Get-Software requires Windows.' }
+        if (-not $IsWindows) { Write-Error -Message 'Get-Software requires Windows.' -ErrorAction Stop }
 
         # SET VARS FOR REMOTE CALLS
         if ( $PSBoundParameters.ContainsKey('All') ) { $getAll = $true } else { $getAll = $false }

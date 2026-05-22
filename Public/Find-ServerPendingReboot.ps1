@@ -32,7 +32,7 @@
     )
 
     Begin {
-        if (-not $IsWindows) { throw 'Find-ServerPendingReboot requires Windows.' }
+        if (-not $IsWindows) { Write-Error -Message 'Find-ServerPendingReboot requires Windows.' -ErrorAction Stop }
 
         # THE REGISTRY KEYS BELOW CONTAIN VALUES THAT DETERMINE WHETHER A SYSTEM REQUIRES A REBOOT
         $pendFileKeyPath = "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\"

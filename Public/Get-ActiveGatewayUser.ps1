@@ -28,7 +28,7 @@ function Get-ActiveGatewayUser {
         [System.String] $ComputerName
     )
     Begin {
-        if (-not $IsWindows) { throw 'Get-ActiveGatewayUser requires Windows.' }
+        if (-not $IsWindows) { Write-Error -Message 'Get-ActiveGatewayUser requires Windows.' -ErrorAction Stop }
 
         # SET QUERY PARAMS
         $ParamHash = @{
