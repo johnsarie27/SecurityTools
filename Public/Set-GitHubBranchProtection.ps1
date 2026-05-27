@@ -21,16 +21,9 @@ function Set-GitHubBranchProtection {
     .PARAMETER Branch
         Branch to protect. When omitted, the repository's default branch is
         used.
-    .PARAMETER ApprovalCount
-        Number of required pull request approvals. Defaults to 0 for solo
-        maintainers.
     .PARAMETER RequiredStatusCheck
         Required status check contexts that must pass before merging. Defaults
         to none.
-    .PARAMETER DismissStaleReviews
-        Dismiss approving reviews when new commits are pushed. Default: $true.
-    .PARAMETER RequireCodeOwnerReview
-        Require review from designated code owners. Default: $true.
     .PARAMETER Force
         Apply the protection policy even when an existing rule on the branch
         conflicts with the desired policy. By default, a conflicting existing
@@ -58,7 +51,11 @@ function Set-GitHubBranchProtection {
     .NOTES
         Name:     Set-GitHubBranchProtection
         Author:   Justin Johns
-        Version:  0.2.0 | Last Edit: 2026-05-27
+        Version:  0.3.0 | Last Edit: 2026-05-27
+        - 0.3.0: hardcode policy to match the PS.SSL baseline (solo-maintainer
+          friendly); only the required status check contexts remain
+          configurable. Removed -ApprovalCount, -DismissStaleReviews, and
+          -RequireCodeOwnerReview parameters.
         - 0.2.0: pre-check existing rule; emit AlreadyProtected/Conflict; add -Force
         - 0.1.0: initial release
         Comments:
@@ -81,18 +78,8 @@ function Set-GitHubBranchProtection {
         [ValidateNotNullOrEmpty()]
         [System.String] $Branch,
 
-        [Parameter(HelpMessage = 'Required approving review count')]
-        [ValidateRange(0, 6)]
-        [System.Int32] $ApprovalCount = 0,
-
         [Parameter(HelpMessage = 'Required status check contexts')]
         [System.String[]] $RequiredStatusCheck = @(),
-
-        [Parameter(HelpMessage = 'Dismiss stale reviews on new commits')]
-        [System.Boolean] $DismissStaleReviews = $true,
-
-        [Parameter(HelpMessage = 'Require code owner reviews')]
-        [System.Boolean] $RequireCodeOwnerReview = $true,
 
         [Parameter(HelpMessage = 'Apply policy even when an existing conflicting rule is present')]
         [System.Management.Automation.SwitchParameter] $Force
@@ -111,7 +98,7 @@ function Set-GitHubBranchProtection {
             Write-Error -Message 'gh CLI is not authenticated. Run: gh auth login --scopes admin:repo_hook,repo' -ErrorAction Stop
         }
 
-        # BUILD PROTECTION PAYLOAD
+        # BUILD PROTECTION PAYLOAD (mirrors the PS.SSL baseline)
         $protectionPayload = [Ordered] @{
             required_status_checks           = [Ordered] @{
                 strict   = $true
@@ -119,10 +106,10 @@ function Set-GitHubBranchProtection {
             }
             enforce_admins                   = $true
             required_pull_request_reviews    = [Ordered] @{
-                dismiss_stale_reviews           = $DismissStaleReviews
-                require_code_owner_reviews      = $RequireCodeOwnerReview
-                required_approving_review_count = $ApprovalCount
-                require_last_push_approval      = $true
+                dismiss_stale_reviews           = $false
+                require_code_owner_reviews      = $false
+                required_approving_review_count = 0
+                require_last_push_approval      = $false
             }
             restrictions                     = $null
             required_linear_history          = $true
@@ -201,10 +188,10 @@ function Set-GitHubBranchProtection {
                     required_conversation_resolution = $true
                     strict_status_checks             = $true
                     status_check_contexts            = @($RequiredStatusCheck) -join ','
-                    dismiss_stale_reviews            = $DismissStaleReviews
-                    require_code_owner_reviews       = $RequireCodeOwnerReview
-                    required_approving_review_count  = $ApprovalCount
-                    require_last_push_approval       = $true
+                    dismiss_stale_reviews            = $false
+                    require_code_owner_reviews       = $false
+                    required_approving_review_count  = 0
+                    require_last_push_approval       = $false
                 }
 
                 # DIFF THE TWO
