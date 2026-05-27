@@ -26,9 +26,7 @@ function Set-GitHubBranchProtection {
         to none.
     .PARAMETER Force
         Overwrite an existing rule that differs from the desired policy. Without
-        this switch, a conflicting rule causes the repository to be skipped with
-        a 'Conflict' status. A rule that already matches always returns
-        'AlreadyProtected' and is never rewritten.
+        it, a conflicting rule is skipped.
     .INPUTS
         System.String.
     .OUTPUTS
