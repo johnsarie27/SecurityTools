@@ -12,7 +12,7 @@
     # Major = significant changes, breaking changes or major new features
     # Minor = new functions or features
     # Build = bug fixes and minor updates
-    ModuleVersion        = '0.9.28'
+    ModuleVersion        = '0.10.0'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Core', 'Desktop')
@@ -146,6 +146,7 @@
         'Out-MeasureResult'
         'Read-EncryptedFile'
         'Save-KBFile'
+        'Set-GitHubBranchProtection'
         'Test-Performance'
         'Uninstall-MSI'
         'Update-GitHubModule'
