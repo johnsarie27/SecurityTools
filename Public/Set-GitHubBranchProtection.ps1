@@ -31,6 +31,12 @@ function Set-GitHubBranchProtection {
         Dismiss approving reviews when new commits are pushed. Default: $true.
     .PARAMETER RequireCodeOwnerReview
         Require review from designated code owners. Default: $true.
+    .PARAMETER Force
+        Apply the protection policy even when an existing rule on the branch
+        conflicts with the desired policy. By default, a conflicting existing
+        rule causes the repository to be skipped with a 'Conflict' status. A
+        rule that already matches the desired policy is always skipped with
+        an 'AlreadyProtected' status, regardless of this switch.
     .INPUTS
         System.String.
     .OUTPUTS
@@ -42,11 +48,19 @@ function Set-GitHubBranchProtection {
     .EXAMPLE
         PS C:\> 'PS.SSL', 'SecurityTools' | Set-GitHubBranchProtection -Owner 'johnsarie27'
         Apply the standard protection policy to the default branch of two
-        repositories via pipeline.
+        repositories via pipeline. Repos whose existing rule already matches
+        return 'AlreadyProtected'; repos with a conflicting rule return
+        'Conflict' and are skipped.
+    .EXAMPLE
+        PS C:\> Set-GitHubBranchProtection -Owner 'johnsarie27' -Repository 'PS.SSL' -Force
+        Overwrite any existing (conflicting) rule on the default branch of
+        PS.SSL with the standard policy.
     .NOTES
         Name:     Set-GitHubBranchProtection
         Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2026-05-27
+        Version:  0.2.0 | Last Edit: 2026-05-27
+        - 0.2.0: pre-check existing rule; emit AlreadyProtected/Conflict; add -Force
+        - 0.1.0: initial release
         Comments:
         Requires the gh CLI: https://cli.github.com/
         Token must have admin:repo (or equivalent) scope.
@@ -78,7 +92,10 @@ function Set-GitHubBranchProtection {
         [System.Boolean] $DismissStaleReviews = $true,
 
         [Parameter(HelpMessage = 'Require code owner reviews')]
-        [System.Boolean] $RequireCodeOwnerReview = $true
+        [System.Boolean] $RequireCodeOwnerReview = $true,
+
+        [Parameter(HelpMessage = 'Apply policy even when an existing conflicting rule is present')]
+        [System.Management.Automation.SwitchParameter] $Force
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.MyCommand)"
@@ -149,6 +166,78 @@ function Set-GitHubBranchProtection {
             $apiPath = 'repos/{0}/branches/{1}/protection' -f $repoFullName, $targetBranch
             $target = '{0}:{1}' -f $repoFullName, $targetBranch
             $action = 'Apply standard branch protection policy'
+
+            # CHECK FOR EXISTING PROTECTION BEFORE APPLYING
+            Write-Verbose -Message ('GET {0}' -f $apiPath)
+            $existingRaw = & gh api $apiPath 2>&1
+            $hasExisting = ($LASTEXITCODE -eq 0)
+
+            if ($hasExisting) {
+                $existing = $existingRaw | ConvertFrom-Json
+
+                # NORMALIZE EXISTING RULE FOR COMPARISON (API returns nested {enabled} wrappers)
+                $existingNormalized = [Ordered] @{
+                    required_signatures              = [System.Boolean] $existing.required_signatures.enabled
+                    enforce_admins                   = [System.Boolean] $existing.enforce_admins.enabled
+                    required_linear_history          = [System.Boolean] $existing.required_linear_history.enabled
+                    allow_force_pushes               = [System.Boolean] $existing.allow_force_pushes.enabled
+                    allow_deletions                  = [System.Boolean] $existing.allow_deletions.enabled
+                    required_conversation_resolution = [System.Boolean] $existing.required_conversation_resolution.enabled
+                    strict_status_checks             = [System.Boolean] $existing.required_status_checks.strict
+                    status_check_contexts            = @($existing.required_status_checks.contexts) -join ','
+                    dismiss_stale_reviews            = [System.Boolean] $existing.required_pull_request_reviews.dismiss_stale_reviews
+                    require_code_owner_reviews       = [System.Boolean] $existing.required_pull_request_reviews.require_code_owner_reviews
+                    required_approving_review_count  = [System.Int32]   $existing.required_pull_request_reviews.required_approving_review_count
+                    require_last_push_approval       = [System.Boolean] $existing.required_pull_request_reviews.require_last_push_approval
+                }
+
+                # DESIRED RULE IN THE SAME SHAPE FOR APPLES-TO-APPLES COMPARISON
+                $desiredNormalized = [Ordered] @{
+                    required_signatures              = $true
+                    enforce_admins                   = $true
+                    required_linear_history          = $true
+                    allow_force_pushes               = $false
+                    allow_deletions                  = $false
+                    required_conversation_resolution = $true
+                    strict_status_checks             = $true
+                    status_check_contexts            = @($RequiredStatusCheck) -join ','
+                    dismiss_stale_reviews            = $DismissStaleReviews
+                    require_code_owner_reviews       = $RequireCodeOwnerReview
+                    required_approving_review_count  = $ApprovalCount
+                    require_last_push_approval       = $true
+                }
+
+                # DIFF THE TWO
+                $differences = foreach ($key in $desiredNormalized.Keys) {
+                    if ($existingNormalized[$key] -ne $desiredNormalized[$key]) {
+                        '{0} (current=[{1}] desired=[{2}])' -f $key, $existingNormalized[$key], $desiredNormalized[$key]
+                    }
+                }
+
+                if ($null -eq $differences -or $differences.Count -eq 0) {
+                    Write-Verbose -Message ('[{0}] existing rule matches desired policy - skipping.' -f $target)
+                    [PSCustomObject] @{
+                        Repository = $repoFullName
+                        Branch     = $targetBranch
+                        Result     = 'AlreadyProtected'
+                        Message    = 'Existing rule matches desired policy'
+                    }
+                    continue
+                }
+
+                if (-not $Force) {
+                    Write-Warning -Message ('[{0}] existing rule differs from desired policy - skipping. Re-run with -Force to overwrite. Differences: {1}' -f $target, ($differences -join '; '))
+                    [PSCustomObject] @{
+                        Repository = $repoFullName
+                        Branch     = $targetBranch
+                        Result     = 'Conflict'
+                        Message    = 'Existing rule differs: {0}' -f ($differences -join '; ')
+                    }
+                    continue
+                }
+
+                Write-Verbose -Message ('[{0}] existing rule differs but -Force was specified - overwriting.' -f $target)
+            }
 
             if (-not $PSCmdlet.ShouldProcess($target, $action)) {
                 [PSCustomObject] @{
