@@ -25,11 +25,10 @@ function Set-GitHubBranchProtection {
         Required status check contexts that must pass before merging. Defaults
         to none.
     .PARAMETER Force
-        Apply the protection policy even when an existing rule on the branch
-        conflicts with the desired policy. By default, a conflicting existing
-        rule causes the repository to be skipped with a 'Conflict' status. A
-        rule that already matches the desired policy is always skipped with
-        an 'AlreadyProtected' status, regardless of this switch.
+        Overwrite an existing rule that differs from the desired policy. Without
+        this switch, a conflicting rule causes the repository to be skipped with
+        a 'Conflict' status. A rule that already matches always returns
+        'AlreadyProtected' and is never rewritten.
     .INPUTS
         System.String.
     .OUTPUTS
@@ -61,6 +60,19 @@ function Set-GitHubBranchProtection {
         Comments:
         Requires the gh CLI: https://cli.github.com/
         Token must have admin:repo (or equivalent) scope.
+
+        Future considerations (reintroduce when contributor count grows):
+        - -ApprovalCount           : required_pull_request_reviews.required_approving_review_count
+                                     (raise to >=1 once peer review is expected).
+        - -DismissStaleReviews     : required_pull_request_reviews.dismiss_stale_reviews
+                                     (set $true so new pushes invalidate prior approvals).
+        - -RequireCodeOwnerReview  : required_pull_request_reviews.require_code_owner_reviews
+                                     (enable only after a CODEOWNERS file exists AND there
+                                     are >=2 owners; otherwise the sole owner cannot merge
+                                     their own PRs while enforce_admins is on).
+        - -RequireLastPushApproval : required_pull_request_reviews.require_last_push_approval
+                                     (set $true to force re-approval after any push from
+                                     the PR author).
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     [OutputType([System.Management.Automation.PSCustomObject])]
