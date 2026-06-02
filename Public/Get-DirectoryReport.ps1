@@ -24,6 +24,7 @@ function Get-DirectoryReport {
         Returns a report of all files and folders in C:\MyData that are 4 GB or larger.
     .NOTES
         Status: Stable
+    #>
     [CmdletBinding()]
     [Alias('Get-DirStats')]
     Param(
@@ -43,7 +44,7 @@ function Get-DirectoryReport {
         [System.Management.Automation.SwitchParameter] $NoTotals,
 
         [Parameter(HelpMessage = 'Measure all files of any size')]
-        [switch] $All
+        [System.Management.Automation.SwitchParameter] $All
     )
     Begin {
         # CREATE VARS
@@ -66,38 +67,13 @@ function Get-DirectoryReport {
         }
 
         # SET PROPERTIES
-        $properties = @( @{N = 'Size(GB)'; E = { ($_.Length / 1GB).ToString("0.00") } }, 'FullName' ) #'Directory', 'Name'
+        $properties = @( @{N = 'Size(GB)'; E = { ($_.Length / 1GB).ToString("0.00") } }, 'FullName' )
 
         # GET SELECT PROPERTIES
         [System.Collections.Generic.List[System.Object]] $fileList = $fileList | Select-Object -Property $properties
         #endregion
 
         #region GET FOLDER SIZES
-        <# # LOOP THROUGH ALL DIRECTORIES IN PATH
-        foreach ( $item in (Get-ChildItem -Path $Path -Directory -Force) ) {
-            # GET CHILD MEASUREMENTS FOR FOLDER
-            $folder = Get-ChildItem -Path $item.FullName -Recurse -Force -ErrorAction 0 -ErrorVariable EV |
-            Measure-Object -Property Length -Sum -ErrorAction 0 -ErrorVariable MO
-
-            # SET WARNING VARIABLE
-            if ( $EV -or $MO ) { $warning = $true }
-
-            # EVALUATE FOLDER SIZE
-            if ( ($folder.Sum / 1GB) -gt $SizeInGb ) {
-                # CREATE NEW OBJECT
-                $New = [PSCustomObject] @{
-                    Files      = $folder.Count
-                    'Size(GB)' = ($folder.Sum / 1GB).ToString("0.00")
-                    FolderName = $item.Name
-                }
-
-                # ADD NEW OBJECT TO COLLECTION
-                try { $folderList.Add($New) } catch { }
-            }
-        } #>
-        #endregion
-
-        #region NEW STUFF
         # LOOP ALL SUB-DIRECTORIES IN ORIGINAL PATH
         foreach ( $item in (Get-ChildItem -Path $Path -Directory -Force) ) {
             # SET VARS
@@ -128,12 +104,11 @@ function Get-DirectoryReport {
         # ADD TOTALS
         if ( -not $PSBoundParameters.ContainsKey('NoTotals') ) {
             # CREATE SIZE AND COUNT VARIABLES
-            $fileTotal = 0; $fileCount = 0; $folderNumTotal = 0; $folderSizeTotal = 0
+            $fileTotal = 0; $folderNumTotal = 0; $folderSizeTotal = 0
 
             # LOOP THROUGH ALL FILE OBJECTS
             foreach ( $item in $fileList ) {
                 $fileTotal += $item.'Size(GB)'
-                $fileCount++
             }
             $New = [PSCustomObject] @{
                 'Size(GB)' = $fileTotal
