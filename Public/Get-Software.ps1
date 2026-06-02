@@ -23,9 +23,8 @@ function Get-Software {
         Status: Stable
         https://4sysops.com/archives/find-the-product-guid-of-installed-software-with-powershell/
     #>
-    #[Alias('gs')]
-    [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSObject])]
     Param(
         [Parameter(HelpMessage = "Software name")]
         [ValidateNotNullOrEmpty()]
@@ -114,7 +113,6 @@ function Get-Software {
         # CHECK FOR LOCAL SYSTEM OR NO COMPUTERNAME
         if ( !$PSBoundParameters.ContainsKey('ComputerName') -or $ComputerName -eq $env:COMPUTERNAME ) {
             # EXECUTE LOCALLY
-            #$software = Invoke-Expression -Command $scriptBlock.ToString().Replace('Using:', '')
             $string = $scriptBlock -replace 'Using:', ''
             $splat['ScriptBlock'] = [System.Management.Automation.ScriptBlock]::Create($string)
         }
