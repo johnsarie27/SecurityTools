@@ -7,9 +7,9 @@ function Get-Ipinfo {
     .PARAMETER IPAddress
         IPV4 address
     .INPUTS
-        System.String[].
+        System.Net.IPAddress[].
     .OUTPUTS
-        System.Object[].
+        System.Management.Automation.PSCustomObject.
     .EXAMPLE
         PS C:\> Get-Ipinfo -IPAddress '1.1.1.1'
         Get IP address info for IP '1.1.1.1'
@@ -21,9 +21,7 @@ function Get-Ipinfo {
     [CmdletBinding()]
     Param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline, HelpMessage = 'IPV4 address')]
-        [ValidateNotNullOrEmpty()]
-        [ValidatePattern('^(\d{1,3}\.){3}\d{1,3}$')]
-        [System.String[]] $IPAddress
+        [System.Net.IPAddress[]] $IPAddress
     )
     Begin {
         Write-Verbose "Starting $($MyInvocation.Mycommand)"
