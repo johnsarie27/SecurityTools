@@ -30,6 +30,7 @@ function Export-ScanReportAggregate {
         report for easy review.
     .NOTES
         Status: Stable
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $false)]
