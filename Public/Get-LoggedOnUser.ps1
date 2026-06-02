@@ -15,6 +15,8 @@ function Get-LoggedOnUser {
         Returns all active user sessions on Server01.
     .NOTES
         Status: Stable
+    #>
+    [CmdletBinding()]
     Param(
         [Parameter(HelpMessage = 'Target computer name')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]
