@@ -21,18 +21,15 @@ function Get-SavedHistory {
     #>
     [CmdletBinding()]
     [OutputType([System.Object[]])]
-
     Param(
         [Parameter(Mandatory, HelpMessage = 'Search phrase')]
         [ValidateNotNullOrEmpty()]
         [System.String] $Search
     )
-
     Begin {
         $history = Get-Content (Get-PSReadLineOption).HistorySavePath |
             Where-Object { $_ -like "*$Search*" } | Select-Object -Unique
     }
-
     Process {
         $i = 1
         foreach ( $line in $history ) {
