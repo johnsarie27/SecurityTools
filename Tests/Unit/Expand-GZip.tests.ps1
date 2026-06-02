@@ -29,7 +29,10 @@ Describe -Name 'Expand-GZip' -Fixture {
             # because Expand-GZip passes the path to .NET FileStream which does not resolve PSDrives.
             $script:Plaintext = 'hello gzip world'
             $script:SourcePath = Join-Path -Path $TestDrive -ChildPath 'sample.txt.gz'
+            $script:DestPath = Join-Path -Path $TestDrive -ChildPath 'sample.txt'
             New-TestGZipFile -Path $script:SourcePath -Content $script:Plaintext
+            # Clean any leftover destination from a previous It in this Context.
+            if (Test-Path -Path $script:DestPath) { Remove-Item -Path $script:DestPath -Force }
         }
 
         It -Name 'expands to the source directory when -OutputDirectory is omitted' -Test {
@@ -123,14 +126,33 @@ Describe -Name 'Expand-GZip' -Fixture {
     }
 
     Context -Name 'behavior contracts' -Fixture {
-        It -Name 'overwrites an existing destination file' -Test {
+        It -Name 'refuses to overwrite an existing destination file without -Force' -Test {
+            $src = Join-Path -Path $TestDrive -ChildPath 'no-overwrite.txt.gz'
+            New-TestGZipFile -Path $src -Content 'new contents'
+            $dest = Join-Path -Path $TestDrive -ChildPath 'no-overwrite.txt'
+            Set-Content -Path $dest -Value 'pre-existing'
+
+            { Expand-GZip -Path $src } | Should -Throw -ExpectedMessage '*already exists*'
+            (Get-Content -Path $dest -Raw) | Should -Be "pre-existing$([Environment]::NewLine)"
+        }
+
+        It -Name 'overwrites an existing destination file when -Force is passed' -Test {
             $src = Join-Path -Path $TestDrive -ChildPath 'overwrite.txt.gz'
             New-TestGZipFile -Path $src -Content 'new contents'
             $dest = Join-Path -Path $TestDrive -ChildPath 'overwrite.txt'
             Set-Content -Path $dest -Value 'pre-existing junk that is much longer than the replacement payload'
 
-            Expand-GZip -Path $src
+            Expand-GZip -Path $src -Force
             (Get-Content -Path $dest -Raw) | Should -Be 'new contents'
+        }
+
+        It -Name '-WhatIf produces no destination file' -Test {
+            $src = Join-Path -Path $TestDrive -ChildPath 'whatif.txt.gz'
+            New-TestGZipFile -Path $src -Content 'data'
+            $dest = Join-Path -Path $TestDrive -ChildPath 'whatif.txt'
+
+            Expand-GZip -Path $src -WhatIf
+            Test-Path -Path $dest | Should -BeFalse
         }
 
         It -Name 'produces no pipeline output' -Test {

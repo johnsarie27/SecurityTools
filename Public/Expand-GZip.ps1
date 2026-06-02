@@ -8,6 +8,8 @@ function Expand-GZip {
         Path to GZip file
     .PARAMETER OutputDirectory
         Destination directory to extract file to
+    .PARAMETER Force
+        Overwrite the destination file if it already exists.
     .INPUTS
         None.
     .OUTPUTS
@@ -18,11 +20,14 @@ function Expand-GZip {
     .EXAMPLE
         PS C:\> Expand-GZip -Path C:\E3IU1BL3AWXV9B.2023-10-30-21.b3052b06.gz -OutputDirectory C:\Temp
         Extracts file to C:\Temp\E3IU1BL3AWXV9B.2023-10-30-21.b3052b06
+    .EXAMPLE
+        PS C:\> Expand-GZip -Path C:\E3IU1BL3AWXV9B.2023-10-30-21.b3052b06.gz -Force
+        Extracts file, overwriting C:\E3IU1BL3AWXV9B.2023-10-30-21.b3052b06 if it already exists
     .NOTES
         Status: Stable
         https://social.technet.microsoft.com/Forums/windowsserver/en-US/5aa53fef-5229-4313-a035-8b3a38ab93f5/unzip-gz-files-using-powershell?forum=winserverpowershell
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Path to GZip file')]
         [ValidateScript({ (Test-Path -Path $_ -PathType Leaf) -and ($_ -like '*.gz') })]
@@ -30,7 +35,10 @@ function Expand-GZip {
 
         [Parameter(Mandatory = $false, Position = 1, HelpMessage = 'Destination directory to extract file to')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [System.IO.DirectoryInfo] $OutputDirectory
+        [System.IO.DirectoryInfo] $OutputDirectory,
+
+        [Parameter(Mandatory = $false, HelpMessage = 'Overwrite the destination file if it already exists')]
+        [Switch] $Force
     )
     Begin {
         Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
@@ -39,17 +47,30 @@ function Expand-GZip {
         # CHECK FOR DESTINATION PATH
         if ($PSBoundParameters.ContainsKey('OutputDirectory')) {
             # SET DESTINATION TO FULL, DECOMPRESSED FILE PATH
-            #$destFullPath = Join-Path -Path $OutputDirectory -ChildPath ([System.IO.Path]::GetFileNameWithoutExtension($Path))
             $destFullPath = Join-Path -Path $OutputDirectory -ChildPath (Split-Path -Path $Path -LeafBase)
         }
         else {
             # IF NO DESTINATION PATH IS PROVIDED, USE THE SAME PATH AS THE GZIP FILE BUT WITHOUT THE .GZ EXTENSION
-            #$destFullPath = $Path -replace '\.gz$', ''
             $destFullPath = Join-Path -Path (Split-Path -Path $Path) -ChildPath (Split-Path -Path $Path -LeafBase)
+        }
+
+        # REFUSE TO OVERWRITE AN EXISTING DESTINATION UNLESS -Force WAS PASSED
+        if ((Test-Path -Path $destFullPath -PathType Leaf) -and -not $Force) {
+            $errParams = @{
+                Message     = "Destination file [$destFullPath] already exists. Use -Force to overwrite."
+                Category    = 'ResourceExists'
+                ErrorAction = 'Stop'
+            }
+            Write-Error @errParams
         }
 
         # OUTPUT VERBOSE MESSAGE
         Write-Verbose -Message ('Expanding GZip file [{0}] to [{1}]' -f $Path, $destFullPath)
+
+        # HONOR -WhatIf / -Confirm
+        if (-not $PSCmdlet.ShouldProcess($destFullPath, 'Expand-GZip')) {
+            return
+        }
 
         # CREATE .NET OBJECTS
         $ip = New-Object System.IO.FileStream $Path, ([IO.FileMode]::Open), ([IO.FileAccess]::Read), ([IO.FileShare]::Read)
@@ -64,9 +85,9 @@ function Expand-GZip {
         }
     }
     End {
-        # CLOSE STREAMS
-        $gzipStream.Close()
-        $op.Close()
-        $ip.Close()
+        # CLOSE STREAMS (guard against -WhatIf paths where streams were never opened)
+        if ($gzipStream) { $gzipStream.Close() }
+        if ($op) { $op.Close() }
+        if ($ip) { $ip.Close() }
     }
 }
