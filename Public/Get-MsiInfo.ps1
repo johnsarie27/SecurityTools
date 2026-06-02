@@ -20,7 +20,7 @@ function Get-MsiInfo {
     #>
     [CmdletBinding()]
     Param(
-        [parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [System.IO.FileInfo] $Path
     )

@@ -17,10 +17,10 @@ function Get-WhoIs {
         Status: Stable
         https://www.powershellgallery.com/packages/PSScriptTools/2.9.0/Content/functions%5CGet-WhoIs.ps1
     #>
-    [cmdletbinding()]
+    [CmdletBinding()]
     [OutputType("WhoIsResult")]
     Param (
-        [parameter(Position = 0,
+        [Parameter(Position = 0,
             Mandatory,
             HelpMessage = "Enter an IPV4 address to lookup with WhoIs",
             ValueFromPipeline,
