@@ -16,11 +16,7 @@ function Compress-URL {
         PS C:\> Compress-URL -URL 'https://www.google.com'
         Get a shortened URL for 'https://www.google.com'
     .NOTES
-        Name: Compress-URL
-        Author: Justin Johns
-        Version: 0.1.0 | Last Edit: 2024-01-28
-        - 0.1.0 - (2024-01-28) Initial version
-        General notes
+        Status: Stable
         https://onesimpleapi.com/docs/url-shortener
     #>
     [CmdletBinding()]

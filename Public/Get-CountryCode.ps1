@@ -16,13 +16,7 @@ function Get-CountryCode {
         PS C:\> Get-CountryCode AS
         Returns the country data for "American Somoa"
     .NOTES
-        Name:     Get-CountryCode
-        Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2022-08-23
-        - 0.1.0 - Initial version
-        - 0.1.1 - Added global variable to prevent repeated web requests
-        Comments: <Comment(s)>
-        General notes
+        Status: Stable
         https://www.iso.org/obp/ui/#search
         https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
         https://datahub.io/core/country-list

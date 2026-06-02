@@ -19,61 +19,33 @@ function Get-FolderSize {
     .OUTPUTS
         None.
     .EXAMPLE
-        Get-FolderSize
+        PS C:\> Get-FolderSize
 
         FolderName                Size(Bytes) Size(MB)     Size(GB)
         ----------                ----------- --------     --------
         $GetCurrent                    193768 0.18 MB      0.00 GB
         $RECYCLE.BIN                 20649823 19.69 MB     0.02 GB
-        $SysReset                    53267392 50.80 MB     0.05 GB
-        Config.Msi                            0.00 MB      0.00 GB
-        Documents and Settings                0.00 MB      0.00 GB
-        Games                     48522184491 46,274.36 MB 45.19 GB
     .EXAMPLE
-        Get-FolderSize -Path 'C:\Program Files'
+        PS C:\> Get-FolderSize -Path 'C:\Program Files'
 
         FolderName                                   Size(Bytes) Size(MB)    Size(GB)
         ----------                                   ----------- --------    --------
         7-Zip                                            4588532 4.38 MB     0.00 GB
         Adobe                                         3567833029 3,402.55 MB 3.32 GB
-        Application Verifier                              353569 0.34 MB     0.00 GB
-        Bonjour                                           615066 0.59 MB     0.00 GB
-        Common Files                                   489183608 466.52 MB   0.46 GB
     .EXAMPLE
-        Get-FolderSize -Path 'C:\Program Files' -FolderName IIS
+        PS C:\> Get-FolderSize -Path 'C:\Program Files' -FolderName IIS
 
         FolderName Size(Bytes) Size(MB) Size(GB)
         ---------- ----------- -------- --------
         IIS            5480411 5.23 MB  0.01 GB
     .EXAMPLE
-        Get-FolderSize
-
-        FolderName Size(GB) Size(MB)
-        ---------- -------- --------
-        Public     0.00 GB  0.00 MB
-        thegn      2.39 GB  2,442.99 MB
+        PS C:\> Get-FolderSize | Sort-Object 'Size(Bytes)' -Descending
+        Returns all top-level folders under C:\ sorted by size descending.
     .EXAMPLE
-        Sort by size descending
-        Get-FolderSize | Sort-Object 'Size(Bytes)' -Descending
-
-        FolderName                Size(Bytes) Size(MB)     Size(GB)
-        ----------                ----------- --------     --------
-        Users                     76280394429 72,746.65 MB 71.04 GB
-        Games                     48522184491 46,274.36 MB 45.19 GB
-        Program Files (x86)       27752593691 26,466.94 MB 25.85 GB
-        Windows                   25351747445 24,177.31 MB 23.61 GB
-    .EXAMPLE
-        Omit folder(s) from being included
-        .\Get-FolderSize -OmitFolder 'C:\Temp','C:\Windows'
+        PS C:\> Get-FolderSize -OmitFolder 'C:\Temp', 'C:\Windows'
+        Returns folder sizes omitting C:\Temp and C:\Windows from the results.
     .NOTES
-        Name:     Get-FolderSize
-        Author:   Ginger Ninja
-        Version:  0.1.1 | Last Edit: 2022-06-02 (Justin Johns)
-        - 0.1.1 - Lots of code clean and consolidation, changed some parameters
-        - 0.1.0 - Updated object creation, removed try/catch that was causing issues
-        - 0.0.5 - Just created!
-        Comments: <Comment(s)>
-        General notes
+        Status: Stable
         https://www.gngrninja.com/script-ninja/2016/5/24/powershell-calculating-folder-sizes
     #>
     [CmdletBinding()]

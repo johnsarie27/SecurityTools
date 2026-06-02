@@ -14,14 +14,7 @@ function Get-FileInfo {
         PS C:\> Get-FileInfo -Signature '50 4B 03 04'
         Get information on a file with signature '50 4B 03 04'
     .NOTES
-        Name:     Get-FileInfo
-        Author:   Justin Johns
-        Version:  0.1.2 | Last Edit: 2022-08-23
-        - 0.1.0 - Initial version
-        - 0.1.1 - Replaced file with web lookup for file signatures
-        - 0.1.2 - Added global variable to prevent repeated web requests
-        Comments: <Comment(s)>
-        General notes
+        Status: Stable
         https://en.wikipedia.org/wiki/List_of_file_signatures
     #>
     [CmdletBinding()]

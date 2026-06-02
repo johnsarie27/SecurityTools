@@ -15,9 +15,9 @@ function Export-NPMAudit {
         None.
     .EXAMPLE
         PS C:\> Export-NPMAudit -Path C:\temp\npmaudit.json
-        Explanation of what the example does
+        Exports the NPM audit results from the provided JSON file to an Excel workbook on the desktop.
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(

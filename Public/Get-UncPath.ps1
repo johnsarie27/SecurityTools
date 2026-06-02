@@ -19,10 +19,14 @@ function Get-UncPath {
         System.String.
     .EXAMPLE
         PS C:\> Get-UncPath -Path 'C:\Temp\Share'
+        Returns the UNC path for C:\Temp\Share on the local machine.
     .EXAMPLE
         PS C:\> Get-UncPath -Path 'D:\Share' -Unix -ComputerName 'MyServer'
+        Returns the Unix-formatted UNC path for D:\Share on MyServer.
+    .NOTES
+        Status: Stable
     #>
-
+    [CmdletBinding()]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Local path')]
         [ValidatePattern("[A-Z]:\\.+")]

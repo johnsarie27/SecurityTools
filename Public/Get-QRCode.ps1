@@ -16,11 +16,7 @@ function Get-QRCode {
         PS C:\> Get-QRCode -URL 'https://www.google.com'
         Generate QR code for 'https://www.google.com'
     .NOTES
-        Name: Get-QRCode
-        Author: Justin Johns
-        Version: 0.1.0 | Last Edit: 2024-01-28 [0.1.0]
-        - 0.1.0 - Initial version
-        General notes
+        Status: Stable
         https://onesimpleapi.com/docs/qr-code
     #>
     [CmdletBinding()]

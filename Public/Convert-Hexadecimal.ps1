@@ -16,12 +16,7 @@ function Convert-Hexadecimal {
         PS C:\> Convert-Hexadecimal 4248
         Converts decimal value of 4248 to hexadecimal value
     .NOTES
-        Name:     Convert-Hexadecimal
-        Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-07-16
-        - <VersionNotes> (or remove this line if no version notes)
-        Comments: <Comment(s)>
-        General notes
+        Status: Stable
     #>
     [CmdletBinding(DefaultParameterSetName = '__dcm')]
     [OutputType('System.String')]

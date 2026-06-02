@@ -1,5 +1,7 @@
 function Get-Weather {
     <#
+    .SYNOPSIS
+        Get current weather conditions for a location
     .DESCRIPTION
         Get weather conditions
     .PARAMETER City
@@ -14,12 +16,7 @@ function Get-Weather {
         PS C:\> Get-Weather
         Get weather chart for current location
     .NOTES
-        Name: Get-Weather
-        Author: Justin Johns
-        Version: 0.1.0 | Last Edit: 2022-01-19 [0.1.0]
-        - <VersionNotes> (or remove this line if no version notes)
-        Comments: <Comment(s)>
-        General notes
+        Status: Stable
         https://github.com/chubin/wttr.in
     #>
     [CmdletBinding()]

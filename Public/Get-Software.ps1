@@ -20,16 +20,11 @@ function Get-Software {
         PS C:\> Get-Software -All
         This returns all properties of the registry keys holding the software inventory
     .NOTES
-        Name:     Get-Software
-        Author:   Justin Johns
-        Version:  0.1.2 | Last Edit: 2026-05-21
-        Comments: (see commit history)
-        General notes:
+        Status: Stable
         https://4sysops.com/archives/find-the-product-guid-of-installed-software-with-powershell/
     #>
-    #[Alias('gs')]
-    [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSObject])]
     Param(
         [Parameter(HelpMessage = "Software name")]
         [ValidateNotNullOrEmpty()]
@@ -118,7 +113,6 @@ function Get-Software {
         # CHECK FOR LOCAL SYSTEM OR NO COMPUTERNAME
         if ( !$PSBoundParameters.ContainsKey('ComputerName') -or $ComputerName -eq $env:COMPUTERNAME ) {
             # EXECUTE LOCALLY
-            #$software = Invoke-Expression -Command $scriptBlock.ToString().Replace('Using:', '')
             $string = $scriptBlock -replace 'Using:', ''
             $splat['ScriptBlock'] = [System.Management.Automation.ScriptBlock]::Create($string)
         }

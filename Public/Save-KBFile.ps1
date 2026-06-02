@@ -12,12 +12,10 @@ function Save-KBFile {
         The exact file name to save to, otherwise, it uses the name given by the webserver
     .PARAMETER Architecture
         Defaults to x64. Can be x64, x86 or "All"
-    .NOTES
-        Props to https://keithga.wordpress.com/2017/05/21/new-tool-get-the-latest-windows-10-cumulative-updates/
-        Adapted for dbatools by Chrissy LeMaire (@cl)
-        Then adapted again for general use without dbatools
-        See https://github.com/sqlcollaborative/dbatools/pull/5863 for screenshots
-        Captured from: https://gist.github.com/potatoqualitee/b5ed9d584c79f4b662ec38bd63e70a2d
+    .INPUTS
+        System.String.
+    .OUTPUTS
+        System.IO.FileInfo.
     .EXAMPLE
         PS C:\> Save-KBFile -Name KB4057119
         Downloads KB4057119 to the current directory. This works for SQL Server or any other KB.
@@ -27,21 +25,34 @@ function Save-KBFile {
     .EXAMPLE
         PS C:\> Save-KBFile -Name KB4057114 -Architecture All -Path C:\temp
         Downloads the x64 version of KB4057114 and the x86 version of KB4057114 to C:\temp. This works for SQL Server or any other KB.
+    .NOTES
+        Status: Stable
+        Props to https://keithga.wordpress.com/2017/05/21/new-tool-get-the-latest-windows-10-cumulative-updates/
+        Adapted for dbatools by Chrissy LeMaire (@cl)
+        Then adapted again for general use without dbatools
+        See https://github.com/sqlcollaborative/dbatools/pull/5863 for screenshots
+        Captured from: https://gist.github.com/potatoqualitee/b5ed9d584c79f4b662ec38bd63e70a2d
     #>
     [CmdletBinding()]
-    param(
-        [Parameter(Mandatory)]
+    Param(
+        [Parameter(Mandatory, HelpMessage = 'KB name or number (e.g. KB4057119 or 4057119)')]
         [System.String[]] $Name,
-        [System.String] $Path = ".",
+
+        [Parameter(HelpMessage = 'Directory to save the file')]
+        [System.String] $Path = '.',
+
+        [Parameter(HelpMessage = 'Exact file name to save to')]
         [System.String] $FilePath,
-        [ValidateSet("x64", "x86", "All")]
-        [System.String] $Architecture = "x64"
+
+        [Parameter(HelpMessage = 'Target architecture')]
+        [ValidateSet('x64', 'x86', 'All')]
+        [System.String] $Architecture = 'x64'
     )
-    begin {
+    Begin {
         function Get-KBLink {
-            param(
+            Param(
                 [Parameter(Mandatory)]
-                [string] $Name
+                [System.String] $Name
             )
             # CONSTANTS
             $msUpdate = 'http://www.catalog.update.microsoft.com/'
@@ -85,7 +96,7 @@ function Save-KBFile {
             }
         }
     }
-    process {
+    Process {
         if ($Name.Count -gt 0 -and $PSBoundParameters.FilePath) {
             Write-Error -Message 'You may specify only one KB when using FilePath' -ErrorAction Stop
         }

@@ -7,39 +7,25 @@ function Get-WhoIs {
     .PARAMETER IPAddress
         Target IP address
     .INPUTS
-        System.String[].
+        System.Net.IPAddress[].
     .OUTPUTS
-        System.Object[].
+        System.Management.Automation.PSCustomObject.
     .EXAMPLE
         PS C:\> Get-WhoIs -IPAddress '8.8.8.8'
         Get's WhoIs info for the ip 8.8.8.8
     .NOTES
-        General notes
-        I took this from the link below. I've made some minor modifications.
+        Status: Stable
         https://www.powershellgallery.com/packages/PSScriptTools/2.9.0/Content/functions%5CGet-WhoIs.ps1
     #>
-    [cmdletbinding()]
-    [OutputType("WhoIsResult")]
+    [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSCustomObject])]
     Param (
-        [parameter(Position = 0,
+        [Parameter(Position = 0,
             Mandatory,
             HelpMessage = "Enter an IPV4 address to lookup with WhoIs",
             ValueFromPipeline,
             ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
-        [ValidatePattern("^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")]
-        [ValidateScript( {
-                #verify each octet is valid to simplify the regex
-                $test = ($_.split(".")).where( { [int]$_ -gt 254 })
-                if ($test) {
-                    Throw "$_ does not appear to be a valid IPv4 address"
-                    $false
-                }
-                else {
-                    $true
-                }
-            })]
-        [System.String[]] $IPAddress
+        [System.Net.IPAddress[]] $IPAddress
     )
     Begin {
         Write-Verbose "Starting $($MyInvocation.Mycommand)"

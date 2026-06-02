@@ -16,9 +16,8 @@ function Get-DomainRegistration {
         PS C:\> Get-DomainRegistration -Domain google.com
         Get domain registration info for google.com
     .NOTES
-        General notes
+        Status: Stable
         https://whois.whoisxmlapi.com/documentation/making-requests
-        API token required
         https://rdap.verisign.com/com/v1/domain/<DOMAIN>
         https://domainsrdap.googleapis.com/v1/domain/<DOMAIN>
     #>

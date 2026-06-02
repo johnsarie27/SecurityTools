@@ -18,7 +18,7 @@ function Get-RSOP {
         PS C:\> Get-RSOP
         Generate a Resultant Set of Policy report for the local system
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(

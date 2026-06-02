@@ -20,9 +20,8 @@ function Write-EncryptedFile {
         PS C:\> Write-EncryptedFile -Content ($settings | ConvertTo-Json) -Path C:\temp\mySettings -Key 'Password123'
         Encrypts user settings in new file mySettings with the encryption key specified
     .NOTES
-        General notes
-        This function was written by Tim Curwick in PowerShell Conference Book 2
-        (minor changes made)
+        Status: Stable
+        Originally written by Tim Curwick in PowerShell Conference Book 2
     #>
     [CmdletBinding()]
     Param(

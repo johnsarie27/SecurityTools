@@ -18,6 +18,7 @@ function Convert-TimeZone {
         PS C:\> Convert-TimeZone -Time "2019-06-01 10:00 PM" -Source UTC -Target Eastern
         Convert "2019-06-01 10:00 PM" from UTC to Eastern time zone.
     .NOTES
+        Status: Stable
         [DateTime]::UtcNow
         $DateTimeObject.ToLocalTime()
         $DateTimeObject.ToUniversalTime()

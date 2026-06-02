@@ -11,17 +11,17 @@ function Find-LANHost {
     .PARAMETER ClearARPCache
         Clear ARP cache before scanning
     .INPUTS
-        none.
+        None.
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> $ips = 1..254 | % {"10.250.1.$_"}; Find-LANHost -IP $ips
-        Explanation of what the example does
+        PS C:\> $ips = 1..254 | ForEach-Object { "10.250.1.$_" }; Find-LANHost -IP $ips
+        Scans all 254 hosts on the 10.250.1.0/24 subnet and returns those with active ARP entries.
     .NOTES
-        General notes
+        Status: Stable
         https://xkln.net/blog/layer-2-host-discovery-with-powershell-in-under-a-second/
     #>
-    [Cmdletbinding()]
+    [CmdletBinding()]
     Param (
         [Parameter(Mandatory, Position = 1, HelpMessage = 'IP addresses to scan')]
         [System.String[]] $IP,

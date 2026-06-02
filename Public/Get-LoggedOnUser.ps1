@@ -11,8 +11,12 @@ function Get-LoggedOnUser {
     .OUTPUTS
         System.String.
     .EXAMPLE
-        PS C:\> Get-ConnectedUser -ComputerName $Computer
+        PS C:\> Get-LoggedOnUser -ComputerName 'Server01'
+        Returns all active user sessions on Server01.
+    .NOTES
+        Status: Stable
     #>
+    [CmdletBinding()]
     Param(
         [Parameter(HelpMessage = 'Target computer name')]
         [ValidateScript({ Test-Connection -ComputerName $_ -Quiet -Count 1 })]

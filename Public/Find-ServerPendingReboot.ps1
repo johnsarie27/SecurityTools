@@ -6,22 +6,16 @@
         Check if a server is pending reboot
     .PARAMETER ComputerName
         Gets the server reboot status on the specified computer.
+    .INPUTS
+        System.String.
+    .OUTPUTS
+        System.Management.Automation.PSCustomObject.
     .EXAMPLE
-        C:\PS> C:\Script\FindServerIsPendingReboot.ps1 -ComputerName "WIN-VU0S8","WIN-FJ6FH","WIN-FJDSH","WIN-FG3FH"
-
-        ComputerName                                          RebootIsPending
-        ------------                                          ---------------
-        WIN-VU0S8                                             False
-        WIN-FJ6FH                                             True
-        WIN-FJDSH                                             True
-        WIN-FG3FH                                             True
-
-        This command will get the reboot status on the specified remote computers.
+        PS C:\> Find-ServerPendingReboot -ComputerName 'WIN-VU0S8', 'WIN-FJ6FH'
+        Returns the pending reboot status for the specified remote computers.
     .NOTES
-        This script was taken from the site listed below. I've made several
-        modifications including formatting for ease of reading.
-
-        https://gallery.technet.microsoft.com/scriptcenter/How-to-check-if-any-4b1e53f2
+        Status: Stable
+        Adapted from https://gallery.technet.microsoft.com/scriptcenter/How-to-check-if-any-4b1e53f2
     #>
     [CmdletBinding()]
     param (

@@ -15,13 +15,7 @@ function ConvertTo-MarkdownTable {
         PS C:\> $svc | Select-Object -First 5 | ConvertTo-MarkdownTable
         Converts the first 5 services to a Markdown table
     .NOTES
-        Name:     ConvertTo-MarkDownTable
-        Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-09-28
-        - 0.1.0 - Initial version
-        - 0.1.1 - Added spaces around text
-        Comments: <Comment(s)>
-        General notes:
+        Status: Stable
         https://stackoverflow.com/questions/69010143/convert-powershell-output-to-a-markdown-file
     #>
     [CmdletBinding()]

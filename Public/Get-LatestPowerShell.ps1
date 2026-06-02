@@ -1,9 +1,11 @@
 function Get-LatestPowerShell {
     <#
     .SYNOPSIS
-        Short description
+        Download the latest version of PowerShell for the specified platform
     .DESCRIPTION
-        Long description
+        Downloads the latest release of PowerShell from GitHub for the specified
+        platform and architecture. If no version is specified, the latest available
+        release is retrieved automatically before downloading.
     .PARAMETER Architecture
         Processor architecture
     .PARAMETER OutputDirectory
@@ -18,11 +20,7 @@ function Get-LatestPowerShell {
         PS C:\> Get-LatestPowerShell -Architecture WindowsAmd64
         Downloads the latest version of PowerShell for Windows AMD64 to the desktop.
     .NOTES
-        Name:     Get-LatestPowerShell
-        Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2024-06-27
-        - Version history is captured in repository commit history
-        Comments: <Comment(s)>
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(

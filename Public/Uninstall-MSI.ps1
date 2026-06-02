@@ -14,11 +14,7 @@ function Uninstall-MSI {
         PS C:\> Uninstall-MSI -ProductId '109A5A16-E09E-4B82-A784-D1780F1190D6'
         Remove installed package with ID '{109A5A16-E09E-4B82-A784-D1780F1190D6}'
     .NOTES
-        Name:     Uninstall-MSI
-        Author:   Justin Johns
-        Version:  0.1.3 | Last Edit: 2026-05-21
-        Comments: (see commit history)
-        General notes
+        Status: Stable
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(

@@ -16,7 +16,7 @@ function Get-StringHash {
         PS C:\> Get-StringHash -String 'String' -Algorithm SHA256
         Generate the SHA256 hash value of "String"
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(

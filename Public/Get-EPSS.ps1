@@ -14,11 +14,7 @@ function Get-EPSS {
         PS C:\> Get-EPSS -CVE 'CVE-2022-27225'
         Get the EPSS score for CVE 'CVE-2022-27225'
     .NOTES
-        Name:     Get-EPSS
-        Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2023-12-15
-        - (see commit history)
-        Comments:
+        Status: Stable
         https://www.first.org/epss
         https://www.first.org/epss/api
     #>

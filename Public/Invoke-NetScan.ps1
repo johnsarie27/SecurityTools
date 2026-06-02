@@ -9,7 +9,7 @@ function Invoke-NetScan {
     .PARAMETER ResolveHostname
         Attempt to resolve hostname
     .INPUTS
-        none.
+        None.
     .OUTPUTS
         System.Object.
     .EXAMPLE
@@ -17,7 +17,7 @@ function Invoke-NetScan {
         PS C:\> $hosts = Invoke-NetScan -IP $ips.AllIPs -ResolveHostname
         Get all IP's on the network 192.168.1.0 and scan for active hosts including hostname info
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(

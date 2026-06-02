@@ -22,7 +22,7 @@ function Export-SQLVAReport {
         This exports a scan report using SQL Vulnerability Assessment tool for the master
         database on MySQLServer using the corresponding baseline file in C:\Baselines.
     .NOTES
-        General notes
+        Status: Stable
         https://docs.microsoft.com/en-us/sql/relational-databases/security/sql-vulnerability-assessment?view=sql-server-2017
     #>
     [CmdletBinding()]

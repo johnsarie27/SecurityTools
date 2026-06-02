@@ -28,6 +28,7 @@ function Convert-SecureKey {
         -- EXAMPLE 2 --
         PS C:\> Convert-SecureKey -Path C:\Store\Credentials.xml
     .NOTES
+        Status: Stable
         It appears that the Clixml file is locked to the user and computer where
         it was created. It cannot be accessed by another user or computer. The
         article below has more information based on a different Cmdlet.

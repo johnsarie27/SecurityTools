@@ -17,10 +17,13 @@ function Get-PatchTuesday {
     .OUTPUTS
         System.DateTime.
     .EXAMPLE
-        Get-PatchTue -Month 6 -Year 2015
+        PS C:\> Get-PatchTuesday -Month 6 -Year 2015
+        Returns the second Tuesday of June 2015.
     .EXAMPLE
-        Get-PatchTue June 2015
-    .Notes
+        PS C:\> Get-PatchTuesday -Month 6 -Year 2015 -DayOfWeek Wednesday -WeekOfMonth 3
+        Returns the third Wednesday of June 2015.
+    .NOTES
+        Status: Stable
         https://gallery.technet.microsoft.com/scriptcenter/Find-Patch-Tuesday-using-94484479
     #>
     [CmdletBinding()]

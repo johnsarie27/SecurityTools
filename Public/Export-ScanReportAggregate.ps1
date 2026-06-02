@@ -28,6 +28,8 @@ function Export-ScanReportAggregate {
         PS C:\> Export-ScanReportAggregate -SystemScan $Sys -AlertLogicWebScan $Web
         Merge and aggregate data from $Sys and $Web scans into a pre-filtered
         report for easy review.
+    .NOTES
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(

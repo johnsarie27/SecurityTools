@@ -11,17 +11,12 @@ function ConvertFrom-GZipString {
     .OUTPUTS
         System.String.
     .EXAMPLE
-        $compressedString | ConvertFrom-GZipString
+        PS C:\> $compressedString | ConvertFrom-GZipString
+        Decompresses and returns the original string from a Base64 GZipped string.
     .LINK
         ConvertTo-GZipString
     .NOTES
-        Name: ConvertFrom-GZipString
-        Author: Justin Johns
-        Version: 0.1.1 | Last Edit: 2022-01-27 [0.1.1]
-        - modified parameter to accept array of string
-        - changed Foreach-Object to foreach command
-        Comments: <Comment(s)>
-        General notes
+        Status: Stable
         https://www.dorkbrain.com/docs/2017/09/02/gzip-in-powershell/
     #>
     [CmdletBinding()]

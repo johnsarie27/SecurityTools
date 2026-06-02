@@ -10,13 +10,19 @@ function Get-GreyNoiseIPStatus {
     .PARAMETER ApiKey
         Your GreyNoise API key. If not provided, attempts to use the
         GREYNOISE_API_KEY environment variable.
+    .INPUTS
+        System.Net.IPAddress[].
+    .OUTPUTS
+        System.Management.Automation.PSCustomObject.
     .EXAMPLE
-        Get-GreyNoiseIPStatus -IPAddress "8.8.8.8" -ApiKey "your_api_key_here"
+        PS C:\> Get-GreyNoiseIPStatus -IPAddress "8.8.8.8" -ApiKey "your_api_key_here"
+        Check the threat status of 8.8.8.8 using the provided API key
     .EXAMPLE
-        "1.2.3.4", "5.6.7.8" | Get-GreyNoiseIPStatus
+        PS C:\> "1.2.3.4", "5.6.7.8" | Get-GreyNoiseIPStatus
+        Check the threat status of two IP addresses via pipeline using the GREYNOISE_API_KEY environment variable
     .NOTES
-        Requires a GreyNoise API key. Free community keys available at https://greynoise.io
-        Prompts/requests for AI to create function: 5
+        Status: Stable
+        https://greynoise.io
     #>
     [CmdletBinding()]
     [OutputType([PSCustomObject])]

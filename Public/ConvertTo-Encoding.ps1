@@ -16,12 +16,7 @@ function ConvertTo-Encoding {
         PS C:\> ConvertTo-Encoding -String 'https://google.com/' -Encoding URL
         URL encode 'https://google.com/'
     .NOTES
-        Name: ConvertTo-Encoding
-        Author: Justin Johns
-        Version: 0.1.1 | Last Edit: 2022-01-11 [0.1.1]
-        - Changed class used to perform URL encoding
-        Comments: <Comment(s)>
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     [OutputType('System.String')]

@@ -21,13 +21,7 @@ function Get-AlternateDataStream {
 
         Gets alternate data streams from all files in current directory with extension .db
     .NOTES
-        Name:     Get-AlternateDataStream
-        Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2022-10-23
-        - 0.1.0 - Initial version
-        Comments: Taken from Jeff Hicks website below
-
-        General notes:
+        Status: Stable
         https://jdhitsolutions.com/blog/scripting/8888/friday-fun-with-powershell-and-alternate-data-streams/
 
         Zone.Identifiers

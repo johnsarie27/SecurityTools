@@ -21,12 +21,8 @@ function Update-GitHubModule {
         Checks published version is newer than installed. Removes the old version. Then downloads SecurityTools
         module package from GitHub and extracts & unblocks the new version.
     .NOTES
-        Name:     Update-GitHubModule
-        Author:   Justin Johns, Phillip Glodowski
-        Version:  0.1.2 | Last Edit: 2024-08-08
-        - (see commit history for more details)
-        Comments:
-        - This function assumes that currently installed module has the project URI property set correctly
+        Status: Stable
+        This function assumes that the currently installed module has the ProjectUri property set correctly.
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(

@@ -15,7 +15,7 @@ function Get-CVSSv3BaseScore {
         PS C:\> Get-CVSSv3BaseScore -CVE "CVE-2020-2659"
         Scrapes the NVD NIST page and returns CVSS v3 score for CVE "CVE-2020-2659"
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(
