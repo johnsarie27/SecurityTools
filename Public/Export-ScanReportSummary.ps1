@@ -28,6 +28,7 @@ function Export-ScanReportSummary {
         spreadsheet file.
     .NOTES
         Status: Stable
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $false)]
