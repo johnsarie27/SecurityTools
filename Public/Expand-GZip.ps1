@@ -22,11 +22,16 @@ function Expand-GZip {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Path to GZip file')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include '*.gz' })]
+        [ValidateScript({
+            if (-not (Test-Path -Path $_ -PathType Leaf)) { throw "File not found: $_" }
+            if ([System.IO.Path]::GetExtension($_) -ne '.gz') { throw "File must have a .gz extension: $_" }
+            $true
+        })]
         [System.IO.FileInfo] $Path,
 
         [Parameter(Mandatory = $false, Position = 1, HelpMessage = 'Destination directory to extract file to')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
+        [Alias('DestinationPath')]
         [System.IO.DirectoryInfo] $OutputDirectory
     )
     Begin {
