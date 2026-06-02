@@ -25,11 +25,7 @@ function Expand-GZip {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $true, Position = 0, HelpMessage = 'Path to GZip file')]
-        [ValidateScript({
-            if (-not (Test-Path -Path $_ -PathType Leaf)) { throw "File not found: $_" }
-            if ([System.IO.Path]::GetExtension($_) -ne '.gz') { throw "File must have a .gz extension: $_" }
-            $true
-        })]
+        [ValidateScript({ (Test-Path -Path $_ -PathType Leaf) -and ($_ -like '*.gz') })]
         [System.IO.FileInfo] $Path,
 
         [Parameter(Mandatory = $false, Position = 1, HelpMessage = 'Destination directory to extract file to')]
