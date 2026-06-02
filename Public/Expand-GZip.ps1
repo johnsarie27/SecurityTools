@@ -15,6 +15,9 @@ function Expand-GZip {
     .EXAMPLE
         PS C:\> Expand-GZip -Path C:\E3IU1BL3AWXV9B.2023-10-30-21.b3052b06.gz
         Extracts file to C:\E3IU1BL3AWXV9B.2023-10-30-21.b3052b06
+    .EXAMPLE
+        PS C:\> Expand-GZip -Path C:\E3IU1BL3AWXV9B.2023-10-30-21.b3052b06.gz -OutputDirectory C:\Temp
+        Extracts file to C:\Temp\E3IU1BL3AWXV9B.2023-10-30-21.b3052b06
     .NOTES
         Status: Stable
         https://social.technet.microsoft.com/Forums/windowsserver/en-US/5aa53fef-5229-4313-a035-8b3a38ab93f5/unzip-gz-files-using-powershell?forum=winserverpowershell
@@ -31,7 +34,6 @@ function Expand-GZip {
 
         [Parameter(Mandatory = $false, Position = 1, HelpMessage = 'Destination directory to extract file to')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [Alias('DestinationPath')]
         [System.IO.DirectoryInfo] $OutputDirectory
     )
     Begin {
