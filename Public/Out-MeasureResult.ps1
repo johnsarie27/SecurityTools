@@ -1,6 +1,6 @@
 function Out-MeasureResult {
     <#
-    .Synopsis
+    .SYNOPSIS
         Outputs an object that shows maximum, minimum and average of an collection of
         System.TimeSpan objects.
     .DESCRIPTION
@@ -31,7 +31,10 @@ function Out-MeasureResult {
 
     .INPUTS
         System.TimeSpan.
+    .OUTPUTS
+        System.Management.Automation.PSCustomObject.
     .NOTES
+        Status: Stable
         This function comes from the chapter Increasing PowerShell Performance
         in the "PowerShell Conference Book"
     #>

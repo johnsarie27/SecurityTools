@@ -11,15 +11,10 @@ function ConvertTo-Hex {
     .OUTPUTS
         System.Management.Automation.PSCustomObject.
     .EXAMPLE
-        PS C:\> <example usage>
-        Explanation of what the example does
+        PS C:\> ConvertTo-Hex -Character 'A'
+        Returns the hexadecimal value 0x41 for the character 'A'.
     .NOTES
-        Name:     ConvertTo-Hex
-        Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2023-10-20
-        - 0.1.0 - Initial version
-
-        Comments: <Comment(s)>
+        Status: Stable
         TO CONVERT FROM HEX TO CHAR USE THE CODE BELOW
         [System.Char] 0x21
     #>

@@ -18,9 +18,8 @@ function Read-EncryptedFile {
         PS C:\> Read-EncryptedFile -Path C:\temp\mySettings -Key 'Password123'
         Decrypts user settings from file mySettings with the encryption key specified
     .NOTES
-        General notes
-        This function was written by Tim Curwick in PowerShell Conference Book 2
-        (minor changes made)
+        Status: Stable
+        Originally written by Tim Curwick in PowerShell Conference Book 2
     #>
     [CmdletBinding()]
     Param(

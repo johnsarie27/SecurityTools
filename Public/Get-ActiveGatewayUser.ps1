@@ -15,7 +15,7 @@ function Get-ActiveGatewayUser {
         PS C:\> Get-ActiveGWUser -CompuaterName Gateway
         Get all users connected through the RDGW "Gateway"
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     [OutputType([System.Management.Automation.PSObject])]

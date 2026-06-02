@@ -14,8 +14,10 @@ function Get-SavedHistory {
         System.Object[].
     .EXAMPLE
         PS C:\> Get-SavedHistory -Search "ELBLoadBalancer -Name"
+        Returns all unique commands matching the search phrase from PSReadLine history
     .NOTES
-        See article: https://serverfault.com/questions/891265/how-to-search-powershell-command-history-from-previous-sessions
+        Status: Stable
+        https://serverfault.com/questions/891265/how-to-search-powershell-command-history-from-previous-sessions
     #>
     [CmdletBinding()]
     [OutputType([System.Object[]])]

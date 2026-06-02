@@ -17,7 +17,7 @@ function Export-WebScan {
         PS C:\> Export-WebScan -Path C:\myReport.xml
         Processes the Acunetix XML report and produces an Excel Spreadsheet of the results
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(

@@ -24,16 +24,7 @@ function New-RandomString {
         PS C:\> New-RandomString -Length 20
         Generates a random string of 20 characters
     .NOTES
-        Name:     New-RandomString
-        Author:   Justin Johns
-        Version:  0.1.4 | Last Edit: 2023-11-17
-        - 0.1.4 - Using Get-SecureRandom for PS 7.4.0 or above
-        - 0.1.3 - (2023-11-03) Renamed function to use the proper verb
-        - 0.1.2 - Fixed special character set
-        - 0.1.1 - Updated comments
-        - 0.1.0 - Initial version
-
-        General notes:
+        Status: Stable
         https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-random?view=powershell-7.4
         https://learn.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Get-SecureRandom?view=powershell-7.4
     #>

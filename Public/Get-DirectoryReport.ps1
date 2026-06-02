@@ -21,7 +21,9 @@ function Get-DirectoryReport {
         System.Object.
     .EXAMPLE
         PS C:\> Get-DirectoryReport -Path C:\MyData -SizeInGb 4
-    #>
+        Returns a report of all files and folders in C:\MyData that are 4 GB or larger.
+    .NOTES
+        Status: Stable
     [CmdletBinding()]
     [Alias('Get-DirStats')]
     Param(

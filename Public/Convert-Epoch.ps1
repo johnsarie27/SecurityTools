@@ -18,7 +18,7 @@ function Convert-Epoch {
         PS C:\> Convert-Epoch -Seconds 1618614176
         Converts epoch time to date/time object
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding(DefaultParameterSetName = '__dt')]
     Param(

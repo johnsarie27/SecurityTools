@@ -20,11 +20,7 @@ function Get-Software {
         PS C:\> Get-Software -All
         This returns all properties of the registry keys holding the software inventory
     .NOTES
-        Name:     Get-Software
-        Author:   Justin Johns
-        Version:  0.1.2 | Last Edit: 2026-05-21
-        Comments: (see commit history)
-        General notes:
+        Status: Stable
         https://4sysops.com/archives/find-the-product-guid-of-installed-software-with-powershell/
     #>
     #[Alias('gs')]

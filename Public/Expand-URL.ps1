@@ -16,12 +16,7 @@ function Expand-URL {
         PS C:\> Expand-URL -URL 'https://tinyurl.com/RedlandsStake' # https://t.co/Q0uEt49I5D
         Show destination URL target for bitly shortened or redirected URL
     .NOTES
-        Name: Expand-URL
-        Author: Justin Johns
-        Version: 0.1.0 | Last Edit: 2024-01-28 [0.1.1]
-        - 0.1.1 - (2024-01-28) Moved query arguments to the request body
-        - 0.1.0 - (2022-01-10) Initial version
-        General notes
+        Status: Stable
         https://onesimpleapi.com/docs/url-unshorten
     #>
     [CmdletBinding()]

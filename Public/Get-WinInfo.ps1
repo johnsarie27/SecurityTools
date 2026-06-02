@@ -18,11 +18,7 @@ function Get-WinInfo {
         PS C:\> Get-WinInfo -List
         List available classes to pull information from
     .NOTES
-        Name:     Get-WinInfo
-        Author:   Justin Johns
-        Version:  0.1.2 | Last Edit: 2026-05-21
-        Comments: (see commit history)
-        General notes
+        Status: Stable
         https://learn.microsoft.com/en-us/powershell/module/cimcmdlets/get-ciminstance
     #>
     [CmdletBinding(DefaultParameterSetName = '__list')]

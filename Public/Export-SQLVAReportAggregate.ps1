@@ -21,7 +21,7 @@ function Export-SQLVAReportAggregate {
         PS C:\> Export-SQLVAReportAggregate -InputPath (Get-ChildItem C:\MyScans).FullName
         Combine all scans in C:\MyScans folder into a single report and output to the desktop.
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding(DefaultParameterSetName = 'folder')]
     Param(

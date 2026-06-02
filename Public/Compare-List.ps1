@@ -24,6 +24,7 @@ function Compare-List {
     .EXAMPLE
         PS C:\> Compare-List -ListA $ListA -ListB $ListB
     .NOTES
+        Status: Stable
         Remove $compSheet section and have use Import-Csv with two lists?
     #>
     [CmdletBinding(DefaultParameterSetName = "__list")]

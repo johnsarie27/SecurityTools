@@ -21,7 +21,7 @@ function Test-Performance {
         MinMilliseconds : 3756
         AvgMilliseconds : 3824
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(

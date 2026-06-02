@@ -12,12 +12,7 @@ function Get-PublicIP {
         PS C:\> Get-PublicIP
         Returns public IP address of system
     .NOTES
-        Name:     Get-PublicIP
-        Author:   Justin Johns
-        Version:  0.1.0 | Last Edit: 2024-02-28
-        - 0.1.0 - Initial version
-        Comments: <Comment(s)>
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     Param()

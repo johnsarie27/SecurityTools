@@ -46,16 +46,7 @@ function Set-GitHubBranchProtection {
         Overwrite any existing (conflicting) rule on the default branch of
         PS.SSL with the standard policy.
     .NOTES
-        Name:     Set-GitHubBranchProtection
-        Author:   Justin Johns
-        Version:  0.3.0 | Last Edit: 2026-05-27
-        - 0.3.0: hardcode policy to match the PS.SSL baseline (solo-maintainer
-          friendly); only the required status check contexts remain
-          configurable. Removed -ApprovalCount, -DismissStaleReviews, and
-          -RequireCodeOwnerReview parameters.
-        - 0.2.0: pre-check existing rule; emit AlreadyProtected/Conflict; add -Force
-        - 0.1.0: initial release
-        Comments:
+        Status: Stable
         Requires the gh CLI: https://cli.github.com/
         Token must have admin:repo (or equivalent) scope.
 

@@ -14,10 +14,10 @@ function Export-VeracodeReport {
     .OUTPUTS
         None.
     .EXAMPLE
-        PS C:\> <example usage>
-        Explanation of what the example does
+        PS C:\> Export-VeracodeReport -VeracodeXML C:\Reports\scan.xml -OutputDirectory C:\Reports
+        Exports the Veracode scan results from scan.xml to an Excel workbook in C:\Reports.
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(

@@ -16,11 +16,7 @@ function Expand-GZip {
         PS C:\> Expand-GZip -Path C:\E3IU1BL3AWXV9B.2023-10-30-21.b3052b06.gz
         Extracts file to C:\E3IU1BL3AWXV9B.2023-10-30-21.b3052b06
     .NOTES
-        Name:     Expand-GZip
-        Author:   RiffyRiot
-        Version:  0.1.2 | Last Edit: 2025-06-13
-        - see commit history for version history
-        General Notes:
+        Status: Stable
         https://social.technet.microsoft.com/Forums/windowsserver/en-US/5aa53fef-5229-4313-a035-8b3a38ab93f5/unzip-gz-files-using-powershell?forum=winserverpowershell
     #>
     [CmdletBinding()]

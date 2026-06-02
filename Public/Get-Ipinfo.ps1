@@ -14,7 +14,7 @@ function Get-Ipinfo {
         PS C:\> Get-Ipinfo -IPAddress '1.1.1.1'
         Get IP address info for IP '1.1.1.1'
     .NOTES
-        General notes
+        Status: Stable
         https://ipinfo.io/
         To get more data (e.g., ASN or Company info) a token must be used
     #>

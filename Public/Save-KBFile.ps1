@@ -12,7 +12,12 @@ function Save-KBFile {
         The exact file name to save to, otherwise, it uses the name given by the webserver
     .PARAMETER Architecture
         Defaults to x64. Can be x64, x86 or "All"
+    .INPUTS
+        System.String.
+    .OUTPUTS
+        System.IO.FileInfo.
     .NOTES
+        Status: Stable
         Props to https://keithga.wordpress.com/2017/05/21/new-tool-get-the-latest-windows-10-cumulative-updates/
         Adapted for dbatools by Chrissy LeMaire (@cl)
         Then adapted again for general use without dbatools

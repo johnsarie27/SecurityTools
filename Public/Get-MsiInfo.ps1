@@ -14,10 +14,9 @@ function Get-MsiInfo {
         PS C:\> Get-MsiInfo -Path "C:\myMsi.msi"
         Returns all available product info for myMsi.msi
     .NOTES
-        General notes
-        This function was originally written by Nickolaj Andersen (see link below)
+        Status: Stable
+        Originally written by Nickolaj Andersen
         https://www.scconfigmgr.com/2014/08/22/how-to-get-msi-file-information-with-powershell/
-        https://pscode.dev/get-msifileinfo
     #>
     [CmdletBinding()]
     Param(

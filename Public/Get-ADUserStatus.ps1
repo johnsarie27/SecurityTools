@@ -14,7 +14,7 @@ function Get-ADUserStatus {
         PS C:\> Get-ADUserStatus -Identity jsmith
         Gets the status information for user jsmith
     .NOTES
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(

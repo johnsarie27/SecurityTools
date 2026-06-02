@@ -21,8 +21,8 @@ function Get-ItemAge {
         PS C:\> Get-ItemAge -Directory 'D:\Database\logs' -AgeInDays 7
         Get all content details for D:\Database\logs using 7 day measurement
     .NOTES
+        Status: Stable
         https://blogs.technet.microsoft.com/pstips/2017/05/20/display-friendly-file-sizes-in-powershell/
-        https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-6
     #>
     [CmdletBinding()]
     [Alias('Get-DirItemAges')]

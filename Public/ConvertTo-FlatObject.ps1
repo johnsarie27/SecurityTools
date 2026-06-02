@@ -26,14 +26,10 @@ function ConvertTo-FlatObject {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> <example usage>
-        Explanation of what the example does
+        PS C:\> Get-Process | ConvertTo-FlatObject
+        Flattens all process objects into single-level objects with dot-separated property names.
     .NOTES
-        Name:     ConvertTo-FlatObject
-        Version:  0.1.0 | Last Edit: 2022-08-17
-        - 0.1.0 - Initial version
-        Comments: <Comment(s)>
-        General notes
+        Status: Stable
         Based on the articles below:
         https://powersnippets.com/convertto-flatobject/
         https://github.com/EvotecIT/PSSharedGoods/blob/master/Public/Converts/ConvertTo-FlatObject.ps1

@@ -14,9 +14,13 @@ function Get-GreyNoiseIPStatus {
         Get-GreyNoiseIPStatus -IPAddress "8.8.8.8" -ApiKey "your_api_key_here"
     .EXAMPLE
         "1.2.3.4", "5.6.7.8" | Get-GreyNoiseIPStatus
+    .INPUTS
+        System.Net.IPAddress[].
+    .OUTPUTS
+        System.Management.Automation.PSCustomObject.
     .NOTES
-        Requires a GreyNoise API key. Free community keys available at https://greynoise.io
-        Prompts/requests for AI to create function: 5
+        Status: Stable
+        https://greynoise.io
     #>
     [CmdletBinding()]
     [OutputType([PSCustomObject])]

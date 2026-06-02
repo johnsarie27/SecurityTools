@@ -14,13 +14,7 @@ function Get-WindowsEventCatalog {
         PS C:\> Get-WindowsEventCatalog
         Returns catalog of Windows Events
     .NOTES
-        Name:     Get-WindowsEventCatalog
-        Author:   Justin Johns
-        Version:  0.1.1 | Last Edit: 2023-12-15
-        - 0.1.1 - Updates for data location options
-        - 0.1.0 - (2022-11-16) Initial version
-        Comments: <Comment(s)>
-        General notes
+        Status: Stable
     #>
     [CmdletBinding()]
     Param(

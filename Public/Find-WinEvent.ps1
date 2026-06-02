@@ -27,11 +27,7 @@ function Find-WinEvent {
         PS C:\> Find-WinEvent.ps1 -Id 8 -ComputerName $Server -Results 10
         Display last 10 RDP Sessions
     .NOTES
-        Name:     Find-WinEvent
-        Author:   Justin Johns
-        Version:  0.1.5 | Last Edit: 2025-11-28
-        Comments: <Comment(s)>
-        General notes
+        Status: Stable
         https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent
     #>
     [CmdletBinding(DefaultParameterSetName = '__lst')]

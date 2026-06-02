@@ -23,11 +23,7 @@ function Install-ModuleFromZip {
         Extracts contents of zip and copies to Windows module directory then removes zip.
         Removes other versions of the same module.
     .NOTES
-        Name:     Install-ModuleFromZip
-        Author:   Justin Johns, Phillip Glodowski
-        Version:  0.1.5 | Last Edit: 2024-10-10
-        Comments: (see commit history)
-        The zip should contain the module folder with the appropriate items inside.
+        Status: Stable
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
