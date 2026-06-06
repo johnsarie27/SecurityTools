@@ -33,6 +33,9 @@ function Read-EncryptedFile {
         [Parameter(Mandatory, ParameterSetName = '__keybytes')]
         [System.Byte[]] $KeyBytes
     )
+    Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+    }
     Process {
         try {
             # If the key was provided as a string Convert it to bytes

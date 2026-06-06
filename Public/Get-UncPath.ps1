@@ -41,18 +41,22 @@ function Get-UncPath {
         [Parameter(HelpMessage = 'Use UNUX-style path')]
         [System.Management.Automation.SwitchParameter] $Unix
     )
-
-    if ( -not $PSBoundParameters.ContainsKey('ComputerName') ) { $ComputerName = ( hostname ) }
-
-    if ( $Path.Substring(0.2) -match '[A-Z]:' ) {
-        if ( $Unix ) {
-            $Path = $Path.Replace('\', '/')
-            $UncPath = '//' + $ComputerName + '/' + $Path.Replace(':', '$')
-        }
-        else {
-            $UncPath = '\\' + $ComputerName + '\' + $Path.Replace(':', '$')
-        }
-        $UncPath
+    Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
     }
-    else { Write-Output -InputObject 'Invalid input' }
+    Process {
+        if ( -not $PSBoundParameters.ContainsKey('ComputerName') ) { $ComputerName = ( hostname ) }
+
+        if ( $Path.Substring(0.2) -match '[A-Z]:' ) {
+            if ( $Unix ) {
+                $Path = $Path.Replace('\', '/')
+                $UncPath = '//' + $ComputerName + '/' + $Path.Replace(':', '$')
+            }
+            else {
+                $UncPath = '\\' + $ComputerName + '\' + $Path.Replace(':', '$')
+            }
+            $UncPath
+        }
+        else { Write-Output -InputObject 'Invalid input' }
+    }
 }

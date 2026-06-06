@@ -31,9 +31,10 @@ function Get-FileHeader {
         [ValidateRange(2, 100)]
         [System.Int16] $Bytes = 4
     )
-    Process {
+    Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
-
+    }
+    Process {
         # GET BYTES OF FILE
         $fileBytes = [System.IO.File]::ReadAllBytes($Path)
 

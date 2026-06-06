@@ -60,6 +60,9 @@ function Convert-SecureKey {
         [System.Management.Automation.SwitchParameter] $Force
     )
 
+    Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+    }
     Process {
         if ( $PSCmdlet.ParameterSetName -eq '_create' ) {
 

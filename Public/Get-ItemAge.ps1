@@ -40,6 +40,9 @@ function Get-ItemAge {
         [Parameter(HelpMessage = 'Do not recurse through children directories')]
         [System.Management.Automation.SwitchParameter] $NoRecurse
     )
+    Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+    }
     Process {
         if ( $NoRecurse ) { $Deep = $false } else { $Deep = $true }
         $Splatter = @{ Recurse = $Deep }

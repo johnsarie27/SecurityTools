@@ -46,6 +46,9 @@ function Get-PatchTuesday {
         [ValidateRange(1, 5)]
         [System.Int32] $WeekOfMonth = 2
     )
+    Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+    }
     Process {
         # GET FIRST OF THE MONTH
         $firstDayOfMonth = Get-Date -Month $Month -Year $Year -Day 1 -Hour 0 -Minute 0 -Second 0
