@@ -47,10 +47,10 @@ function Write-EncryptedFile {
 
         try {
             # If the key was provided as a string convert it to bytes
-            if ( $Key ) { $KeyBytes = [byte[]] $Key.ToCharArray() }
+            if ( $Key ) { $KeyBytes = [System.Byte[]] $Key.ToCharArray() }
 
             # If the key is not 256 bits pad it or truncate it as needed
-            if ( $KeyBytes.Count -ne 32 ) { $KeyBytes = ( $KeyBytes + [byte[]]'ThePaddingToUseIfWeNeedMoreBytes'.ToCharArray() )[0..31] }
+            if ( $KeyBytes.Count -ne 32 ) { $KeyBytes = ( $KeyBytes + [System.Byte[]]'ThePaddingToUseIfWeNeedMoreBytes'.ToCharArray() )[0..31] }
 
             # Create cryptography engine
             $crypto = New-Object -TypeName System.Security.Cryptography.RijndaelManaged

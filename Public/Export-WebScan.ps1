@@ -70,7 +70,7 @@ function Export-WebScan {
             $severity
         }
 
-        [XML] $xml = Get-Content -Path $Path
+        [System.Xml.XmlDocument] $xml = Get-Content -Path $Path
         $report = [System.Collections.Generic.List[System.Object]]::new()
 
         $excelParams = @{
@@ -127,7 +127,7 @@ function Export-WebScan {
                 CVSS3Severity  = 'Unknown'
             }
 
-            if ( $new['CVSS3'] ) { $new['CVSS3Severity'] = Get-Severity -Score ([double] $new['CVSS3']) }
+            if ( $new['CVSS3'] ) { $new['CVSS3Severity'] = Get-Severity -Score ([System.Double] $new['CVSS3']) }
 
             $report.Add([PSCustomObject] $new)
         }

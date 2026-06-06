@@ -58,7 +58,7 @@ function Get-WhoIs {
                     StartAddress           = $r.net.startAddress
                     EndAddress             = $r.net.endAddress
                     NetBlocks              = $r.net.netBlocks.netBlock | ForEach-Object { '{0}/{1}' -f $_.startaddress, $_.cidrLength }
-                    Updated                = $r.net.updateDate -as [datetime]
+                    Updated                = $r.net.updateDate -as [System.DateTime]
                 }
             } #If $r.net
         }

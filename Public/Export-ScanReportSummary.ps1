@@ -71,8 +71,8 @@ function Export-ScanReportSummary {
 
             if ($null -eq $Value) { return '' }
 
-            $text = [string]$Value
-            if ([string]::IsNullOrWhiteSpace($text)) { return '' }
+            $text = [System.String]$Value
+            if ([System.String]::IsNullOrWhiteSpace($text)) { return '' }
 
             switch -Regex ($text.Trim().ToLowerInvariant()) {
                 '^(none|no risk|informational|info|0)$' { '' ; break }
@@ -89,11 +89,11 @@ function Export-ScanReportSummary {
 
             if ($null -eq $Score) { return '' }
 
-            $scoreText = [string]$Score
-            if ([string]::IsNullOrWhiteSpace($scoreText)) { return '' }
+            $scoreText = [System.String]$Score
+            if ([System.String]::IsNullOrWhiteSpace($scoreText)) { return '' }
 
-            [double]$scoreValue = 0.0
-            $isInvariantParsed = [double]::TryParse(
+            $scoreValue = 0.0
+            $isInvariantParsed = [System.Double]::TryParse(
                 $scoreText,
                 [System.Globalization.NumberStyles]::Float,
                 [System.Globalization.CultureInfo]::InvariantCulture,
@@ -101,7 +101,7 @@ function Export-ScanReportSummary {
             )
 
             if (-not $isInvariantParsed) {
-                $isCurrentParsed = [double]::TryParse($scoreText, [ref]$scoreValue)
+                $isCurrentParsed = [System.Double]::TryParse($scoreText, [ref]$scoreValue)
                 if (-not $isCurrentParsed) { return '' }
             }
 
@@ -329,10 +329,10 @@ function Export-ScanReportSummary {
                     Name       = 'Risk'
                     Expression = {
                         $risk = & $riskFromCvss $_.'CVSS3 Score'
-                        if ([string]::IsNullOrWhiteSpace($risk)) {
+                        if ([System.String]::IsNullOrWhiteSpace($risk)) {
                             $risk = & $riskFromCvss $_.'CVSS Score'
                         }
-                        if ([string]::IsNullOrWhiteSpace($risk)) {
+                        if ([System.String]::IsNullOrWhiteSpace($risk)) {
                             $risk = $_.'Severity'
                         }
                         $risk
