@@ -28,7 +28,7 @@ function Get-WhoIs {
         [System.Net.IPAddress[]] $IPAddress
     )
     Begin {
-        Write-Verbose "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
         $baseURL = 'http://whois.arin.net/rest'
         #default is XML anyway
         $header = @{ "Accept" = "application/xml" }

@@ -30,6 +30,8 @@ function Export-NPMAudit {
         [System.String] $OutputDirectory = "$HOME\Desktop"
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # GET CONTENT FROM NPM AUDIT FILE
         $json = Get-Content -Path $Path | ConvertFrom-Json
 

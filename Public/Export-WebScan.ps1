@@ -31,6 +31,8 @@ function Export-WebScan {
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         function Get-Severity {
             <# =====================================================================
             .SYNOPSIS

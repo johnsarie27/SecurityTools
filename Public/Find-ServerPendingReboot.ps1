@@ -26,6 +26,8 @@
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         if (-not $IsWindows) { Write-Error -Message 'Find-ServerPendingReboot requires Windows.' -ErrorAction Stop }
 
         # THE REGISTRY KEYS BELOW CONTAIN VALUES THAT DETERMINE WHETHER A SYSTEM REQUIRES A REBOOT

@@ -39,6 +39,8 @@ function Write-EncryptedFile {
         [System.Byte[]] $KeyBytes
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         try {
             # If the key was provided as a string convert it to bytes
             if ( $Key ) { $KeyBytes = [byte[]] $Key.ToCharArray() }

@@ -25,7 +25,7 @@ function Get-EPSS {
         [System.String[]] $CVE
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # SET BASE URI
         $baseUri = 'https://api.first.org/data/v1/epss'

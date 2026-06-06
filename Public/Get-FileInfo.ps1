@@ -24,7 +24,7 @@ function Get-FileInfo {
         [System.String] $Signature
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # CHECK FOR FILE SIGNATURE VARIABLE
         if (-Not (Get-Variable -Name 'FileSignatures' -ErrorAction Ignore)) {

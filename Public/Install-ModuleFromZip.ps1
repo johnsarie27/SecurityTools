@@ -39,7 +39,7 @@ function Install-ModuleFromZip {
         [System.Management.Automation.SwitchParameter] $Replace
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # SET PLATFORM VARIABLES. THIS SHOULD WORK ON WINDOWS POWERSHELL 5.1 AND CORE
         if ($IsLinux) { $tempDir = '/tmp/'; $splitChar = ':' }

@@ -30,6 +30,8 @@ function Export-VeracodeReport {
         [System.String] $OutputDirectory = "$HOME\Desktop"
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         [xml] $xml = Get-Content -Path $VeracodeXML
         #Write-Output $xml.detailedreport.severity
 

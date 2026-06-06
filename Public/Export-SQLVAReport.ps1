@@ -47,6 +47,8 @@ function Export-SQLVAReport {
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # IMPORT REQUIRED MODULES
         Import-Module -Name SqlServer -ErrorAction Stop
 

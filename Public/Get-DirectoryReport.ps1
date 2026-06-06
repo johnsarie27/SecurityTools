@@ -47,6 +47,8 @@ function Get-DirectoryReport {
         [System.Management.Automation.SwitchParameter] $All
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # CREATE VARS
         $fileList = [System.Collections.Generic.List[System.Object]]::new()
         $folderList = [System.Collections.Generic.List[System.Object]]::new()

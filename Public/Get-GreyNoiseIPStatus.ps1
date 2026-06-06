@@ -41,6 +41,8 @@ function Get-GreyNoiseIPStatus {
         [string] $ApiKey
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # SET UP API REQUEST HEADERS AND BASE URL
         $headers = @{
             'Accept'       = 'application/json'

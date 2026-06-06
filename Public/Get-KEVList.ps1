@@ -71,7 +71,7 @@ function Get-KEVList {
         }
     }
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # VALIDATE OUTPUTDIRECTORY PARAMETER
         if ($PSBoundParameters.ContainsKey('OutputDirectory')) {

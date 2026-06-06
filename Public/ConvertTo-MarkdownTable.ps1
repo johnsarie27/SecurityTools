@@ -25,7 +25,7 @@ function ConvertTo-MarkdownTable {
         [System.Object] $InputObject
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         $headersDone = $false
         $pattern = '(?<!\\)\|'  # escape every '|' unless already escaped

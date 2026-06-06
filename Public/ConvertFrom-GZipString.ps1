@@ -25,7 +25,7 @@ function ConvertFrom-GZipString {
         [string[]] $String
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
     }
     Process {
         foreach ($str in $String) {

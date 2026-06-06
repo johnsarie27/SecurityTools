@@ -59,6 +59,8 @@ function Export-ScanReportSummary {
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # CREATE MASTER LIST
         $summaryObjects = [System.Collections.Generic.List[System.Object]]::new()
         $summaryReport = @()

@@ -24,7 +24,7 @@ function Get-Ipinfo {
         [System.Net.IPAddress[]] $IPAddress
     )
     Begin {
-        Write-Verbose "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         $baseUrl = "https://ipinfo.io/"
         $headers = @{ accept = "application/json" }

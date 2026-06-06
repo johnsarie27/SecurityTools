@@ -31,7 +31,7 @@ function Get-Weather {
         [System.String] $Format
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         New-Variable -Name 'base_uri' -Value 'https://wttr.in/' -Option ReadOnly
         $uri = $base_uri

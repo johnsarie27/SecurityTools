@@ -59,7 +59,7 @@ function ConvertTo-FlatObject {
         [System.Collections.IDictionary] $OutputObject
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         $InputObjects = [System.Collections.Generic.List[Object]]::new()
     }

@@ -30,6 +30,8 @@ function Invoke-NetScan {
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         $ping = New-Object System.Net.NetworkInformation.Ping
         $count = 1
     }

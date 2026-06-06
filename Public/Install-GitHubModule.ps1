@@ -36,7 +36,7 @@ function Install-GitHubModule {
         [System.String] $Scope = 'CurrentUser'
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # SET PLATFORM VARIABLES
         if ($IsWindows) { $tempDir = $env:TEMP; $splitChar = ';' }

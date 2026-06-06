@@ -49,6 +49,8 @@ function Save-KBFile {
         [System.String] $Architecture = 'x64'
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         function Get-KBLink {
             Param(
                 [Parameter(Mandatory)]

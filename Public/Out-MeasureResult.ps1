@@ -44,6 +44,8 @@ function Out-MeasureResult {
         [System.Timespan[]] $Measurement
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # CREATE LIST COLLECTION
         $list = [System.Collections.Generic.List[System.TimeSpan]]::new()
     }

@@ -30,7 +30,7 @@ function Expand-URL {
         [System.String] $ApiKey
     )
     Begin {
-        Write-Verbose "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
     }
     Process {
         # SET REQUEST PARAMETERS

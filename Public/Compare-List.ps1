@@ -47,6 +47,8 @@ function Compare-List {
         [System.Object[]] $ListB
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # CREATE RESULTS COLLECTION
         $results = [System.Collections.Generic.List[System.Object]]::new()
     }

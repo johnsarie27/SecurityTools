@@ -61,6 +61,8 @@ function Export-ScanReportAggregate {
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # PROVIDE HELP FOR THE USER WHEN NO SCANS ARE DECLARED
         $requiredParams = @('NessusSystemScan', 'NessusWebScan', 'AlertLogicWebScan', 'DatabaseScan', 'AcunetixScan')
         foreach ( $param in $requiredParams ) {
