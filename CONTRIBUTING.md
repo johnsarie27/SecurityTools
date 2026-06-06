@@ -13,7 +13,7 @@ To propose changes to the existing functions or the creation of a new one, the p
     1. Clone this repository.
     2. Create a new branch.
     3. Either:
-        - Create the page using the [new function template](templates/new-function.md).
+        - Create the page using the [new function checklist](#new-function-checklist).
         - Modify the target function in case of an update or refactor.
     4. Submit your [Pull Request](https://help.github.com/articles/creating-a-pull-request/).
 
@@ -23,33 +23,80 @@ To propose changes to the existing functions or the creation of a new one, the p
 
 The intended purpose of the functions in this module is to support information security, digital forensics, and reporting tasks. External module dependencies are kept to a minimum and must be justified — currently the module requires `ImportExcel` (used by the `Export-*` reporting functions) and optionally uses `SqlServer`, `ActiveDirectory`, and `GroupPolicy` for specific Windows-only functions. New dependencies should be discussed in an issue before being added.
 
-### Structure
+### New Function Checklist
 
-- Start with this general structure
+- Place the file under `Public/` (exported) or `Private/` (internal use only).
+- Name the file `Verb-Noun.ps1`, matching the function name exactly.
+- Use only [approved verbs](https://learn.microsoft.com/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands).
+- Always include comment-based help (`.SYNOPSIS`, `.DESCRIPTION`, `.PARAMETER`, `.INPUTS`, `.OUTPUTS`, `.EXAMPLE`, `.NOTES`).
+- Add a Pester test under `Tests/Unit/Verb-Noun.tests.ps1`.
+- If the function is **exported**, add its name to `FunctionsToExport` in [SecurityTools.psd1](SecurityTools.psd1).
+- For Windows-only functions, add a runtime platform guard in the `Begin` block.
+- For functions that depend on an optional/external module, call `Import-Module -Name <Name> -ErrorAction Stop` in the `Begin` block (not a script-level `#Requires` for optional dependencies).
+- Run Analyze and Test locally before opening the PR (see [How to get started contributing](#how-to-get-started-contributing)).
 
-```pwsh
-function <FunctionName> {
+### Function Template
+
+```powershell
+function Verb-Noun {
     <#
     .SYNOPSIS
-
+        One-line summary of what the function does
     .DESCRIPTION
-
+        Longer description of behavior, side effects, and intended use
+    .PARAMETER Foo
+        Description of the Foo parameter
     .INPUTS
-
+        System.String.
     .OUTPUTS
-
+        System.Object.
     .EXAMPLE
-
+        PS C:\> Verb-Noun -Foo 'bar'
+        Explanation of what the example does
     .NOTES
+        Name:     Verb-Noun
+        Author:   <Your Name>
+        Version:  0.1.0 | Last Edit: <YYYY-MM-DD>
+        Comments: (see commit history)
     #>
-
     [CmdletBinding()]
-    Param()
+    Param(
+        [Parameter(Mandatory, HelpMessage = 'Description of Foo')]
+        [ValidateNotNullOrEmpty()]
+        [System.String] $Foo
+    )
+    Begin {
+        Write-Verbose -Message "Starting $($MyInvocation.MyCommand)"
+
+        # Platform guard (only for Windows-only functions)
+        # if (-not $IsWindows) { Write-Error -Message 'Verb-Noun requires Windows.' -ErrorAction Stop }
+
+        # Optional module import (only for functions with external dependencies)
+        # Import-Module -Name SomeModule -ErrorAction Stop
+    }
+    Process {
+        # Function logic here
+    }
 }
 ```
 
-- Only use approved verbs when naming functions
-- Function must include properly defined help
+### Test Skeleton
+
+```powershell
+BeforeDiscovery {
+    if (-not (Get-Module -Name $env:BHProjectName)) {
+        Import-Module -Name $env:BHPSModuleManifest -ErrorAction 'Stop' -Force
+    }
+}
+
+Describe -Name 'Verb-Noun' -Fixture {
+    Context -Name 'normal usage' -Fixture {
+        It -Name 'should not throw for valid input' -Test {
+            { Verb-Noun -Foo 'bar' } | Should -Not -Throw
+        }
+    }
+}
+```
 
 ## How to get started contributing
 
