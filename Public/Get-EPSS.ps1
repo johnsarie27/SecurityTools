@@ -19,6 +19,7 @@ function Get-EPSS {
         https://www.first.org/epss/api
     #>
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSCustomObject])]
     Param(
         [Parameter(Position = 0, ValueFromPipeline, HelpMessage = 'CVE ID')]
         [ValidatePattern('CVE-\d{4}\-\d+')]

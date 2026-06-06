@@ -32,6 +32,7 @@ function Get-AlternateDataStream {
         4 = Restricted sites
     #>
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSCustomObject])]
     Param(
         [Parameter(ValueFromPipeline, Position = 0, HelpMessage = 'File path')]
         #[ValidateScript({ Test-Path -Path $_ -PathType Leaf })]

@@ -21,6 +21,7 @@ function Get-FileHeader {
         https://stackoverflow.com/questions/26194071/recognize-file-types-in-powershell
     #>
     [CmdletBinding()]
+    [OutputType([System.String])]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'File path')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf })]

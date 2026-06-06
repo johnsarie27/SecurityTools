@@ -22,6 +22,7 @@ function Get-CountryCode {
         https://datahub.io/core/country-list
     #>
     [CmdletBinding(DefaultParameterSetName = '__cde')]
+    [OutputType([System.Management.Automation.PSCustomObject])]
     Param(
         [Parameter(Mandatory, Position = 0, ParameterSetName = '__cde', HelpMessage = 'Country code (2- or 3-letter)')]
         [ValidatePattern('^[A-Z]{2,3}$')]

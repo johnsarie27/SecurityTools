@@ -15,6 +15,7 @@ function Get-PublicIP {
         Status: Stable
     #>
     [CmdletBinding()]
+    [OutputType([System.String])]
     Param()
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)

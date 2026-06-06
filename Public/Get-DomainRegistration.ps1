@@ -22,6 +22,7 @@ function Get-DomainRegistration {
         https://domainsrdap.googleapis.com/v1/domain/<DOMAIN>
     #>
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSCustomObject])]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Target Domain')]
         [ValidateNotNullOrEmpty()]

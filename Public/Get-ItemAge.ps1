@@ -25,6 +25,7 @@ function Get-ItemAge {
         https://blogs.technet.microsoft.com/pstips/2017/05/20/display-friendly-file-sizes-in-powershell/
     #>
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSObject])]
     [Alias('Get-DirItemAges')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target directory')]

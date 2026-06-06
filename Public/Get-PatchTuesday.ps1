@@ -27,6 +27,7 @@ function Get-PatchTuesday {
         https://gallery.technet.microsoft.com/scriptcenter/Find-Patch-Tuesday-using-94484479
     #>
     [CmdletBinding()]
+    [OutputType([System.DateTime])]
     Param(
         [Parameter(HelpMessage = 'Month')]
         [ValidateRange(1, 12)]

@@ -27,6 +27,7 @@ function Get-UncPath {
         Status: Stable
     #>
     [CmdletBinding()]
+    [OutputType([System.String])]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Local path')]
         [ValidatePattern("[A-Z]:\\.+")]

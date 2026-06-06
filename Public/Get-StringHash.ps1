@@ -19,6 +19,7 @@ function Get-StringHash {
         Status: Stable
     #>
     [CmdletBinding()]
+    [OutputType([System.String])]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'String to hash')]
         [System.String] $String,

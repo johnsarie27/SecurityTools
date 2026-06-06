@@ -19,6 +19,7 @@ function Get-Ipinfo {
         To get more data (e.g., ASN or Company info) a token must be used
     #>
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSCustomObject])]
     Param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline, HelpMessage = 'IPV4 address')]
         [System.Net.IPAddress[]] $IPAddress
