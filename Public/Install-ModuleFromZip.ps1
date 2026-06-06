@@ -48,8 +48,8 @@ function Install-ModuleFromZip {
 
         # SET DEFAULT MODULE HOME PATH
         $moduleHome = switch ($Scope) {
-            'CurrentUser' { ($env:PSModulePath.Split("$splitChar"))[0] }
-            'AllUsers' { ($env:PSModulePath.Split("$splitChar"))[1] }
+            'CurrentUser' { ($env:PSModulePath.Split($splitChar))[0] }
+            'AllUsers' { ($env:PSModulePath.Split($splitChar))[1] }
         }
 
         Write-Verbose -Message ('Module home: [{0}]' -f $moduleHome)
@@ -92,7 +92,7 @@ function Install-ModuleFromZip {
 
         if ($getModule) {
             # THE MODULE IS ALREADY INSTALLED
-            $versionList = $getModule | ForEach-Object { "$($_.Version)" }
+            $versionList = $getModule | ForEach-Object { $_.Version.ToString() }
             Write-Warning -Message ('Module [{0}] identified. Installed version(s): [{1}]' -f $moduleInfo.ModuleName, ($versionList -join ', '))
 
             # CHECK FOR INPUT VERSION

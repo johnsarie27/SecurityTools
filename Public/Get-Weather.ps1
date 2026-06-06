@@ -38,7 +38,7 @@ function Get-Weather {
 
         if ($PSBoundParameters.ContainsKey('City')) {
             $fCity = $City.Replace(' ', '+')
-            $uri += "$fCity"
+            $uri += $fCity
         }
         if ($PSBoundParameters.ContainsKey('Format')) {
             if ($Format -IN 1..4) { $uri += '?format={0}' -f $Format }

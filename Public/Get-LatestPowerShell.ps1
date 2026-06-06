@@ -29,7 +29,7 @@ function Get-LatestPowerShell {
         [System.String] $Architecture,
 
         [Parameter(Mandatory = $false, Position = 1, HelpMessage = 'Output directory')]
-        [System.String] $OutputDirectory = "$HOME\Desktop",
+        [System.String] $OutputDirectory = (Join-Path -Path $HOME -ChildPath 'Desktop'),
 
         [Parameter(Mandatory = $false, Position = 2, HelpMessage = 'Desired version of PowerShell')]
         [ValidatePattern('^\d(\.\d{1,2}){2}$')]

@@ -36,7 +36,7 @@ function Get-WhoIs {
     } #begin
     Process {
         foreach ( $ip in $IPAddress ) {
-            Write-Verbose -Message "Getting WhoIs information for $ip"
+            Write-Verbose -Message ('Getting WhoIs information for {0}' -f $ip)
             $url = '{0}/ip/{1}' -f $baseURL, $ip
             try {
                 $r = Invoke-Restmethod -Uri $url -Headers $header -ErrorAction Stop
@@ -57,13 +57,13 @@ function Get-WhoIs {
                     City                   = (Invoke-RestMethod $r.net.orgRef.'#text').org.city
                     StartAddress           = $r.net.startAddress
                     EndAddress             = $r.net.endAddress
-                    NetBlocks              = $r.net.netBlocks.netBlock | foreach-object { "$($_.startaddress)/$($_.cidrLength)" }
+                    NetBlocks              = $r.net.netBlocks.netBlock | ForEach-Object { '{0}/{1}' -f $_.startaddress, $_.cidrLength }
                     Updated                = $r.net.updateDate -as [datetime]
                 }
             } #If $r.net
         }
     } #Process
     End {
-        Write-Verbose "Ending $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Ending {0}' -f $MyInvocation.MyCommand)
     } #end
 }

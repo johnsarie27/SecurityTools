@@ -45,8 +45,8 @@ function Install-GitHubModule {
 
         # SET DEFAULT MODULE HOME PATH
         $moduleHome = switch ($Scope) {
-            'CurrentUser' { ($env:PSModulePath.Split("$splitChar"))[0] }
-            'AllUsers' { ($env:PSModulePath.Split("$splitChar"))[1] }
+            'CurrentUser' { ($env:PSModulePath.Split($splitChar))[0] }
+            'AllUsers' { ($env:PSModulePath.Split($splitChar))[1] }
         }
 
         Write-Verbose -Message ('Module home: [{0}]' -f $moduleHome)

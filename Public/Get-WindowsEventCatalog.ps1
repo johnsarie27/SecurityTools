@@ -28,7 +28,7 @@ function Get-WindowsEventCatalog {
         $uri = 'https://gist.githubusercontent.com/johnsarie27/5519dd08bae06b8b6271ac168e28e06a/raw/321c3a46756beb021012df4f2e26cccbd7fe6417/windows_signatures_850.csv'
 
         # SET LOCAL PATH
-        $path = "$PSScriptRoot\..\Private\windows_signatures_850.csv"
+        $path = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath 'Private' | Join-Path -ChildPath 'windows_signatures_850.csv'
     }
     Process {
         # GET DATA

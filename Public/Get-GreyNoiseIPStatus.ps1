@@ -71,17 +71,17 @@ function Get-GreyNoiseIPStatus {
     Process {
         # LOOP THROUGH EACH IP ADDRESS AND QUERY GREYNOISE
         foreach ($ip in $IPAddress) {
-            Write-Verbose "Querying GreyNoise for IP: $ip"
+            Write-Verbose -Message ('Querying GreyNoise for IP: {0}' -f $ip)
 
             try {
                 # MAKE THE API REQUEST
-                $response = Invoke-RestMethod -Uri "$baseUrl/$ip" -Headers $headers -Method Get -ErrorAction Stop
+                $response = Invoke-RestMethod -Uri ('{0}/{1}' -f $baseUrl, $ip) -Headers $headers -Method Get -ErrorAction Stop
 
                 # DETERMINE STATUS BASED ON RESPONSE FIELDS
                 $noiseKey = if ($response.noise) { 'noise' } else { 'nonoise' }
                 $classKey = if ($response.classification) { $response.classification } else { 'default' }
-                $statusKey = if ($response.riot) { 'riot' } else { "$classKey|$noiseKey" }
-                $status = $statusTable[$statusKey] ?? $statusTable["default|$noiseKey"]
+                $statusKey = if ($response.riot) { 'riot' } else { '{0}|{1}' -f $classKey, $noiseKey }
+                $status = $statusTable[$statusKey] ?? $statusTable[('default|{0}' -f $noiseKey)]
 
                 # RETURN A CUSTOM OBJECT WITH THE RELEVANT DATA
                 [PSCustomObject] @{

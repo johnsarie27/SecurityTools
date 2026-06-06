@@ -55,7 +55,7 @@ function Get-CountryCode {
             }
             '__cty' {
                 # MATCH COUNTRY
-                $CountryCodes.Where({ $_.'English short name' -Like "*$Country*" })
+                $CountryCodes.Where({ $_.'English short name' -Like ('*{0}*' -f $Country) })
             }
         }
     }

@@ -69,8 +69,8 @@ function Get-ItemAge {
         $New | Add-Member -MemberType NoteProperty -Name "TotalVolume(GB)" -Value $Sum
         $New | Add-Member -MemberType NoteProperty -Name OldestFile -Value $OldestFile
         $New | Add-Member -MemberType NoteProperty -Name NewestFile -Value $NewestFile
-        $New | Add-Member -MemberType NoteProperty -Name "OlderThan$AgeInDays-Days" -Value $OldFileList.Count
-        $New | Add-Member -MemberType NoteProperty -Name "NewerThan$AgeInDays-Days" -Value $NewerFileList.Count
+        $New | Add-Member -MemberType NoteProperty -Name ('OlderThan{0}-Days' -f $AgeInDays) -Value $OldFileList.Count
+        $New | Add-Member -MemberType NoteProperty -Name ('NewerThan{0}-Days' -f $AgeInDays) -Value $NewerFileList.Count
 
         $New
     }

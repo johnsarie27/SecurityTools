@@ -64,6 +64,6 @@ function Test-Performance {
         $results
     }
     End {
-        Write-Verbose -Message "Ending $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Ending {0}' -f $MyInvocation.MyCommand)
     }
 }

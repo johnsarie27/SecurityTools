@@ -95,21 +95,21 @@ function ConvertTo-FlatObject {
                         elseif ($Item -isnot [Array] -and $Item -isnot [System.Collections.IEnumerable]) {
                             foreach ($Prop in $Item.PSObject.Properties) {
                                 if ($Prop.IsGettable -and $Prop.Name -notin $ExcludeProperty) {
-                                    $NewObject["$($Prop.Name)"] = $Item.$($Prop.Name)
+                                    $NewObject[$Prop.Name] = $Item.$($Prop.Name)
                                 }
                             }
                         }
                         else {
                             $NewObject = $Item
                         }
-                        $Iterate["$i"] = $NewObject
+                        $Iterate[$i] = $NewObject
                         $i += 1
                     }
                 }
                 else {
                     foreach ($Prop in $obj.PSObject.Properties) {
                         if ($Prop.IsGettable -and $Prop.Name -notin $ExcludeProperty) {
-                            $Iterate["$($Prop.Name)"] = $obj.$($Prop.Name)
+                            $Iterate[$Prop.Name] = $obj.$($Prop.Name)
                         }
                     }
                 }
@@ -117,7 +117,7 @@ function ConvertTo-FlatObject {
             If ($Iterate.Keys.Count) {
                 foreach ($Key in $Iterate.Keys) {
                     if ($Key -notin $ExcludeProperty) {
-                        ConvertTo-FlatObject -Object @(, $Iterate["$Key"]) -Separator $Separator -Base $Base -Depth $Depth -Path ($Path + $Key) -OutputObject $OutputObject -ExcludeProperty $ExcludeProperty
+                        ConvertTo-FlatObject -Object @(, $Iterate[$Key]) -Separator $Separator -Base $Base -Depth $Depth -Path ($Path + $Key) -OutputObject $OutputObject -ExcludeProperty $ExcludeProperty
                     }
                 }
             }

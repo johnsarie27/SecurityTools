@@ -27,7 +27,7 @@ function Export-NPMAudit {
 
         [Parameter(HelpMessage = 'Path to output directory')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [System.String] $OutputDirectory = "$HOME\Desktop"
+        [System.String] $OutputDirectory = (Join-Path -Path $HOME -ChildPath 'Desktop')
     )
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)

@@ -57,7 +57,7 @@ function Expand-GZip {
         # REFUSE TO OVERWRITE AN EXISTING DESTINATION UNLESS -Force WAS PASSED
         if ((Test-Path -Path $destFullPath -PathType Leaf) -and -not $Force) {
             $errParams = @{
-                Message     = "Destination file [$destFullPath] already exists. Use -Force to overwrite."
+                Message     = 'Destination file [{0}] already exists. Use -Force to overwrite.' -f $destFullPath
                 Category    = 'ResourceExists'
                 ErrorAction = 'Stop'
             }
