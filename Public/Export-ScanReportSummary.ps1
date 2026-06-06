@@ -59,13 +59,15 @@ function Export-ScanReportSummary {
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # CREATE MASTER LIST
         $summaryObjects = [System.Collections.Generic.List[System.Object]]::new()
         $summaryReport = @()
 
         # NORMALIZE RISK VALUES TO HIGH, MEDIUM, LOW OR BLANK
         $normalizeRisk = {
-            param([object]$Value)
+            param([System.Object]$Value)
 
             if ($null -eq $Value) { return '' }
 
@@ -83,7 +85,7 @@ function Export-ScanReportSummary {
 
         # MAP CVSS SCORE TO A 3-TIER RISK
         $riskFromCvss = {
-            param([object]$Score)
+            param([System.Object]$Score)
 
             if ($null -eq $Score) { return '' }
 
@@ -122,7 +124,7 @@ function Export-ScanReportSummary {
         # SET DESTINATION PATH
         if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
             $fileName = 'Summary-Scans_{0:yyyy-MM}.xlsx' -f (Get-Date)
-            $DestinationPath = Join-Path -Path "$HOME\Desktop" -ChildPath $fileName
+            $DestinationPath = Join-Path -Path (Join-Path -Path $HOME -ChildPath 'Desktop') -ChildPath $fileName
         }
         else {
             # GET LAST MONTH'S REPORT IF EXISTS

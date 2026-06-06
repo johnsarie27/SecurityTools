@@ -62,7 +62,7 @@ function Find-WinEvent {
         [System.String[]] $Data
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # CREATE EVENT LIST
         $eventList = for ($i = 0; $i -LT $EventTable.Count; $i++) {

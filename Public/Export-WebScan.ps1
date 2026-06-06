@@ -27,10 +27,12 @@ function Export-WebScan {
 
         [Parameter(HelpMessage = 'Path to output directory')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [System.String] $OutputDirectory = "$HOME\Desktop"
+        [System.String] $OutputDirectory = (Join-Path -Path $HOME -ChildPath 'Desktop')
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         function Get-Severity {
             <# =====================================================================
             .SYNOPSIS
@@ -53,7 +55,7 @@ function Export-WebScan {
             Param(
                 [Parameter(Mandatory, HelpMessage = 'CVSS v3 Score')]
                 [ValidateNotNullOrEmpty()]
-                [double] $Score
+                [System.Double] $Score
             )
 
             $severity = switch ( $Score ) {

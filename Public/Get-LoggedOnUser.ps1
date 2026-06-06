@@ -24,7 +24,7 @@ function Get-LoggedOnUser {
         [System.String] $ComputerName
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # SET SELF REFERENCE
         $self = @('localhost', '127.0.0.1', $env:COMPUTERNAME, '::1')

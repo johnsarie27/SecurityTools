@@ -47,6 +47,8 @@ function Get-DirectoryReport {
         [System.Management.Automation.SwitchParameter] $All
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # CREATE VARS
         $fileList = [System.Collections.Generic.List[System.Object]]::new()
         $folderList = [System.Collections.Generic.List[System.Object]]::new()
@@ -134,26 +136,26 @@ function Get-DirectoryReport {
     End {
         # RETURN RESULTS
         $dir = (Get-Item $Path -Force).FullName
-        Write-Output -InputObject `n"Directory: $dir"`n
+        Write-Output -InputObject @('', ('Directory: {0}' -f $dir), '')
         if ( $fileList ) {
-            Write-Output -InputObject "Files greater than: $SizeInGb GB"
+            Write-Output -InputObject ('Files greater than: {0} GB' -f $SizeInGb)
             Write-Output -InputObject ( $fileList | Format-Table -AutoSize | Out-String )
         }
         if ( $folderList ) {
-            Write-Output -InputObject "Folders greater than: $SizeInGb GB"
+            Write-Output -InputObject ('Folders greater than: {0} GB' -f $SizeInGb)
             Write-Output -InputObject ( $folderList | Format-Table -AutoSize | Out-String )
         }
         if ( $warning ) { Write-Warning "One or more directories was not accessible!" }
 
         if ( $PSBoundParameters.ContainsKey('OutputDirectory') ) {
             $log = Join-Path -Path $OutputDirectory -ChildPath ('DirStats_{0:yyyyMMdd-HHmmss}.log' -f (Get-Date))
-            Set-Content -Path $log -Value `n"Directory: $dir"`n
+            Set-Content -Path $log -Value @('', ('Directory: {0}' -f $dir), '')
             if ( $fileList ) {
-                Add-Content -Path $log -Value "Files greater than: $SizeInGb GB"
+                Add-Content -Path $log -Value ('Files greater than: {0} GB' -f $SizeInGb)
                 Add-Content -Path $log -Value ( $fileList | Format-Table -AutoSize | Out-String )
             }
             if ( $folderList ) {
-                Add-Content -Path $log -Value "Folders greater than: $SizeInGb GB"
+                Add-Content -Path $log -Value ('Folders greater than: {0} GB' -f $SizeInGb)
                 Add-Content -Path $log -Value ( $folderList | Format-Table -AutoSize | Out-String )
             }
             if ( $warning ) { Add-Content -Path $log -Value "One or more directories was not accessible!" }

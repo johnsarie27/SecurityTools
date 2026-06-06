@@ -43,6 +43,8 @@ function Convert-TimeZone {
         [System.String] $TargetTimeZone = 'UTC'
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # FIND OS
         if ( $PSVersionTable.PSVersion.Major -lt 6 ) { $Windows = $true }
 

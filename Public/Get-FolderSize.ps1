@@ -64,7 +64,7 @@ function Get-FolderSize {
         [System.Management.Automation.SwitchParameter] $NoTotal
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # Get a list of all the directories in the base path we're looking for.
         $whereClause = if ($FolderName -eq 'all') { { $_.FullName -notin $OmitFolder } }

@@ -23,7 +23,7 @@ function Uninstall-MSI {
         [System.String] $ProductId
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         if (-not $IsWindows) { Write-Error -Message 'Uninstall-MSI requires Windows.' -ErrorAction Stop }
 

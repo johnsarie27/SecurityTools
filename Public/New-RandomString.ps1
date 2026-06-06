@@ -50,7 +50,7 @@ function New-RandomString {
         [System.Management.Automation.SwitchParameter] $ExcludeSpecial
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # CHECK FOR VALID PARAMETERS
         if ($ExcludeNumber -AND $ExcludeLowercase -AND $ExcludeUppercase -AND $ExcludeSpecial) {

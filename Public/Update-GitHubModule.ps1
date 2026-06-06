@@ -34,7 +34,7 @@ function Update-GitHubModule {
         [System.Management.Automation.SwitchParameter] $Replace
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # SET PLATFORM TEMP
         $tempDir = if ($IsWindows) { $env:TEMP } elseif ($IsMacOS) { $Env:TMPDIR } else { '/tmp/' }

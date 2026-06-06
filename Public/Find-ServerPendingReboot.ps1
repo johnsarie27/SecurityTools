@@ -26,17 +26,19 @@
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         if (-not $IsWindows) { Write-Error -Message 'Find-ServerPendingReboot requires Windows.' -ErrorAction Stop }
 
         # THE REGISTRY KEYS BELOW CONTAIN VALUES THAT DETERMINE WHETHER A SYSTEM REQUIRES A REBOOT
-        $pendFileKeyPath = "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\"
-        $autoUpdateKeyPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update"
-        $CBSKeyPath = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\"
+        $pendFileKeyPath = 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\'
+        $autoUpdateKeyPath = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update'
+        $CBSKeyPath = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Component Based Servicing\'
 
         $sbRemote = @{
             PendingFile = { Get-ItemProperty -Path $Using:pendFileKeyPath -Name PendingFileRenameOperations -ErrorAction SilentlyContinue }
-            AutoUpdate  = { Test-Path -Path "$Using:autoUpdateKeyPath\RebootRequired" }
-            CBS         = { Test-Path -Path "$Using:CBSKeyPath\RebootPending" }
+            AutoUpdate  = { Test-Path -Path ('{0}\RebootRequired' -f $Using:autoUpdateKeyPath) }
+            CBS         = { Test-Path -Path ('{0}\RebootPending' -f $Using:CBSKeyPath) }
         }
 
         # SYSTEMS GOVERNED BY SCCM 2012 CONTAIN ADDITIONAL VALUES TO KEEP TRACK OF REQUIRED REBOOT

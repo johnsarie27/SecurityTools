@@ -36,7 +36,7 @@ function Install-GitHubModule {
         [System.String] $Scope = 'CurrentUser'
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # SET PLATFORM VARIABLES
         if ($IsWindows) { $tempDir = $env:TEMP; $splitChar = ';' }
@@ -45,8 +45,8 @@ function Install-GitHubModule {
 
         # SET DEFAULT MODULE HOME PATH
         $moduleHome = switch ($Scope) {
-            'CurrentUser' { ($env:PSModulePath.Split("$splitChar"))[0] }
-            'AllUsers' { ($env:PSModulePath.Split("$splitChar"))[1] }
+            'CurrentUser' { ($env:PSModulePath.Split($splitChar))[0] }
+            'AllUsers' { ($env:PSModulePath.Split($splitChar))[1] }
         }
 
         Write-Verbose -Message ('Module home: [{0}]' -f $moduleHome)

@@ -47,6 +47,8 @@ function Compare-List {
         [System.Object[]] $ListB
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # CREATE RESULTS COLLECTION
         $results = [System.Collections.Generic.List[System.Object]]::new()
     }
@@ -83,10 +85,10 @@ function Compare-List {
                 $new = New-Object -TypeName psobject
                 if ( $sameList[$i] ) { $new | Add-Member -MemberType NoteProperty -Name 'DUPLICATES' -Value $sameList[$i] }
                 else { $new | Add-Member -MemberType NoteProperty -Name 'DUPLICATES' -Value '=>' }
-                if ( $header1List[$i] ) { $new | Add-Member -MemberType NoteProperty -Name "$header1" -Value $header1List[$i] }
-                else { $new | Add-Member -MemberType NoteProperty -Name "$header1" -Value '<>' }
-                if ( $header2List[$i] ) { $new | Add-Member -MemberType NoteProperty -Name "$header2" -Value $header2List[$i] }
-                else { $new | Add-Member -MemberType NoteProperty -Name "$header2" -Value '<=' }
+                if ( $header1List[$i] ) { $new | Add-Member -MemberType NoteProperty -Name $header1 -Value $header1List[$i] }
+                else { $new | Add-Member -MemberType NoteProperty -Name $header1 -Value '<>' }
+                if ( $header2List[$i] ) { $new | Add-Member -MemberType NoteProperty -Name $header2 -Value $header2List[$i] }
+                else { $new | Add-Member -MemberType NoteProperty -Name $header2 -Value '<=' }
                 $results.Add($new)
             }
         }

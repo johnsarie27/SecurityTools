@@ -31,14 +31,14 @@ function Get-Weather {
         [System.String] $Format
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         New-Variable -Name 'base_uri' -Value 'https://wttr.in/' -Option ReadOnly
         $uri = $base_uri
 
         if ($PSBoundParameters.ContainsKey('City')) {
             $fCity = $City.Replace(' ', '+')
-            $uri += "$fCity"
+            $uri += $fCity
         }
         if ($PSBoundParameters.ContainsKey('Format')) {
             if ($Format -IN 1..4) { $uri += '?format={0}' -f $Format }

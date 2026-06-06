@@ -25,6 +25,8 @@ function Get-CVSSv3BaseScore {
         [System.String[]] $CVE
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         $baseUri = "https://nvd.nist.gov/vuln/detail/{0}"
         $pattern = 'class="label\slabel-\w+">(\d+\.\d+)\s(\w+)</a>'
     }

@@ -32,7 +32,7 @@ function Get-DomainRegistration {
         [System.String] $ApiKey
     )
     Begin {
-        Write-Verbose "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         $baseUrl = 'https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey={0}&domainName={1}'
         $headers = @{ accept = "application/json" }

@@ -23,6 +23,8 @@ function Get-ADUserStatus {
         [System.String] $Identity
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         Import-Module -Name ActiveDirectory -ErrorAction Stop
     }
     Process {

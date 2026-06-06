@@ -39,7 +39,7 @@ function Get-AlternateDataStream {
         [System.String] $Path = "*.*"
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # SET DESIRED PROPERTIES
         $props = @(

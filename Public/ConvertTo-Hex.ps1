@@ -26,7 +26,7 @@ function ConvertTo-Hex {
     )
     Begin {
         # OUTPUT VERBOSE MESSAGE
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
     }
     Process {
         # LOOP ALL INPUT

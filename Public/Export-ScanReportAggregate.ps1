@@ -36,7 +36,7 @@ function Export-ScanReportAggregate {
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
         [Alias('DestinationPath')]
-        [System.String] $OutputDirectory = "$HOME\Desktop",
+        [System.String] $OutputDirectory = (Join-Path -Path $HOME -ChildPath 'Desktop'),
 
         [Parameter(Mandatory = $false)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Include "*.csv" })]
@@ -61,6 +61,8 @@ function Export-ScanReportAggregate {
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # PROVIDE HELP FOR THE USER WHEN NO SCANS ARE DECLARED
         $requiredParams = @('NessusSystemScan', 'NessusWebScan', 'AlertLogicWebScan', 'DatabaseScan', 'AcunetixScan')
         foreach ( $param in $requiredParams ) {

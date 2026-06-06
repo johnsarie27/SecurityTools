@@ -86,7 +86,7 @@ function Set-GitHubBranchProtection {
         [System.Management.Automation.SwitchParameter] $Force
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.MyCommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # VERIFY gh CLI IS AVAILABLE
         if (-not (Get-Command -Name 'gh' -ErrorAction SilentlyContinue)) {

@@ -27,9 +27,11 @@ function Export-VeracodeReport {
 
         [Parameter(HelpMessage = 'Output directory')]
         [ValidateScript({ Test-Path -Path $_ -PathType Container })]
-        [System.String] $OutputDirectory = "$HOME\Desktop"
+        [System.String] $OutputDirectory = (Join-Path -Path $HOME -ChildPath 'Desktop')
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         [xml] $xml = Get-Content -Path $VeracodeXML
         #Write-Output $xml.detailedreport.severity
 

@@ -27,7 +27,9 @@ function Get-SavedHistory {
         [System.String] $Search
     )
     Begin {
-        $where = { $_ -like "*$Search*" -and $_ -notmatch 'HistorySavePath' -and $_ -notmatch 'SavedHistory' }
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
+        $where = { $_ -like ('*{0}*' -f $Search) -and $_ -notmatch 'HistorySavePath' -and $_ -notmatch 'SavedHistory' }
         $history = Get-Content -Path (Get-PSReadLineOption).HistorySavePath |
             Where-Object -FilterScript $where | Select-Object -Unique
     }

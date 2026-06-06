@@ -35,7 +35,7 @@ function Test-Performance {
         [System.Int32] $Iterations = 10
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         # CREATE COLLECTION
         $measurements = [System.Collections.Generic.List[System.TimeSpan]]::new()
@@ -64,6 +64,6 @@ function Test-Performance {
         $results
     }
     End {
-        Write-Verbose -Message "Ending $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Ending {0}' -f $MyInvocation.MyCommand)
     }
 }

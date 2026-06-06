@@ -28,6 +28,8 @@ function Get-ActiveGatewayUser {
         [System.String] $ComputerName
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         if (-not $IsWindows) { Write-Error -Message 'Get-ActiveGatewayUser requires Windows.' -ErrorAction Stop }
 
         # SET QUERY PARAMS

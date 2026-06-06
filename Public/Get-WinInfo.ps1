@@ -38,7 +38,7 @@ function Get-WinInfo {
         [System.String] $ComputerName
     )
     Begin {
-        Write-Verbose -Message "Starting $($MyInvocation.Mycommand)"
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         if (-not $IsWindows) { Write-Error -Message 'Get-WinInfo requires Windows.' -ErrorAction Stop }
 

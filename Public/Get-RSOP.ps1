@@ -36,6 +36,8 @@ function Get-RSOP {
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         Import-Module -Name GroupPolicy -ErrorAction Stop
     }
     Process {

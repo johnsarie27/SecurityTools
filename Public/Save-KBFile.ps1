@@ -49,6 +49,8 @@ function Save-KBFile {
         [System.String] $Architecture = 'x64'
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         function Get-KBLink {
             Param(
                 [Parameter(Mandatory)]
@@ -64,10 +66,10 @@ function Save-KBFile {
                 if ( $i.type -eq 'Button' -and $i.Value -eq 'Download' ) { $i.ID }
             }
 
-            Write-Verbose -Message "$kbids"
+            Write-Verbose -Message ($kbids -join ' ')
 
             if (-not $kbids) {
-                Write-Warning -Message "No results found for $Name"
+                Write-Warning -Message ('No results found for {0}' -f $Name)
             }
 
             $guids = foreach ( $i in $results.Links ) {
@@ -77,19 +79,19 @@ function Save-KBFile {
             }
 
             if (-not $guids) {
-                Write-Warning -Message "No file found for $Name"
+                Write-Warning -Message ('No file found for {0}' -f $Name)
             }
 
             $splat = @{ Uri = ('{0}DownloadDialog.aspx' -f $msUpdate); Method = 'Post' }
             foreach ($guid in $guids) {
-                Write-Verbose -Message "Downloading information for $guid"
+                Write-Verbose -Message ('Downloading information for {0}' -f $guid)
                 $post = @{ size = 0; updateID = $guid; uidInfo = $guid } | ConvertTo-Json -Compress
-                $splat['Body'] = @{ updateIDs = "[$post]" }
+                $splat['Body'] = @{ updateIDs = ('[{0}]' -f $post) }
                 $data = (Invoke-WebRequest @splat).Content
                 $links = Select-String -InputObject $data -AllMatches -Pattern $pattern | Select-Object -Unique
 
                 if (-not $links) {
-                    Write-Warning -Message "No file found for $Name"
+                    Write-Warning -Message ('No file found for {0}' -f $Name)
                 }
 
                 foreach ($link in $links) { $link.matches.value }
@@ -105,7 +107,7 @@ function Save-KBFile {
             $links = Get-KBLink -Name $kb
 
             if ($links.Count -gt 1 -and $Architecture -ne "All") {
-                $templinks = $links | Where-Object { $PSItem -match "$($Architecture)_" }
+                $templinks = $links | Where-Object { $PSItem -match ('{0}_' -f $Architecture) }
                 if ($templinks) {
                     $links = $templinks
                 }
@@ -122,16 +124,16 @@ function Save-KBFile {
                     $Path = Split-Path -Path $FilePath
                 }
 
-                $file = "$Path$([IO.Path]::DirectorySeparatorChar)$FilePath"
+                $file = Join-Path -Path $Path -ChildPath $FilePath
 
                 if ((Get-Command Start-BitsTransfer -ErrorAction Ignore)) {
                     Start-BitsTransfer -Source $link -Destination $file
                 }
                 else {
                     # Invoke-WebRequest is crazy slow for large downloads
-                    Write-Progress -Activity "Downloading $FilePath" -Id 1
+                    Write-Progress -Activity ('Downloading {0}' -f $FilePath) -Id 1
                     (New-Object Net.WebClient).DownloadFile($link, $file)
-                    Write-Progress -Activity "Downloading $FilePath" -Id 1 -Completed
+                    Write-Progress -Activity ('Downloading {0}' -f $FilePath) -Id 1 -Completed
                 }
                 if (Test-Path -Path $file) {
                     Get-ChildItem -Path $file

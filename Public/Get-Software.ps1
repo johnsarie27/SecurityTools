@@ -43,6 +43,8 @@ function Get-Software {
         [System.Management.Automation.SwitchParameter] $All
     )
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         if (-not $IsWindows) { Write-Error -Message 'Get-Software requires Windows.' -ErrorAction Stop }
 
         # SET VARS FOR REMOTE CALLS

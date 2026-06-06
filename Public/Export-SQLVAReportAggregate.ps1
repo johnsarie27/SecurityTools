@@ -29,7 +29,7 @@ function Export-SQLVAReportAggregate {
             Mandatory, ParameterSetName = 'folder',
             HelpMessage = 'Path to directory of SQL Vulnerability Assessemnt file(s)'
         )]
-        [ValidateScript({ Test-Path -Path "$_\*" -Include "*.xlsx" })]
+        [ValidateScript({ Test-Path -Path (Join-Path -Path $_ -ChildPath '*') -Include '*.xlsx' })]
         [Alias('IP', 'Directory')]
         [System.String] $InputPath,
 
@@ -52,6 +52,8 @@ function Export-SQLVAReportAggregate {
     )
 
     Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
         # IMPORT REQUIRED MODULE
         Import-Module -Name ImportExcel
 
@@ -60,13 +62,13 @@ function Export-SQLVAReportAggregate {
 
         # WRITE TO DESKTOP IF DESTINATIONPATH NOT PROVIDED
         if ( -not $PSBoundParameters.ContainsKey('DestinationPath') ) {
-            $DestinationPath = Join-Path -Path "$HOME\Desktop" -ChildPath ('Aggregate-SQL-Scans_{0:yyyy-MM}.xlsx' -f (Get-Date))
+            $DestinationPath = Join-Path -Path (Join-Path -Path $HOME -ChildPath 'Desktop') -ChildPath ('Aggregate-SQL-Scans_{0:yyyy-MM}.xlsx' -f (Get-Date))
         }
 
         # GET REPORTS FROM ZIP
         if ( $PSBoundParameters.ContainsKey('ZipPath') ) {
             # EXTRACT FILES
-            Expand-Archive -Path $ZipPath -DestinationPath ($ExpandPath = "$HOME\Desktop\Extract")
+            Expand-Archive -Path $ZipPath -DestinationPath ($ExpandPath = (Join-Path -Path (Join-Path -Path $HOME -ChildPath 'Desktop') -ChildPath 'Extract'))
 
             # RESET INPUTPATH VAR
             $InputPath = $ExpandPath
