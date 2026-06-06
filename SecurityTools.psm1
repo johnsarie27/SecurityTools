@@ -4,17 +4,20 @@
 # ==============================================================================
 
 # SET DIRECTORIES
-$dirs = @("$PSScriptRoot\Public", "$PSScriptRoot\Private")
+$dirs = @(
+    (Join-Path -Path $PSScriptRoot -ChildPath 'Public')
+    (Join-Path -Path $PSScriptRoot -ChildPath 'Private')
+)
 
 # DOT SOURCE ALL PS SCRIPTS
 foreach ($file in (Get-ChildItem -Path $dirs -Filter '*.ps1')) { . $file.FullName }
 
 # SET VARIABLES
 New-Variable -Name 'EventTable' -Option ReadOnly -Value (
-    Get-Content -Raw -Path "$PSScriptRoot\Private\EventTable.json" | ConvertFrom-Json
+    Get-Content -Raw -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Private/EventTable.json') | ConvertFrom-Json
 )
 New-Variable -Name 'InfoModel' -Option ReadOnly -Value (
-    Get-Content -Raw -Path "$PSScriptRoot\Private\InformationModel.json" | ConvertFrom-Json
+    Get-Content -Raw -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Private/InformationModel.json') | ConvertFrom-Json
 )
 
 # EXPORT MEMBERS
