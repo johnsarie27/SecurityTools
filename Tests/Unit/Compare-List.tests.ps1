@@ -46,7 +46,7 @@ Describe -Name "Compare-List" -Fixture {
         }
 
         BeforeEach {
-            $a = Get-Process
+            $a = Get-Process | Where-Object ProcessName
             $b = $a | Select-Object -First 8
             $List = @()
             for ( $i = 0; $i -lt $a.Count; $i++ ) {
