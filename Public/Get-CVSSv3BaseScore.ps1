@@ -18,6 +18,7 @@ function Get-CVSSv3BaseScore {
         Status: Stable
     #>
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSCustomObject])]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'CVE ID')]
         [ValidatePattern('CVE-\d{4}\-\d+')]

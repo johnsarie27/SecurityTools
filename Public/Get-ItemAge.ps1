@@ -25,6 +25,7 @@ function Get-ItemAge {
         https://blogs.technet.microsoft.com/pstips/2017/05/20/display-friendly-file-sizes-in-powershell/
     #>
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSObject])]
     [Alias('Get-DirItemAges')]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Target directory')]
@@ -39,6 +40,9 @@ function Get-ItemAge {
         [Parameter(HelpMessage = 'Do not recurse through children directories')]
         [System.Management.Automation.SwitchParameter] $NoRecurse
     )
+    Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+    }
     Process {
         if ( $NoRecurse ) { $Deep = $false } else { $Deep = $true }
         $Splatter = @{ Recurse = $Deep }

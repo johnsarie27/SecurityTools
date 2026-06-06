@@ -29,6 +29,9 @@ function ConvertTo-Encoding {
         [ValidateSet('Base64', 'URL')]
         [System.String] $Encoding = 'Base64'
     )
+    Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+    }
     Process {
         switch ($Encoding) {
             'Base64' {

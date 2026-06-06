@@ -34,6 +34,9 @@ function Convert-Epoch {
         [ValidateNotNullOrEmpty()]
         [System.Int64] $Milliseconds # 1618614176000
     )
+    Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+    }
     Process {
         switch ($PSCmdlet.ParameterSetName) {
             '__dt' {

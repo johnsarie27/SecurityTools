@@ -17,6 +17,7 @@ function Get-ADUserStatus {
         Status: Stable
     #>
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.PSCustomObject])]
     Param(
         [Parameter(Mandatory, HelpMessage = 'AD User Identity')]
         [ValidateNotNullOrEmpty()]

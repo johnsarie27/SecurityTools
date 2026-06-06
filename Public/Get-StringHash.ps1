@@ -19,6 +19,7 @@ function Get-StringHash {
         Status: Stable
     #>
     [CmdletBinding()]
+    [OutputType([System.String])]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'String to hash')]
         [System.String] $String,
@@ -28,6 +29,9 @@ function Get-StringHash {
         [System.String] $Algorithm = 'SHA256'
     )
 
+    Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+    }
     Process {
         # THE TYPE COULD BE CHANGED FROM ASCII TO UTF8 OR UNICODE
         # DEPENDING ON THE STRING INPUT

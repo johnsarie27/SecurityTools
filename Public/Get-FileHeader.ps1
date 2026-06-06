@@ -21,6 +21,7 @@ function Get-FileHeader {
         https://stackoverflow.com/questions/26194071/recognize-file-types-in-powershell
     #>
     [CmdletBinding()]
+    [OutputType([System.String])]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'File path')]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf })]
@@ -30,9 +31,10 @@ function Get-FileHeader {
         [ValidateRange(2, 100)]
         [System.Int16] $Bytes = 4
     )
-    Process {
+    Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
-
+    }
+    Process {
         # GET BYTES OF FILE
         $fileBytes = [System.IO.File]::ReadAllBytes($Path)
 

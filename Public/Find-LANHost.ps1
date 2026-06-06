@@ -42,30 +42,34 @@ function Find-LANHost {
             })]
         [System.Management.Automation.SwitchParameter] $ClearARPCache
     )
-
-    $ASCIIEncoding = New-Object System.Text.ASCIIEncoding
-    $Bytes = $ASCIIEncoding.GetBytes("a")
-    $UDP = New-Object System.Net.Sockets.Udpclient
-
-    if ($ClearARPCache) { arp -d }
-
-    $Timer = [System.Diagnostics.Stopwatch]::StartNew()
-
-    foreach ( $i in $IP ) {
-        $UDP.Connect($i, 1)
-        [void] $UDP.Send($Bytes, $Bytes.length)
-        if ( $DelayMS ) { [System.Threading.Thread]::Sleep($DelayMS) }
+    Begin {
+        Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
     }
+    Process {
+        $ASCIIEncoding = New-Object System.Text.ASCIIEncoding
+        $Bytes = $ASCIIEncoding.GetBytes("a")
+        $UDP = New-Object System.Net.Sockets.Udpclient
 
-    $Hosts = arp -a
+        if ($ClearARPCache) { arp -d }
 
-    $Timer.Stop()
-    if ($Timer.Elapsed.TotalSeconds -gt 15) {
-        Write-Warning "Scan took longer than 15 seconds, ARP entries may have been flushed. Recommend lowering DelayMS parameter"
+        $Timer = [System.Diagnostics.Stopwatch]::StartNew()
+
+        foreach ( $i in $IP ) {
+            $UDP.Connect($i, 1)
+            [void] $UDP.Send($Bytes, $Bytes.length)
+            if ( $DelayMS ) { [System.Threading.Thread]::Sleep($DelayMS) }
+        }
+
+        $Hosts = arp -a
+
+        $Timer.Stop()
+        if ($Timer.Elapsed.TotalSeconds -gt 15) {
+            Write-Warning "Scan took longer than 15 seconds, ARP entries may have been flushed. Recommend lowering DelayMS parameter"
+        }
+
+        $Hosts = $Hosts | Where-Object { $_ -match "dynamic" } | ForEach-Object { ($_.trim() -replace " {1,}", ",") | ConvertFrom-Csv -Header "IP", "MACAddress" }
+        $Hosts = $Hosts | Where-Object { $_.IP -in $IP }
+
+        Write-Output -InputObject $Hosts
     }
-
-    $Hosts = $Hosts | Where-Object { $_ -match "dynamic" } | ForEach-Object { ($_.trim() -replace " {1,}", ",") | ConvertFrom-Csv -Header "IP", "MACAddress" }
-    $Hosts = $Hosts | Where-Object { $_.IP -in $IP }
-
-    Write-Output -InputObject $Hosts
 }

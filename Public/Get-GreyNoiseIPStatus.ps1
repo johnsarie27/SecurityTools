@@ -81,7 +81,7 @@ function Get-GreyNoiseIPStatus {
                 $noiseKey = if ($response.noise) { 'noise' } else { 'nonoise' }
                 $classKey = if ($response.classification) { $response.classification } else { 'default' }
                 $statusKey = if ($response.riot) { 'riot' } else { '{0}|{1}' -f $classKey, $noiseKey }
-                $status = $statusTable[$statusKey] ?? $statusTable[('default|{0}' -f $noiseKey)]
+                $status = if ($null -ne $statusTable[$statusKey]) { $statusTable[$statusKey] } else { $statusTable[('default|{0}' -f $noiseKey)] }
 
                 # RETURN A CUSTOM OBJECT WITH THE RELEVANT DATA
                 [PSCustomObject] @{

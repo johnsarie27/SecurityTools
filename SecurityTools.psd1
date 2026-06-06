@@ -15,7 +15,7 @@
     ModuleVersion        = '0.10.4'
 
     # Supported PSEditions
-    CompatiblePSEditions = @('Core', 'Desktop')
+    CompatiblePSEditions = @('Core')
 
     # ID used to uniquely identify this module
     GUID                 = '46425f03-e6da-4deb-957c-c2dba2b2b777'
@@ -33,7 +33,7 @@
     Description          = 'Functions used in reporting and management of security devices and resources.'
 
     # Minimum version of the Windows PowerShell engine required by this module
-    PowerShellVersion    = '5.1'
+    PowerShellVersion    = '7.0'
 
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''
