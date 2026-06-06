@@ -33,7 +33,7 @@
     Description          = 'Functions used in reporting and management of security devices and resources.'
 
     # Minimum version of the Windows PowerShell engine required by this module
-    PowerShellVersion    = '7'
+    PowerShellVersion    = '7.0'
 
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''
