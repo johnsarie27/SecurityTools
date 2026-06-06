@@ -25,7 +25,7 @@ function Get-GreyNoiseIPStatus {
         https://greynoise.io
     #>
     [CmdletBinding()]
-    [OutputType([PSCustomObject])]
+    [OutputType([System.Management.Automation.PSCustomObject])]
     Param (
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [System.Net.IPAddress[]] $IPAddress,
@@ -38,7 +38,7 @@ function Get-GreyNoiseIPStatus {
                 $true
             })] #>
         [ValidateLength(20, 100)]
-        [string] $ApiKey
+        [System.String] $ApiKey
     )
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)

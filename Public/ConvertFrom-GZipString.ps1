@@ -22,7 +22,7 @@ function ConvertFrom-GZipString {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipeline)]
-        [string[]] $String
+        [System.String[]] $String
     )
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)

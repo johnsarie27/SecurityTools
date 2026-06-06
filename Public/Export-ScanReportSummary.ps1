@@ -67,7 +67,7 @@ function Export-ScanReportSummary {
 
         # NORMALIZE RISK VALUES TO HIGH, MEDIUM, LOW OR BLANK
         $normalizeRisk = {
-            param([object]$Value)
+            param([System.Object]$Value)
 
             if ($null -eq $Value) { return '' }
 
@@ -85,7 +85,7 @@ function Export-ScanReportSummary {
 
         # MAP CVSS SCORE TO A 3-TIER RISK
         $riskFromCvss = {
-            param([object]$Score)
+            param([System.Object]$Score)
 
             if ($null -eq $Score) { return '' }
 

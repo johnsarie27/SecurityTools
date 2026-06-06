@@ -55,7 +55,7 @@ function Export-WebScan {
             Param(
                 [Parameter(Mandatory, HelpMessage = 'CVSS v3 Score')]
                 [ValidateNotNullOrEmpty()]
-                [double] $Score
+                [System.Double] $Score
             )
 
             $severity = switch ( $Score ) {

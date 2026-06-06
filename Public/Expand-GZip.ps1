@@ -38,7 +38,7 @@ function Expand-GZip {
         [System.IO.DirectoryInfo] $OutputDirectory,
 
         [Parameter(Mandatory = $false, HelpMessage = 'Overwrite the destination file if it already exists')]
-        [Switch] $Force
+        [System.Management.Automation.SwitchParameter] $Force
     )
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
