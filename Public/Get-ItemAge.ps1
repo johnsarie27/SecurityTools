@@ -47,8 +47,8 @@ function Get-ItemAge {
         if ( $NoRecurse ) { $Deep = $false } else { $Deep = $true }
         $Splatter = @{ Recurse = $Deep }
 
-        $Tot = Get-ChildItem $Path @Splatter | Measure-Object | Select-Object -exp Count
-        $Avg = [math]::round(((Get-ChildItem $Path @Splatter | Measure-Object -Property Length -Average | Select-Object -exp Average) / 1mb ), 2 )
+        $Tot = Get-ChildItem $Path @Splatter | Measure-Object | Select-Object -ExpandProperty Count
+        $Avg = [math]::round(((Get-ChildItem $Path @Splatter | Measure-Object -Property Length -Average | Select-Object -ExpandProperty Average) / 1mb ), 2 )
         $Sum = [math]::round(((Get-ChildItem $Path @Splatter | Measure-Object -Property Length -Sum).Sum / 1gb), 2)
 
         $OldestFile = Get-ChildItem $Path @Splatter | Sort-Object LastWriteTime | Select-Object -First 1 Name, LastWriteTime
@@ -67,7 +67,7 @@ function Get-ItemAge {
         $New | Add-Member -MemberType NoteProperty -Name Deep -Value $Deep
         $New | Add-Member -MemberType NoteProperty -Name Date -Value ( Get-Date )
         $New | Add-Member -MemberType NoteProperty -Name ComputerName -Value ( hostname )
-        $New | Add-Member -MemberType NoteProperty -Name Directory -Value (Get-Item $Path | Select-Object -EXP FullName)
+        $New | Add-Member -MemberType NoteProperty -Name Directory -Value (Get-Item $Path | Select-Object -ExpandProperty FullName)
         $New | Add-Member -MemberType NoteProperty -Name TotalFiles -Value $Tot
         $New | Add-Member -MemberType NoteProperty -Name "AverageFileSize(MB)" -Value $Avg
         $New | Add-Member -MemberType NoteProperty -Name "TotalVolume(GB)" -Value $Sum
