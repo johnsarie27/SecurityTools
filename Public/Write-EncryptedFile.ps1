@@ -23,7 +23,7 @@ function Write-EncryptedFile {
         Status: Stable
         Originally written by Tim Curwick in PowerShell Conference Book 2
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     Param(
         [Parameter(Mandatory, ValueFromPipeLine)]
         [System.String[]] $Content,
@@ -40,6 +40,10 @@ function Write-EncryptedFile {
     )
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
+
+        # GATE FILE CREATION ON SHOULDPROCESS; SUPPRESSES -WhatIf / -Confirm DECLINE
+        $shouldWrite = $PSCmdlet.ShouldProcess($Path, 'Encrypt and write')
+        if (-not $shouldWrite) { return }
 
         try {
             # If the key was provided as a string convert it to bytes
@@ -83,6 +87,8 @@ function Write-EncryptedFile {
         $firstLine = $true
     }
     Process {
+        if (-not $shouldWrite) { return }
+
         try {
             foreach ( $line in $Content ) {
                 if ( $firstLine ) { $firstLine = $false }
@@ -103,6 +109,8 @@ function Write-EncryptedFile {
         }
     }
     End {
+        if (-not $shouldWrite) { return }
+
         # Clean up
         if ( $streamWriter ) { $streamWriter.Close() }
         if ( $cryptoStream ) { $cryptoStream.Close() }
