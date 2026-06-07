@@ -65,7 +65,7 @@ function Install-ModuleFromZip {
             Expand-Archive -Path $Path -DestinationPath $tempPath
 
             # GET MODULE INFO
-            $psDataFile = Get-ChildItem $tempPath -Recurse -Filter '*.psd1'
+            $psDataFile = Get-ChildItem -Path $tempPath -Recurse -Filter '*.psd1'
             $psData = Import-PowerShellDataFile -Path $psDataFile.FullName
             $moduleInfo = @{
                 ModuleName      = [System.IO.Path]::GetFileNameWithoutExtension($psDataFile)
@@ -73,8 +73,8 @@ function Install-ModuleFromZip {
             }
 
             # RENAME MODULE FOLDER TO VERSION NUMBER
-            Rename-Item -Path (Get-ChildItem $tempPath).FullName -NewName $moduleInfo.RequiredVersion.ToString()
-            $moduleFolder = Get-ChildItem $tempPath
+            Rename-Item -Path (Get-ChildItem -Path $tempPath).FullName -NewName $moduleInfo.RequiredVersion.ToString()
+            $moduleFolder = Get-ChildItem -Path $tempPath
 
             # SET MODULE PATH
             $modulePath = Join-Path -Path $moduleHome -ChildPath $moduleInfo.ModuleName

@@ -59,10 +59,15 @@ Describe -Name 'Save-KBFile' -Fixture {
             }
         }
 
-        It -Name 'errors when both -FilePath and -Name are supplied (current guard behavior)' -Test {
-            # The Process-block guard fires whenever both are specified, regardless of Name.Count.
-            { Save-KBFile -Name 'KB1' -FilePath 'C:\out.cab' -ErrorAction Stop } |
+        It -Name 'errors when -FilePath is combined with more than one -Name' -Test {
+            { Save-KBFile -Name 'KB1', 'KB2' -FilePath 'C:\out.cab' -ErrorAction Stop } |
                 Should -Throw -ExpectedMessage '*only one KB when using FilePath*'
+        }
+
+        It -Name 'allows -FilePath with exactly one -Name' -Test {
+            # Invoke-WebRequest is mocked to return no matching downloads, so the function warns
+            # and returns without ever touching the downloader.
+            { Save-KBFile -Name 'KB1' -FilePath 'C:\out.cab' -ErrorAction Stop } | Should -Not -Throw
         }
     }
 }
