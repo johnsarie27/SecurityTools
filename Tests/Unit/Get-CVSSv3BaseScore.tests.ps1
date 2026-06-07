@@ -40,4 +40,49 @@ Describe -Name 'Get-CVSSv3BaseScore' -Fixture {
             { Get-CVSSv3BaseScore -CVE 'INVALID-ID' } | Should -Throw
         }
     }
+
+    Context -Name 'malformed / non-matching response' -Fixture {
+        # Function does NOT throw when the regex finds no match. It catches the resulting
+        # null-property access and emits a warning instead, returning no pipeline output.
+        BeforeAll {
+            Mock -CommandName Invoke-WebRequest -MockWith {
+                [PSCustomObject] @{ Content = '<html><body>no score here</body></html>' }
+            } -ModuleName $env:BHProjectName
+        }
+
+        It -Name 'emits a "No CVSS v3 score found" warning for unmatched content' -Test {
+            $warning = $null
+            Get-CVSSv3BaseScore -CVE 'CVE-2020-9999' -WarningVariable warning -WarningAction SilentlyContinue
+            $warning | Should -Not -BeNullOrEmpty
+            $warning -join ' ' | Should -BeLike '*No CVSS v3 score found*CVE-2020-9999*'
+        }
+
+        It -Name 'produces no pipeline output when the score cannot be parsed' -Test {
+            $result = Get-CVSSv3BaseScore -CVE 'CVE-2020-9999' -WarningAction SilentlyContinue
+            $result | Should -BeNullOrEmpty
+        }
+
+        It -Name 'does not throw even when the response is empty' -Test {
+            Mock -CommandName Invoke-WebRequest -MockWith {
+                [PSCustomObject] @{ Content = '' }
+            } -ModuleName $env:BHProjectName
+            { Get-CVSSv3BaseScore -CVE 'CVE-2020-9999' -WarningAction SilentlyContinue } |
+            Should -Not -Throw
+        }
+    }
+
+    Context -Name 'transport failure' -Fixture {
+        # When Invoke-WebRequest itself fails (network down, 5xx with -ErrorAction Stop default),
+        # the function does not catch it — the error propagates to the caller.
+        BeforeAll {
+            Mock -CommandName Invoke-WebRequest -MockWith {
+                throw [System.Net.WebException]::new('upstream unavailable')
+            } -ModuleName $env:BHProjectName
+        }
+
+        It -Name 'propagates web request exceptions to the caller' -Test {
+            { Get-CVSSv3BaseScore -CVE 'CVE-2020-2659' } |
+            Should -Throw -ExpectedMessage '*upstream unavailable*'
+        }
+    }
 }

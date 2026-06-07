@@ -64,4 +64,53 @@ Describe -Name 'Get-EPSS' -Fixture {
             { Get-EPSS -CVE 'NOT-A-CVE' } | Should -Throw
         }
     }
+
+    Context -Name 'multiple CVEs as array argument (comma-joined)' -Fixture {
+        # When -CVE receives an array directly (vs piped), the function comma-joins them
+        # into a single request rather than iterating.
+        It -Name 'comma-joins multiple CVE values into a single request URI' -Test {
+            Get-EPSS -CVE 'CVE-2022-27225', 'CVE-2021-44228'
+            Should -Invoke -CommandName Invoke-RestMethod -ModuleName $env:BHProjectName -Times 1 -Exactly `
+                -ParameterFilter { $Uri -like '*cve=CVE-2022-27225,CVE-2021-44228*' }
+        }
+    }
+
+    Context -Name 'API failure' -Fixture {
+        # Invoke-RestMethod errors are not caught by the function — they propagate.
+        BeforeAll {
+            Mock -CommandName Invoke-RestMethod -MockWith {
+                throw [System.Net.WebException]::new('rate limit exceeded (429)')
+            } -ModuleName $env:BHProjectName
+        }
+
+        It -Name 'propagates rate-limit / transport errors to the caller' -Test {
+            { Get-EPSS -CVE 'CVE-2022-27225' } |
+                Should -Throw -ExpectedMessage '*rate limit*'
+        }
+
+        It -Name 'propagates errors when no CVE is supplied (bulk request)' -Test {
+            { Get-EPSS } | Should -Throw -ExpectedMessage '*rate limit*'
+        }
+    }
+
+    Context -Name 'non-success API response' -Fixture {
+        # The function returns whatever Invoke-RestMethod hands back. If the API returns an
+        # error envelope (status != OK) we should still surface it verbatim to the caller.
+        BeforeAll {
+            $errorEnvelope = [PSCustomObject] @{
+                status        = 'ERROR'
+                'status-code' = 400
+                version       = '1.0'
+                data          = @()
+            }
+            Mock -CommandName Invoke-RestMethod -MockWith { $errorEnvelope } -ModuleName $env:BHProjectName
+        }
+
+        It -Name 'returns the API error envelope unmodified' -Test {
+            $result = Get-EPSS -CVE 'CVE-2022-27225'
+            $result.status        | Should -Be 'ERROR'
+            $result.'status-code' | Should -Be 400
+            $result.data          | Should -BeNullOrEmpty
+        }
+    }
 }
