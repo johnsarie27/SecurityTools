@@ -29,7 +29,7 @@ function Get-UncPath {
     [CmdletBinding()]
     [OutputType([System.String])]
     Param(
-        [Parameter(Mandatory, HelpMessage = 'Local path')]
+        [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'Local path')]
         [ValidatePattern("[A-Z]:\\.+")]
         [System.String] $Path,
 
@@ -49,8 +49,8 @@ function Get-UncPath {
 
         if ( $Path.Substring(0.2) -match '[A-Z]:' ) {
             if ( $Unix ) {
-                $Path = $Path.Replace('\', '/')
-                $UncPath = '//' + $ComputerName + '/' + $Path.Replace(':', '$')
+                $unixPath = $Path.Replace('\', '/')
+                $UncPath = '//' + $ComputerName + '/' + $unixPath.Replace(':', '$')
             }
             else {
                 $UncPath = '\\' + $ComputerName + '\' + $Path.Replace(':', '$')

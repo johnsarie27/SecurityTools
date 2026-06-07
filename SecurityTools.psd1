@@ -126,7 +126,6 @@
         'Get-LatestPowerShell'
         'Get-LoggedOnUser'
         'Get-MsiInfo'
-        'Get-Object'
         'Get-PatchTuesday'
         'Get-PublicIP'
         'Get-QRCode'
