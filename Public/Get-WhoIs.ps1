@@ -22,7 +22,7 @@ function Get-WhoIs {
     Param (
         [Parameter(Position = 0,
             Mandatory,
-            HelpMessage = "Enter an IPV4 address to lookup with WhoIs",
+            HelpMessage = 'Enter an IPV4 address to lookup with WhoIs',
             ValueFromPipeline,
             ValueFromPipelineByPropertyName)]
         [System.Net.IPAddress[]] $IPAddress
@@ -30,17 +30,16 @@ function Get-WhoIs {
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
         $baseURL = 'http://whois.arin.net/rest'
-        #default is XML anyway
-        $header = @{ "Accept" = "application/xml" }
-
-    } #begin
+        # ARIN defaults to XML, but set Accept explicitly so a server-side default change can't break us
+        $header = @{ 'Accept' = 'application/xml' }
+    }
     Process {
         foreach ( $ip in $IPAddress ) {
             Write-Verbose -Message ('Getting WhoIs information for {0}' -f $ip)
             $url = '{0}/ip/{1}' -f $baseURL, $ip
             try {
-                $r = Invoke-Restmethod -Uri $url -Headers $header -ErrorAction Stop
-                Write-verbose ($r.net | Out-String)
+                $r = Invoke-RestMethod -Uri $url -Headers $header -ErrorAction Stop
+                Write-Verbose -Message ($r.net | Out-String)
             }
             catch {
                 $errMsg = 'Failed to retrieve WhoIs information for [{0}] with error: {1}' -f $ip, $_.Exception.Message
@@ -48,9 +47,9 @@ function Get-WhoIs {
             }
 
             if ($r.net) {
-                Write-Verbose "Creating result"
-                [pscustomobject] @{
-                    PSTypeName             = "WhoIsResult"
+                Write-Verbose -Message 'Creating result'
+                [PSCustomObject] @{
+                    PSTypeName             = 'WhoIsResult'
                     IP                     = $ip
                     Name                   = $r.net.name
                     RegisteredOrganization = $r.net.orgRef.name
@@ -60,10 +59,10 @@ function Get-WhoIs {
                     NetBlocks              = $r.net.netBlocks.netBlock | ForEach-Object { '{0}/{1}' -f $_.startaddress, $_.cidrLength }
                     Updated                = $r.net.updateDate -as [System.DateTime]
                 }
-            } #If $r.net
+            }
         }
-    } #Process
+    }
     End {
         Write-Verbose -Message ('Ending {0}' -f $MyInvocation.MyCommand)
-    } #end
+    }
 }

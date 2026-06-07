@@ -34,10 +34,10 @@ Describe -Name 'Get-DomainRegistration' -Fixture {
             }
         }
 
-        It -Name 'sends an accept: application/json header' -Test {
+        It -Name 'sends an Accept: application/json header' -Test {
             Get-DomainRegistration -Domain 'example.com' -ApiKey 'fake-key' | Out-Null
             Should -Invoke -CommandName Invoke-RestMethod -ModuleName $env:BHProjectName `
-                -ParameterFilter { $Headers.accept -eq 'application/json' }
+                -ParameterFilter { $Headers.Accept -eq 'application/json' }
         }
     }
 
