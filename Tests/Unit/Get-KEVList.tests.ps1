@@ -69,14 +69,14 @@ Describe -Name 'Get-KEVList' -Fixture {
     Context -Name 'OutputDirectory validation' -Fixture {
         It -Name 'throws when OutputDirectory does not exist' -Test {
             { Get-KEVList -Format 'JSON' -OutputDirectory 'TestDrive:/no-such-dir' } |
-                Should -Throw -ExpectedMessage '*Invalid output directory*'
+            Should -Throw -ExpectedMessage '*Invalid output directory*'
         }
 
         It -Name 'throws when OutputDirectory points at a file rather than a directory' -Test {
             $file = Join-Path -Path $TestDrive -ChildPath 'a-file.txt'
             Set-Content -Path $file -Value 'x'
             { Get-KEVList -Format 'JSON' -OutputDirectory $file } |
-                Should -Throw -ExpectedMessage '*Invalid output directory*'
+            Should -Throw -ExpectedMessage '*Invalid output directory*'
         }
     }
 
@@ -96,7 +96,7 @@ Describe -Name 'Get-KEVList' -Fixture {
                 throw [System.IO.IOException]::new('cannot write to OutFile')
             } -ModuleName $env:BHProjectName
             { Get-KEVList -Format 'JSON' -OutputDirectory 'TestDrive:/kev-fail' } |
-                Should -Throw -ExpectedMessage '*cannot write to OutFile*'
+            Should -Throw -ExpectedMessage '*cannot write to OutFile*'
         }
 
         It -Name 'propagates Invoke-RestMethod failures from the default path' -Test {
