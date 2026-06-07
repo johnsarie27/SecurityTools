@@ -7,9 +7,8 @@ To propose changes to the existing functions or the creation of a new one, the p
 
 1. Create a new [issue](https://github.com/johnsarie27/SecurityTools/issues/new/choose) using either:
    - The `new_function_proposal` template if you want to propose a new function.
-   - The `update_function_proposal` template if you want to modify a existing function.
-2. Create a new issue
-3. Once the issue has been discussed and approved:
+   - The `update_function_proposal` template if you want to modify an existing function.
+2. Once the issue has been discussed and approved:
     1. Clone this repository.
     2. Create a new branch.
     3. Either:
@@ -28,7 +27,14 @@ The intended purpose of the functions in this module is to support information s
 - Place the file under `Public/` (exported) or `Private/` (internal use only).
 - Name the file `Verb-Noun.ps1`, matching the function name exactly.
 - Use only [approved verbs](https://learn.microsoft.com/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands).
-- Always include comment-based help (`.SYNOPSIS`, `.DESCRIPTION`, `.PARAMETER`, `.INPUTS`, `.OUTPUTS`, `.EXAMPLE`, `.NOTES`).
+- Always include comment-based help (`.SYNOPSIS`, `.DESCRIPTION`, `.PARAMETER`, `.INPUTS`, `.OUTPUTS`, `.EXAMPLE`, `.NOTES`). The `.NOTES` block must include a `Status:` line using one of the following values:
+
+  | Value | Meaning |
+  | --- | --- |
+  | `Stable` | Production-ready; fully tested and supported |
+  | `Beta` | Functional but may have rough edges or limited testing |
+  | `Experimental` | Early development; API or behavior may change |
+  | `Deprecated` | Still works but will be removed in a future release |
 - Add a Pester test under `Tests/Unit/Verb-Noun.tests.ps1`.
 - If the function is **exported**, add its name to `FunctionsToExport` in [SecurityTools.psd1](SecurityTools.psd1).
 - For Windows-only functions, add a runtime platform guard in the `Begin` block.
@@ -54,10 +60,8 @@ function Verb-Noun {
         PS C:\> Verb-Noun -Foo 'bar'
         Explanation of what the example does
     .NOTES
-        Name:     Verb-Noun
-        Author:   <Your Name>
-        Version:  0.1.0 | Last Edit: <YYYY-MM-DD>
-        Comments: (see commit history)
+        Status: Stable
+        <optional reference links>
     #>
     [CmdletBinding()]
     Param(
