@@ -19,7 +19,9 @@ function ConvertFrom-IISLog {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, HelpMessage = 'Path to IIS log file')]
-        [ValidateScript({ Test-Path -Path $_ -PathType Leaf -Filter "*.log" })]
+        [ValidateScript({
+            (Test-Path -Path $_ -PathType Leaf) -and ((Split-Path -Path $_ -Extension) -ieq '.log')
+        })]
         [System.String] $Path
     )
     Begin {

@@ -37,9 +37,9 @@ function Convert-Hexadecimal {
         switch ($PSCmdlet.ParameterSetName) {
             '__hex' {
                 # CONVERT HEXADECIMAL TO DECIMAL
-                #'{0:d}' -f 0x1098
-                #[System.String]::Format('{0:d}', 0x7C2)
-                [System.Convert]::ToString($Hexadecimal, 10)
+                # Strip an optional 0x/0X prefix so '0x1098' and '1098' both work.
+                $trimmed = $Hexadecimal -replace '^0[xX]', ''
+                [System.Convert]::ToInt64($trimmed, 16).ToString()
             }
             '__dcm' {
                 # CONVERT DECIMAL TO HEXADECIMAL
