@@ -36,18 +36,18 @@ function Get-DomainRegistration {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
         $baseUrl = 'https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey={0}&domainName={1}'
-        $headers = @{ accept = "application/json" }
+        $headers = @{ Accept = 'application/json' }
     }
     Process {
         $url = $baseUrl -f $ApiKey, $Domain
 
-        Write-Verbose -Message ('Getting WhoIs info for [{0}]' -f $ip)
+        Write-Verbose -Message ('Getting domain registration info for [{0}]' -f $Domain)
 
         try {
             Invoke-RestMethod -Uri $url -Headers $headers -Method 'GET'
         }
         catch {
-            Write-Error -Message ('Error retrieving IP info for IP: {0}' -f $ip)
+            Write-Error -Message ('Error retrieving registration info for domain: {0}' -f $Domain)
         }
     }
 }
