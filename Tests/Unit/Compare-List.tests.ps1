@@ -1,61 +1,94 @@
 BeforeDiscovery {
-    # Taken with love from @juneb_get_help (https://raw.githubusercontent.com/juneb/PesterTDD/master/Module.Help.Tests.ps1)
-    # Import module
     if (-not (Get-Module -Name $env:BHProjectName)) {
         Import-Module -Name $env:BHPSModuleManifest -ErrorAction 'Stop' -Force
     }
-    $Cmdlets = Get-Command -Module $env:BHProjectName -CommandType 'Cmdlet', 'Function' -ErrorAction 'Stop'
 }
 
-Describe -Name "Compare-List" -Fixture {
-    Context -Name "__list parameter set" -Fixture {
-        It -Name "compares two arrays of strings" -Test {
+Describe -Name 'Compare-List' -Fixture {
+
+    Context -Name '__list parameter set' -Fixture {
+        It -Name 'returns shared items under DUPLICATES' -Test {
             $a = 'run', 'jump', 'walk'
             $b = 'run', 'jump', 'swim', 'hike'
-            $compare = Compare-List -ListA $a -ListB $b
-            $compare.DUPLICATES | Should -Contain 'run'
+            $result = Compare-List -ListA $a -ListB $b
+            $result.DUPLICATES | Should -Contain 'run'
+            $result.DUPLICATES | Should -Contain 'jump'
         }
 
-        It -Name "compares two arrays of objects" -Test {
-            $a = Get-Process | Select-Object -First 5
-            $b = $a | Select-Object -First 2
-            $compare = Compare-List -ListA $a -ListB $b
-            $compare.'LIST-A' | Should -HaveCount 3
-        }
-
-        It -Name "should not throw an error" -Test {
+        It -Name 'returns items unique to ListA under LIST-A' -Test {
             $a = 'run', 'jump', 'walk'
+            $b = 'run', 'jump'
+            $result = Compare-List -ListA $a -ListB $b
+            $result.'LIST-A' | Should -Contain 'walk'
+        }
+
+        It -Name 'returns items unique to ListB under LIST-B' -Test {
+            $a = 'run', 'jump'
             $b = 'run', 'jump', 'swim', 'hike'
-            { Compare-List -ListA $a -ListB $b } | Should -Not -Throw
+            $result = Compare-List -ListA $a -ListB $b
+            $result.'LIST-B' | Should -Contain 'swim'
+            $result.'LIST-B' | Should -Contain 'hike'
+        }
+
+        It -Name 'rejects an empty ListA' -Test {
+            { Compare-List -ListA @() -ListB ('a') } | Should -Throw
+        }
+
+        It -Name 'rejects an empty ListB' -Test {
+            { Compare-List -ListA ('a') -ListB @() } | Should -Throw
+        }
+
+        It -Name 'returns a single row when the only overlap is one item' -Test {
+            $result = Compare-List -ListA @('a') -ListB @('a')
+            $result | Should -HaveCount 1
+            $result[0].DUPLICATES | Should -Be 'a'
         }
     }
 
-    Context -Name "__file parameter set" -Fixture {
-        It -Name "should not throw an error" -Test {
-            { Compare-List -Path $Path } | Should -Not -Throw
+    Context -Name '__file parameter set' -Fixture {
+        It -Name 'compares a well-formed two-column CSV' -Test {
+            $csvPath = Join-Path -Path $TestDrive -ChildPath 'two-col.csv'
+            @(
+                [PSCustomObject] @{ A = 'apple';  B = 'apple' }
+                [PSCustomObject] @{ A = 'banana'; B = 'cherry' }
+            ) | Export-Csv -Path $csvPath -NoTypeInformation
+
+            $result = Compare-List -Path $csvPath
+            $result.DUPLICATES | Should -Contain 'apple'
+            $result.A          | Should -Contain 'banana'
+            $result.B          | Should -Contain 'cherry'
         }
 
-        It -Name "compares string data in a csv" -Test {
-            $compare = Compare-List -Path $Path
-            $compare.Count | Should -Be ($a.Count - $b.Count)
+        It -Name 'warns and returns nothing for a one-column CSV' -Test {
+            $csvPath = Join-Path -Path $TestDrive -ChildPath 'one-col.csv'
+            @(
+                [PSCustomObject] @{ Only = 'x' }
+                [PSCustomObject] @{ Only = 'y' }
+            ) | Export-Csv -Path $csvPath -NoTypeInformation
+
+            $result = Compare-List -Path $csvPath -WarningAction SilentlyContinue
+            $result | Should -BeNullOrEmpty
         }
 
-        It -Name "contains accurate count in comparisson" -Test {
-            $compare = Compare-List -Path $Path
-            $compare.DUPLICATES | Should -Contain $b[0].ProcessName
+        It -Name 'warns and returns nothing for a three-column CSV' -Test {
+            $csvPath = Join-Path -Path $TestDrive -ChildPath 'three-col.csv'
+            @(
+                [PSCustomObject] @{ A = '1'; B = '2'; C = '3' }
+            ) | Export-Csv -Path $csvPath -NoTypeInformation
+
+            $result = Compare-List -Path $csvPath -WarningAction SilentlyContinue
+            $result | Should -BeNullOrEmpty
         }
 
-        BeforeEach {
-            $a = Get-Process | Where-Object ProcessName
-            $b = $a | Select-Object -First 8
-            $List = @()
-            for ( $i = 0; $i -lt $a.Count; $i++ ) {
-                $new = @{ A = $a[$i].ProcessName }
-                if ( $b[$i] ) { $new['B'] = $b[$i].ProcessName } else { $new['B'] = '' }
-                $List += [PSCustomObject] $new
-            }
-            $Path = 'TestDrive:/test_compare_list.csv' # "TestDrive:\test.csv" OR 'Temp:/test_compare_list.csv'
-            $List | Export-Csv -Path $Path
+        It -Name 'rejects a path that does not exist' -Test {
+            $missing = Join-Path -Path $TestDrive -ChildPath 'no-such-file.csv'
+            { Compare-List -Path $missing } | Should -Throw
+        }
+
+        It -Name 'rejects a non-CSV file extension' -Test {
+            $txtPath = Join-Path -Path $TestDrive -ChildPath 'notes.txt'
+            Set-Content -Path $txtPath -Value 'A,B'
+            { Compare-List -Path $txtPath } | Should -Throw
         }
     }
 }
