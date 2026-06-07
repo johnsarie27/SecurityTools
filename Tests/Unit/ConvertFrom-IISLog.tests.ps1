@@ -49,5 +49,11 @@ Describe -Name 'ConvertFrom-IISLog' -Fixture {
         It -Name 'rejects a non-existent path' -Test {
             { ConvertFrom-IISLog -Path 'TestDrive:/missing.log' } | Should -Throw
         }
+
+        It -Name 'rejects a path that does not end in .log' -Test {
+            $badPath = Join-Path -Path 'TestDrive:' -ChildPath 'sample.txt'
+            Set-Content -Path $badPath -Value 'whatever'
+            { ConvertFrom-IISLog -Path $badPath } | Should -Throw
+        }
     }
 }

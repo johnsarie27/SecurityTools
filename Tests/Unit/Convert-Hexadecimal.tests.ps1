@@ -21,6 +21,20 @@ Describe -Name 'Convert-Hexadecimal' -Fixture {
         }
     }
 
+    Context -Name 'hexadecimal → decimal' -Fixture {
+        It -Name 'converts 1098 to 4248' -Test {
+            Convert-Hexadecimal -Hexadecimal '1098' | Should -Be '4248'
+        }
+
+        It -Name 'accepts an optional 0x prefix' -Test {
+            Convert-Hexadecimal -Hexadecimal '0x1098' | Should -Be '4248'
+        }
+
+        It -Name 'accepts lowercase hex digits' -Test {
+            Convert-Hexadecimal -Hexadecimal 'ff' | Should -Be '255'
+        }
+    }
+
     Context -Name 'parameter set conflicts' -Fixture {
         It -Name 'rejects -Hexadecimal and -Decimal supplied together' -Test {
             { Convert-Hexadecimal -Hexadecimal '1098' -Decimal '4248' } | Should -Throw
