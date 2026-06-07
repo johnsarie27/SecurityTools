@@ -18,6 +18,13 @@ Describe -Name 'Get-UncPath' -Fixture {
         }
     }
 
+    Context -Name 'Unix-style UNC' -Fixture {
+        It -Name 'builds a Unix-style UNC path with forward slashes' -Test {
+            Get-UncPath -Path 'C:\Temp\Share' -ComputerName 'MyServer' -Unix |
+                Should -Be '//MyServer/C$/Temp/Share'
+        }
+    }
+
     Context -Name 'ComputerName aliases' -Fixture {
         It -Name 'accepts -HostName as an alias for -ComputerName' -Test {
             Get-UncPath -Path 'C:\x' -HostName 'host2' | Should -Be '\\host2\C$\x'
@@ -29,6 +36,13 @@ Describe -Name 'Get-UncPath' -Fixture {
 
         It -Name 'accepts -Target as an alias for -ComputerName' -Test {
             Get-UncPath -Path 'C:\x' -Target 'host4' | Should -Be '\\host4\C$\x'
+        }
+    }
+
+    Context -Name 'pipeline input' -Fixture {
+        It -Name 'accepts a path from the pipeline' -Test {
+            ('E:\share\file.log' | Get-UncPath -ComputerName 'srv') |
+                Should -Be '\\srv\E$\share\file.log'
         }
     }
 
