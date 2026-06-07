@@ -35,7 +35,7 @@ function ConvertTo-Hex {
             # CONVERT CHARACTER (CHAR) TO HEX
             [PSCustomObject] @{
                 Char = $char
-                Hex  = '0x{0:X2}' -f [int]([byte][char]$char)
+                Hex  = '0x{0:X2}' -f [System.Int32]([System.Byte][System.Char]$char)
             }
         }
     }

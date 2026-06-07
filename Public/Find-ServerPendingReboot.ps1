@@ -64,7 +64,7 @@
                 $sbLocal = @{ }
                 foreach ( $k in $sbRemote.Keys ) {
                     $string = $sbRemote[$k] -replace 'Using:', ''
-                    $sbLocal[$k] = [Scriptblock]::Create($String)
+                    $sbLocal[$k] = [System.Management.Automation.ScriptBlock]::Create($String)
                 }
 
                 $key = Invoke-Command -ScriptBlock $sbLocal['PendingFile']

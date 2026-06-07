@@ -85,7 +85,7 @@ function Save-KBFile {
             $splat = @{ Uri = ('{0}DownloadDialog.aspx' -f $msUpdate); Method = 'Post' }
             foreach ($guid in $guids) {
                 Write-Verbose -Message ('Downloading information for {0}' -f $guid)
-                $post = @{ size = 0; updateID = $guid; uidInfo = $guid } | ConvertTo-Json -Compress
+                $post = @{ size = 0; updateID = $guid; uidInfo = $guid } | ConvertTo-Json -Compress -Depth 4
                 $splat['Body'] = @{ updateIDs = ('[{0}]' -f $post) }
                 $data = (Invoke-WebRequest @splat).Content
                 $links = Select-String -InputObject $data -AllMatches -Pattern $pattern | Select-Object -Unique

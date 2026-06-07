@@ -69,12 +69,12 @@ function Compare-List {
 
             # NEED TO USE SELECT-OBJECT RATHER THAN $compSheet."$header1" BECAUSE OF THE HEADER "ITEM."
             # THIS SEEMS TO CALL A METHOD OR PROPERTY OF A PSCustomObject I WASN'T PREVIOUSLY AWARE OF
-            foreach ( $i in ($compSheet | Select-Object -EXP $header1) ) {
-                if ( ($compSheet | Select-Object -EXP $header2) -contains $i ) { $sameList += $i }
+            foreach ( $i in ($compSheet | Select-Object -ExpandProperty $header1) ) {
+                if ( ($compSheet | Select-Object -ExpandProperty $header2) -contains $i ) { $sameList += $i }
                 else { $header1List += $i }
             }
-            foreach ( $i in ($compSheet | Select-Object -EXP $header2) ) {
-                if ( ($compSheet | Select-Object -EXP $header1) -notcontains $i ) { $header2List += $i }
+            foreach ( $i in ($compSheet | Select-Object -ExpandProperty $header2) ) {
+                if ( ($compSheet | Select-Object -ExpandProperty $header1) -notcontains $i ) { $header2List += $i }
             }
 
             if ( $sameList.Count -gt $header1List.Count ) { $longest = $sameList }

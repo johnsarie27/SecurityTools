@@ -32,7 +32,7 @@ function Export-VeracodeReport {
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
-        [xml] $xml = Get-Content -Path $VeracodeXML
+        [System.Xml.XmlDocument] $xml = Get-Content -Path $VeracodeXML
         #Write-Output $xml.detailedreport.severity
 
         $array = @()
@@ -80,7 +80,7 @@ function Export-VeracodeReport {
                 sev3flaws    = $module.numflawssev3
                 sev4flaws    = $module.numflawssev4
                 sev5flaws    = $module.numflawssev5
-                totalflaws   = [int] $module.numflawssev0 + [int] $module.numflawssev1 + [int] $module.numflawssev2 + [int] $module.numflawssev3 + [int] $module.numflawssev4 + [int] $module.numflawssev5
+                totalflaws   = [System.Int32] $module.numflawssev0 + [System.Int32] $module.numflawssev1 + [System.Int32] $module.numflawssev2 + [System.Int32] $module.numflawssev3 + [System.Int32] $module.numflawssev4 + [System.Int32] $module.numflawssev5
             }
         }
 

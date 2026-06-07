@@ -81,7 +81,7 @@ function ConvertTo-FlatObject {
                 If ($obj -is [System.Collections.IDictionary]) {
                     $Iterate = $obj
                 }
-                elseif ($obj -is [Array] -or $obj -is [System.Collections.IEnumerable]) {
+                elseif ($obj -is [System.Array] -or $obj -is [System.Collections.IEnumerable]) {
                     $i = $Base
                     foreach ($Item in $obj.GetEnumerator()) {
                         $NewObject = [ordered] @{}
@@ -92,7 +92,7 @@ function ConvertTo-FlatObject {
                                 }
                             }
                         }
-                        elseif ($Item -isnot [Array] -and $Item -isnot [System.Collections.IEnumerable]) {
+                        elseif ($Item -isnot [System.Array] -and $Item -isnot [System.Collections.IEnumerable]) {
                             foreach ($Prop in $Item.PSObject.Properties) {
                                 if ($Prop.IsGettable -and $Prop.Name -notin $ExcludeProperty) {
                                     $NewObject[$Prop.Name] = $Item.$($Prop.Name)
