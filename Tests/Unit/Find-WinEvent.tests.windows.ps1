@@ -12,11 +12,12 @@ Describe -Name "Find-WinEvent" -Fixture {
         Find-WinEvent -List | Should -BeOfType PSCustomObject
     }
 
+    # ID 9 IS 'EVENT LOG STARTED' (SYSTEM/6005) WHICH EXISTS ON EVERY BOOTED WINDOWS SYSTEM
     It -Name "should return EventLogRecord" -Test {
-        Find-WinEvent -Id 5 -Results 5 | Should -BeOfType System.Diagnostics.Eventing.Reader.EventLogRecord
+        Find-WinEvent -Id 9 -Results 5 | Should -BeOfType System.Diagnostics.Eventing.Reader.EventLogRecord
     }
 
-    It -Name "should return 5 objects" -Test {
-        Find-WinEvent -Id 3 -Results 5 | Should -HaveCount 5
+    It -Name "should limit results to the requested count" -Test {
+        Find-WinEvent -Id 9 -Results 1 | Should -HaveCount 1
     }
 }

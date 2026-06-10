@@ -10,7 +10,11 @@ Properties {
     $lines = '----------------------------------------------------------------------'
 
     # Pester
-    $TestScripts = Get-ChildItem "$ProjectRoot/Tests/*/*Tests.ps1"
+    # WINDOWS-ONLY TEST FILES USE THE .tests.windows.ps1 SUFFIX AND ONLY RUN ON WINDOWS
+    $TestScripts = Get-ChildItem "$ProjectRoot/Tests/*/*.tests.ps1"
+    if ($IsWindows) {
+        $TestScripts += Get-ChildItem "$ProjectRoot/Tests/*/*.tests.windows.ps1"
+    }
     $TestFile = "Test-Unit_$($TimeStamp).xml"
 
     # Script Analyzer
