@@ -37,14 +37,5 @@ Describe -Name 'Get-LoggedOnUser' -Fixture {
             Get-LoggedOnUser | Should -Be 'USERNAME  SESSIONNAME  ID  STATE'
             Should -Invoke -CommandName Invoke-Command -ModuleName $env:BHProjectName -Times 1 -Exactly
         }
-
-        # The -ComputerName ValidateScript pings the target before the body runs, so this can
-        # only use localhost; localhost is in the function's self-reference list, which must
-        # route to local execution rather than New-PSSession.
-        It -Name 'treats localhost as the local system rather than opening a remote session' -Skip:(-not $IsWindows) -Test {
-            Get-LoggedOnUser -ComputerName 'localhost' | Should -Be 'USERNAME  SESSIONNAME  ID  STATE'
-            Should -Invoke -CommandName Invoke-Command -ModuleName $env:BHProjectName -Times 1 -Exactly `
-                -ParameterFilter { $null -eq $Session }
-        }
     }
 }

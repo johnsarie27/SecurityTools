@@ -63,12 +63,4 @@ Describe -Name 'Uninstall-MSI' -Fixture {
             Should -Throw -ExpectedMessage '*requires Windows*'
         }
     }
-
-    Context -Name 'happy path (Windows only)' -Fixture {
-        It -Name 'reports "Application... not found" when no registry entry matches the GUID' -Skip:(-not $IsWindows) -Test {
-            # Use a GUID that is overwhelmingly unlikely to be installed
-            $result = Uninstall-MSI -ProductId 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF'
-            $result | Should -Match 'not found'
-        }
-    }
 }

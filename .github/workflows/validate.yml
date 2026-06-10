@@ -14,10 +14,15 @@ concurrency:
 
 jobs:
   validate:
+    name: validate (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            pesterScope: CrossPlatform
+          - os: windows-latest
+            pesterScope: WindowsOnly
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -32,7 +37,7 @@ jobs:
         run: .\Build\build.ps1 -TaskList 'Analyze'
 
       - shell: pwsh # pester
-        run: .\Build\build.ps1 -TaskList 'Test'
+        run: .\Build\build.ps1 -TaskList 'Test' -Properties @{ PesterScope = '${{ matrix.pesterScope }}' }
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
