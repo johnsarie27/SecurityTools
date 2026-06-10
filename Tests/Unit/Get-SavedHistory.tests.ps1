@@ -25,8 +25,8 @@ Describe -Name 'Get-SavedHistory' -Fixture {
 
     Context -Name 'parameter validation' -Fixture {
         It -Name 'declares -Search as mandatory' -Test {
-            (Get-Command -Name 'Get-SavedHistory').Parameters['Search'].Attributes.Mandatory |
-                Should -Contain $true
+            (Get-Command -Name 'Get-SavedHistory' -Module $env:BHProjectName).Parameters['Search'].Attributes.Mandatory |
+            Should -Contain $true
         }
 
         It -Name 'rejects an empty search phrase' -Test {
