@@ -52,10 +52,7 @@ Describe -Name 'Test-Performance' -Fixture {
         }
 
         It -Name 'returns one measurement per iteration on the Measurements property' -Test {
-            # Use Start-Sleep so each iteration accumulates measurable, non-uniform Ticks.
-            # A trivial { 1 + 1 } block can measure as TimeSpan.Zero on fast Linux runners,
-            # which trips a latent edge case in Out-MeasureResult when all ticks tie.
-            $r = Test-Performance -ScriptBlock { Start-Sleep -Milliseconds 1 } -Iterations 4
+            $r = Test-Performance -ScriptBlock { 1 + 1 } -Iterations 4
             $r.Measurements | Should -HaveCount 4
         }
 

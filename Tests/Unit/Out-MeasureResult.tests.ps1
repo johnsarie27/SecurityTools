@@ -60,4 +60,19 @@ Describe -Name 'Out-MeasureResult' -Fixture {
             $viaParam.AvgMilliseconds | Should -Be $viaPipe.AvgMilliseconds
         }
     }
+
+    Context -Name 'tied measurements' -Fixture {
+        It -Name 'handles a collection where every TimeSpan has identical Ticks' -Test {
+            # Regression: a prior implementation used $list.Where({ $_.Ticks -eq $max })
+            # which returned a multi-element collection when all ticks tied, and the
+            # subsequent [System.Int32] cast on the member-enumerated TotalMilliseconds
+            # array silently failed — producing a null result.
+            $spans = @([TimeSpan]::Zero, [TimeSpan]::Zero, [TimeSpan]::Zero, [TimeSpan]::Zero)
+            $result = $spans | Out-MeasureResult
+            $result | Should -Not -BeNullOrEmpty
+            $result.MaxMilliseconds | Should -Be 0
+            $result.MinMilliseconds | Should -Be 0
+            $result.AvgMilliseconds | Should -Be 0
+        }
+    }
 }

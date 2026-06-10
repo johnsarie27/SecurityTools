@@ -54,17 +54,12 @@ function Out-MeasureResult {
         else { $list.Add($Measurement) }
     }
     End {
-        $max = ($list | Measure-Object -Property Ticks -Maximum).Maximum
-        $min = ($list | Measure-Object -Property Ticks -Minimum).Minimum
-        $avg = $list | Measure-Object -Property TotalMilliseconds -Average
-
-        $maxObj = $list.Where( { $_.Ticks -eq $max } )
-        $minObj = $list.Where( { $_.Ticks -eq $min } )
+        $stats = $list | Measure-Object -Property TotalMilliseconds -Maximum -Minimum -Average
 
         [PSCustomObject] @{
-            MaxMilliseconds = [System.Int32] $maxObj.TotalMilliseconds
-            MinMilliseconds = [System.Int32] $minObj.TotalMilliseconds
-            AvgMilliseconds = [System.Int32] $avg.Average
+            MaxMilliseconds = [System.Int32] $stats.Maximum
+            MinMilliseconds = [System.Int32] $stats.Minimum
+            AvgMilliseconds = [System.Int32] $stats.Average
         }
     }
 }
