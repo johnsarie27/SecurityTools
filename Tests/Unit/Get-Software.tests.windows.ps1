@@ -24,4 +24,14 @@ Describe -Name "Get-Software" -Fixture {
         $Software = Get-Software -Name "PowerShell 7-x64"
         $Software.Name | Should -Be "PowerShell 7-x64"
     }
+
+    It -Name "returns nothing when no installed software matches the name" -Test {
+        Get-Software -Name "No Such Application 1234567890" | Should -BeNullOrEmpty
+    }
+
+    It -Name "still returns machine-hive software with -ExcludeUsers" -Test {
+        $Software = Get-Software -ExcludeUsers 3>$null
+        $Software | Should -Not -BeNullOrEmpty
+        $Software | Should -BeOfType System.Management.Automation.PSObject
+    }
 }
