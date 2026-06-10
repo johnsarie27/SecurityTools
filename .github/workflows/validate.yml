@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   validate:
+    name: validate (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
