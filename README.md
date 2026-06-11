@@ -8,19 +8,7 @@
 
 ## Description
 
-A PowerShell module with tools for information security, digital forensics, and
-reporting tasks. Most functions were developed for Windows, however, an effort
-was made to support multiple platforms where possible.
-
-Functions range in functionality from conversion and reporting to gathering
-information from local (Windows Registry, patches, etc.) or remote (IP or
-domain registration info) systems.
-
-Several functions were written specifically for organizing and reporting on
-vulnerabilities. This includes looking up CVSSv3 scores and Known Exploited
-Vulnerability (KEV) lists.
-
-Other functions were written to help review and triage web traffic.
+A PowerShell module for information security, digital forensics, and reporting. Functions span vulnerability triage (CVSSv3, EPSS, CISA KEV), OSINT and network reconnaissance (IP/domain registration, GreyNoise, LAN scanning), system enumeration (software inventory, Windows events, Active Directory), and data export (scan reports, Veracode, SQL VA). Most functions target Windows but cross-platform support is included where possible.
 
 ## Requirements
 
@@ -42,19 +30,21 @@ Import-Module ./SecurityTools/SecurityTools.psd1
 The following demonstrates a basic vulnerability triage workflow using CVE-2021-44228 (Log4Shell):
 
 ```powershell
+$cve = 'CVE-2021-44228'
+
 # Check whether a CVE appears in CISA's Known Exploited Vulnerabilities catalog
 $kev = Get-KEVList
-$kev.vulnerabilities.where({ $_.cveID -eq 'CVE-2021-44228' })
+$kev.vulnerabilities.where({ $_.cveID -eq $cve })
 
 # Look up its CVSS v3 base score
-Get-CVSSv3BaseScore -CVE 'CVE-2021-44228'
+Get-CVSSv3BaseScore -CVE $cve
 
 # CVE             Score  Severity
 # ---             -----  --------
 # CVE-2021-44228  10.0   Critical
 
 # Get the EPSS probability-of-exploitation score
-(Get-EPSS -CVE 'CVE-2021-44228').data
+(Get-EPSS -CVE $cve).data
 
 # cve            : CVE-2021-44228
 # epss           : 0.97573
