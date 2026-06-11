@@ -52,7 +52,6 @@ for use by a specific team of engineers, not for broad use.
 - [Private](./Private) — functions/tools that are used internally by the module
 - [Tests](./Tests) — Pester tests
 - [Build](./Build) — tools to handle automated testing/builds
-- [Deprecated](./Deprecated) — functions that are no longer maintained
 
 ## Contributions, Feature Requests, and Feedback
 
