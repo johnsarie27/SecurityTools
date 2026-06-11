@@ -3,6 +3,8 @@
 [![validate](https://github.com/johnsarie27/SecurityTools/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/johnsarie27/SecurityTools/actions/workflows/validate.yml)
 [![release](https://github.com/johnsarie27/SecurityTools/actions/workflows/release.yml/badge.svg)](https://github.com/johnsarie27/SecurityTools/actions/workflows/release.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![PowerShell](https://img.shields.io/badge/PowerShell-7.0%2B-blue?logo=powershell&logoColor=white)](https://github.com/PowerShell/PowerShell)
+[![GitHub release](https://img.shields.io/github/v/release/johnsarie27/SecurityTools)](https://github.com/johnsarie27/SecurityTools/releases/latest)
 
 ## Description
 
@@ -52,6 +54,35 @@ for use by a specific team of engineers, not for broad use.
 - [Private](./Private) — functions/tools that are used internally by the module
 - [Tests](./Tests) — Pester tests
 - [Build](./Build) — tools to handle automated testing/builds
+
+## Example Usage
+
+The following demonstrates a basic vulnerability triage workflow using CVE-2021-44228 (Log4Shell):
+
+```powershell
+# Check whether a CVE appears in CISA's Known Exploited Vulnerabilities catalog
+$kev = Get-KEVList
+$kev.vulnerabilities.where({ $_.cveID -eq 'CVE-2021-44228' })
+
+# Look up its CVSS v3 base score
+Get-CVSSv3BaseScore -CVE 'CVE-2021-44228'
+
+# CVE             Score  Severity
+# ---             -----  --------
+# CVE-2021-44228  10.0   Critical
+
+# Get the EPSS probability-of-exploitation score
+Get-EPSS -CVE 'CVE-2021-44228'
+
+# status      : OK
+# status-code : 200
+# version     : 1.0
+# access      : public
+# total       : 1
+# offset      : 0
+# limit       : 100
+# data        : {@{cve=CVE-2021-44228; epss=0.97573; percentile=0.99974; date=2026-06-11}}
+```
 
 ## Contributions, Feature Requests, and Feedback
 
