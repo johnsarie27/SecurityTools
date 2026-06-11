@@ -2,7 +2,7 @@
 
 [![validate](https://github.com/johnsarie27/SecurityTools/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/johnsarie27/SecurityTools/actions/workflows/validate.yml)
 [![release](https://github.com/johnsarie27/SecurityTools/actions/workflows/release.yml/badge.svg)](https://github.com/johnsarie27/SecurityTools/actions/workflows/release.yml)
-[![License](https://img.shields.io/github/license/johnsarie27/SecurityTools.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## Description
 
@@ -22,9 +22,18 @@ Other functions were written to help review and triage web traffic.
 
 ## Requirements
 
-- PowerShell 5.1 or later (PowerShell 7+ recommended; tested on Windows and Linux)
+- PowerShell 7.0 or later (tested on Windows and Linux)
 - [`ImportExcel`](https://www.powershellgallery.com/packages/ImportExcel) (required — used by the `Export-*` reporting functions)
 - Optional, Windows-only: `SqlServer`, `ActiveDirectory`, `GroupPolicy` (loaded on demand by specific functions)
+
+## Installation
+
+Clone the repository and import the module directly:
+
+```powershell
+git clone https://github.com/johnsarie27/SecurityTools.git
+Import-Module ./SecurityTools/SecurityTools.psd1
+```
 
 ## Latest Version Notes
 
@@ -43,7 +52,7 @@ for use by a specific team of engineers, not for broad use.
 - [Private](./Private) — functions/tools that are used internally by the module
 - [Tests](./Tests) — Pester tests
 - [Build](./Build) — tools to handle automated testing/builds
-- [templates](./templates) — contributor templates (e.g., new function skeleton)
+- [Deprecated](./Deprecated) — functions that are no longer maintained
 
 ## Contributions, Feature Requests, and Feedback
 
