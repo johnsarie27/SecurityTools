@@ -37,24 +37,6 @@ git clone https://github.com/johnsarie27/SecurityTools.git
 Import-Module ./SecurityTools/SecurityTools.psd1
 ```
 
-## Latest Version Notes
-
-See the [Releases](https://github.com/johnsarie27/SecurityTools/releases) page
-for version notes. Release notes are auto-generated from merged pull requests
-and categorized via [.github/release.yml](.github/release.yml).
-
-## Disclaimer
-
-Feel free to create issues or pull requests; however, this project is developed
-for use by a specific team of engineers, not for broad use.
-
-## Repo Layout
-
-- [Public](./Public) — functions that are available when using the module
-- [Private](./Private) — functions/tools that are used internally by the module
-- [Tests](./Tests) — Pester tests
-- [Build](./Build) — tools to handle automated testing/builds
-
 ## Example Usage
 
 The following demonstrates a basic vulnerability triage workflow using CVE-2021-44228 (Log4Shell):
@@ -72,17 +54,31 @@ Get-CVSSv3BaseScore -CVE 'CVE-2021-44228'
 # CVE-2021-44228  10.0   Critical
 
 # Get the EPSS probability-of-exploitation score
-Get-EPSS -CVE 'CVE-2021-44228'
+(Get-EPSS -CVE 'CVE-2021-44228').data
 
-# status      : OK
-# status-code : 200
-# version     : 1.0
-# access      : public
-# total       : 1
-# offset      : 0
-# limit       : 100
-# data        : {@{cve=CVE-2021-44228; epss=0.97573; percentile=0.99974; date=2026-06-11}}
+# cve            : CVE-2021-44228
+# epss           : 0.97573
+# percentile     : 0.99974
+# date           : 2026-06-11
 ```
+
+## Latest Version Notes
+
+See the [Releases](https://github.com/johnsarie27/SecurityTools/releases) page
+for version notes. Release notes are auto-generated from merged pull requests
+and categorized via [.github/release.yml](.github/release.yml).
+
+## Disclaimer
+
+Feel free to create issues or pull requests; however, this project is developed
+for use by a specific team of engineers, not for broad use.
+
+## Repo Layout
+
+- [Public](./Public) — functions that are available when using the module
+- [Private](./Private) — functions/tools that are used internally by the module
+- [Tests](./Tests) — Pester tests
+- [Build](./Build) — tools to handle automated testing/builds
 
 ## Contributions, Feature Requests, and Feedback
 
