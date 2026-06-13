@@ -24,6 +24,9 @@ jobs:
           - os: windows-latest
             pesterScope: WindowsOnly
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      checks: write
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
@@ -44,3 +47,12 @@ jobs:
           name: Pester Results (${{ matrix.os }})
           path: "Artifacts/**/Test-*.xml"
           if-no-files-found: error
+
+      - name: Publish Pester results
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3.0.0
+        if: always()
+        with:
+          name: Pester Tests (${{ matrix.os }})
+          path: Artifacts/**/Test-*.xml
+          reporter: java-junit
+          fail-on-error: false

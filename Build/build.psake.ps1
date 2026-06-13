@@ -166,7 +166,7 @@ Task 'Test' -depends 'ImportStagingModule' {
 
     # create a new configuration with our settings
     $PesterConfig = New-PesterConfiguration
-    $PesterConfig.TestResult.OutputFormat = 'NUnitXML'
+    $PesterConfig.TestResult.OutputFormat = 'JUnitXml'
     $PesterConfig.TestResult.OutputPath = $TestFilePath
     $PesterConfig.TestResult.Enabled = $true
     $PesterConfig.Run.PassThru = $true
