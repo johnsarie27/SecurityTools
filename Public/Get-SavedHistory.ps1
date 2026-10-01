@@ -21,6 +21,11 @@ function Get-SavedHistory {
     #>
     [CmdletBinding()]
     [OutputType([System.Object[]])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        'PSReviewUnusedParameter',
+        'Search',
+        Justification = 'Used inside the $where scriptblock, which the analyzer does not trace into.'
+    )]
     Param(
         [Parameter(Mandatory, HelpMessage = 'Search phrase')]
         [ValidateNotNullOrEmpty()]
