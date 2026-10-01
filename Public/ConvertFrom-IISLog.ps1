@@ -42,7 +42,7 @@ function ConvertFrom-IISLog {
             if ($line -NotMatch '^#') {
 
                 if (-not $headers) {
-                    Write-Error -Message ("No '#Fields:' header found before data rows in '{0}' — is this a W3C-format IIS log?" -f $Path) -ErrorAction Stop
+                    Write-Error -Message ("No '#Fields:' header found before data rows in '{0}' - is this a W3C-format IIS log?" -f $Path) -ErrorAction Stop
                 }
 
                 # SPLIT LINE

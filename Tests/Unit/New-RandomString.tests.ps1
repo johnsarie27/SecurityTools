@@ -41,7 +41,7 @@ Describe -Name 'New-RandomString' -Fixture {
             $s | Should -Not -Match '\d'
         }
 
-        # Use -CMatch / -CNotMatch (case-sensitive) — default -Match is case-insensitive,
+        # Use -CMatch / -CNotMatch (case-sensitive)  -  default -Match is case-insensitive,
         # so [a-z] would also match A-Z and mask exclusion failures.
         It -Name '-ExcludeLowercase produces a string with no lowercase letters' -Test {
             $s = New-RandomString -Length $script:Len -ExcludeLowercase

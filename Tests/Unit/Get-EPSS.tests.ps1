@@ -76,7 +76,7 @@ Describe -Name 'Get-EPSS' -Fixture {
     }
 
     Context -Name 'API failure' -Fixture {
-        # Invoke-RestMethod errors are not caught by the function — they propagate.
+        # Invoke-RestMethod errors are not caught by the function  -  they propagate.
         BeforeAll {
             Mock -CommandName Invoke-RestMethod -MockWith {
                 throw [System.Net.WebException]::new('rate limit exceeded (429)')

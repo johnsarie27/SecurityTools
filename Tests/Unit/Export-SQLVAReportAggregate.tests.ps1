@@ -9,7 +9,7 @@ Describe -Name 'Export-SQLVAReportAggregate' -Fixture {
     BeforeAll {
         # The function discovers reports via Get-ChildItem '<InputPath>\*.xlsx', then pipes each
         # through Import-Excel. We stage a folder of fixture .xlsx files (just empty marker files
-        # — Import-Excel is mocked) and return synthetic scan rows from the mock.
+        #  -  Import-Excel is mocked) and return synthetic scan rows from the mock.
         $script:InputDir = Join-Path -Path $TestDrive -ChildPath 'in'
         New-Item -Path $script:InputDir -ItemType Directory -Force | Out-Null
         $script:Report1 = Join-Path -Path $script:InputDir -ChildPath 'sql-01.xlsx'

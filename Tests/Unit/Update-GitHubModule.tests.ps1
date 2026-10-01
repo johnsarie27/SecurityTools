@@ -9,7 +9,7 @@ Describe -Name 'Update-GitHubModule' -Fixture {
     # The function's -Name parameter has a [ValidateScript({ Get-Module -ListAvailable -Name $_ })]
     # guard that fires in caller scope before the function body runs. On CI the staged module path
     # is not on $env:PSModulePath, so Get-Module -ListAvailable returns $null and the parameter
-    # validation rejects every call — including those that mock the body's behavior. We exercise
+    # validation rejects every call  -  including those that mock the body's behavior. We exercise
     # only the command's published metadata here.
 
     Context -Name 'command metadata' -Fixture {

@@ -9,7 +9,7 @@ Describe -Name 'Install-ModuleFromZip' -Fixture {
     # The Process block reaches for $env:PSModulePath, runs Expand-Archive against the zip,
     # walks the expanded directory, and calls Move-Item / Get-Module / Unblock-File. End-to-end
     # mocking would have to fake an entire filesystem tree under TEMP and a matching .psd1, so
-    # body-level coverage here is intentionally minimal — metadata + parameter validation only.
+    # body-level coverage here is intentionally minimal  -  metadata + parameter validation only.
 
     Context -Name 'command metadata' -Fixture {
         BeforeAll {

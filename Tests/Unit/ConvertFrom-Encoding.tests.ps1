@@ -1,4 +1,4 @@
-BeforeDiscovery {
+﻿BeforeDiscovery {
     if (-not (Get-Module -Name $env:BHProjectName)) {
         Import-Module -Name $env:BHPSModuleManifest -ErrorAction 'Stop' -Force
     }
@@ -18,7 +18,7 @@ Describe -Name 'ConvertFrom-Encoding' -Fixture {
         }
 
         It -Name 'decodes UTF-8 byte sequences (multi-byte characters)' -Test {
-            # 'café' is 5 bytes in UTF-8 → 'Y2Fmw6k='
+            # 'café' is 5 bytes in UTF-8 -> 'Y2Fmw6k='
             ConvertFrom-Encoding -String 'Y2Fmw6k=' | Should -Be 'café'
         }
 

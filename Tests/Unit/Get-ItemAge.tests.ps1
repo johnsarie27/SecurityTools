@@ -26,7 +26,7 @@ Describe -Name 'Get-ItemAge' -Fixture {
         $nestedFile = Join-Path -Path $script:SubDir -ChildPath 'deep.txt'
         Set-Content -Path $nestedFile -Value ('c' * 512)
         (Get-Item -Path $nestedFile).LastWriteTime = (Get-Date).AddDays(-10)
-        # Backdate the directory entries too — Get-ChildItem -Recurse returns them, and the function
+        # Backdate the directory entries too  -  Get-ChildItem -Recurse returns them, and the function
         # sorts ALL items (not just files) when picking OldestFile / NewestFile.
         (Get-Item -Path $script:SubDir).LastWriteTime = (Get-Date).AddDays(-15)
     }
