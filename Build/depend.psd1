@@ -15,7 +15,7 @@
     # PowerShellGet     = '2.0.1'
 
     # Common modules
-    Pester           = '5.7.1'
+    Pester           = '6.2.0'
     psake            = '5.0.4'
     #PSDeploy         = '1.0.5'
     PSScriptAnalyzer = '1.24.0'
