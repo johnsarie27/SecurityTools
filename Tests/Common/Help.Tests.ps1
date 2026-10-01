@@ -11,21 +11,22 @@ BeforeDiscovery {
     if (-not (Get-Module -Name $env:BHProjectName <# -ListAvailable #>)) {
         Import-Module -Name $env:BHPSModuleManifest -ErrorAction 'Stop' #-Force
     }
-    $Cmdlets = Get-Command -Module $env:BHProjectName -CommandType 'Cmdlet', 'Function' -ErrorAction 'Stop'
+    # Names, not CommandInfo objects: CommandInfo in -ForEach hangs Pester 6.0.0 (fixed by 6.2.0).
+    $Cmdlets = (Get-Command -Module $env:BHProjectName -CommandType 'Cmdlet', 'Function' -ErrorAction 'Stop').Name
 }
 
 Describe '<_> help' -ForEach $Cmdlets {
     BeforeDiscovery {
         $Common = 'ProgressAction', 'Debug', 'ErrorAction', 'ErrorVariable', 'InformationAction', 'InformationVariable', 'OutBuffer', 'OutVariable', 'PipelineVariable', 'Verbose', 'WarningAction', 'WarningVariable', 'Confirm', 'Whatif'
 
-        $Command = $_ # Get current from -ForEach $Cmdlets in discovery-phase
+        $Command = Get-Command -Name $_ # Get current from -ForEach $Cmdlets in discovery-phase
         $CommandParameters = $Command.ParameterSets.Parameters | Sort-Object -Property Name -Unique | Where-Object { $_.Name -notin $Common } | Select-Object Name
         $CommandParameterNames = $CommandParameters.Name
     }
     BeforeAll {
         $Common = 'ProgressAction', 'Debug', 'ErrorAction', 'ErrorVariable', 'InformationAction', 'InformationVariable', 'OutBuffer', 'OutVariable', 'PipelineVariable', 'Verbose', 'WarningAction', 'WarningVariable', 'Confirm', 'Whatif'
 
-        $Command = $_ # Get current from -ForEach $Cmdlets in run-phase
+        $Command = Get-Command -Name $_ # Get current from -ForEach $Cmdlets in run-phase
         $CommandParameters = $Command.ParameterSets.Parameters | Sort-Object -Property Name -Unique | Where-Object { $_.Name -notin $Common }# | Select-Object Name
         $CommandParameterNames = $CommandParameters.Name
 
@@ -52,20 +53,20 @@ Describe '<_> help' -ForEach $Cmdlets {
     # Should be a valid link
     It 'Should have valid link response' {
         if ($Help.relatedLinks.navigationLink.uri) {
-            $Results = Invoke-WebRequest -Uri $Help.relatedLinks.navigationLink.uri -UseBasicParsing
+            $Results = Invoke-WebRequest -Uri $Help.relatedLinks.navigationLink.uri -UseBasicParsing -TimeoutSec 10
             $Results.StatusCode | Should -Be '200'
         }
     }
 
     # Should be a description for every parameter
-    It 'Should have description for parameter: <_>' -ForEach $CommandParameterNames {
+    It 'Should have description for parameter: <_>' -ForEach $CommandParameterNames -AllowNullOrEmptyForEach {
         $CommandParameterName = $_
         $ParameterHelp = $HelpParameters | Where-Object { $_.Name -ieq $CommandParameterName }
         $ParameterHelp.Description.Text | Should -Not -BeNullOrEmpty
     }
 
     # Required value in Help should match IsMandatory property of parameter
-    It 'Should have correct mandatory value for parameter: <_>' -ForEach $CommandParameterNames {
+    It 'Should have correct mandatory value for parameter: <_>' -ForEach $CommandParameterNames -AllowNullOrEmptyForEach {
         $CommandParameterName = $_
         $ParameterHelp = $HelpParameters | Where-Object { $_.Name -ieq $CommandParameterName }
         $CodeMandatory = ($Command.ParameterSets.Parameters | Sort-Object -Property Name -Unique | Where-Object { $_.Name -ieq $CommandParameterName }).IsMandatory.toString()
@@ -73,7 +74,7 @@ Describe '<_> help' -ForEach $Cmdlets {
     }
 
     # Shouldn't find extra parameters in help
-    It 'Should have matching help for parameter: <_>' -ForEach $HelpParameterNames {
+    It 'Should have matching help for parameter: <_>' -ForEach $HelpParameterNames -AllowNullOrEmptyForEach {
         $HelpParameterName = $_
         $HelpParameterName -in $CommandParameterNames | Should -Be $true
     }

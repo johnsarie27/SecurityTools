@@ -22,6 +22,7 @@ function Get-StringHash {
     [OutputType([System.String])]
     Param(
         [Parameter(Mandatory, ValueFromPipeline, HelpMessage = 'String to hash')]
+        [AllowEmptyString()]
         [System.String] $String,
 
         [Parameter(HelpMessage = 'Hashing algorithm to use')]
