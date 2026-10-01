@@ -30,6 +30,11 @@ function New-RandomString {
     #>
     [CmdletBinding()]
     [Alias('Get-RandomString')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        'PSUseShouldProcessForStateChangingFunctions',
+        '',
+        Justification = 'New-RandomString builds a string from Get-Random/Get-SecureRandom and changes no state; the rule fires on the verb alone.'
+    )]
     Param(
         [Parameter(HelpMessage = 'String length')]
         [System.Int32] $Length = 8,

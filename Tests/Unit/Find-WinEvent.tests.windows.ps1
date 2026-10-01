@@ -1,3 +1,10 @@
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+    'PSUseDeclaredVarsMoreThanAssignments',
+    '',
+    Justification = 'Pester assigns fixtures in BeforeDiscovery and consumes them in It blocks; PSScriptAnalyzer cannot follow that scope.'
+)]
+Param()
+
 BeforeDiscovery {
     # Taken with love from @juneb_get_help (https://raw.githubusercontent.com/juneb/PesterTDD/master/Module.Help.Tests.ps1)
     # Import module

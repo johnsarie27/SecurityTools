@@ -1,3 +1,10 @@
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+    'PSUseDeclaredVarsMoreThanAssignments',
+    '',
+    Justification = 'Pester assigns fixtures in BeforeAll and consumes them in It blocks; PSScriptAnalyzer cannot follow that scope.'
+)]
+Param()
+
 BeforeAll {
     Set-StrictMode -Version latest
 
