@@ -36,7 +36,7 @@ function Convert-TimeZone {
         [Alias('Source')]
         [System.String] $SourceTimeZone = 'Local',
 
-        [Parameter(Mandatory, HelpMessage = 'Target time zone (default is UTC)')]
+        [Parameter(HelpMessage = 'Target time zone (default is UTC)')]
         #[ValidateScript({ (Get-TimeZone -ListAvailable | Where-Object DisplayName -Match '\(US').Id })]
         [ValidateSet('Local', 'UTC', 'Pacific', 'Mountain', 'Central', 'Eastern', 'GMT')]
         [Alias('Target')]

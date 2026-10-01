@@ -101,5 +101,11 @@ Describe -Name 'Convert-TimeZone' -Fixture {
             $convert.Local | Should -BeGreaterOrEqual $before.AddSeconds(-1)
             $convert.Local | Should -BeLessOrEqual $after.AddSeconds(1)
         }
+
+        It -Name 'defaults to UTC when -TargetTimeZone is omitted' -Test {
+            $convert = Convert-TimeZone -Time $script:Time -SourceTimeZone Eastern
+            $convert.PSObject.Properties.Name | Should -Contain 'UTC'
+            $convert.UTC | Should -Be (Get-Date -Date '10/5/2011 7:00:00 PM')
+        }
     }
 }
