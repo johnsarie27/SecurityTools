@@ -23,7 +23,7 @@ Describe -Name 'Get-PatchTuesday' -Fixture {
             (Get-PatchTuesday -Month 12 -Year 2024).Date | Should -Be ([DateTime] '2024-12-10')
         }
 
-        It -Name 'handles a month where the 1st IS a Tuesday (Aug 2023 → 2023-08-08)' -Test {
+        It -Name 'handles a month where the 1st IS a Tuesday (Aug 2023 -> 2023-08-08)' -Test {
             # 2023-08-01 is a Tuesday, so the second Tuesday is 2023-08-08.
             (Get-PatchTuesday -Month 8 -Year 2023).Date | Should -Be ([DateTime] '2023-08-08')
         }

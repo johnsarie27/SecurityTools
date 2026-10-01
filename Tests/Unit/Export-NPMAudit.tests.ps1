@@ -66,7 +66,7 @@ Describe -Name 'Export-NPMAudit' -Fixture {
         It -Name 'writes three worksheets: Info, Actions, Advisories' -Test {
             Export-NPMAudit -Path $script:JsonPath -OutputDirectory $script:OutDir
             # Pester counts each pipeline item as a separate Mock invocation, so don't
-            # assert exact call counts — just verify each worksheet name was used.
+            # assert exact call counts  -  just verify each worksheet name was used.
             foreach ($sheet in 'Info', 'Actions', 'Advisories') {
                 Should -Invoke -CommandName Export-Excel -ModuleName $env:BHProjectName `
                     -ParameterFilter { $WorksheetName -eq $sheet }

@@ -6,7 +6,7 @@ BeforeDiscovery {
 
 Describe -Name 'Convert-Epoch' -Fixture {
 
-    Context -Name 'seconds → DateTime' -Fixture {
+    Context -Name 'seconds -> DateTime' -Fixture {
         It -Name 'converts 0 to the Unix epoch (1970-01-01 UTC)' -Test {
             $result = Convert-Epoch -Seconds 0
             $result.ToUniversalTime() | Should -Be ([DateTime] '1970-01-01T00:00:00Z').ToUniversalTime()
@@ -18,7 +18,7 @@ Describe -Name 'Convert-Epoch' -Fixture {
         }
     }
 
-    Context -Name 'milliseconds → DateTime' -Fixture {
+    Context -Name 'milliseconds -> DateTime' -Fixture {
         It -Name 'converts 1577836800000 ms identically to 1577836800 s' -Test {
             $fromSec = Convert-Epoch -Seconds 1577836800
             $fromMs = Convert-Epoch -Milliseconds 1577836800000
@@ -26,7 +26,7 @@ Describe -Name 'Convert-Epoch' -Fixture {
         }
     }
 
-    Context -Name 'DateTime → epoch (default parameter set)' -Fixture {
+    Context -Name 'DateTime -> epoch (default parameter set)' -Fixture {
         It -Name 'returns an object with Date / Seconds / Milliseconds properties' -Test {
             $result = Convert-Epoch -Date ([DateTime] '2020-01-01T00:00:00Z')
             $result.PSObject.Properties.Name | Should -Contain 'Date'

@@ -6,7 +6,7 @@ BeforeDiscovery {
 
 Describe -Name 'Convert-Hexadecimal' -Fixture {
 
-    Context -Name 'decimal → hexadecimal (default set)' -Fixture {
+    Context -Name 'decimal -> hexadecimal (default set)' -Fixture {
         It -Name 'converts 4248 to 0x1098' -Test {
             Convert-Hexadecimal -Decimal '4248' | Should -Be '0x1098'
         }
@@ -16,12 +16,12 @@ Describe -Name 'Convert-Hexadecimal' -Fixture {
         }
 
         It -Name 'returns lowercase hex digits (per [Convert]::ToString base 16)' -Test {
-            # 255 → 'ff' (lowercase from [Convert]::ToString)
+            # 255 -> 'ff' (lowercase from [Convert]::ToString)
             Convert-Hexadecimal -Decimal '255' | Should -Be '0xff'
         }
     }
 
-    Context -Name 'hexadecimal → decimal' -Fixture {
+    Context -Name 'hexadecimal -> decimal' -Fixture {
         It -Name 'converts 1098 to 4248' -Test {
             Convert-Hexadecimal -Hexadecimal '1098' | Should -Be '4248'
         }

@@ -15,7 +15,7 @@ Describe -Name 'ConvertTo-MarkdownTable' -Fixture {
             $result = $rows | ConvertTo-MarkdownTable
             $result.Count | Should -Be 4
             $result[0] | Should -Be '| Name | Value |'
-            # second row is the dashed separator — same width per column as the header letters
+            # second row is the dashed separator  -  same width per column as the header letters
             $result[1] | Should -Be '| ---- | ----- |'
             $result[2] | Should -Be '| alpha | 1 |'
             $result[3] | Should -Be '| beta | 2 |'

@@ -8,7 +8,7 @@ Describe -Name 'Out-MeasureResult' -Fixture {
 
     Context -Name 'aggregates a TimeSpan collection' -Fixture {
         BeforeAll {
-            # 100ms, 200ms, 300ms → max=300, min=100, avg=200
+            # 100ms, 200ms, 300ms -> max=300, min=100, avg=200
             $script:Spans = @(
                 [TimeSpan]::FromMilliseconds(100)
                 [TimeSpan]::FromMilliseconds(200)
@@ -66,7 +66,7 @@ Describe -Name 'Out-MeasureResult' -Fixture {
             # Regression: a prior implementation used $list.Where({ $_.Ticks -eq $max })
             # which returned a multi-element collection when all ticks tied, and the
             # subsequent [System.Int32] cast on the member-enumerated TotalMilliseconds
-            # array silently failed — producing a null result.
+            # array silently failed  -  producing a null result.
             $spans = @([TimeSpan]::Zero, [TimeSpan]::Zero, [TimeSpan]::Zero, [TimeSpan]::Zero)
             $result = $spans | Out-MeasureResult
             $result | Should -Not -BeNullOrEmpty

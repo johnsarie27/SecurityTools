@@ -73,7 +73,7 @@ Describe -Name 'Get-CVSSv3BaseScore' -Fixture {
 
     Context -Name 'transport failure' -Fixture {
         # When Invoke-WebRequest itself fails (network down, 5xx with -ErrorAction Stop default),
-        # the function does not catch it — the error propagates to the caller.
+        # the function does not catch it  -  the error propagates to the caller.
         BeforeAll {
             Mock -CommandName Invoke-WebRequest -MockWith {
                 throw [System.Net.WebException]::new('upstream unavailable')

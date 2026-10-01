@@ -6,7 +6,7 @@ BeforeDiscovery {
 
 Describe -Name 'Get-AlternateDataStream' -Fixture {
 
-    # Get-Item -Stream * is Windows/NTFS only — on Linux/macOS PowerShell rejects the parameter
+    # Get-Item -Stream * is Windows/NTFS only  -  on Linux/macOS PowerShell rejects the parameter
     # set entirely, so cross-platform coverage here is metadata + parameter validation only.
     # The Windows-only happy path lives in Get-AlternateDataStream.tests.windows.ps1.
 
