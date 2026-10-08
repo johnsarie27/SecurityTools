@@ -19,6 +19,12 @@ New-Variable -Name 'EventTable' -Option ReadOnly -Value (
 New-Variable -Name 'InfoModel' -Option ReadOnly -Value (
     Get-Content -Raw -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Private/InformationModel.json') | ConvertFrom-Json
 )
+New-Variable -Name 'FileSignatures' -Option ReadOnly -Value (
+    Get-Content -Raw -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Private/FileSignatures.json') | ConvertFrom-Json
+)
+New-Variable -Name 'CountryCodes' -Option ReadOnly -Value (
+    Import-Csv -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Private/ISO-3166.csv')
+)
 
 # EXPORT MEMBERS
 # Functions are intentionally omitted here. When a module manifest (.psd1) is

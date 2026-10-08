@@ -63,6 +63,17 @@ and categorized via [.github/release.yml](.github/release.yml).
 Feel free to create issues or pull requests; however, this project is developed
 for use by a specific team of engineers, not for broad use.
 
+## Third-Party Data
+
+The module code is licensed under the [MIT License](LICENSE). Two bundled data files come from third parties and keep their own licenses:
+
+| File | Used by | Source | License |
+| ---- | ------- | ------ | ------- |
+| [Private/FileSignatures.json](Private/FileSignatures.json) | `Get-FileInfo` | Derived from Wikipedia, [List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| [Private/ISO-3166.csv](Private/ISO-3166.csv) | `Get-CountryCode` | [datahub.io country-list](https://datahub.io/core/country-list), derived from ISO 3166-1 | [ODC-PDDL-1.0](https://opendatacommons.org/licenses/pddl/) |
+
+The remaining files in [Private](./Private) were compiled by the author from public sources.
+
 ## Repo Layout
 
 - [Public](./Public) — functions that are available when using the module

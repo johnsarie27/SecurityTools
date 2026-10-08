@@ -15,7 +15,8 @@
         Returns the pending reboot status for the specified remote computers.
     .NOTES
         Status: Stable
-        Adapted from https://gallery.technet.microsoft.com/scriptcenter/How-to-check-if-any-4b1e53f2
+        Adapted from a TechNet Gallery script (gallery since retired; original author and license not recorded)
+        https://gallery.technet.microsoft.com/scriptcenter/How-to-check-if-any-4b1e53f2
     #>
     [CmdletBinding()]
     param (

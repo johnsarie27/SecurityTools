@@ -9,14 +9,14 @@ function ConvertTo-MarkdownTable {
     .INPUTS
         System.Object.
     .OUTPUTS
-        None.
+        System.String.
     .EXAMPLE
         PS C:\> $svc = Get-Service | Select-Object -Property DisplayName, Name, Description
         PS C:\> $svc | Select-Object -First 5 | ConvertTo-MarkdownTable
         Converts the first 5 services to a Markdown table
     .NOTES
         Status: Stable
-        https://stackoverflow.com/questions/69010143/convert-powershell-output-to-a-markdown-file
+        Prior art: answer by Theo, https://stackoverflow.com/a/69011926 (CC BY-SA 4.0)
     #>
     [CmdletBinding()]
     Param(
@@ -27,17 +27,18 @@ function ConvertTo-MarkdownTable {
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
 
-        $headersDone = $false
-        $pattern = '(?<!\\)\|'  # escape every '|' unless already escaped
+        # COLUMNS ARE TAKEN FROM THE FIRST OBJECT; LATER OBJECTS ARE READ IN THE SAME ORDER
+        $columns = $null
+
+        # ESCAPE PIPES SO CELL CONTENT CANNOT SPLIT A COLUMN (SKIP PIPES ALREADY ESCAPED)
+        $escape = { param($text) ([System.String] $text) -replace '(?<!\\)\|', '\|' }
     }
     Process {
-        if (!$headersDone) {
-            $headersDone = $true
-            # output the header line and below that a dashed line
-            # -replace '(?<!\\)\|', '\|' escapes every '|' unless already escaped
-            '| {0} |' -f (($_.PSObject.Properties.Name -replace $pattern, '\|') -join ' | ')
-            '| {0} |' -f (($_.PSObject.Properties.Name -replace '.', '-') -join ' | ')
+        if ($null -eq $columns) {
+            $columns = @($InputObject.PSObject.Properties.Name)
+            '| {0} |' -f (($columns | ForEach-Object -Process { & $escape $_ }) -join ' | ')
+            '| {0} |' -f (($columns | ForEach-Object -Process { '-' * $_.Length }) -join ' | ')
         }
-        '| {0} |' -f (($_.PsObject.Properties.Value -replace $pattern, '\|') -join ' | ')
+        '| {0} |' -f (($columns | ForEach-Object -Process { & $escape $InputObject.$_ }) -join ' | ')
     }
 }

@@ -92,8 +92,8 @@ Describe -Name 'Expand-GZip' -Fixture {
     }
 
     Context -Name 'content fidelity' -Fixture {
-        It -Name 'expands payloads larger than the 1024-byte read buffer' -Test {
-            # 5000-char payload forces multiple iterations of the Read loop.
+        It -Name 'expands payloads larger than a single small read buffer' -Test {
+            # 5000-char payload exceeds a single small read, guarding against truncated copies.
             $payload = -join (1..5000 | ForEach-Object { [char](65 + ($_ % 26)) })
             $src = Join-Path -Path $TestDrive -ChildPath 'large.txt.gz'
             New-TestGZipFile -Path $src -Content $payload

@@ -14,9 +14,10 @@ function Get-CountryCode {
         System.Object.
     .EXAMPLE
         PS C:\> Get-CountryCode AS
-        Returns the country data for "American Somoa"
+        Returns the country data for "American Samoa"
     .NOTES
         Status: Stable
+        Data: Private/ISO-3166.csv, from datahub.io "country-list" (ODC-PDDL-1.0), derived from ISO 3166-1
         https://www.iso.org/obp/ui/#search
         https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
         https://datahub.io/core/country-list
@@ -39,20 +40,9 @@ function Get-CountryCode {
     )
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
-
-        # CHECK FOR FILE SIGNATURE VARIABLE
-        if (-Not (Get-Variable -Name 'CountryCodes' -ErrorAction Ignore)) {
-
-            Write-Verbose -Message 'Setting "CountryCodes" variable'
-
-            # SET URI
-            $uri = 'https://gist.githubusercontent.com/johnsarie27/1ab851a8c0e06687ae1a49acf3498f82/raw/4bda0600fc609c0df774d20a9e5623a22394215d/ISO-3166.csv'
-
-            # CREATE VARIABLE AS GLOBAL
-            New-Variable -Name 'CountryCodes' -Scope Global -Value (Invoke-RestMethod -Uri $uri | ConvertFrom-Csv)
-        }
     }
     Process {
+        # LOOKUP VALUE IN THE ISO 3166 TABLE LOADED BY THE MODULE AT IMPORT
         switch ($PSCmdlet.ParameterSetName) {
             '__cde' {
                 # CHECK CODE LENGTH

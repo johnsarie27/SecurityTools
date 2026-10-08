@@ -17,7 +17,7 @@ function ConvertFrom-GZipString {
         ConvertTo-GZipString
     .NOTES
         Status: Stable
-        https://www.dorkbrain.com/docs/2017/09/02/gzip-in-powershell/
+        Prior art: "GZip in PowerShell", dorkbrain.com (2017; original page no longer available)
     #>
     [CmdletBinding()]
     Param(
@@ -29,21 +29,17 @@ function ConvertFrom-GZipString {
     }
     Process {
         foreach ($str in $String) {
-            $memStream = $null; $gzipStream = $null; $reader = $null
+            # DECODE FIRST SO A BAD BASE64 STRING THROWS BEFORE ANY STREAM IS OPENED
+            $compressed = [System.IO.MemoryStream]::new([System.Convert]::FromBase64String($str))
             try {
-                $compressedBytes = [System.Convert]::FromBase64String($str)
-                $memStream = New-Object System.IO.MemoryStream
-                $memStream.Write($compressedBytes, 0, $compressedBytes.Length)
-                $memStream.Seek(0, 0) | Out-Null
-                $gzipStream = New-Object System.IO.Compression.GZipStream($memStream, [System.IO.Compression.CompressionMode]::Decompress)
-                $reader = New-Object System.IO.StreamReader($gzipStream)
-                $reader.ReadToEnd()
+                $gzip = [System.IO.Compression.GZipStream]::new($compressed, [System.IO.Compression.CompressionMode]::Decompress)
+                try {
+                    $reader = [System.IO.StreamReader]::new($gzip, [System.Text.Encoding]::UTF8)
+                    try { $reader.ReadToEnd() } finally { $reader.Dispose() }
+                }
+                finally { $gzip.Dispose() }
             }
-            finally {
-                if ($reader) { $reader.Dispose() }
-                if ($gzipStream) { $gzipStream.Dispose() }
-                if ($memStream) { $memStream.Dispose() }
-            }
+            finally { $compressed.Dispose() }
         }
     }
 }
