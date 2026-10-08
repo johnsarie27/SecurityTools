@@ -144,7 +144,6 @@
         'New-RandomString'
         'Out-MeasureResult'
         'Read-EncryptedFile'
-        'Save-KBFile'
         'Set-GitHubBranchProtection'
         'Test-Performance'
         'Uninstall-MSI'
