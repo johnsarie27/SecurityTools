@@ -10,7 +10,8 @@ function Export-SQLVAReport {
     .PARAMETER BaselinePath
         Path to baseline file in JSON format
     .PARAMETER OutputDirectory
-        Path to output directory for new SQL Vulnerability Assessment reports
+        Path to output directory for new SQL Vulnerability Assessment reports.
+        Defaults to the Desktop folder in the user's home directory.
     .PARAMETER PassThru
         Returns path to directory containing new reports
     .INPUTS
@@ -40,7 +41,7 @@ function Export-SQLVAReport {
         [Parameter(HelpMessage = 'Output directory')]
         [ValidateScript( { Test-Path -Path $_ -PathType Container })]
         [Alias('DestinationPath')]
-        [System.String] $OutputDirectory = "D:\MSSQL-VA",
+        [System.String] $OutputDirectory = (Join-Path -Path $HOME -ChildPath 'Desktop'),
 
         [Parameter(HelpMessage = 'Return path to report directory')]
         [System.Management.Automation.SwitchParameter] $PassThru
