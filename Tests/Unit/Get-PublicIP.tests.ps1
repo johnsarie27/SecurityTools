@@ -14,7 +14,7 @@ Describe -Name 'Get-PublicIP' -Fixture {
         It -Name 'GETs ifconfig.me/ip' -Test {
             Get-PublicIP | Out-Null
             Should -Invoke -CommandName Invoke-RestMethod -ModuleName $env:BHProjectName -Times 1 -Exactly `
-                -ParameterFilter { $Uri -eq 'http://ifconfig.me/ip' }
+                -ParameterFilter { $Uri -eq 'https://ifconfig.me/ip' }
         }
     }
 

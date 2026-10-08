@@ -29,7 +29,7 @@ function Get-WhoIs {
     )
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
-        $baseURL = 'http://whois.arin.net/rest'
+        $baseURL = 'https://whois.arin.net/rest'
         # ARIN defaults to XML, but set Accept explicitly so a server-side default change can't break us
         $header = @{ 'Accept' = 'application/xml' }
     }

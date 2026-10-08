@@ -22,6 +22,6 @@ function Get-PublicIP {
     }
     Process {
         # GET PUBLIC IP
-        Invoke-RestMethod -Uri 'http://ifconfig.me/ip'
+        Invoke-RestMethod -Uri 'https://ifconfig.me/ip'
     }
 }
