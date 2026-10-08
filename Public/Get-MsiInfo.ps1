@@ -15,8 +15,8 @@ function Get-MsiInfo {
         Returns all available product info for myMsi.msi
     .NOTES
         Status: Stable
-        Originally written by Nickolaj Andersen
-        https://www.scconfigmgr.com/2014/08/22/how-to-get-msi-file-information-with-powershell/
+        Adapted from a script by Nickolaj Andersen (MSEndpointMgr, 2014)
+        https://msendpointmgr.com/2014/08/22/how-to-get-msi-file-information-with-powershell/
     #>
     [CmdletBinding()]
     Param(

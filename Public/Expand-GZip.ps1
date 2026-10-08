@@ -25,7 +25,7 @@ function Expand-GZip {
         Extracts file, overwriting C:\E3IU1BL3AWXV9B.2023-10-30-21.b3052b06 if it already exists
     .NOTES
         Status: Stable
-        https://social.technet.microsoft.com/Forums/windowsserver/en-US/5aa53fef-5229-4313-a035-8b3a38ab93f5/unzip-gz-files-using-powershell?forum=winserverpowershell
+        Prior art: DeGZip-File, TechNet forum reply (2013-01-02), https://learn.microsoft.com/en-us/archive/msdn-technet-forums/5aa53fef-5229-4313-a035-8b3a38ab93f5
     #>
     [CmdletBinding(SupportsShouldProcess)]
     Param(
@@ -72,22 +72,16 @@ function Expand-GZip {
             return
         }
 
-        # CREATE .NET OBJECTS
-        $ip = New-Object System.IO.FileStream $Path, ([IO.FileMode]::Open), ([IO.FileAccess]::Read), ([IO.FileShare]::Read)
-        $op = New-Object System.IO.FileStream $destFullPath, ([IO.FileMode]::Create), ([IO.FileAccess]::Write), ([IO.FileShare]::None)
-        $gzipStream = New-Object System.IO.Compression.GzipStream $ip, ([IO.Compression.CompressionMode]::Decompress)
-
-        $buffer = New-Object byte[](1024)
-        while ($true) {
-            $read = $gzipstream.Read($buffer, 0, 1024)
-            if ($read -le 0) { break }
-            $op.Write($buffer, 0, $read)
+        # DECOMPRESS SOURCE INTO DESTINATION, DISPOSING EVERY STREAM EVEN ON FAILURE
+        $source = [System.IO.File]::OpenRead($Path.FullName)
+        try {
+            $gzip = [System.IO.Compression.GZipStream]::new($source, [System.IO.Compression.CompressionMode]::Decompress)
+            try {
+                $destination = [System.IO.File]::Create($destFullPath)
+                try { $gzip.CopyTo($destination) } finally { $destination.Dispose() }
+            }
+            finally { $gzip.Dispose() }
         }
-    }
-    End {
-        # CLOSE STREAMS (guard against -WhatIf paths where streams were never opened)
-        if ($gzipStream) { $gzipStream.Close() }
-        if ($op) { $op.Close() }
-        if ($ip) { $ip.Close() }
+        finally { $source.Dispose() }
     }
 }
