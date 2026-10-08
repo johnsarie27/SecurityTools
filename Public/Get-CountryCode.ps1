@@ -14,7 +14,7 @@ function Get-CountryCode {
         System.Object.
     .EXAMPLE
         PS C:\> Get-CountryCode AS
-        Returns the country data for "American Somoa"
+        Returns the country data for "American Samoa"
     .NOTES
         Status: Stable
         Data: Private/ISO-3166.csv, from datahub.io "country-list" (ODC-PDDL-1.0), derived from ISO 3166-1

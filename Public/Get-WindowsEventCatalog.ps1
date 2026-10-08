@@ -7,7 +7,7 @@ function Get-WindowsEventCatalog {
     .INPUTS
         None.
     .OUTPUTS
-        None.
+        System.Management.Automation.PSCustomObject.
     .EXAMPLE
         PS C:\> Get-WindowsEventCatalog
         Returns catalog of Windows Events
