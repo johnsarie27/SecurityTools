@@ -11,7 +11,7 @@
     .OUTPUTS
         System.Management.Automation.PSCustomObject.
     .EXAMPLE
-        PS C:\> Find-ServerPendingReboot -ComputerName 'WIN-VU0S8', 'WIN-FJ6FH'
+        PS C:\> Find-ServerPendingReboot -ComputerName 'Server01', 'Server02'
         Returns the pending reboot status for the specified remote computers.
     .NOTES
         Status: Stable

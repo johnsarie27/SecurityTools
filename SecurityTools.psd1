@@ -12,7 +12,7 @@
     # Major = significant changes, breaking changes or major new features
     # Minor = new functions or features
     # Build = bug fixes and minor updates
-    ModuleVersion        = '0.11.0'
+    ModuleVersion        = '0.11.1'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Core')
@@ -27,7 +27,7 @@
     # CompanyName = 'Unknown'
 
     # Copyright statement for this module
-    Copyright            = '(c) 2018 Justin Johns. All rights reserved.'
+    Copyright            = '(c) 2018 Justin Johns. Licensed under the MIT License.'
 
     # Description of the functionality provided by this module
     Description          = 'Functions used in reporting and management of security devices and resources.'
@@ -144,7 +144,6 @@
         'New-RandomString'
         'Out-MeasureResult'
         'Read-EncryptedFile'
-        'Save-KBFile'
         'Set-GitHubBranchProtection'
         'Test-Performance'
         'Uninstall-MSI'
@@ -186,19 +185,30 @@
 
         PSData = @{
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = @('Security', 'Tools')
+            Tags         = @(
+                'Security'
+                'Tools'
+                'SysAdmin'
+                'Vulnerability'
+                'Reporting'
+                'Networking'
+                'PSEdition_Core'
+                'Windows'
+                'Linux'
+                'MacOS'
+            )
 
             # A URL to the license for this module.
-            LicenseUri = 'https://github.com/jjohns-dev/SecurityTools/blob/main/LICENSE'
+            LicenseUri   = 'https://github.com/jjohns-dev/SecurityTools/blob/main/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://github.com/jjohns-dev/SecurityTools'
+            ProjectUri   = 'https://github.com/jjohns-dev/SecurityTools'
 
             # A URL to an icon representing this module.
             # IconUri = ''
 
             # ReleaseNotes of this module
-            # ReleaseNotes = ''
+            ReleaseNotes = 'https://github.com/jjohns-dev/SecurityTools/releases'
 
         } # End of PSData hashtable
 

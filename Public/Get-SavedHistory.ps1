@@ -13,7 +13,7 @@ function Get-SavedHistory {
     .OUTPUTS
         System.Object[].
     .EXAMPLE
-        PS C:\> Get-SavedHistory -Search "ELBLoadBalancer -Name"
+        PS C:\> Get-SavedHistory -Search "Invoke-RestMethod -Uri"
         Returns all unique commands matching the search phrase from PSReadLine history
     .NOTES
         Status: Stable

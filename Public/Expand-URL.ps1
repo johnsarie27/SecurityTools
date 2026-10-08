@@ -13,8 +13,8 @@ function Expand-URL {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> Expand-URL -URL 'https://tinyurl.com/RedlandsStake' # https://t.co/Q0uEt49I5D
-        Show destination URL target for bitly shortened or redirected URL
+        PS C:\> Expand-URL -URL 'https://tinyurl.com/example'
+        Show destination URL target for a shortened or redirected URL
     .NOTES
         Status: Stable
         https://onesimpleapi.com/docs/url-unshorten

@@ -15,8 +15,8 @@ function Find-LANHost {
     .OUTPUTS
         System.Object.
     .EXAMPLE
-        PS C:\> $ips = 1..254 | ForEach-Object { "10.250.1.$_" }; Find-LANHost -IP $ips
-        Scans all 254 hosts on the 10.250.1.0/24 subnet and returns those with active ARP entries.
+        PS C:\> $ips = 1..254 | ForEach-Object { "192.0.2.$_" }; Find-LANHost -IP $ips
+        Scans all 254 hosts on the 192.0.2.0/24 subnet and returns those with active ARP entries.
     .NOTES
         Status: Stable
         https://xkln.net/blog/layer-2-host-discovery-with-powershell-in-under-a-second/
