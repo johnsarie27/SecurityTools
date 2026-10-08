@@ -8,7 +8,7 @@ Describe -Name 'Get-WhoIs' -Fixture {
 
     BeforeAll {
         # Two-stage mock: the ARIN /ip/<addr> response, then the orgRef follow-up.
-        $script:OrgRefUrl = 'http://whois.arin.net/rest/org/GOOGLE'
+        $script:OrgRefUrl = 'https://whois.arin.net/rest/org/GOOGLE'
 
         # The orgRef property is serialized from XML, so it needs both a 'name' and a '#text' (the URL).
         $orgRef = New-Object -TypeName PSObject
@@ -33,7 +33,7 @@ Describe -Name 'Get-WhoIs' -Fixture {
         }
 
         Mock -CommandName Invoke-RestMethod -ModuleName $env:BHProjectName -MockWith { $script:IpResponse } `
-            -ParameterFilter { $Uri -like 'http://whois.arin.net/rest/ip/*' }
+            -ParameterFilter { $Uri -like 'https://whois.arin.net/rest/ip/*' }
 
         Mock -CommandName Invoke-RestMethod -ModuleName $env:BHProjectName -MockWith { $script:OrgResponse } `
             -ParameterFilter { $Uri -eq $script:OrgRefUrl }
@@ -44,7 +44,7 @@ Describe -Name 'Get-WhoIs' -Fixture {
             Get-WhoIs -IPAddress '8.8.8.8' | Out-Null
             Should -Invoke -CommandName Invoke-RestMethod -ModuleName $env:BHProjectName `
                 -ParameterFilter {
-                $Uri -eq 'http://whois.arin.net/rest/ip/8.8.8.8' -and
+                $Uri -eq 'https://whois.arin.net/rest/ip/8.8.8.8' -and
                 $Headers['Accept'] -eq 'application/xml'
             }
         }
