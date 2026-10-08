@@ -4,8 +4,6 @@ function Get-WindowsEventCatalog {
         Get catalog of Windows Events
     .DESCRIPTION
         Get catalog of Windows Events
-    .PARAMETER UseRemoteData
-        Get data from remote source
     .INPUTS
         None.
     .OUTPUTS
@@ -15,30 +13,19 @@ function Get-WindowsEventCatalog {
         Returns catalog of Windows Events
     .NOTES
         Status: Stable
+        Data: Private/windows_signatures_850.csv, compiled by Justin Johns from public Windows event documentation
+        and SIEM references
     #>
     [CmdletBinding()]
-    Param(
-        [Parameter(Mandatory = $false, HelpMessage = 'Get data from remote source')]
-        [System.Management.Automation.SwitchParameter] $UseRemoteData
-    )
+    Param()
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
-
-        # SET REMOTE PATH
-        $uri = 'https://gist.githubusercontent.com/johnsarie27/5519dd08bae06b8b6271ac168e28e06a/raw/321c3a46756beb021012df4f2e26cccbd7fe6417/windows_signatures_850.csv'
 
         # SET LOCAL PATH
         $path = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath 'Private' | Join-Path -ChildPath 'windows_signatures_850.csv'
     }
     Process {
         # GET DATA
-        if ($PSBoundParameters.ContainsKey('UseRemoteData')) {
-            Write-Verbose -Message ('Retrieving data from: {0}' -f $uri)
-            Invoke-RestMethod -Uri $uri | ConvertFrom-Csv
-        }
-        else {
-            Write-Verbose -Message 'Retrieving data from local source'
-            Import-Csv -Path $path
-        }
+        Import-Csv -Path $path
     }
 }

@@ -15,6 +15,7 @@ function Get-FileInfo {
         Get information on a file with signature '50 4B 03 04'
     .NOTES
         Status: Stable
+        Data: Private/FileSignatures.json, derived from Wikipedia, "List of file signatures" (CC BY-SA 4.0)
         https://en.wikipedia.org/wiki/List_of_file_signatures
     #>
     [CmdletBinding()]
@@ -25,21 +26,9 @@ function Get-FileInfo {
     )
     Begin {
         Write-Verbose -Message ('Starting {0}' -f $MyInvocation.MyCommand)
-
-        # CHECK FOR FILE SIGNATURE VARIABLE
-        if (-Not (Get-Variable -Name 'FileSignatures' -ErrorAction Ignore)) {
-
-            Write-Verbose -Message 'Setting "FileSignatures" variable'
-
-            # SET URI
-            $uri = 'https://gist.githubusercontent.com/johnsarie27/819dec131420d02a9404a0479759eb59/raw/2796f5d3e58a272b876285a1eea08614114e9f1f/FileSignatures.json'
-
-            # CREATE VARIABLE AS GLOBAL
-            New-Variable -Name 'FileSignatures' -Scope Global -Value (Invoke-RestMethod -Uri $uri)
-        }
     }
     Process {
-        # LOOKUP VALUE
+        # LOOKUP VALUE IN THE SIGNATURE TABLE LOADED BY THE MODULE AT IMPORT
         $FileSignatures | Where-Object Hex_signature -Match $Signature
     }
 }
